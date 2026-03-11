@@ -120,13 +120,74 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (Populated during roadmap creation) | | |
+| CORE-01 | Phase 1 | Pending |
+| CORE-02 | Phase 11 | Pending |
+| CORE-03 | Phase 12 | Pending |
+| CORE-04 | Phase 9 | Pending |
+| CORE-05 | Phase 9 | Pending |
+| CORE-06 | Phase 9 | Pending |
+| USAGE-01 | Phase 4 | Pending |
+| USAGE-02 | Phase 2, Phase 10 | Pending |
+| USAGE-03 | Phase 4 | Pending |
+| USAGE-04 | Phase 4 | Pending |
+| USAGE-05 | Phase 2 | Pending |
+| USAGE-06 | Phase 4 | Pending |
+| POLICY-01 | Phase 3 | Pending |
+| POLICY-02 | Phase 3 | Pending |
+| POLICY-03 | Phase 3 | Pending |
+| POLICY-04 | Phase 3 | Pending |
+| POLICY-05 | Phase 3 | Pending |
+| POLICY-06 | Phase 3, Phase 12 | Pending |
+| POLICY-07 | Phase 3 | Pending |
+| INTG-01 | Phase 6 | Pending |
+| INTG-02 | Phase 7 | Pending |
+| INTG-03 | Phase 7 | Pending |
+| INTG-04 | Phase 6 | Pending |
+| INTG-05 | Phase 7 | Pending |
+| PROV-01 | Phase 8 | Pending |
+| PROV-02 | Phase 8 | Pending |
+| PROV-03 | Phase 8 | Pending |
+| PROV-04 | Phase 8 | Pending |
+| PROV-05 | Phase 8 | Pending |
+| PROV-06 | Phase 8 | Pending |
+| PROV-07 | Phase 8 | Pending |
+| PROV-08 | Phase 8 | Pending |
+| PROV-09 | Phase 8 | Pending |
+| PROV-10 | Phase 8 | Pending |
+| PROV-11 | Phase 8 | Pending |
+| PROV-12 | Phase 8 | Pending |
+| DX-01 | Phase 11 | Pending |
+| DX-02 | Phase 8 | Pending |
+| DX-03 | Phase 10 | Pending |
+| DX-04 | Phase 10 | Pending |
+| DX-05 | Phase 9 | Pending |
+| DX-06 | Phase 11 | Pending |
+| DX-07 | Phase 1, Phase 11 | Pending |
+| ALGO-01 | Phase 5 | Pending |
+| ALGO-02 | Phase 5 | Pending |
+| ALGO-03 | Phase 5 | Pending |
+| ALGO-04 | Phase 5 | Pending |
+| ALGO-05 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 42 total
-- Mapped to phases: 0
-- Unmapped: 42 (pending roadmap)
+- v1 requirements: 48 total
+- Mapped to phases: 48/48 (100%)
+- Unmapped: 0
+
+**Phase Distribution:**
+- Phase 1: 2 requirements (Foundation)
+- Phase 2: 2 requirements (Storage)
+- Phase 3: 7 requirements (Policy Engine)
+- Phase 4: 4 requirements (Usage Tracking)
+- Phase 5: 5 requirements (Selection)
+- Phase 6: 2 requirements (Base Integration)
+- Phase 7: 3 requirements (Integration Features)
+- Phase 8: 13 requirements (Provider Catalog)
+- Phase 9: 4 requirements (Fallback & Budget)
+- Phase 10: 3 requirements (Redis & Advanced)
+- Phase 11: 4 requirements (DX Polish)
+- Phase 12: 2 requirements (Testing & Validation)
 
 ---
 *Requirements defined: 2026-03-11*
-*Last updated: 2026-03-11 after initial definition*
+*Last updated: 2026-03-11 after roadmap creation (100% coverage validated)*
