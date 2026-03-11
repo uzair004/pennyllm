@@ -38,6 +38,7 @@ Never get charged for LLM API calls during side project experimentation — rota
 - Hosted proxy service — library/SDK only for v1
 - Prompt caching/optimization — different problem domain
 - Full paid tier cost optimization — focus is free tier maximization, cheap paid fallback is secondary
+- Admin UI / dashboard — planned for v2 (v1 is config-driven library; architecture must keep core logic UI-agnostic)
 
 ## Context
 

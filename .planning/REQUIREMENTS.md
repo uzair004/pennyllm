@@ -105,11 +105,22 @@ Deferred to future release. Tracked but not in current roadmap.
 - **EXPROV-04**: Scaleway support
 - **EXPROV-05**: Venice.ai support
 
+### Admin UI / Dashboard
+
+- **UI-01**: Web-based admin dashboard for managing keys, providers, policies, and strategies (similar to LiteLLM UI)
+- **UI-02**: Visual usage analytics — spend tracking, token usage, time-series charts per key/provider
+- **UI-03**: Key management — add/edit/remove API keys, view status (active, cooldown, exhausted)
+- **UI-04**: Policy editor — view/override provider policies, configure limits and reset windows
+- **UI-05**: Strategy configuration — select and tune selection algorithms per provider
+- **UI-06**: Fallback chain builder — visual configuration of fallback paths with capability matching
+- **UI-07**: Model catalog browser — view available models with capabilities, pricing, quality tiers
+- **UI-08**: Budget dashboard — current spend, remaining budget, threshold alerts, historical trends
+
 ### Enterprise
 
 - **ENT-01**: Multi-tenant key isolation
 - **ENT-02**: Centralized policy server
-- **ENT-03**: Cost analytics dashboard
+- **ENT-03**: Cost analytics dashboard (integrated into Admin UI)
 
 ## Out of Scope
 
