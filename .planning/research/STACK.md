@@ -1,12 +1,20 @@
 # Technology Stack
 
 **Project:** LLM Cost-Avoidance Router
-**Researched:** 2026-03-11
-**Overall Confidence:** MEDIUM (based on training data through Jan 2025, unable to verify current versions)
+**Researched:** 2026-03-11 (initial), 2026-03-12 (VALIDATED with live web research)
+**Overall Confidence:** HIGH (validated against live npm, GitHub, and documentation sources)
 
-## Research Limitations
+## Research Validation (2026-03-12)
 
-**CRITICAL NOTE:** This research is based on training data through January 2025. External verification tools (WebSearch, WebFetch, Bash) were unavailable during research. All version numbers and current feature sets should be verified against official documentation before implementation. Confidence levels reflect this limitation.
+**UPDATE:** Comprehensive live web research conducted on 2026-03-12 across npm, GitHub, official documentation, and community sources. All recommendations validated. See `.planning/research/SDK_COMPARISON.md` for the full 10-package comparison. Key findings:
+- Vercel AI SDK recommendation CONFIRMED as best choice (v6.0.116, 36M weekly downloads, 22.5k stars)
+- `wrapLanguageModel()` middleware system is purpose-built for our use case
+- Per-request key injection via `createOpenAI({ apiKey })` is the documented pattern
+- Token usage exposed as standardized `{ promptTokens, completionTokens, totalTokens }`
+- LangChain.js has streaming token usage bugs (not suitable for accurate cost tracking)
+- Portkey AI solves similar problems but as a gateway service (architectural mismatch for embeddable library)
+- ModelFusion is DEPRECATED (merged into Vercel AI SDK)
+- TanStack AI is promising but still alpha (v0.2.2)
 
 ---
 

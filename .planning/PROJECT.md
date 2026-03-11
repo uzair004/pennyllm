@@ -34,10 +34,10 @@ Never get charged for LLM API calls during side project experimentation — rota
 
 - Video, image, audio model support — text LLMs only for v1
 - API key provisioning/automation — BYOK with documentation guides
-- Model categorization/selection logic — delegated to Vercel AI SDK
+- Model categorization/selection logic — capability flags from live catalogs (models.dev, OpenRouter), quality tiers from benchmarks
 - Hosted proxy service — library/SDK only for v1
 - Prompt caching/optimization — different problem domain
-- Cost tracking for paid tiers — focus is free tier maximization
+- Full paid tier cost optimization — focus is free tier maximization, cheap paid fallback is secondary
 
 ## Context
 
@@ -65,13 +65,34 @@ Never get charged for LLM API calls during side project experimentation — rota
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Library/SDK (not proxy service) | Simpler integration, runs in-process | — Pending |
-| Vercel AI SDK as base | Free, open source, 20M+ downloads, TypeScript-first, 20+ providers | — Pending (needs POC validation) |
-| Wrapper/decorator pattern | Non-invasive, preserves AI SDK's full API, swappable | — Pending (needs key injection verification) |
-| Configurable policies (not hardcoded) | Providers change limits frequently, users shouldn't wait for releases | — Pending |
-| Multiple keys per provider | Multiply free tier limits across accounts | — Pending |
-| SQLite default, Redis optional | Lower barrier (no external service), Redis for production scale | — Pending |
-| Post-call usage tracking | Accurate (actual tokens from provider), pre-call estimation too inaccurate | — Pending |
+| Library/SDK (not proxy service) | Simpler integration, runs in-process, `npm install` and done | Decided |
+| Vercel AI SDK as base | Only TS SDK with native `wrapLanguageModel()` middleware, 36M/wk downloads, per-request key injection via `create*({ apiKey })`, full token usage metadata. ModelFusion was acquired and merged into it. LangChain.js has broken streaming token counts. No other viable option. | Decided |
+| Not LiteLLM fork | 1M LOC Python, 2500+ commits/month (impossible to sync fork), requires Postgres+Redis infrastructure, no free-tier-specific tracking — we'd build our core value-add anyway. Use as design reference only. | Decided |
+| Wrapper/decorator pattern | AI SDK's `wrapLanguageModel()` provides native middleware for intercepting generate/stream calls. Key injection via `createOpenAI({ apiKey: selectedKey })` per request — verified in research. | Decided |
+| Model catalog from live APIs | models.dev (capabilities, pricing), OpenRouter API (12 use-case categories), Artificial Analysis (quality/benchmark scores). Not static files — dynamic with periodic refresh. `@tokenlens/models` as TS bridge. | Decided |
+| Capability-aware fallback | Fallback respects model capabilities — reasoning model falls back to reasoning, not generic. Uses capability flags (reasoning, toolCall, vision) + quality tiers from catalog. | Decided |
+| Cheap paid model fallback | When free tier exhausted and budget > $0, fall back to cheapest model with matching capabilities. DeepSeek V3.2 ($0.14/M input) offers 79% frontier quality at 89x less cost. | Decided |
+| Three core abstractions only | StorageBackend (SQLite/Redis), ModelCatalog (models.dev/OpenRouter/static), SelectionStrategy (round-robin/least-used/custom). Everything else concrete. No LLM SDK abstraction — isolate in one module instead. | Decided |
+| Configurable policies (not hardcoded) | Providers change limits frequently, users shouldn't wait for releases | Decided |
+| Multiple keys per provider | Multiply free tier limits across accounts | Decided |
+| SQLite default, Redis optional | Lower barrier (no external service), Redis for production scale | Decided |
+| Post-call usage tracking | Accurate (actual tokens from provider), pre-call estimation too inaccurate | Decided |
+
+## Architecture Notes
+
+**Abstraction boundaries (abstract only where change is likely AND interface is stable):**
+- Storage — repository pattern (SQLite ↔ Redis swap is a stated requirement)
+- Model Catalog — provider pattern with fallback chain (data sources may change)
+- Selection Strategy — strategy pattern (pluggable is a stated requirement)
+- LLM SDK — NOT abstracted, isolated in `src/integration/ai-sdk.ts` (surface too large, leaky abstraction guaranteed)
+- Config — NOT abstracted, single canonical format (TypeScript object validated with Zod)
+
+**Design references from LiteLLM (patterns to implement in TypeScript):**
+- Deployment groups (multiple keys as separate deployments sharing a model_name)
+- Cooldown mechanism (disable key after N failures, auto-recover after timeout)
+- Routing strategies (shuffle, usage-based, least-busy)
+- Fallback chain depth limiting (prevent infinite loops)
+- Priority ordering (prefer certain keys/providers)
 
 ---
-*Last updated: 2026-03-11 after research complete*
+*Last updated: 2026-03-12 after base package decision finalized*

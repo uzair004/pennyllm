@@ -76,6 +76,16 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ALGO-04**: Selection skips keys that have exceeded any limit (rate, token, call count)
 - [ ] **ALGO-05**: Selection algorithm is pluggable (user can provide custom strategy)
 
+### Model Catalog
+
+- [ ] **CAT-01**: Router fetches model metadata from live APIs (models.dev primary, OpenRouter supplementary) with periodic refresh
+- [ ] **CAT-02**: Models have capability flags: reasoning, tool calling, structured output, vision
+- [ ] **CAT-03**: Models have quality tiers derived from benchmark data (frontier, high, mid, small)
+- [ ] **CAT-04**: Catalog includes cheap paid models with pricing for fallback routing (not just free tier)
+- [ ] **CAT-05**: Catalog works offline with bundled static snapshot as fallback when APIs unreachable
+- [ ] **CAT-06**: Fallback routing respects model capabilities (reasoning model falls back to reasoning, not generic)
+- [ ] **CAT-07**: Fallback routing prefers cheapest matching model when budget allows paid usage
+
 ## v2 Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -108,9 +118,8 @@ Deferred to future release. Tracked but not in current roadmap.
 | Video/image/audio model support | Text LLMs only for v1 — different pricing models |
 | Automatic API key provisioning | Security risk, potential ToS violations |
 | Hosted proxy service | Library only — no infrastructure cost |
-| Model categorization/selection | Delegated to Vercel AI SDK |
 | Prompt caching/optimization | Different problem domain |
-| Paid tier cost tracking | Focus is free tier maximization |
+| Full paid tier cost optimization | Focus is free tier maximization; cheap paid fallback is secondary |
 | Request queue management | Adds complexity, most users don't need |
 | Built-in retry logic | Base router handles this |
 
@@ -168,10 +177,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ALGO-03 | Phase 5 | Pending |
 | ALGO-04 | Phase 5 | Pending |
 | ALGO-05 | Phase 5 | Pending |
+| CAT-01 | Phase 5 | Pending |
+| CAT-02 | Phase 5 | Pending |
+| CAT-03 | Phase 5 | Pending |
+| CAT-04 | Phase 5 | Pending |
+| CAT-05 | Phase 5 | Pending |
+| CAT-06 | Phase 9 | Pending |
+| CAT-07 | Phase 9 | Pending |
 
 **Coverage:**
-- v1 requirements: 48 total
-- Mapped to phases: 48/48 (100%)
+- v1 requirements: 55 total
+- Mapped to phases: 55/55 (100%)
 - Unmapped: 0
 
 **Phase Distribution:**
@@ -179,15 +195,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Phase 2: 2 requirements (Storage)
 - Phase 3: 7 requirements (Policy Engine)
 - Phase 4: 4 requirements (Usage Tracking)
-- Phase 5: 5 requirements (Selection)
+- Phase 5: 10 requirements (Selection + Model Catalog)
 - Phase 6: 2 requirements (Base Integration)
 - Phase 7: 3 requirements (Integration Features)
 - Phase 8: 13 requirements (Provider Catalog)
-- Phase 9: 4 requirements (Fallback & Budget)
+- Phase 9: 6 requirements (Fallback & Budget + Capability-Aware Routing)
 - Phase 10: 3 requirements (Redis & Advanced)
 - Phase 11: 4 requirements (DX Polish)
 - Phase 12: 2 requirements (Testing & Validation)
 
 ---
 *Requirements defined: 2026-03-11*
-*Last updated: 2026-03-11 after roadmap creation (100% coverage validated)*
+*Last updated: 2026-03-12 after model catalog and capability-aware fallback requirements added (55 total)*
