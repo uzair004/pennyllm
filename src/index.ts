@@ -2,6 +2,16 @@
  * LLM Router - Intelligent API key rotation and quota management
  */
 
+// Config and Router
+export {
+  createRouter,
+  defineConfig,
+  configSchema,
+  loadConfigFile,
+  DEFAULT_CONFIG,
+} from './config/index.js';
+export type { ConfigInput, ConfigOutput, Router } from './config/index.js';
+
 // Constants
 export {
   EnforcementBehavior,
