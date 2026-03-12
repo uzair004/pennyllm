@@ -5,7 +5,7 @@
 **Base Package:** Vercel AI SDK (decided after evaluating LiteLLM fork, LangChain.js, OpenAI SDK, and 7 others)
 **Granularity:** Fine (12 phases)
 **Created:** 2026-03-11
-**Updated:** 2026-03-12
+**Updated:** 2026-03-13
 **Coverage:** 55/55 v1 requirements mapped
 
 ## Phases
@@ -93,7 +93,12 @@ Plans:
 4. User can define policy for provider not in default catalog
 5. Package warns when shipped policy data is older than 30 days
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 03-01-PLAN.md — Policy types, default policies (3 providers), config schema update, three-layer resolver
+- [ ] 03-02-PLAN.md — PolicyEngine class with evaluation, events, staleness detection, createRouter() integration
 
 ---
 
@@ -289,7 +294,7 @@ Plans:
 | ------------------------------- | -------------- | ----------- | --------- |
 | 1. Foundation Setup             | 2/2            | Complete    | ✅        |
 | 2. State Storage & Persistence  | 0/1            | Planned     | -         |
-| 3. Policy Engine                | 0/?            | Not started | -         |
+| 3. Policy Engine                | 0/2            | Planned     | -         |
 | 4. Usage Tracking Core          | 0/?            | Not started | -         |
 | 5. Model Catalog & Selection    | 0/?            | Not started | -         |
 | 6. Base Router Integration      | 0/?            | Not started | -         |
@@ -364,3 +369,4 @@ _Roadmap created: 2026-03-11_
 _Updated: 2026-03-12 (base package decided, model catalog added, capability-aware fallback added)_
 _Phase 1 complete: 2 plans in 2 waves_
 _Phase 2 planned: 1 plan in 1 wave_
+_Phase 3 planned: 2 plans in 2 waves_
