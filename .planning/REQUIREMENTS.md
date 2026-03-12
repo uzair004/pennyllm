@@ -19,7 +19,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Usage Tracking
 
 - [ ] **USAGE-01**: Router tracks token usage (prompt + completion) per API key after each request
-- [ ] **USAGE-02**: Usage data persists across application restarts via SQLite (default) or Redis (optional)
+- [ ] **USAGE-02**: StorageBackend contract with pluggable implementations; Phase 2 delivers MemoryStorage default (in-memory, no persistence), Phase 10 delivers SQLite and Redis adapters for persistence across restarts
 - [ ] **USAGE-03**: Router tracks multiple time windows per provider (per-minute rate limits, daily request caps, monthly token quotas)
 - [ ] **USAGE-04**: Time windows reset correctly based on provider policy (calendar month, rolling 30 days, per-minute sliding window)
 - [ ] **USAGE-05**: Usage tracking handles concurrent requests atomically (no race conditions causing overage)
@@ -138,63 +138,63 @@ Deferred to future release. Tracked but not in current roadmap.
 
 Which phases cover which requirements. Updated during roadmap creation.
 
-| Requirement | Phase             | Status   |
-| ----------- | ----------------- | -------- |
-| CORE-01     | Phase 1           | Complete |
-| CORE-02     | Phase 11          | Pending  |
-| CORE-03     | Phase 12          | Pending  |
-| CORE-04     | Phase 9           | Pending  |
-| CORE-05     | Phase 9           | Pending  |
-| CORE-06     | Phase 9           | Pending  |
-| USAGE-01    | Phase 4           | Pending  |
-| USAGE-02    | Phase 2, Phase 10 | Pending  |
-| USAGE-03    | Phase 4           | Pending  |
-| USAGE-04    | Phase 4           | Pending  |
-| USAGE-05    | Phase 2           | Pending  |
-| USAGE-06    | Phase 4           | Pending  |
-| POLICY-01   | Phase 3           | Pending  |
-| POLICY-02   | Phase 3           | Pending  |
-| POLICY-03   | Phase 3           | Pending  |
-| POLICY-04   | Phase 3           | Pending  |
-| POLICY-05   | Phase 3           | Pending  |
-| POLICY-06   | Phase 3, Phase 12 | Pending  |
-| POLICY-07   | Phase 3           | Pending  |
-| INTG-01     | Phase 6           | Pending  |
-| INTG-02     | Phase 7           | Pending  |
-| INTG-03     | Phase 7           | Pending  |
-| INTG-04     | Phase 6           | Pending  |
-| INTG-05     | Phase 7           | Pending  |
-| PROV-01     | Phase 8           | Pending  |
-| PROV-02     | Phase 8           | Pending  |
-| PROV-03     | Phase 8           | Pending  |
-| PROV-04     | Phase 8           | Pending  |
-| PROV-05     | Phase 8           | Pending  |
-| PROV-06     | Phase 8           | Pending  |
-| PROV-07     | Phase 8           | Pending  |
-| PROV-08     | Phase 8           | Pending  |
-| PROV-09     | Phase 8           | Pending  |
-| PROV-10     | Phase 8           | Pending  |
-| PROV-11     | Phase 8           | Pending  |
-| PROV-12     | Phase 8           | Pending  |
-| DX-01       | Phase 11          | Pending  |
-| DX-02       | Phase 8           | Pending  |
-| DX-03       | Phase 10          | Pending  |
-| DX-04       | Phase 10          | Pending  |
-| DX-05       | Phase 9           | Pending  |
-| DX-06       | Phase 11          | Pending  |
-| DX-07       | Phase 1, Phase 11 | Complete |
-| ALGO-01     | Phase 5           | Pending  |
-| ALGO-02     | Phase 5           | Pending  |
-| ALGO-03     | Phase 5           | Pending  |
-| ALGO-04     | Phase 5           | Pending  |
-| ALGO-05     | Phase 5           | Pending  |
-| CAT-01      | Phase 5           | Pending  |
-| CAT-02      | Phase 5           | Pending  |
-| CAT-03      | Phase 5           | Pending  |
-| CAT-04      | Phase 5           | Pending  |
-| CAT-05      | Phase 5           | Pending  |
-| CAT-06      | Phase 9           | Pending  |
-| CAT-07      | Phase 9           | Pending  |
+| Requirement | Phase                                                                      | Status   |
+| ----------- | -------------------------------------------------------------------------- | -------- |
+| CORE-01     | Phase 1                                                                    | Complete |
+| CORE-02     | Phase 11                                                                   | Pending  |
+| CORE-03     | Phase 12                                                                   | Pending  |
+| CORE-04     | Phase 9                                                                    | Pending  |
+| CORE-05     | Phase 9                                                                    | Pending  |
+| CORE-06     | Phase 9                                                                    | Pending  |
+| USAGE-01    | Phase 4                                                                    | Pending  |
+| USAGE-02    | Phase 2 (contract + memory default), Phase 10 (SQLite + Redis persistence) | Pending  |
+| USAGE-03    | Phase 4                                                                    | Pending  |
+| USAGE-04    | Phase 4                                                                    | Pending  |
+| USAGE-05    | Phase 2                                                                    | Pending  |
+| USAGE-06    | Phase 4                                                                    | Pending  |
+| POLICY-01   | Phase 3                                                                    | Pending  |
+| POLICY-02   | Phase 3                                                                    | Pending  |
+| POLICY-03   | Phase 3                                                                    | Pending  |
+| POLICY-04   | Phase 3                                                                    | Pending  |
+| POLICY-05   | Phase 3                                                                    | Pending  |
+| POLICY-06   | Phase 3, Phase 12                                                          | Pending  |
+| POLICY-07   | Phase 3                                                                    | Pending  |
+| INTG-01     | Phase 6                                                                    | Pending  |
+| INTG-02     | Phase 7                                                                    | Pending  |
+| INTG-03     | Phase 7                                                                    | Pending  |
+| INTG-04     | Phase 6                                                                    | Pending  |
+| INTG-05     | Phase 7                                                                    | Pending  |
+| PROV-01     | Phase 8                                                                    | Pending  |
+| PROV-02     | Phase 8                                                                    | Pending  |
+| PROV-03     | Phase 8                                                                    | Pending  |
+| PROV-04     | Phase 8                                                                    | Pending  |
+| PROV-05     | Phase 8                                                                    | Pending  |
+| PROV-06     | Phase 8                                                                    | Pending  |
+| PROV-07     | Phase 8                                                                    | Pending  |
+| PROV-08     | Phase 8                                                                    | Pending  |
+| PROV-09     | Phase 8                                                                    | Pending  |
+| PROV-10     | Phase 8                                                                    | Pending  |
+| PROV-11     | Phase 8                                                                    | Pending  |
+| PROV-12     | Phase 8                                                                    | Pending  |
+| DX-01       | Phase 11                                                                   | Pending  |
+| DX-02       | Phase 8                                                                    | Pending  |
+| DX-03       | Phase 10                                                                   | Pending  |
+| DX-04       | Phase 10                                                                   | Pending  |
+| DX-05       | Phase 9                                                                    | Pending  |
+| DX-06       | Phase 11                                                                   | Pending  |
+| DX-07       | Phase 1, Phase 11                                                          | Complete |
+| ALGO-01     | Phase 5                                                                    | Pending  |
+| ALGO-02     | Phase 5                                                                    | Pending  |
+| ALGO-03     | Phase 5                                                                    | Pending  |
+| ALGO-04     | Phase 5                                                                    | Pending  |
+| ALGO-05     | Phase 5                                                                    | Pending  |
+| CAT-01      | Phase 5                                                                    | Pending  |
+| CAT-02      | Phase 5                                                                    | Pending  |
+| CAT-03      | Phase 5                                                                    | Pending  |
+| CAT-04      | Phase 5                                                                    | Pending  |
+| CAT-05      | Phase 5                                                                    | Pending  |
+| CAT-06      | Phase 9                                                                    | Pending  |
+| CAT-07      | Phase 9                                                                    | Pending  |
 
 **Coverage:**
 
@@ -221,3 +221,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 _Requirements defined: 2026-03-11_
 _Last updated: 2026-03-12 after model catalog and capability-aware fallback requirements added (55 total)_
+_USAGE-02 updated: 2026-03-12 — clarified phased delivery (Phase 2: contract + memory, Phase 10: persistence)_
