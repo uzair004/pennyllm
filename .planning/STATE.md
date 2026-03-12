@@ -4,42 +4,42 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 2 (State Storage & Persistence)
 status: planning
-last_updated: '2026-03-12T20:55:43.171Z'
+last_updated: '2026-03-12T21:05:31Z'
 progress:
   total_phases: 12
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 5
-  completed_plans: 4
-  percent: 80
+  completed_plans: 5
+  percent: 100
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-12
 **Current phase:** Phase 3 (Policy Engine)
-**Status:** In progress
+**Status:** Complete
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 3 in progress. Policy foundation complete (03-01 policy types, default policies, resolver). Plan 03-02 next (PolicyEngine implementation).
+**Current focus:** Phase 3 complete. Policy Engine fully implemented with evaluation, events, and staleness detection. Phase 4 next (Usage Tracking & Recording).
 
 ## Current Position
 
 **Phase:** 3 - Policy Engine
-**Plan:** 03-01 complete (1/2 plans done)
-**Status:** In progress
-**Progress:** [████████░░] 80%
+**Plan:** 03-02 complete (2/2 plans done)
+**Status:** Complete
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
 ### Velocity
 
-- **Phases completed:** 2/12
-- **Plans completed:** 4/5 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 1/2)
-- **Average plan duration:** 7m 49s (4 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s)
-- **Estimated completion:** Phase 3 in progress, Plan 03-02 next
+- **Phases completed:** 3/12
+- **Plans completed:** 5/5 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2)
+- **Average plan duration:** 6m 54s (5 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s)
+- **Estimated completion:** Phase 3 complete, Phase 4 next
 
 ### Quality
 
@@ -78,6 +78,9 @@ progress:
 | 2026-03-12 | Empty array per-key limits as no override   | Empty array in { key, limits: [] } treated same as omitting limits field                                                          | Prevents accidental limit clearing, users must explicitly set limits to override |
 | 2026-03-12 | Validation runs after merge at startup      | Contradictory limit validation happens at resolve time not evaluation time                                                        | Fail-fast design catches config errors early before runtime                      |
 | 2026-03-12 | Debug warning for custom providers          | Providers without shipped defaults and no configured limits log debug message                                                     | Custom providers resolve to always-available with empty limits array             |
+| 2026-03-12 | Warning event deduplication via Set         | Prevents event spam when limit stays above threshold. Exceeded events fire every time for visibility.                             | Warning fires once per limit crossing, resetWarnings() clears deduplication      |
+| 2026-03-12 | Conditional closestLimit inclusion          | exactOptionalPropertyTypes requires explicit undefined handling for optional fields                                               | EvaluationResult only includes closestLimit field when it exists                 |
+| 2026-03-12 | Real EventEmitter in createRouter           | Router.on/off wired to node:events EventEmitter instead of stubs                                                                  | Users can subscribe to limit:warning, limit:exceeded, policy:stale events        |
 
 ### Active TODOs
 
@@ -86,6 +89,8 @@ progress:
 - [x] Execute Plan 01-01 (complete: TypeScript scaffolding + type system)
 - [x] Execute Plan 01-02 (complete: Zod config schema + validation)
 - [x] Execute Plan 02-01 (complete: MemoryStorage + contract tests)
+- [x] Execute Plan 03-01 (complete: Policy types, resolver, default policies)
+- [x] Execute Plan 03-02 (complete: PolicyEngine with evaluation and events)
 
 **Phase 6 prerequisite (before starting Phase 6):**
 
@@ -119,27 +124,28 @@ progress:
 
 ### What Just Happened
 
-**Plan 03-01 complete:**
+**Plan 03-02 complete:**
 
-- Created policy types: ResolvedPolicy, EvaluationResult, LimitStatus, KeyConfig, PolicyStaleEvent
-- Added 3 default policies (google, groq, openrouter) with versioned metadata and placeholder limits
-- Google: 1M tokens/month, 15 RPM, 1500 RPD, hard-block enforcement
-- Groq: 500K tokens/day, 30 RPM, 14400 RPD, hard-block enforcement
-- OpenRouter: 1M tokens/month, 20 RPM, throttle enforcement
-- Updated config schema to support mixed key arrays (string | { key, limits? })
-- Exported timeWindowSchema, policyLimitSchema, keyConfigSchema from schema.ts
-- Implemented three-layer policy resolver: shipped defaults < provider-level < per-key
-- Composite key matching in mergeLimits using type:window.type format
-- Duplicate key detection and contradictory limits validation at startup
-- Custom providers without defaults log debug warning and resolve to always-available
-- 2 tasks completed, 2 commits made (222b4fa, aecccda), 6 files created, 3 files modified, 3m 35s duration
+- Implemented PolicyEngine class with async limit evaluation
+- evaluate() queries storage concurrently via Promise.all for all limits
+- Builds detailed LimitStatus (current/max/remaining/percentUsed/resetAt)
+- estimatedTokens parameter for pre-call token limit checks
+- Warning events at 80% threshold with Set-based deduplication
+- Exceeded events at 100% usage (no deduplication)
+- checkStaleness() detects policies >30 days old at startup
+- createRouter instantiates PolicyEngine with resolved policies
+- Router.policy exposes PolicyEngine for evaluation
+- Router.on/off wired to real EventEmitter (not stubs)
+- PolicyStaleEvent added to RouterEventMap
+- PolicyEngine exported from main package and policy subpath
+- 2 tasks completed, 2 commits made (9e358a1, 4b255fb), 2 files created, 5 files modified, 4m 3s duration
 
-**Phase 3 Plan 01 complete.** Policy foundation established: types, default policies, resolver with three-layer merge.
+**Phase 3 complete.** Policy Engine fully operational with evaluation, events, and staleness detection.
 
 ### What's Next
 
-- **Phase 3 Plan 02: PolicyEngine** — Implement evaluate() function and limit enforcement
-- Success when: Can evaluate resolved policies against current usage to determine key eligibility
+- **Phase 4: Usage Tracking & Recording** — Implement usage tracking after LLM calls and query APIs
+- Success when: Usage incremented after calls, getUsage() reports current consumption across time windows
 
 ### Context for Next Session
 
@@ -153,4 +159,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-12T20:54:38Z — Phase 3 Plan 01 complete (4/5 plans)_
+_Last updated: 2026-03-12T21:05:31Z — Phase 3 complete (5/5 plans)_

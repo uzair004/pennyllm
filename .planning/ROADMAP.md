@@ -11,8 +11,8 @@
 ## Phases
 
 - [x] **Phase 1: Foundation Setup** - Project scaffolding, TypeScript config, build tooling, core interfaces, domain types
-- [ ] **Phase 2: State Storage & Persistence** - Memory storage default, StorageBackend contract tests, config schema update
-- [ ] **Phase 3: Policy Engine** - Declarative config loader, policy evaluation, versioning
+- [x] **Phase 2: State Storage & Persistence** - Memory storage default, StorageBackend contract tests, config schema update
+- [x] **Phase 3: Policy Engine** - Declarative config loader, policy evaluation, versioning
 - [ ] **Phase 4: Usage Tracking Core** - Multi-window tracking, atomic operations, reset logic
 - [ ] **Phase 5: Model Catalog & Selection** - Live model catalog (models.dev, OpenRouter), capability flags, quality tiers, selection algorithms
 - [ ] **Phase 6: Base Router Integration** - Vercel AI SDK `wrapLanguageModel()` middleware, key injection via `create*({ apiKey })`
@@ -69,11 +69,11 @@ Plans:
 5. createRouter() accepts optional StorageBackend instance and defaults to MemoryStorage
 6. Contract test suite exists and can be reused by SQLite/Redis adapters in Phase 10
 
-**Plans:** 1 plan
+**Plans:** 1/1 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 02-01-PLAN.md — MemoryStorage implementation, config schema update, contract test suite
+- [x] 02-01-PLAN.md — MemoryStorage implementation, config schema update, contract test suite
 
 ---
 
@@ -93,12 +93,12 @@ Plans:
 4. User can define policy for provider not in default catalog
 5. Package warns when shipped policy data is older than 30 days
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 03-01-PLAN.md — Policy types, default policies (3 providers), config schema update, three-layer resolver
-- [ ] 03-02-PLAN.md — PolicyEngine class with evaluation, events, staleness detection, createRouter() integration
+- [x] 03-01-PLAN.md — Policy types, default policies (3 providers), config schema update, three-layer resolver
+- [x] 03-02-PLAN.md — PolicyEngine class with evaluation, events, staleness detection, createRouter() integration
 
 ---
 
