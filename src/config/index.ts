@@ -1,23 +1,29 @@
 import debugFactory from 'debug';
+import { EventEmitter } from 'node:events';
 import type { RouterConfig } from '../types/config.js';
 import type { StorageBackend } from '../types/interfaces.js';
 import { MemoryStorage } from '../storage/index.js';
 import { ConfigError } from '../errors/config-error.js';
 import { configSchema, type ConfigInput } from './schema.js';
 import { loadConfigFile } from './loader.js';
+import { PolicyEngine } from '../policy/PolicyEngine.js';
+import { resolvePolicies } from '../policy/resolver.js';
+import { shippedDefaults } from '../policy/defaults/index.js';
+import { checkStaleness } from '../policy/staleness.js';
 
 const debug = debugFactory('llm-router:config');
 
 /**
- * Router instance stub interface
- * Full implementation deferred to Phase 6+
+ * Router instance interface with PolicyEngine
+ * Full model() implementation deferred to Phase 6+
  */
 export interface Router {
   model: (modelId: string) => unknown;
   getUsage: () => Promise<unknown>;
   health: () => Promise<unknown>;
-  getConfig: () => RouterConfig;
+  getConfig: () => RouterConfig & { resolvedPolicies: ReturnType<PolicyEngine['getAllPolicies']> };
   storage: StorageBackend;
+  policy: PolicyEngine;
   close: () => Promise<void>;
   on: (event: string, handler: (...args: unknown[]) => void) => void;
   off: (event: string, handler: (...args: unknown[]) => void) => void;
@@ -52,9 +58,25 @@ export async function createRouter(
     // Resolve storage backend
     const storage = options?.storage ?? new MemoryStorage();
 
+    // Create EventEmitter for router events
+    const emitter = new EventEmitter();
+
+    // Resolve policies from config and shipped defaults
+    const resolvedPolicies = resolvePolicies(config, shippedDefaults);
+
+    // Create PolicyEngine
+    const policyEngineOptions: { warningThreshold?: number } = {};
+    if (config.warningThreshold !== undefined) {
+      policyEngineOptions.warningThreshold = config.warningThreshold;
+    }
+    const policyEngine = new PolicyEngine(resolvedPolicies, storage, emitter, policyEngineOptions);
+
+    // Check for stale policies at startup
+    checkStaleness(resolvedPolicies, emitter);
+
     debug('Router created with config (keys redacted)');
 
-    // Return stub implementation
+    // Return implementation with PolicyEngine
     return {
       model: (modelId: string) => {
         debug('model() stub called with: %s', modelId);
@@ -70,18 +92,22 @@ export async function createRouter(
         debug('health() stub called');
         return { status: 'ok' };
       },
-      getConfig: () => config,
+      getConfig: () => ({
+        ...config,
+        resolvedPolicies: policyEngine.getAllPolicies(),
+      }),
       storage,
+      policy: policyEngine,
 
       close: async () => {
         debug('close() stub called');
         await storage.close();
       },
-      on: (event: string) => {
-        debug('on() stub called for event: %s', event);
+      on: (event: string, handler: (...args: unknown[]) => void) => {
+        emitter.on(event, handler);
       },
-      off: (event: string) => {
-        debug('off() stub called for event: %s', event);
+      off: (event: string, handler: (...args: unknown[]) => void) => {
+        emitter.off(event, handler);
       },
     };
   } catch (error) {

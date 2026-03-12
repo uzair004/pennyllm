@@ -19,3 +19,9 @@ export { mergeLimits, resolvePolicies } from './resolver.js';
 
 // Re-export default policies
 export { googlePolicy, groqPolicy, openrouterPolicy, shippedDefaults } from './defaults/index.js';
+
+// Re-export PolicyEngine
+export { PolicyEngine } from './PolicyEngine.js';
+
+// Re-export staleness checker
+export { checkStaleness } from './staleness.js';

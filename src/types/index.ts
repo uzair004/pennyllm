@@ -23,6 +23,7 @@ export type {
   KeySelectedEvent,
   LimitExceededEvent,
   LimitWarningEvent,
+  PolicyStaleEvent,
   RouterEventMap,
   RouterEventPayload,
   RouterEvents,

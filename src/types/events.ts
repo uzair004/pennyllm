@@ -1,5 +1,9 @@
 import type { LimitTypeValue } from '../constants/index.js';
 import type { LLMRouterError } from '../errors/base.js';
+import type { PolicyStaleEvent as PolicyStaleEventType } from '../policy/types.js';
+
+// Re-export PolicyStaleEvent so it can be exported from types/index.ts
+export type { PolicyStaleEventType as PolicyStaleEvent };
 
 /**
  * Base event payload
@@ -84,6 +88,7 @@ export interface RouterEventMap {
   'limit:exceeded': LimitExceededEvent;
   'fallback:triggered': FallbackTriggeredEvent;
   'config:loaded': ConfigLoadedEvent;
+  'policy:stale': PolicyStaleEventType;
   error: ErrorEvent;
 }
 
@@ -97,4 +102,5 @@ export type RouterEvents =
   | LimitExceededEvent
   | FallbackTriggeredEvent
   | ConfigLoadedEvent
+  | PolicyStaleEventType
   | ErrorEvent;
