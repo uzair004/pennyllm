@@ -9,7 +9,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Core Engine
 
-- [ ] **CORE-01**: Package initializes with API keys and provider configuration via TypeScript config object or JSON/YAML file
+- [x] **CORE-01**: Package initializes with API keys and provider configuration via TypeScript config object or JSON/YAML file
 - [ ] **CORE-02**: User can configure multiple API keys per provider (e.g., 3 Google keys, 2 Groq keys)
 - [ ] **CORE-03**: Router automatically selects the best available key for each request based on usage and limits
 - [ ] **CORE-04**: Router enforces hard-stop when all keys for a provider are exhausted (no request made, error thrown)
@@ -66,7 +66,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DX-04**: Dry-run mode validates configuration and simulates routing without making API calls
 - [ ] **DX-05**: Budget alerts notify via hooks when usage reaches configurable thresholds (e.g., 80%, 95%)
 - [ ] **DX-06**: Debug mode logs routing decisions (which key selected, why, remaining quota)
-- [ ] **DX-07**: TypeScript types exported for all configuration, events, and public API
+- [x] **DX-07**: TypeScript types exported for all configuration, events, and public API
 
 ### Selection Algorithm
 
@@ -124,84 +124,86 @@ Deferred to future release. Tracked but not in current roadmap.
 
 ## Out of Scope
 
-| Feature | Reason |
-|---------|--------|
-| Video/image/audio model support | Text LLMs only for v1 — different pricing models |
-| Automatic API key provisioning | Security risk, potential ToS violations |
-| Hosted proxy service | Library only — no infrastructure cost |
-| Prompt caching/optimization | Different problem domain |
+| Feature                          | Reason                                                            |
+| -------------------------------- | ----------------------------------------------------------------- |
+| Video/image/audio model support  | Text LLMs only for v1 — different pricing models                  |
+| Automatic API key provisioning   | Security risk, potential ToS violations                           |
+| Hosted proxy service             | Library only — no infrastructure cost                             |
+| Prompt caching/optimization      | Different problem domain                                          |
 | Full paid tier cost optimization | Focus is free tier maximization; cheap paid fallback is secondary |
-| Request queue management | Adds complexity, most users don't need |
-| Built-in retry logic | Base router handles this |
+| Request queue management         | Adds complexity, most users don't need                            |
+| Built-in retry logic             | Base router handles this                                          |
 
 ## Traceability
 
 Which phases cover which requirements. Updated during roadmap creation.
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
-| CORE-02 | Phase 11 | Pending |
-| CORE-03 | Phase 12 | Pending |
-| CORE-04 | Phase 9 | Pending |
-| CORE-05 | Phase 9 | Pending |
-| CORE-06 | Phase 9 | Pending |
-| USAGE-01 | Phase 4 | Pending |
-| USAGE-02 | Phase 2, Phase 10 | Pending |
-| USAGE-03 | Phase 4 | Pending |
-| USAGE-04 | Phase 4 | Pending |
-| USAGE-05 | Phase 2 | Pending |
-| USAGE-06 | Phase 4 | Pending |
-| POLICY-01 | Phase 3 | Pending |
-| POLICY-02 | Phase 3 | Pending |
-| POLICY-03 | Phase 3 | Pending |
-| POLICY-04 | Phase 3 | Pending |
-| POLICY-05 | Phase 3 | Pending |
-| POLICY-06 | Phase 3, Phase 12 | Pending |
-| POLICY-07 | Phase 3 | Pending |
-| INTG-01 | Phase 6 | Pending |
-| INTG-02 | Phase 7 | Pending |
-| INTG-03 | Phase 7 | Pending |
-| INTG-04 | Phase 6 | Pending |
-| INTG-05 | Phase 7 | Pending |
-| PROV-01 | Phase 8 | Pending |
-| PROV-02 | Phase 8 | Pending |
-| PROV-03 | Phase 8 | Pending |
-| PROV-04 | Phase 8 | Pending |
-| PROV-05 | Phase 8 | Pending |
-| PROV-06 | Phase 8 | Pending |
-| PROV-07 | Phase 8 | Pending |
-| PROV-08 | Phase 8 | Pending |
-| PROV-09 | Phase 8 | Pending |
-| PROV-10 | Phase 8 | Pending |
-| PROV-11 | Phase 8 | Pending |
-| PROV-12 | Phase 8 | Pending |
-| DX-01 | Phase 11 | Pending |
-| DX-02 | Phase 8 | Pending |
-| DX-03 | Phase 10 | Pending |
-| DX-04 | Phase 10 | Pending |
-| DX-05 | Phase 9 | Pending |
-| DX-06 | Phase 11 | Pending |
-| DX-07 | Phase 1, Phase 11 | Pending |
-| ALGO-01 | Phase 5 | Pending |
-| ALGO-02 | Phase 5 | Pending |
-| ALGO-03 | Phase 5 | Pending |
-| ALGO-04 | Phase 5 | Pending |
-| ALGO-05 | Phase 5 | Pending |
-| CAT-01 | Phase 5 | Pending |
-| CAT-02 | Phase 5 | Pending |
-| CAT-03 | Phase 5 | Pending |
-| CAT-04 | Phase 5 | Pending |
-| CAT-05 | Phase 5 | Pending |
-| CAT-06 | Phase 9 | Pending |
-| CAT-07 | Phase 9 | Pending |
+| Requirement | Phase             | Status   |
+| ----------- | ----------------- | -------- |
+| CORE-01     | Phase 1           | Complete |
+| CORE-02     | Phase 11          | Pending  |
+| CORE-03     | Phase 12          | Pending  |
+| CORE-04     | Phase 9           | Pending  |
+| CORE-05     | Phase 9           | Pending  |
+| CORE-06     | Phase 9           | Pending  |
+| USAGE-01    | Phase 4           | Pending  |
+| USAGE-02    | Phase 2, Phase 10 | Pending  |
+| USAGE-03    | Phase 4           | Pending  |
+| USAGE-04    | Phase 4           | Pending  |
+| USAGE-05    | Phase 2           | Pending  |
+| USAGE-06    | Phase 4           | Pending  |
+| POLICY-01   | Phase 3           | Pending  |
+| POLICY-02   | Phase 3           | Pending  |
+| POLICY-03   | Phase 3           | Pending  |
+| POLICY-04   | Phase 3           | Pending  |
+| POLICY-05   | Phase 3           | Pending  |
+| POLICY-06   | Phase 3, Phase 12 | Pending  |
+| POLICY-07   | Phase 3           | Pending  |
+| INTG-01     | Phase 6           | Pending  |
+| INTG-02     | Phase 7           | Pending  |
+| INTG-03     | Phase 7           | Pending  |
+| INTG-04     | Phase 6           | Pending  |
+| INTG-05     | Phase 7           | Pending  |
+| PROV-01     | Phase 8           | Pending  |
+| PROV-02     | Phase 8           | Pending  |
+| PROV-03     | Phase 8           | Pending  |
+| PROV-04     | Phase 8           | Pending  |
+| PROV-05     | Phase 8           | Pending  |
+| PROV-06     | Phase 8           | Pending  |
+| PROV-07     | Phase 8           | Pending  |
+| PROV-08     | Phase 8           | Pending  |
+| PROV-09     | Phase 8           | Pending  |
+| PROV-10     | Phase 8           | Pending  |
+| PROV-11     | Phase 8           | Pending  |
+| PROV-12     | Phase 8           | Pending  |
+| DX-01       | Phase 11          | Pending  |
+| DX-02       | Phase 8           | Pending  |
+| DX-03       | Phase 10          | Pending  |
+| DX-04       | Phase 10          | Pending  |
+| DX-05       | Phase 9           | Pending  |
+| DX-06       | Phase 11          | Pending  |
+| DX-07       | Phase 1, Phase 11 | Complete |
+| ALGO-01     | Phase 5           | Pending  |
+| ALGO-02     | Phase 5           | Pending  |
+| ALGO-03     | Phase 5           | Pending  |
+| ALGO-04     | Phase 5           | Pending  |
+| ALGO-05     | Phase 5           | Pending  |
+| CAT-01      | Phase 5           | Pending  |
+| CAT-02      | Phase 5           | Pending  |
+| CAT-03      | Phase 5           | Pending  |
+| CAT-04      | Phase 5           | Pending  |
+| CAT-05      | Phase 5           | Pending  |
+| CAT-06      | Phase 9           | Pending  |
+| CAT-07      | Phase 9           | Pending  |
 
 **Coverage:**
+
 - v1 requirements: 55 total
 - Mapped to phases: 55/55 (100%)
 - Unmapped: 0
 
 **Phase Distribution:**
+
 - Phase 1: 2 requirements (Foundation)
 - Phase 2: 2 requirements (Storage)
 - Phase 3: 7 requirements (Policy Engine)
@@ -216,5 +218,6 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Phase 12: 2 requirements (Testing & Validation)
 
 ---
-*Requirements defined: 2026-03-11*
-*Last updated: 2026-03-12 after model catalog and capability-aware fallback requirements added (55 total)*
+
+_Requirements defined: 2026-03-11_
+_Last updated: 2026-03-12 after model catalog and capability-aware fallback requirements added (55 total)_
