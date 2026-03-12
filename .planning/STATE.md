@@ -4,42 +4,42 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 2 (State Storage & Persistence)
 status: planning
-last_updated: '2026-03-12T14:09:02.158Z'
+last_updated: '2026-03-12T20:55:43.171Z'
 progress:
   total_phases: 12
   completed_phases: 2
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  total_plans: 5
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-12
-**Current phase:** Phase 2 (State Storage & Persistence)
-**Status:** Ready to plan
+**Current phase:** Phase 3 (Policy Engine)
+**Status:** In progress
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 2 complete. Storage layer foundation established (02-01 MemoryStorage + contract tests). Phase 2 has only 1 plan - complete.
+**Current focus:** Phase 3 in progress. Policy foundation complete (03-01 policy types, default policies, resolver). Plan 03-02 next (PolicyEngine implementation).
 
 ## Current Position
 
-**Phase:** 2 - State Storage & Persistence
-**Plan:** 02-01 complete (1/1 plans done)
-**Status:** Complete
-**Progress:** [██████████] 100%
+**Phase:** 3 - Policy Engine
+**Plan:** 03-01 complete (1/2 plans done)
+**Status:** In progress
+**Progress:** [████████░░] 80%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 2/12
-- **Plans completed:** 3/3 (Phase 1: 2/2, Phase 2: 1/1)
-- **Average plan duration:** 9m 21s (3 plans: 9m 39s, 8m 6s, 10m 26s)
-- **Estimated completion:** Phase 2 complete, Phase 3 next
+- **Plans completed:** 4/5 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 1/2)
+- **Average plan duration:** 7m 49s (4 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s)
+- **Estimated completion:** Phase 3 in progress, Plan 03-02 next
 
 ### Quality
 
@@ -75,6 +75,9 @@ progress:
 | 2026-03-12 | Runtime storage injection via options       | createRouter accepts optional storage parameter, defaults to MemoryStorage. Config no longer has storage section.                 | Users can provide custom adapters, storage is runtime-injected not config-driven |
 | 2026-03-12 | Lazy expiration cleanup on access           | Prevents unbounded Map growth without background timers. Cleanup runs before increment/getUsage.                                  | No timer overhead, expiration happens naturally during normal operations         |
 | 2026-03-12 | Synchronous increment for atomicity         | MemoryStorage uses synchronous Map.get/Map.set with no await between. Ensures atomic read-modify-write.                           | Atomicity guaranteed in MemoryStorage, future adapters use DB transactions       |
+| 2026-03-12 | Empty array per-key limits as no override   | Empty array in { key, limits: [] } treated same as omitting limits field                                                          | Prevents accidental limit clearing, users must explicitly set limits to override |
+| 2026-03-12 | Validation runs after merge at startup      | Contradictory limit validation happens at resolve time not evaluation time                                                        | Fail-fast design catches config errors early before runtime                      |
+| 2026-03-12 | Debug warning for custom providers          | Providers without shipped defaults and no configured limits log debug message                                                     | Custom providers resolve to always-available with empty limits array             |
 
 ### Active TODOs
 
@@ -116,27 +119,27 @@ progress:
 
 ### What Just Happened
 
-**Plan 02-01 complete:**
+**Plan 03-01 complete:**
 
-- Created MemoryStorage class implementing StorageBackend interface
-- Atomic increment with synchronous read-modify-write (no await between Map.get/set)
-- Lazy expiration cleanup on access to prevent unbounded Map growth
-- Stderr warning emitted on MemoryStorage construction
-- close() lifecycle with closed flag and exception throwing after close
-- Removed storage section from config schema (no longer in Zod schema)
-- createRouter accepts optional storage parameter, defaults to MemoryStorage
-- Router interface includes storage field
-- Created reusable contract test helper (tests/contracts/storage.contract.ts) with 10 test cases
-- MemoryStorage-specific tests for stderr warning and expiration cleanup
-- Fixed config tests to remove storage schema references
-- 2 tasks completed, 2 commits made (c6ffc44, 22502da), 3 files created, 8 files modified, 10m 26s duration
+- Created policy types: ResolvedPolicy, EvaluationResult, LimitStatus, KeyConfig, PolicyStaleEvent
+- Added 3 default policies (google, groq, openrouter) with versioned metadata and placeholder limits
+- Google: 1M tokens/month, 15 RPM, 1500 RPD, hard-block enforcement
+- Groq: 500K tokens/day, 30 RPM, 14400 RPD, hard-block enforcement
+- OpenRouter: 1M tokens/month, 20 RPM, throttle enforcement
+- Updated config schema to support mixed key arrays (string | { key, limits? })
+- Exported timeWindowSchema, policyLimitSchema, keyConfigSchema from schema.ts
+- Implemented three-layer policy resolver: shipped defaults < provider-level < per-key
+- Composite key matching in mergeLimits using type:window.type format
+- Duplicate key detection and contradictory limits validation at startup
+- Custom providers without defaults log debug warning and resolve to always-available
+- 2 tasks completed, 2 commits made (222b4fa, aecccda), 6 files created, 3 files modified, 3m 35s duration
 
-**Phase 2 complete.** Storage layer foundation established: StorageBackend contract, MemoryStorage default, contract test suite.
+**Phase 3 Plan 01 complete.** Policy foundation established: types, default policies, resolver with three-layer merge.
 
 ### What's Next
 
-- **Phase 3: Policy Engine** — Implement limit tracking and enforcement
-- Success when: Can track usage against time windows and enforce limits
+- **Phase 3 Plan 02: PolicyEngine** — Implement evaluate() function and limit enforcement
+- Success when: Can evaluate resolved policies against current usage to determine key eligibility
 
 ### Context for Next Session
 
@@ -150,4 +153,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-12T01:10:49Z — Phase 1 complete (2/2 plans)_
+_Last updated: 2026-03-12T20:54:38Z — Phase 3 Plan 01 complete (4/5 plans)_

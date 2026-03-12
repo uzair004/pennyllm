@@ -27,13 +27,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Policy Engine
 
-- [ ] **POLICY-01**: Package ships with default policies for all supported providers (researched free tier limits)
-- [ ] **POLICY-02**: User can override default policies via configuration (custom limits, custom reset windows)
-- [ ] **POLICY-03**: User can add policies for providers not included in defaults
-- [ ] **POLICY-04**: Policies support diverse limit types: token-based, API-call-based, request-per-minute, daily caps, monthly quotas
-- [ ] **POLICY-05**: Policies include enforcement behavior metadata (hard block, throttle, silent charge) per provider
-- [ ] **POLICY-06**: Package warns when shipped policy data is older than 30 days (staleness detection)
-- [ ] **POLICY-07**: Policies are versioned with timestamps for audit trail
+- [x] **POLICY-01**: Package ships with default policies for all supported providers (researched free tier limits)
+- [x] **POLICY-02**: User can override default policies via configuration (custom limits, custom reset windows)
+- [x] **POLICY-03**: User can add policies for providers not included in defaults
+- [x] **POLICY-04**: Policies support diverse limit types: token-based, API-call-based, request-per-minute, daily caps, monthly quotas
+- [x] **POLICY-05**: Policies include enforcement behavior metadata (hard block, throttle, silent charge) per provider
+- [x] **POLICY-06**: Package warns when shipped policy data is older than 30 days (staleness detection)
+- [x] **POLICY-07**: Policies are versioned with timestamps for audit trail
 
 ### Integration
 
@@ -152,13 +152,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | USAGE-04    | Phase 4                                                                    | Pending  |
 | USAGE-05    | Phase 2                                                                    | Complete |
 | USAGE-06    | Phase 4                                                                    | Pending  |
-| POLICY-01   | Phase 3                                                                    | Pending  |
-| POLICY-02   | Phase 3                                                                    | Pending  |
-| POLICY-03   | Phase 3                                                                    | Pending  |
-| POLICY-04   | Phase 3                                                                    | Pending  |
-| POLICY-05   | Phase 3                                                                    | Pending  |
-| POLICY-06   | Phase 3, Phase 12                                                          | Pending  |
-| POLICY-07   | Phase 3                                                                    | Pending  |
+| POLICY-01   | Phase 3                                                                    | Complete |
+| POLICY-02   | Phase 3                                                                    | Complete |
+| POLICY-03   | Phase 3                                                                    | Complete |
+| POLICY-04   | Phase 3                                                                    | Complete |
+| POLICY-05   | Phase 3                                                                    | Complete |
+| POLICY-06   | Phase 3, Phase 12                                                          | Complete |
+| POLICY-07   | Phase 3                                                                    | Complete |
 | INTG-01     | Phase 6                                                                    | Pending  |
 | INTG-02     | Phase 7                                                                    | Pending  |
 | INTG-03     | Phase 7                                                                    | Pending  |
