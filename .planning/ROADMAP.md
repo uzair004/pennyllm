@@ -10,8 +10,8 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation Setup** - Project scaffolding, TypeScript config, build tooling, core interfaces, domain types
-- [ ] **Phase 2: State Storage & Persistence** - SQLite implementation, StorageBackend interface, migration system
+- [x] **Phase 1: Foundation Setup** - Project scaffolding, TypeScript config, build tooling, core interfaces, domain types
+- [ ] **Phase 2: State Storage & Persistence** - Memory storage default, StorageBackend contract tests, config schema update
 - [ ] **Phase 3: Policy Engine** - Declarative config loader, policy evaluation, versioning
 - [ ] **Phase 4: Usage Tracking Core** - Multi-window tracking, atomic operations, reset logic
 - [ ] **Phase 5: Model Catalog & Selection** - Live model catalog (models.dev, OpenRouter), capability flags, quality tiers, selection algorithms
@@ -19,7 +19,7 @@
 - [ ] **Phase 7: Integration & Error Handling** - Error classification, streaming support, tool calling, structured output passthrough
 - [ ] **Phase 8: Provider Policies Catalog** - Default free tier policies for 12 providers with researched limits
 - [ ] **Phase 9: Fallback & Budget Management** - Capability-aware fallback chains, cheap paid model routing, budget caps, threshold alerts
-- [ ] **Phase 10: Redis & Advanced Features** - Redis storage, observability hooks, dry-run mode
+- [ ] **Phase 10: SQLite, Redis & Advanced Features** - SQLite + Redis adapters, observability hooks, dry-run mode
 - [ ] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs
 - [ ] **Phase 12: Testing & Validation** - E2E tests, empirical limit validation, npm publishing
 
@@ -54,20 +54,26 @@ Plans:
 
 ### Phase 2: State Storage & Persistence
 
-**Goal:** Usage data persists across restarts via SQLite with schema supporting multi-window tracking
+**Goal:** Default in-memory StorageBackend works with atomic increments, lazy expiration, and contract test suite that future adapters must pass
 
 **Depends on:** Phase 1 (TypeScript setup, StorageBackend interface)
 
-**Requirements:** USAGE-02 (SQLite persistence), USAGE-05 (atomic concurrent access)
+**Requirements:** USAGE-02 (storage backend contract), USAGE-05 (atomic concurrent access)
 
 **Success Criteria** (what must be TRUE):
 
-1. SQLite implementation of `StorageBackend` interface passes all interface contract tests
-2. Usage data written to SQLite survives application restart
-3. Concurrent writes to same key do not corrupt data or lose updates (atomic increment)
-4. Schema supports storing multiple time windows per key (per-minute, hourly, daily, monthly)
+1. MemoryStorage implements all StorageBackend interface methods and passes contract tests
+2. Concurrent writes to same key do not corrupt data or lose updates (atomic synchronous increment)
+3. Schema supports storing multiple time windows per key (per-minute, hourly, daily, monthly)
+4. Expired time windows are auto-evicted (no unbounded memory growth)
+5. createRouter() accepts optional StorageBackend instance and defaults to MemoryStorage
+6. Contract test suite exists and can be reused by SQLite/Redis adapters in Phase 10
 
-**Plans:** TBD
+**Plans:** 1 plan
+
+Plans:
+
+- [ ] 02-01-PLAN.md — MemoryStorage implementation, config schema update, contract test suite
 
 ---
 
@@ -216,21 +222,22 @@ Plans:
 
 ---
 
-### Phase 10: Redis & Advanced Features
+### Phase 10: SQLite, Redis & Advanced Features
 
-**Goal:** Redis storage option works for multi-process deployments with observability hooks
+**Goal:** SQLite and Redis storage adapters work for persistent and multi-process deployments with observability hooks
 
-**Depends on:** Phase 2 (StorageBackend interface), Phase 9 (core features complete)
+**Depends on:** Phase 2 (StorageBackend interface + contract tests), Phase 9 (core features complete)
 
-**Requirements:** USAGE-02 (Redis option), DX-03 (observability hooks), DX-04 (dry-run mode)
+**Requirements:** USAGE-02 (SQLite + Redis persistence), DX-03 (observability hooks), DX-04 (dry-run mode)
 
 **Success Criteria** (what must be TRUE):
 
-1. Redis implementation of `StorageBackend` interface passes same contract tests as SQLite
-2. Concurrent requests from multiple Node.js processes update Redis atomically
-3. Observability hook fires for: key selection, usage recording, limit warning, fallback trigger
-4. Dry-run mode validates config and logs routing decisions without making API calls
-5. Redis connection failures fall back to error (does not silently use SQLite)
+1. SQLite implementation of `StorageBackend` interface passes same contract tests as MemoryStorage
+2. Redis implementation of `StorageBackend` interface passes same contract tests as MemoryStorage
+3. Concurrent requests from multiple Node.js processes update Redis atomically
+4. Observability hook fires for: key selection, usage recording, limit warning, fallback trigger
+5. Dry-run mode validates config and logs routing decisions without making API calls
+6. Redis connection failures fall back to error (does not silently use memory)
 
 **Plans:** TBD
 
@@ -280,8 +287,8 @@ Plans:
 
 | Phase                           | Plans Complete | Status      | Completed |
 | ------------------------------- | -------------- | ----------- | --------- |
-| 1. Foundation Setup             | 1/2            | In Progress |           |
-| 2. State Storage & Persistence  | 0/?            | Not started | -         |
+| 1. Foundation Setup             | 2/2            | Complete    | ✅        |
+| 2. State Storage & Persistence  | 0/1            | Planned     | -         |
 | 3. Policy Engine                | 0/?            | Not started | -         |
 | 4. Usage Tracking Core          | 0/?            | Not started | -         |
 | 5. Model Catalog & Selection    | 0/?            | Not started | -         |
@@ -289,7 +296,7 @@ Plans:
 | 7. Integration & Error Handling | 0/?            | Not started | -         |
 | 8. Provider Policies Catalog    | 0/?            | Not started | -         |
 | 9. Fallback & Budget Management | 0/?            | Not started | -         |
-| 10. Redis & Advanced Features   | 0/?            | Not started | -         |
+| 10. SQLite, Redis & Advanced    | 0/?            | Not started | -         |
 | 11. Developer Experience Polish | 0/?            | Not started | -         |
 | 12. Testing & Validation        | 0/?            | Not started | -         |
 
@@ -320,6 +327,13 @@ Plans:
 - 30+ first-party providers covering all free tier targets
 - Evaluated against: LiteLLM (Python, proxy, 1M LOC), LangChain.js (broken streaming usage), OpenAI SDK (single provider), Portkey (gateway service), Mastra (full framework), TanStack AI (alpha), Instructor.js (stale), ModelFusion (merged into AI SDK)
 
+**Storage architecture (Phase 2 pivot):**
+
+- Memory-first with zero dependencies as default
+- StorageBackend is a runtime instance parameter, not JSON config
+- SQLite + Redis are optional peer-dep adapters in Phase 10
+- Contract test suite ensures all adapters satisfy the same interface
+
 **Model catalog sources:**
 
 - models.dev — capabilities, pricing, context windows (primary, open source)
@@ -330,7 +344,7 @@ Plans:
 
 **Abstractions (3 interfaces, everything else concrete):**
 
-- `StorageBackend` — SQLite/Redis swap
+- `StorageBackend` — Memory/SQLite/Redis swap
 - `ModelCatalog` — data source swap (models.dev/OpenRouter/static)
 - `SelectionStrategy` — algorithm swap (round-robin/least-used/custom)
 
@@ -348,4 +362,5 @@ Plans:
 
 _Roadmap created: 2026-03-11_
 _Updated: 2026-03-12 (base package decided, model catalog added, capability-aware fallback added)_
-_Phase 1 planned: 2 plans in 2 waves_
+_Phase 1 complete: 2 plans in 2 waves_
+_Phase 2 planned: 1 plan in 1 wave_
