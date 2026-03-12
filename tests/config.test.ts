@@ -21,7 +21,6 @@ describe('configSchema validation', () => {
 
     expect(result.version).toBe('1.0');
     expect(result.strategy).toBe('round-robin');
-    expect(result.storage.type).toBe('sqlite');
     expect(result.budget.monthlyLimit).toBe(0);
     expect(result.budget.alertThresholds).toEqual([0.8, 0.95]);
     expect(result.providers.google.enabled).toBe(true);
@@ -38,10 +37,6 @@ describe('configSchema validation', () => {
         },
       },
       strategy: 'least-used' as const,
-      storage: {
-        type: 'redis' as const,
-        url: 'redis://localhost:6379',
-      },
       budget: {
         monthlyLimit: 100,
         alertThresholds: [0.5, 0.75, 0.9],
@@ -52,8 +47,6 @@ describe('configSchema validation', () => {
 
     expect(result.version).toBe('1.0');
     expect(result.strategy).toBe('least-used');
-    expect(result.storage.type).toBe('redis');
-    expect(result.storage.url).toBe('redis://localhost:6379');
     expect(result.budget.monthlyLimit).toBe(100);
     expect(result.budget.alertThresholds).toEqual([0.5, 0.75, 0.9]);
     expect(result.providers.google.strategy).toBe('least-used');
