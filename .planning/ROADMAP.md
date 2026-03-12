@@ -41,7 +41,11 @@
 6. Domain types defined: `ModelMetadata`, `Policy`, `UsageRecord`, `TimeWindow`, config schema (Zod)
 7. Basic configuration object type is defined and exported
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffolding, tooling, core types, interfaces, constants, error classes
+- [ ] 01-02-PLAN.md — Zod config schema, JSON/YAML loader, main exports, test suite
 
 ---
 
@@ -251,7 +255,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation Setup | 0/? | Not started | - |
+| 1. Foundation Setup | 0/2 | Planning complete | - |
 | 2. State Storage & Persistence | 0/? | Not started | - |
 | 3. Policy Engine | 0/? | Not started | - |
 | 4. Usage Tracking Core | 0/? | Not started | - |
@@ -314,4 +318,4 @@
 
 *Roadmap created: 2026-03-11*
 *Updated: 2026-03-12 (base package decided, model catalog added, capability-aware fallback added)*
-*Next step: `/gsd:plan-phase 1` to decompose Phase 1 into executable plans*
+*Phase 1 planned: 2 plans in 2 waves*
