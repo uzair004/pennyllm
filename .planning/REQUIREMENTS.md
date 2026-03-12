@@ -19,10 +19,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Usage Tracking
 
 - [ ] **USAGE-01**: Router tracks token usage (prompt + completion) per API key after each request
-- [ ] **USAGE-02**: StorageBackend contract with pluggable implementations; Phase 2 delivers MemoryStorage default (in-memory, no persistence), Phase 10 delivers SQLite and Redis adapters for persistence across restarts
+- [x] **USAGE-02**: StorageBackend contract with pluggable implementations; Phase 2 delivers MemoryStorage default (in-memory, no persistence), Phase 10 delivers SQLite and Redis adapters for persistence across restarts
 - [ ] **USAGE-03**: Router tracks multiple time windows per provider (per-minute rate limits, daily request caps, monthly token quotas)
 - [ ] **USAGE-04**: Time windows reset correctly based on provider policy (calendar month, rolling 30 days, per-minute sliding window)
-- [ ] **USAGE-05**: Usage tracking handles concurrent requests atomically (no race conditions causing overage)
+- [x] **USAGE-05**: Usage tracking handles concurrent requests atomically (no race conditions causing overage)
 - [ ] **USAGE-06**: Router reconciles estimated vs actual token usage from provider response
 
 ### Policy Engine
@@ -147,10 +147,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CORE-05     | Phase 9                                                                    | Pending  |
 | CORE-06     | Phase 9                                                                    | Pending  |
 | USAGE-01    | Phase 4                                                                    | Pending  |
-| USAGE-02    | Phase 2 (contract + memory default), Phase 10 (SQLite + Redis persistence) | Pending  |
+| USAGE-02    | Phase 2 (contract + memory default), Phase 10 (SQLite + Redis persistence) | Complete |
 | USAGE-03    | Phase 4                                                                    | Pending  |
 | USAGE-04    | Phase 4                                                                    | Pending  |
-| USAGE-05    | Phase 2                                                                    | Pending  |
+| USAGE-05    | Phase 2                                                                    | Complete |
 | USAGE-06    | Phase 4                                                                    | Pending  |
 | POLICY-01   | Phase 3                                                                    | Pending  |
 | POLICY-02   | Phase 3                                                                    | Pending  |
