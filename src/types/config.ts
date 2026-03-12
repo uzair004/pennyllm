@@ -2,15 +2,6 @@ import type { StrategyType } from '../constants/index.js';
 import type { PolicyLimit } from './domain.js';
 
 /**
- * Storage backend configuration
- */
-export interface StorageConfig {
-  type: 'sqlite' | 'redis' | 'memory';
-  path?: string;
-  url?: string;
-}
-
-/**
  * Budget configuration
  */
 export interface BudgetConfig {
@@ -35,6 +26,5 @@ export interface RouterConfig {
   version: '1.0';
   providers: Record<string, ProviderConfig>;
   strategy: StrategyType;
-  storage: StorageConfig;
   budget: BudgetConfig;
 }

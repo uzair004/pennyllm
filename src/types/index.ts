@@ -3,7 +3,7 @@
  */
 
 // Configuration types
-export type { BudgetConfig, ProviderConfig, RouterConfig, StorageConfig } from './config.js';
+export type { BudgetConfig, ProviderConfig, RouterConfig } from './config.js';
 
 // Domain types
 export type {

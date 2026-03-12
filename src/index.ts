@@ -12,6 +12,9 @@ export {
 } from './config/index.js';
 export type { ConfigInput, ConfigOutput, Router } from './config/index.js';
 
+// Storage
+export { MemoryStorage } from './storage/index.js';
+
 // Constants
 export {
   EnforcementBehavior,
@@ -51,7 +54,6 @@ export type {
   RouterEvents,
   SelectionStrategy,
   StorageBackend,
-  StorageConfig,
   TimeWindow,
   UsageRecord,
   UsageRecordedEvent,

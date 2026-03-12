@@ -26,15 +26,6 @@ export const providerConfigSchema = z.object({
 });
 
 /**
- * Storage configuration schema
- */
-export const storageConfigSchema = z.object({
-  type: z.enum(['sqlite', 'redis', 'memory']).default('sqlite'),
-  path: z.string().optional(),
-  url: z.string().optional(),
-});
-
-/**
  * Budget configuration schema
  */
 export const budgetConfigSchema = z.object({
@@ -56,7 +47,6 @@ export const configSchema = z
     strategy: z
       .enum([Strategy.ROUND_ROBIN, Strategy.LEAST_USED] as const)
       .default(Strategy.ROUND_ROBIN),
-    storage: storageConfigSchema.default({ type: 'sqlite' }),
     budget: budgetConfigSchema.default({
       monthlyLimit: 0,
       alertThresholds: [0.8, 0.95],

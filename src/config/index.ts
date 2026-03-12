@@ -1,5 +1,7 @@
 import debugFactory from 'debug';
 import type { RouterConfig } from '../types/config.js';
+import type { StorageBackend } from '../types/interfaces.js';
+import { MemoryStorage } from '../storage/index.js';
 import { ConfigError } from '../errors/config-error.js';
 import { configSchema, type ConfigInput } from './schema.js';
 import { loadConfigFile } from './loader.js';
@@ -15,6 +17,7 @@ export interface Router {
   getUsage: () => Promise<unknown>;
   health: () => Promise<unknown>;
   getConfig: () => RouterConfig;
+  storage: StorageBackend;
   close: () => Promise<void>;
   on: (event: string, handler: (...args: unknown[]) => void) => void;
   off: (event: string, handler: (...args: unknown[]) => void) => void;
@@ -25,11 +28,16 @@ export interface Router {
  * Currently a stub that validates config and returns placeholder
  * Full implementation in Phase 6+
  * @param configOrPath - Configuration object or path to config file
+ * @param options - Optional configuration options
+ * @param options.storage - Custom storage backend (defaults to MemoryStorage)
  * @returns Router instance (stub)
  * @throws {ConfigError} If configuration is invalid
  */
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function createRouter(configOrPath: ConfigInput | string): Promise<Router> {
+export async function createRouter(
+  configOrPath: ConfigInput | string,
+  options?: { storage?: StorageBackend },
+): Promise<Router> {
   let config: RouterConfig;
 
   try {
@@ -40,6 +48,9 @@ export async function createRouter(configOrPath: ConfigInput | string): Promise<
       // Validate object
       config = configSchema.parse(configOrPath) as RouterConfig;
     }
+
+    // Resolve storage backend
+    const storage = options?.storage ?? new MemoryStorage();
 
     debug('Router created with config (keys redacted)');
 
@@ -60,9 +71,11 @@ export async function createRouter(configOrPath: ConfigInput | string): Promise<
         return { status: 'ok' };
       },
       getConfig: () => config,
-      // eslint-disable-next-line @typescript-eslint/require-await
+      storage,
+
       close: async () => {
         debug('close() stub called');
+        await storage.close();
       },
       on: (event: string) => {
         debug('on() stub called for event: %s', event);
