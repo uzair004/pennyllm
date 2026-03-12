@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 1 (Foundation Setup)
-status: planning
-last_updated: '2026-03-12T00:59:20.963Z'
+status: executing
+last_updated: '2026-03-12T01:12:13.537Z'
 progress:
   total_phases: 12
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 50
+  completed_plans: 2
+  percent: 100
 ---
 
 # Project State: LLM Router
@@ -23,23 +23,23 @@ progress:
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 1 execution in progress. Plan 01-01 complete (TypeScript scaffolding + type system). Plan 01-02 next (Zod config schema).
+**Current focus:** Phase 1 complete. Both plans (01-01 TypeScript scaffolding, 01-02 config validation) finished. Ready for Phase 2 (Storage Layer).
 
 ## Current Position
 
 **Phase:** 1 - Foundation Setup
-**Plan:** 01-01 complete, 01-02 next
-**Status:** In progress
-**Progress:** [█████░░░░░] 50% (1/2 plans complete)
+**Plan:** 01-02 complete (2/2 plans done)
+**Status:** Complete
+**Progress:** [██████████] 100% (2/2 plans complete)
 
 ## Performance Metrics
 
 ### Velocity
 
-- **Phases completed:** 0/12
-- **Plans completed:** 1/2 (Phase 1)
-- **Average plan duration:** 9m 39s (1 plan)
-- **Estimated completion:** TBD (phase 1 in progress)
+- **Phases completed:** 1/12
+- **Plans completed:** 2/2 (Phase 1 complete)
+- **Average plan duration:** 8m 52s (2 plans: 9m 39s, 8m 6s)
+- **Estimated completion:** Phase 1 complete, Phase 2 next
 
 ### Quality
 
@@ -70,13 +70,15 @@ progress:
 | 2026-03-12 | Use Zod v3.23.0 instead of v4               | AI SDK peer dependency requires Zod v3, v4 causes npm install conflict                                                            | Stable Zod v3 API, compatible with AI SDK ecosystem                            |
 | 2026-03-12 | Use exactOptionalPropertyTypes in tsconfig  | Strictest TypeScript mode for catching undefined assignment bugs                                                                  | Required explicit undefined checks in error class constructors                 |
 | 2026-03-12 | 8 separate entry points via subpath exports | Tree-shakeable exports per PLAN.md spec, allows selective imports                                                                 | Users can import only what they need: 'llm-router/storage', 'llm-router/types' |
+| 2026-03-12 | Use Zod .default() correctly                | Per RESEARCH.md pitfall 4: .default() alone makes field optional in input, guaranteed in output. Not .optional().default()        | Config schema accepts minimal input, returns complete config                   |
+| 2026-03-12 | Cast schema output to RouterConfig          | Zod output type incompatible with interface types under exactOptionalPropertyTypes (enabled: boolean vs enabled?: boolean)        | Safe cast maintains type safety while satisfying strict TypeScript mode        |
 
 ### Active TODOs
 
 **Immediate:**
 
 - [x] Execute Plan 01-01 (complete: TypeScript scaffolding + type system)
-- [ ] Execute Plan 01-02 (Zod config schema + validation)
+- [x] Execute Plan 01-02 (complete: Zod config schema + validation)
 
 **Phase 6 prerequisite (before starting Phase 6):**
 
@@ -110,21 +112,24 @@ progress:
 
 ### What Just Happened
 
-- Executed Plan 01-01: Project scaffolding and type system
-- Created TypeScript package with strict mode + exactOptionalPropertyTypes
-- Configured dual ESM+CJS build with tsup (8 subpath exports)
-- Defined 3 core interfaces (StorageBackend, ModelCatalog, SelectionStrategy)
-- Defined 9 domain types, 4 config types, 7 event types, 6 const objects
-- Added dev workflow: pre-commit hooks, commitlint, changesets, CI for Node 18/20/22
-- Fixed Zod v4→v3 downgrade for AI SDK compatibility
-- Fixed exactOptionalPropertyTypes TypeScript strictness in error classes
-- All verification passed: npm install, tsc --noEmit, npm run build, no enums, as const verified
-- 2 tasks completed, 2 commits made (9f99279, 2a8a546), 28 files created
+**Plan 01-02 complete:**
+
+- Created Zod config schema with sensible defaults (strategy: round-robin, storage: sqlite, budget: 0)
+- Added JSON/YAML config file loading with ${VAR} environment variable interpolation
+- Created defineConfig helper for type-safe config authoring
+- Created createRouter stub that validates config and returns placeholder router
+- Exported all public API from main entry point (createRouter, defineConfig, types, constants, errors)
+- Added comprehensive test suite: 61 tests pass (config validation: 23, exports: 14, build: 24)
+- Fixed exactOptionalPropertyTypes strictness with conditional options pattern
+- Created tsconfig.test.json for ESLint to parse test files
+- 2 tasks completed, 2 commits made (bb65324, 0bafe7c), 12 files created, 8m 6s duration
+
+**Phase 1 complete.** Foundation established: type system, error handling, config validation, public API.
 
 ### What's Next
 
-- Execute Plan 01-02: Zod config schema and validation
-- Success when: Config can be loaded from YAML/JSON, validated with helpful errors, types match runtime
+- **Phase 2: Storage Layer** — Implement StorageBackend interface with SQLite, Redis, and in-memory adapters
+- Success when: Usage records can be persisted and queried across different storage backends
 
 ### Context for Next Session
 
@@ -138,4 +143,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-12T00:59:20Z — Phase 1 Plan 01 complete_
+_Last updated: 2026-03-12T01:10:49Z — Phase 1 complete (2/2 plans)_

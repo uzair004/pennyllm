@@ -43,12 +43,12 @@
 6. Domain types defined: `ModelMetadata`, `Policy`, `UsageRecord`, `TimeWindow`, config schema (Zod)
 7. Basic configuration object type is defined and exported
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 01-01-PLAN.md — Project scaffolding, tooling, core types, interfaces, constants, error classes
-- [ ] 01-02-PLAN.md — Zod config schema, JSON/YAML loader, main exports, test suite
+- [x] 01-01-PLAN.md — Project scaffolding, tooling, core types, interfaces, constants, error classes
+- [x] 01-02-PLAN.md — Zod config schema, JSON/YAML loader, main exports, test suite
 
 ---
 
