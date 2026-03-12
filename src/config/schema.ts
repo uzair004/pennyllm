@@ -4,22 +4,33 @@ import { Strategy } from '../constants/index.js';
 /**
  * Policy limit schema
  */
-const timeWindowSchema = z.object({
+export const timeWindowSchema = z.object({
   type: z.enum(['per-minute', 'hourly', 'daily', 'monthly', 'rolling-30d']),
   durationMs: z.number().positive(),
 });
 
-const policyLimitSchema = z.object({
+export const policyLimitSchema = z.object({
   type: z.enum(['tokens', 'calls', 'rate', 'daily', 'monthly']),
   value: z.number().positive(),
   window: timeWindowSchema,
 });
 
 /**
+ * Key configuration schema - supports string or object with limits
+ */
+export const keyConfigSchema = z.union([
+  z.string(),
+  z.object({
+    key: z.string(),
+    limits: z.array(policyLimitSchema).optional(),
+  }),
+]);
+
+/**
  * Provider configuration schema
  */
 export const providerConfigSchema = z.object({
-  keys: z.array(z.string()).min(1, 'At least one key is required'),
+  keys: z.array(keyConfigSchema).min(1, 'At least one key is required'),
   strategy: z.enum([Strategy.ROUND_ROBIN, Strategy.LEAST_USED] as const).optional(),
   limits: z.array(policyLimitSchema).optional(),
   enabled: z.boolean().default(true),

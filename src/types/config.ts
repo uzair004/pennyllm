@@ -1,4 +1,5 @@
 import type { StrategyType } from '../constants/index.js';
+import type { KeyConfig } from '../policy/types.js';
 import type { PolicyLimit } from './domain.js';
 
 /**
@@ -13,7 +14,7 @@ export interface BudgetConfig {
  * Provider-specific configuration
  */
 export interface ProviderConfig {
-  keys: string[];
+  keys: KeyConfig[];
   strategy?: StrategyType;
   limits?: PolicyLimit[];
   enabled?: boolean;
@@ -27,4 +28,5 @@ export interface RouterConfig {
   providers: Record<string, ProviderConfig>;
   strategy: StrategyType;
   budget: BudgetConfig;
+  warningThreshold?: number;
 }
