@@ -6,8 +6,9 @@ import { createRouterMiddleware } from './middleware.js';
 import { randomUUID } from 'node:crypto';
 
 /**
- * Create a wrapped LanguageModelV3 with router-managed key selection and usage tracking
- * This is the user-facing integration between the router and Vercel AI SDK
+ * Create a wrapped LanguageModelV3 with router-managed key selection and usage tracking.
+ * This is the standalone convenience function. For retry support with key rotation,
+ * use router.wrapModel() instead (which integrates the retry proxy).
  */
 export async function routerModel(
   router: Router,
@@ -35,10 +36,13 @@ export async function routerModel(
   // Generate requestId if not provided
   const requestId = options?.requestId ?? randomUUID();
 
+  // Mutable ref for middleware keyIndex tracking (consistent with retry proxy pattern)
+  const keyIndexRef = { current: selection.keyIndex };
+
   // Create middleware for usage tracking
   const middleware = createRouterMiddleware({
     provider,
-    keyIndex: selection.keyIndex,
+    keyIndexRef,
     model: modelName,
     tracker: router.usage,
     requestId,

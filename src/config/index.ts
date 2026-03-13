@@ -20,6 +20,7 @@ import { KeySelector } from '../selection/KeySelector.js';
 import type { SelectionContext, SelectionResult } from '../selection/types.js';
 import { ProviderRegistry, createProviderInstance } from '../wrapper/provider-registry.js';
 import { createRouterMiddleware } from '../wrapper/middleware.js';
+import { createRetryProxy } from '../wrapper/retry-proxy.js';
 
 const debug = debugFactory('llm-router:config');
 
@@ -138,6 +139,10 @@ export async function createRouter(
       options?.strategy,
     );
 
+    // Shared disabled keys set across all wrapModel calls for this router instance
+    // Keys that fail auth (401/403) are disabled for the session lifetime
+    const disabledKeys = new Set<string>();
+
     // Lazy-init provider registry (defer dynamic import until first wrapModel call)
     let providerRegistry: ProviderRegistry | null = null;
 
@@ -230,18 +235,41 @@ export async function createRouter(
         const registry = await getProviderRegistry();
         const baseModel = createProviderInstance(registry, provider, modelName, selection.key);
 
-        // Create middleware for usage tracking
+        // Mutable ref shared between retry proxy and middleware
+        // Retry proxy updates .current when it switches keys, so middleware
+        // records usage against the key that actually succeeded
+        const keyIndexRef = { current: selection.keyIndex };
+
+        // Create retry proxy that wraps base model with key rotation
+        const retryProxy = createRetryProxy({
+          provider,
+          modelName,
+          modelId,
+          initialModel: baseModel,
+          initialKeyIndex: selection.keyIndex,
+          initialKey: selection.key,
+          config,
+          registry,
+          cooldownManager,
+          disabledKeys,
+          emitter,
+          requestId,
+          keyIndexRef,
+          keySelector,
+        });
+
+        // Create middleware for usage tracking (uses keyIndexRef for correct key)
         const middleware = createRouterMiddleware({
           provider,
-          keyIndex: selection.keyIndex,
+          keyIndexRef,
           model: modelName,
           tracker: usageTracker,
           requestId,
         });
 
-        // Wrap and return
+        // Wrap retry proxy (not raw baseModel) with middleware
         const wrappedModel = wrapLanguageModel({
-          model: baseModel,
+          model: retryProxy,
           middleware,
           modelId,
           providerId: 'llm-router',
