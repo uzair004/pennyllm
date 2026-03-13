@@ -2,44 +2,44 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 3 (Policy Engine)
-status: planning
-last_updated: '2026-03-12T21:10:35.164Z'
+current_phase: Phase 4 (Usage Tracking Core)
+status: executing
+last_updated: '2026-03-13T03:15:13.714Z'
 progress:
   total_phases: 12
   completed_phases: 3
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 7
+  completed_plans: 6
+  percent: 86
 ---
 
 # Project State: LLM Router
 
-**Last updated:** 2026-03-12
-**Current phase:** Phase 3 (Policy Engine)
-**Status:** Ready to plan
+**Last updated:** 2026-03-13
+**Current phase:** Phase 4 (Usage Tracking Core)
+**Status:** In Progress
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 3 complete. Policy Engine fully implemented with evaluation, events, and staleness detection. Phase 4 next (Usage Tracking & Recording).
+**Current focus:** Phase 4 in progress. Building usage tracking foundation with calendar-aware periods, token estimation, and cooldown management.
 
 ## Current Position
 
-**Phase:** 3 - Policy Engine
-**Plan:** 03-02 complete (2/2 plans done)
-**Status:** Complete
-**Progress:** [██████████] 100%
+**Phase:** 4 - Usage Tracking Core
+**Plan:** 04-01 complete (1/2 plans done)
+**Status:** In Progress
+**Progress:** [█████████░] 86%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 3/12
-- **Plans completed:** 5/5 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2)
-- **Average plan duration:** 6m 54s (5 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s)
-- **Estimated completion:** Phase 3 complete, Phase 4 next
+- **Plans completed:** 6/7 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 1/2)
+- **Average plan duration:** 6m 53s (6 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s)
+- **Estimated completion:** Phase 4 in progress (1/2 plans complete)
 
 ### Quality
 
@@ -81,6 +81,9 @@ progress:
 | 2026-03-12 | Warning event deduplication via Set         | Prevents event spam when limit stays above threshold. Exceeded events fire every time for visibility.                             | Warning fires once per limit crossing, resetWarnings() clears deduplication      |
 | 2026-03-12 | Conditional closestLimit inclusion          | exactOptionalPropertyTypes requires explicit undefined handling for optional fields                                               | EvaluationResult only includes closestLimit field when it exists                 |
 | 2026-03-12 | Real EventEmitter in createRouter           | Router.on/off wired to node:events EventEmitter instead of stubs                                                                  | Users can subscribe to limit:warning, limit:exceeded, policy:stale events        |
+| 2026-03-13 | Calendar-aware period keys                  | Monthly/daily periods use YYYY-MM/YYYY-MM-DD format, not duration division. Aligns with calendar boundaries.                      | Period calculation handles month boundaries correctly (Feb 28 → Mar 1)           |
+| 2026-03-13 | Token estimation graceful degradation       | estimateTokens() returns null on any error instead of throwing                                                                    | Usage tracking continues even if estimation fails                                |
+| 2026-03-13 | Structured usage API breaking change        | StorageBackend.getUsage() returns { promptTokens, completionTokens, totalTokens, callCount } instead of number                    | All storage adapters must implement new interface, PolicyEngine updated          |
 
 ### Active TODOs
 
@@ -91,6 +94,8 @@ progress:
 - [x] Execute Plan 02-01 (complete: MemoryStorage + contract tests)
 - [x] Execute Plan 03-01 (complete: Policy types, resolver, default policies)
 - [x] Execute Plan 03-02 (complete: PolicyEngine with evaluation and events)
+- [x] Execute Plan 04-01 (complete: Usage tracking foundation - types, periods, estimation, cooldown)
+- [ ] Execute Plan 04-02 (next: UsageTracker class and integration)
 
 **Phase 6 prerequisite (before starting Phase 6):**
 
@@ -124,28 +129,26 @@ progress:
 
 ### What Just Happened
 
-**Plan 03-02 complete:**
+**Plan 04-01 complete:**
 
-- Implemented PolicyEngine class with async limit evaluation
-- evaluate() queries storage concurrently via Promise.all for all limits
-- Builds detailed LimitStatus (current/max/remaining/percentUsed/resetAt)
-- estimatedTokens parameter for pre-call token limit checks
-- Warning events at 80% threshold with Set-based deduplication
-- Exceeded events at 100% usage (no deduplication)
-- checkStaleness() detects policies >30 days old at startup
-- createRouter instantiates PolicyEngine with resolved policies
-- Router.policy exposes PolicyEngine for evaluation
-- Router.on/off wired to real EventEmitter (not stubs)
-- PolicyStaleEvent added to RouterEventMap
-- PolicyEngine exported from main package and policy subpath
-- 2 tasks completed, 2 commits made (9e358a1, 4b255fb), 2 files created, 5 files modified, 4m 3s duration
+- Created src/usage/ module with 5 files: types, periods, estimation, cooldown, index
+- getPeriodKey() handles all 5 window types with calendar-aware keys (monthly: YYYY-MM, hourly: YYYY-MM-DDTHH)
+- getResetAt() calculates next boundary using Date.UTC() for calendar-based windows
+- estimateTokens() concatenates messages/system/tools, uses custom estimator or default (~4 chars/token), returns null on error
+- CooldownManager tracks 429 state, parses Retry-After (int seconds or HTTP date), lazy cleanup on access
+- Updated StorageBackend interface: increment() accepts optional callCount, getUsage() returns StructuredUsage (breaking change)
+- Updated MemoryStorage: uses calendar-aware period keys, tracks call counts in parallel Map, cleans up both Maps on expiration
+- Fixed PolicyEngine to use structured getUsage return type (destructure totalTokens)
+- Added estimation config schema (defaultMaxTokens: 1024), tokenEstimator is runtime-only
+- Updated all contract tests to expect structured usage data
+- 2 tasks completed, 2 commits made (a3181e1, 88e3dff), 5 files created, 7 files modified, 6m 47s duration
 
-**Phase 3 complete.** Policy Engine fully operational with evaluation, events, and staleness detection.
+**Phase 4 Plan 01 complete.** Usage tracking foundation ready with calendar-aware periods, token estimation, cooldown management, and structured usage API.
 
 ### What's Next
 
-- **Phase 4: Usage Tracking & Recording** — Implement usage tracking after LLM calls and query APIs
-- Success when: Usage incremented after calls, getUsage() reports current consumption across time windows
+- **Phase 4 Plan 02: UsageTracker class** — Assemble utilities into UsageTracker, integrate with createRouter
+- Success when: recordUsage() increments storage, getUsage() queries across windows, cooldown manager integrated
 
 ### Context for Next Session
 
@@ -159,4 +162,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-12T21:05:31Z — Phase 3 complete (5/5 plans)_
+_Last updated: 2026-03-13T03:13:19Z — Phase 4 in progress (6/7 plans, 04-01 complete)_
