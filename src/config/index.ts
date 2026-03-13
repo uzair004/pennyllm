@@ -1,5 +1,8 @@
 import debugFactory from 'debug';
 import { EventEmitter } from 'node:events';
+import { randomUUID } from 'node:crypto';
+import type { LanguageModelV1 } from 'ai';
+import { wrapLanguageModel } from 'ai';
 import type { RouterConfig } from '../types/config.js';
 import type { StorageBackend, ModelCatalog, SelectionStrategy } from '../types/interfaces.js';
 import { MemoryStorage } from '../storage/index.js';
@@ -15,6 +18,8 @@ import type { UsageSnapshot, ProviderUsage, EstimationConfig } from '../usage/ty
 import { DefaultModelCatalog } from '../catalog/DefaultModelCatalog.js';
 import { KeySelector } from '../selection/KeySelector.js';
 import type { SelectionContext, SelectionResult } from '../selection/types.js';
+import { ProviderRegistry, createProviderInstance } from '../wrapper/provider-registry.js';
+import { createRouterMiddleware } from '../wrapper/middleware.js';
 
 const debug = debugFactory('llm-router:config');
 
@@ -26,6 +31,10 @@ export interface Router {
     modelId: string,
     options?: { strategy?: string; estimatedTokens?: number; requestId?: string },
   ) => Promise<{ keyIndex: number; key: string; reason: string }>;
+  wrapModel: (
+    modelId: string,
+    options?: { strategy?: string; estimatedTokens?: number; requestId?: string },
+  ) => Promise<LanguageModelV1>;
   getUsage: {
     (): Promise<UsageSnapshot>;
     (provider: string): Promise<ProviderUsage>;
@@ -129,10 +138,17 @@ export async function createRouter(
       options?.strategy,
     );
 
+    // Initialize provider registry for wrapModel
+    const providerRegistry = await ProviderRegistry.createDefault();
+
     debug('Router created with config (keys redacted)');
 
     // Return implementation with full Phase 5 integration
-    return {
+    // Using self-reference pattern for wrapModel to call router.model()
+    const routerImpl: Router = {} as Router;
+
+    // Assign router methods
+    Object.assign(routerImpl, {
       model: async (
         modelId: string,
         opts?: { strategy?: string; estimatedTokens?: number; requestId?: string },
@@ -189,6 +205,49 @@ export async function createRouter(
           reason: result.reason,
         };
       },
+      wrapModel: async (
+        modelId: string,
+        opts?: { strategy?: string; estimatedTokens?: number; requestId?: string },
+      ) => {
+        // Reuse existing router.model() logic for selection + key resolution
+        const selection = await routerImpl.model(modelId, opts);
+
+        // Parse provider and model name
+        const provider = modelId.substring(0, modelId.indexOf('/'));
+        const modelName = modelId.substring(modelId.indexOf('/') + 1);
+
+        // Generate requestId if not provided
+        const requestId = opts?.requestId ?? randomUUID();
+
+        // Create base model with selected API key
+        const baseModel = createProviderInstance(
+          providerRegistry,
+          provider,
+          modelName,
+          selection.key,
+        );
+
+        // Create middleware for usage tracking
+        const middleware = createRouterMiddleware({
+          provider,
+          keyIndex: selection.keyIndex,
+          model: modelName,
+          tracker: usageTracker,
+          requestId,
+        });
+
+        // Wrap and return
+        // Note: wrapLanguageModel accepts both V1 and V3 models at runtime,
+        // but TypeScript signature only shows V1
+        const wrappedModel = wrapLanguageModel({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+          model: baseModel as any,
+          middleware,
+          modelId,
+          providerId: 'llm-router',
+        });
+        return wrappedModel;
+      },
       getUsage: (async (provider?: string) => {
         if (provider !== undefined) {
           return usageTracker.getUsage(provider);
@@ -224,7 +283,9 @@ export async function createRouter(
       off: (event: string, handler: (...args: unknown[]) => void) => {
         emitter.off(event, handler);
       },
-    };
+    });
+
+    return routerImpl;
   } catch (error) {
     if (error instanceof ConfigError) {
       throw error;

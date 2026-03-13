@@ -10,6 +10,7 @@ export default defineConfig({
     'src/types/index.ts',
     'src/errors/index.ts',
     'src/constants/index.ts',
+    'src/wrapper/index.ts',
   ],
   format: ['esm', 'cjs'],
   dts: true,

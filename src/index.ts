@@ -32,6 +32,15 @@ export {
   LeastUsedStrategy,
 } from './selection/index.js';
 
+// Wrapper (AI SDK integration)
+export {
+  ProviderRegistry,
+  createRouterMiddleware,
+  routerModel,
+  createModelWrapper,
+} from './wrapper/index.js';
+export type { ProviderFactory } from './wrapper/index.js';
+
 // Constants
 export {
   EnforcementBehavior,

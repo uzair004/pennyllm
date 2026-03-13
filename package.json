@@ -46,6 +46,11 @@
       "types": "./dist/constants/index.d.ts",
       "import": "./dist/constants/index.mjs",
       "require": "./dist/constants/index.cjs"
+    },
+    "./wrapper": {
+      "types": "./dist/wrapper/index.d.ts",
+      "import": "./dist/wrapper/index.mjs",
+      "require": "./dist/wrapper/index.cjs"
     }
   },
   "files": [
