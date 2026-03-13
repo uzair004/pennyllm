@@ -138,8 +138,15 @@ export async function createRouter(
       options?.strategy,
     );
 
-    // Initialize provider registry for wrapModel
-    const providerRegistry = await ProviderRegistry.createDefault();
+    // Lazy-init provider registry (defer dynamic import until first wrapModel call)
+    let providerRegistry: ProviderRegistry | null = null;
+
+    async function getProviderRegistry(): Promise<ProviderRegistry> {
+      if (providerRegistry === null) {
+        providerRegistry = await ProviderRegistry.createDefault();
+      }
+      return providerRegistry;
+    }
 
     debug('Router created with config (keys redacted)');
 
@@ -219,13 +226,9 @@ export async function createRouter(
         // Generate requestId if not provided
         const requestId = opts?.requestId ?? randomUUID();
 
-        // Create base model with selected API key
-        const baseModel = createProviderInstance(
-          providerRegistry,
-          provider,
-          modelName,
-          selection.key,
-        );
+        // Create base model with selected API key (lazy-init registry on first call)
+        const registry = await getProviderRegistry();
+        const baseModel = createProviderInstance(registry, provider, modelName, selection.key);
 
         // Create middleware for usage tracking
         const middleware = createRouterMiddleware({
