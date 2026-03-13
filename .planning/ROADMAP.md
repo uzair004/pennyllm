@@ -308,8 +308,8 @@ Plans:
 | 1. Foundation Setup             | 2/2            | Complete    | ✅        |
 | 2. State Storage & Persistence  | 1/1            | Complete    | ✅        |
 | 3. Policy Engine                | 2/2            | Complete    | ✅        |
-| 4. Usage Tracking Core          | 0/2            | Planned     | -         |
-| 5. Model Catalog & Selection    | 0/5            | Planned     | -         |
+| 4. Usage Tracking Core          | 2/2            | Complete    | ✅        |
+| 5. Model Catalog & Selection    | 2/5            | In progress | -         |
 | 6. Base Router Integration      | 0/?            | Not started | -         |
 | 7. Integration & Error Handling | 0/?            | Not started | -         |
 | 8. Provider Policies Catalog    | 0/?            | Not started | -         |
