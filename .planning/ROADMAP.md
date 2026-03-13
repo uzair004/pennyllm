@@ -148,7 +148,14 @@ Plans:
 9. Selection automatically skips keys that exceeded any limit
 10. User can provide custom selection function via TypeScript plugin interface
 
-**Plans:** TBD
+**Plans:** 4 plans
+
+Plans:
+
+- [ ] 05-01-PLAN.md — Type contracts, interfaces, config schema, error classes, events
+- [ ] 05-02-PLAN.md — DefaultModelCatalog with live API fetch, caching, static fallback
+- [ ] 05-03-PLAN.md — Selection strategies (priority, round-robin, least-used) and KeySelector coordinator
+- [ ] 05-04-PLAN.md — Router integration: wire catalog + selection into createRouter()
 
 ---
 
@@ -301,7 +308,7 @@ Plans:
 | 2. State Storage & Persistence  | 1/1            | Complete    | ✅        |
 | 3. Policy Engine                | 2/2            | Complete    | ✅        |
 | 4. Usage Tracking Core          | 0/2            | Planned     | -         |
-| 5. Model Catalog & Selection    | 0/?            | Not started | -         |
+| 5. Model Catalog & Selection    | 0/4            | Planned     | -         |
 | 6. Base Router Integration      | 0/?            | Not started | -         |
 | 7. Integration & Error Handling | 0/?            | Not started | -         |
 | 8. Provider Policies Catalog    | 0/?            | Not started | -         |
@@ -376,3 +383,4 @@ _Phase 1 complete: 2 plans in 2 waves_
 _Phase 2 planned: 1 plan in 1 wave_
 _Phase 3 planned: 2 plans in 2 waves_
 _Phase 4 planned: 2 plans in 2 waves_
+_Phase 5 planned: 4 plans in 3 waves_
