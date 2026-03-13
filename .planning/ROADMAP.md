@@ -175,12 +175,13 @@ Plans:
 3. Real API call to Google Gemini succeeds with cost-avoidance logic active
 4. Usage tracking updates after successful API call with actual token counts from `result.usage`
 
-**Plans:** 2/2 plans executed ✅ **Complete**
+**Plans:** 3 plans
 
 Plans:
 
 - [x] 06-01-PLAN.md — Provider registry, middleware factory, routerModel wrapper, Router.wrapModel() integration
 - [x] 06-02-PLAN.md — Real Gemini API POC validation (end-to-end key injection + usage tracking)
+- [ ] 06-03-PLAN.md — Gap closure: lazy ProviderRegistry initialization to fix createRouter test timeouts
 
 ---
 
@@ -315,7 +316,7 @@ Plans:
 | 3. Policy Engine                | 2/2            | Complete    | ✅        |
 | 4. Usage Tracking Core          | 2/2            | Complete    | ✅        |
 | 5. Model Catalog & Selection    | 5/5            | Complete    | ✅        |
-| 6. Base Router Integration      | 2/2            | Complete    | ✅        |
+| 6. Base Router Integration      | 2/3            | Gap closure | -         |
 | 7. Integration & Error Handling | 0/?            | Not started | -         |
 | 8. Provider Policies Catalog    | 0/?            | Not started | -         |
 | 9. Fallback & Budget Management | 0/?            | Not started | -         |
@@ -391,3 +392,4 @@ _Phase 3 planned: 2 plans in 2 waves_
 _Phase 4 planned: 2 plans in 2 waves_
 _Phase 5 revised: 5 plans in 4 waves (added Wave 0 test scaffolds)_
 _Phase 6 revised: 2 plans in 2 waves (added real API POC, removed test scaffolds per build-first strategy)_
+_Phase 6 gap closure: 1 plan added (lazy ProviderRegistry initialization to fix test timeouts)_
