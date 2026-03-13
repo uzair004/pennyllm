@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 7 (Integration & Error Handling)
-status: ready
-last_updated: '2026-03-13T16:00:00.000Z'
+status: completed
+last_updated: '2026-03-13T16:03:59.223Z'
 progress:
   total_phases: 12
   completed_phases: 6
@@ -37,7 +37,7 @@ progress:
 ### Velocity
 
 - **Phases completed:** 6/12
-- **Plans completed:** 15/15 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 2/2)
+- **Plans completed:** 16/16 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3)
 - **Average plan duration:** 12m 14s (15 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s, 7m 14s, 2m 18s, 8m 26s, ~25m)
 - **Estimated completion:** Phase 6 complete, Phase 7 next
 
@@ -102,10 +102,12 @@ progress:
 | 2026-03-13   | Fire-and-forget usage recording             | Usage tracking never throws to user, all errors caught and logged                                                                  | LLM calls succeed even if usage recording fails                                    |
 | 2026-03-13   | AI SDK v4 to v6 upgrade                     | v4 LanguageModelV1 types incompatible with current @ai-sdk/google returning V3 models                                              | All wrapper code updated for V3 types and new usage API (inputTokens/outputTokens) |
 | 2026-03-13   | Defensive usage field access                | Gemini 2.5 Flash thinking mode returns empty text and undefined usage fields                                                       | Middleware and UsageTracker guard with Number(x) \|\| 0                            |
+| 2026-03-13   | Lazy-init ProviderRegistry in createRouter  | Dynamic import of @ai-sdk/google at init time caused 5s test timeouts. Registry only needed on first wrapModel() call.             | Deferred to first use via null-check async getter, tests complete in ~1s           |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                            |
 | Phase 06 P01 | 8m 26s                                      | 3 tasks                                                                                                                            | 8 files                                                                            |
 | Phase 06 P02 | ~25m                                        | 2 tasks                                                                                                                            | 13 files                                                                           |
+| Phase 06 P03 | 1m 45s                                      | 2 tasks                                                                                                                            | 1 files                                                                            |
 
 ### Active TODOs
 
@@ -151,7 +153,7 @@ progress:
 
 ### What Just Happened
 
-**Phase 6 complete (both plans):**
+**Phase 6 complete (all 3 plans):**
 
 **Plan 06-01:** Built core AI SDK integration layer - provider registry, usage tracking middleware, routerModel wrapper, Router.wrapModel() method.
 
@@ -163,6 +165,13 @@ progress:
 - Fixed undefined usage fields from Gemini thinking mode with Number(x) || 0 guards
 - Human-verified: POC runs successfully with real API key, usage tracking records actual token counts
 - 3 commits (dca47e5, 68615d1, 581d8b3), 13 files, ~25 min
+
+**Plan 06-03:** Gap closure -- lazy ProviderRegistry initialization:
+
+- Moved ProviderRegistry.createDefault() from createRouter() init to first wrapModel() call
+- Fixed 5-second test timeouts caused by eager dynamic import of @ai-sdk/google
+- Config tests now complete in ~1s, full suite (83 tests) passes with no regressions
+- 1 commit (e169c68), 1 file, ~2 min
 
 **Phase 6 research gate PASSED.** router.wrapModel() validated end-to-end with real provider API.
 
@@ -184,4 +193,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T16:00:00Z -- Phase 6 complete (15/15 plans), ready for Phase 7_
+_Last updated: 2026-03-13T16:03:12Z -- Phase 6 complete (16/16 plans, incl. gap closure 06-03), ready for Phase 7_
