@@ -18,6 +18,9 @@ export { MemoryStorage } from './storage/index.js';
 // Policy
 export { PolicyEngine } from './policy/index.js';
 
+// Usage
+export { UsageTracker, CooldownManager } from './usage/index.js';
+
 // Constants
 export {
   EnforcementBehavior,
@@ -41,8 +44,12 @@ export type {
   BudgetConfig,
   ConfigLoadedEvent,
   ErrorEvent,
+  EstimationConfig,
+  EstimationResult,
   FallbackTriggeredEvent,
   KeySelectedEvent,
+  KeyUsage,
+  KeyUsageWindow,
   LimitExceededEvent,
   LimitWarningEvent,
   ModelCatalog,
@@ -51,6 +58,7 @@ export type {
   PolicyLimit,
   PolicyStaleEvent,
   ProviderConfig,
+  ProviderUsage,
   ResetWindow,
   RouterConfig,
   RouterEventMap,
@@ -61,6 +69,7 @@ export type {
   TimeWindow,
   UsageRecord,
   UsageRecordedEvent,
+  UsageSnapshot,
 } from './types/index.js';
 
 // Errors

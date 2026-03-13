@@ -10,20 +10,27 @@ import { PolicyEngine } from '../policy/PolicyEngine.js';
 import { resolvePolicies } from '../policy/resolver.js';
 import { shippedDefaults } from '../policy/defaults/index.js';
 import { checkStaleness } from '../policy/staleness.js';
+import { UsageTracker } from '../usage/UsageTracker.js';
+import type { UsageSnapshot, ProviderUsage, EstimationConfig } from '../usage/types.js';
 
 const debug = debugFactory('llm-router:config');
 
 /**
- * Router instance interface with PolicyEngine
+ * Router instance interface with UsageTracker and PolicyEngine
  * Full model() implementation deferred to Phase 6+
  */
 export interface Router {
   model: (modelId: string) => unknown;
-  getUsage: () => Promise<unknown>;
+  getUsage: {
+    (): Promise<UsageSnapshot>;
+    (provider: string): Promise<ProviderUsage>;
+  };
+  resetUsage: (provider?: string, keyIndex?: number) => Promise<void>;
   health: () => Promise<unknown>;
   getConfig: () => RouterConfig & { resolvedPolicies: ReturnType<PolicyEngine['getAllPolicies']> };
   storage: StorageBackend;
   policy: PolicyEngine;
+  usage: UsageTracker;
   close: () => Promise<void>;
   on: (event: string, handler: (...args: unknown[]) => void) => void;
   off: (event: string, handler: (...args: unknown[]) => void) => void;
@@ -36,13 +43,14 @@ export interface Router {
  * @param configOrPath - Configuration object or path to config file
  * @param options - Optional configuration options
  * @param options.storage - Custom storage backend (defaults to MemoryStorage)
+ * @param options.tokenEstimator - Custom token estimation function
  * @returns Router instance (stub)
  * @throws {ConfigError} If configuration is invalid
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function createRouter(
   configOrPath: ConfigInput | string,
-  options?: { storage?: StorageBackend },
+  options?: { storage?: StorageBackend; tokenEstimator?: (text: string) => number },
 ): Promise<Router> {
   let config: RouterConfig;
 
@@ -74,18 +82,33 @@ export async function createRouter(
     // Check for stale policies at startup
     checkStaleness(resolvedPolicies, emitter);
 
+    // Build EstimationConfig
+    const estimationConfig: EstimationConfig = {
+      defaultMaxTokens: config.estimation.defaultMaxTokens,
+    };
+    if (options?.tokenEstimator !== undefined) {
+      estimationConfig.tokenEstimator = options.tokenEstimator;
+    }
+
+    // Create UsageTracker
+    const usageTracker = new UsageTracker(storage, resolvedPolicies, emitter, estimationConfig);
+
     debug('Router created with config (keys redacted)');
 
-    // Return implementation with PolicyEngine
+    // Return implementation with UsageTracker and PolicyEngine
     return {
       model: (modelId: string) => {
         debug('model() stub called with: %s', modelId);
         return {};
       },
-      // eslint-disable-next-line @typescript-eslint/require-await
-      getUsage: async () => {
-        debug('getUsage() stub called');
-        return {};
+      getUsage: (async (provider?: string) => {
+        if (provider !== undefined) {
+          return usageTracker.getUsage(provider);
+        }
+        return usageTracker.getUsage();
+      }) as Router['getUsage'],
+      resetUsage: async (provider?: string, keyIndex?: number) => {
+        return usageTracker.resetUsage(provider, keyIndex);
       },
       // eslint-disable-next-line @typescript-eslint/require-await
       health: async () => {
@@ -98,6 +121,7 @@ export async function createRouter(
       }),
       storage,
       policy: policyEngine,
+      usage: usageTracker,
 
       close: async () => {
         debug('close() stub called');

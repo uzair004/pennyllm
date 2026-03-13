@@ -31,6 +31,8 @@ export interface UsageRecordedEvent extends RouterEventPayload {
   keyIndex: number;
   promptTokens: number;
   completionTokens: number;
+  estimated: boolean;
+  windows: string[];
 }
 
 /**

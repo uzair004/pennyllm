@@ -32,3 +32,13 @@ export type {
 
 // Interface types
 export type { ModelCatalog, SelectionStrategy, StorageBackend } from './interfaces.js';
+
+// Usage types
+export type {
+  KeyUsageWindow,
+  KeyUsage,
+  ProviderUsage,
+  UsageSnapshot,
+  EstimationConfig,
+  EstimationResult,
+} from '../usage/types.js';
