@@ -1,9 +1,11 @@
 import type { LimitTypeValue } from '../constants/index.js';
 import type { LLMRouterError } from '../errors/base.js';
 import type { PolicyStaleEvent as PolicyStaleEventType } from '../policy/types.js';
+import type { CatalogRefreshedEvent as CatalogRefreshedEventType } from '../catalog/types.js';
 
 // Re-export PolicyStaleEvent so it can be exported from types/index.ts
 export type { PolicyStaleEventType as PolicyStaleEvent };
+export type { CatalogRefreshedEventType as CatalogRefreshedEvent };
 
 /**
  * Base event payload
@@ -19,6 +21,9 @@ export interface RouterEventPayload {
 export interface KeySelectedEvent extends RouterEventPayload {
   provider: string;
   keyIndex: number;
+  model?: string;
+  label?: string;
+  strategy: string;
   reason: string;
   remainingQuota?: number;
 }
@@ -74,6 +79,17 @@ export interface ConfigLoadedEvent extends RouterEventPayload {
 }
 
 /**
+ * Provider exhausted event
+ */
+export interface ProviderExhaustedEvent extends RouterEventPayload {
+  provider: string;
+  totalKeys: number;
+  exhaustedCount: number;
+  cooldownCount: number;
+  earliestRecovery: string | null;
+}
+
+/**
  * Error event
  */
 export interface ErrorEvent extends RouterEventPayload {
@@ -90,6 +106,8 @@ export interface RouterEventMap {
   'limit:exceeded': LimitExceededEvent;
   'fallback:triggered': FallbackTriggeredEvent;
   'config:loaded': ConfigLoadedEvent;
+  'provider:exhausted': ProviderExhaustedEvent;
+  'catalog:refreshed': CatalogRefreshedEventType;
   'policy:stale': PolicyStaleEventType;
   error: ErrorEvent;
 }
@@ -104,5 +122,7 @@ export type RouterEvents =
   | LimitExceededEvent
   | FallbackTriggeredEvent
   | ConfigLoadedEvent
+  | ProviderExhaustedEvent
+  | CatalogRefreshedEventType
   | PolicyStaleEventType
   | ErrorEvent;

@@ -2,6 +2,7 @@
  * Selection strategy types
  */
 export const Strategy = {
+  PRIORITY: 'priority',
   ROUND_ROBIN: 'round-robin',
   LEAST_USED: 'least-used',
 } as const;
@@ -38,6 +39,8 @@ export const RouterEvent = {
   LIMIT_EXCEEDED: 'limit:exceeded',
   FALLBACK_TRIGGERED: 'fallback:triggered',
   CONFIG_LOADED: 'config:loaded',
+  PROVIDER_EXHAUSTED: 'provider:exhausted',
+  CATALOG_REFRESHED: 'catalog:refreshed',
   ERROR: 'error',
 } as const;
 
@@ -79,3 +82,13 @@ export const QualityTier = {
 } as const;
 
 export type QualityTierType = (typeof QualityTier)[keyof typeof QualityTier];
+
+/**
+ * Model status types
+ */
+export const ModelStatus = {
+  ACTIVE: 'active',
+  DEPRECATED: 'deprecated',
+} as const;
+
+export type ModelStatusType = (typeof ModelStatus)[keyof typeof ModelStatus];

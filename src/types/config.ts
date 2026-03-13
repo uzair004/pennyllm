@@ -18,6 +18,13 @@ export interface EstimationConfig {
 }
 
 /**
+ * Cooldown configuration
+ */
+export interface CooldownConfig {
+  defaultDurationMs: number;
+}
+
+/**
  * Provider-specific configuration
  */
 export interface ProviderConfig {
@@ -36,5 +43,6 @@ export interface RouterConfig {
   strategy: StrategyType;
   budget: BudgetConfig;
   estimation: EstimationConfig;
+  cooldown: CooldownConfig;
   warningThreshold?: number;
 }

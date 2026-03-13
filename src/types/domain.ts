@@ -1,6 +1,7 @@
 import type {
   EnforcementBehaviorType,
   LimitTypeValue,
+  ModelStatusType,
   QualityTierType,
 } from '../constants/index.js';
 
@@ -62,9 +63,12 @@ export interface ModelMetadata {
   qualityTier: QualityTierType;
   contextWindow: number;
   pricing: {
-    promptPer1kTokens: number;
-    completionPer1kTokens: number;
+    promptPer1MTokens: number;
+    completionPer1MTokens: number;
   } | null;
+  status: ModelStatusType;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 /**

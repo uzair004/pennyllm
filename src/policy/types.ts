@@ -2,9 +2,9 @@ import type { EnforcementBehaviorType, LimitTypeValue } from '../constants/index
 import type { Policy, PolicyLimit } from '../types/domain.js';
 
 /**
- * Per-key configuration - either a simple string or object with limits
+ * Per-key configuration - either a simple string or object with limits and label
  */
-export type KeyConfig = string | { key: string; limits?: PolicyLimit[] };
+export type KeyConfig = string | { key: string; label?: string; limits?: PolicyLimit[] };
 
 /**
  * Resolved policy for a specific API key after three-layer merge

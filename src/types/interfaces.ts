@@ -1,4 +1,6 @@
 import type { ModelMetadata, TimeWindow, UsageRecord } from './domain.js';
+import type { ModelListFilter } from '../catalog/types.js';
+import type { SelectionContext, SelectionResult } from '../selection/types.js';
 
 /**
  * Structured usage data returned by StorageBackend.getUsage()
@@ -68,9 +70,9 @@ export interface ModelCatalog {
   getModel(modelId: string): Promise<ModelMetadata | null>;
 
   /**
-   * List all models, optionally filtered by provider
+   * List all models with optional filtering
    */
-  listModels(provider?: string): Promise<ModelMetadata[]>;
+  listModels(filter?: ModelListFilter): Promise<ModelMetadata[]>;
 
   /**
    * Get capabilities for a specific model
@@ -81,6 +83,11 @@ export interface ModelCatalog {
    * Refresh the model catalog from upstream sources
    */
   refresh(): Promise<void>;
+
+  /**
+   * Close the catalog and cleanup resources
+   */
+  close(): Promise<void>;
 }
 
 /**
@@ -93,11 +100,7 @@ export interface SelectionStrategy {
   name: string;
 
   /**
-   * Select a key from available keys based on usage
+   * Select a key from available candidates
    */
-  selectKey(
-    provider: string,
-    availableKeys: string[],
-    usage: Map<number, UsageRecord[]>,
-  ): Promise<{ keyIndex: number; reason: string }>;
+  selectKey(context: SelectionContext): Promise<SelectionResult>;
 }
