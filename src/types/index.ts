@@ -3,7 +3,7 @@
  */
 
 // Configuration types
-export type { BudgetConfig, ProviderConfig, RouterConfig } from './config.js';
+export type { BudgetConfig, CooldownConfig, ProviderConfig, RouterConfig } from './config.js';
 
 // Domain types
 export type {
@@ -17,6 +17,7 @@ export type {
 
 // Event types
 export type {
+  CatalogRefreshedEvent,
   ConfigLoadedEvent,
   ErrorEvent,
   FallbackTriggeredEvent,
@@ -24,6 +25,7 @@ export type {
   LimitExceededEvent,
   LimitWarningEvent,
   PolicyStaleEvent,
+  ProviderExhaustedEvent,
   RouterEventMap,
   RouterEventPayload,
   RouterEvents,
@@ -42,3 +44,9 @@ export type {
   EstimationConfig,
   EstimationResult,
 } from '../usage/types.js';
+
+// Catalog types
+export type { ModelListFilter } from '../catalog/types.js';
+
+// Selection types
+export type { CandidateKey, SelectionContext, SelectionResult } from '../selection/types.js';

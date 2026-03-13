@@ -16,12 +16,13 @@ export const policyLimitSchema = z.object({
 });
 
 /**
- * Key configuration schema - supports string or object with limits
+ * Key configuration schema - supports string or object with limits and label
  */
 export const keyConfigSchema = z.union([
   z.string(),
   z.object({
     key: z.string(),
+    label: z.string().optional(),
     limits: z.array(policyLimitSchema).optional(),
   }),
 ]);
@@ -31,7 +32,9 @@ export const keyConfigSchema = z.union([
  */
 export const providerConfigSchema = z.object({
   keys: z.array(keyConfigSchema).min(1, 'At least one key is required'),
-  strategy: z.enum([Strategy.ROUND_ROBIN, Strategy.LEAST_USED] as const).optional(),
+  strategy: z
+    .enum([Strategy.PRIORITY, Strategy.ROUND_ROBIN, Strategy.LEAST_USED] as const)
+    .optional(),
   limits: z.array(policyLimitSchema).optional(),
   enabled: z.boolean().default(true),
 });
@@ -55,6 +58,15 @@ export const estimationSchema = z
   .default({ defaultMaxTokens: 1024 });
 
 /**
+ * Cooldown configuration schema
+ */
+export const cooldownSchema = z
+  .object({
+    defaultDurationMs: z.number().int().positive().default(60000),
+  })
+  .default({ defaultDurationMs: 60000 });
+
+/**
  * Main router configuration schema
  */
 export const configSchema = z
@@ -66,13 +78,14 @@ export const configSchema = z
         message: 'At least one provider is required',
       }),
     strategy: z
-      .enum([Strategy.ROUND_ROBIN, Strategy.LEAST_USED] as const)
-      .default(Strategy.ROUND_ROBIN),
+      .enum([Strategy.PRIORITY, Strategy.ROUND_ROBIN, Strategy.LEAST_USED] as const)
+      .default(Strategy.PRIORITY),
     budget: budgetConfigSchema.default({
       monthlyLimit: 0,
       alertThresholds: [0.8, 0.95],
     }),
     estimation: estimationSchema,
+    cooldown: cooldownSchema,
     warningThreshold: z.number().min(0).max(1).optional(),
   })
   .strict();

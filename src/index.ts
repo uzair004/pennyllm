@@ -25,6 +25,7 @@ export { UsageTracker, CooldownManager } from './usage/index.js';
 export {
   EnforcementBehavior,
   LimitType,
+  ModelStatus,
   Provider,
   QualityTier,
   RouterEvent,
@@ -33,6 +34,7 @@ export {
 export type {
   EnforcementBehaviorType,
   LimitTypeValue,
+  ModelStatusType,
   ProviderType,
   QualityTierType,
   RouterEventType,
@@ -42,7 +44,10 @@ export type {
 // Types
 export type {
   BudgetConfig,
+  CandidateKey,
+  CatalogRefreshedEvent,
   ConfigLoadedEvent,
+  CooldownConfig,
   ErrorEvent,
   EstimationConfig,
   EstimationResult,
@@ -53,17 +58,21 @@ export type {
   LimitExceededEvent,
   LimitWarningEvent,
   ModelCatalog,
+  ModelListFilter,
   ModelMetadata,
   Policy,
   PolicyLimit,
   PolicyStaleEvent,
   ProviderConfig,
+  ProviderExhaustedEvent,
   ProviderUsage,
   ResetWindow,
   RouterConfig,
   RouterEventMap,
   RouterEventPayload,
   RouterEvents,
+  SelectionContext,
+  SelectionResult,
   SelectionStrategy,
   StorageBackend,
   TimeWindow,
@@ -73,4 +82,9 @@ export type {
 } from './types/index.js';
 
 // Errors
-export { ConfigError, LLMRouterError } from './errors/index.js';
+export {
+  ConfigError,
+  LLMRouterError,
+  RateLimitError,
+  QuotaExhaustedError,
+} from './errors/index.js';

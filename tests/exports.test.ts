@@ -22,7 +22,7 @@ describe('Public API exports', () => {
   it('exports DEFAULT_CONFIG object', () => {
     expect(typeof LLMRouter.DEFAULT_CONFIG).toBe('object');
     expect(LLMRouter.DEFAULT_CONFIG.version).toBe('1.0');
-    expect(LLMRouter.DEFAULT_CONFIG.strategy).toBe('round-robin');
+    expect(LLMRouter.DEFAULT_CONFIG.strategy).toBe('priority');
     expect(LLMRouter.DEFAULT_CONFIG.storage.type).toBe('sqlite');
   });
 

@@ -20,7 +20,7 @@ describe('configSchema validation', () => {
     const result = configSchema.parse(input);
 
     expect(result.version).toBe('1.0');
-    expect(result.strategy).toBe('round-robin');
+    expect(result.strategy).toBe('priority');
     expect(result.budget.monthlyLimit).toBe(0);
     expect(result.budget.alertThresholds).toEqual([0.8, 0.95]);
     expect(result.providers.google.enabled).toBe(true);
@@ -193,7 +193,7 @@ describe('loadConfigFile', () => {
 
     expect(result.providers.google.keys).toEqual(['key1', 'key2']);
     expect(result.version).toBe('1.0');
-    expect(result.strategy).toBe('round-robin');
+    expect(result.strategy).toBe('priority');
   });
 
   it('parses a YAML file with env var interpolation', () => {
