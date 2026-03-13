@@ -68,7 +68,8 @@
     "prepare": "husky",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "update-catalog": "tsx scripts/generate-catalog.ts"
   },
   "peerDependencies": {
     "ai": "^4.0.0",
