@@ -31,7 +31,7 @@ export function interpolateEnvVars(str: string): string {
  * @returns Validated router configuration
  * @throws {ConfigError} If file cannot be read, parsed, or validated
  */
-export function loadConfigFile(filePath: string): RouterConfig {
+export async function loadConfigFile(filePath: string): Promise<RouterConfig> {
   debug('Loading config from file: %s', filePath);
 
   let rawContent: string;
@@ -59,8 +59,7 @@ export function loadConfigFile(filePath: string): RouterConfig {
       // Dynamic import for optional peer dependency
       let yaml: typeof import('js-yaml');
       try {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-unsafe-assignment
-        yaml = require('js-yaml');
+        yaml = await import('js-yaml');
       } catch {
         throw new ConfigError(
           'YAML support requires the "js-yaml" package to be installed. Install it with: npm install js-yaml',

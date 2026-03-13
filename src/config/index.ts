@@ -79,7 +79,7 @@ export async function createRouter(
   try {
     if (typeof configOrPath === 'string') {
       // Load from file
-      config = loadConfigFile(configOrPath);
+      config = await loadConfigFile(configOrPath);
     } else {
       // Validate object
       config = configSchema.parse(configOrPath) as RouterConfig;

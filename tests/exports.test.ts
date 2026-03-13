@@ -23,7 +23,7 @@ describe('Public API exports', () => {
     expect(typeof LLMRouter.DEFAULT_CONFIG).toBe('object');
     expect(LLMRouter.DEFAULT_CONFIG.version).toBe('1.0');
     expect(LLMRouter.DEFAULT_CONFIG.strategy).toBe('priority');
-    expect(LLMRouter.DEFAULT_CONFIG.storage.type).toBe('sqlite');
+    expect(LLMRouter.DEFAULT_CONFIG.storage.type).toBe('memory');
   });
 
   it('exports Strategy constants', () => {

@@ -1,3 +1,5 @@
+const MAX_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes
+
 /**
  * Manages rate limit cooldowns for API keys after 429 responses
  * Includes exponential backoff for consecutive failures
@@ -42,7 +44,7 @@ export class CooldownManager {
       // Apply exponential backoff to default cooldown when no Retry-After header
       const failures = this.consecutiveFailures.get(key) ?? 0;
       const multiplier = Math.pow(2, failures);
-      cooldownMs = defaultCooldownMs * multiplier;
+      cooldownMs = Math.min(defaultCooldownMs * multiplier, MAX_COOLDOWN_MS);
     }
 
     this.cooldowns.set(key, {

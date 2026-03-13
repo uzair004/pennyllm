@@ -178,7 +178,7 @@ describe('loadConfigFile', () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it('parses a JSON file', () => {
+  it('parses a JSON file', async () => {
     const configPath = join(tempDir, 'config.json');
     const configContent = JSON.stringify({
       providers: {
@@ -189,14 +189,14 @@ describe('loadConfigFile', () => {
     });
     writeFileSync(configPath, configContent, 'utf-8');
 
-    const result = loadConfigFile(configPath);
+    const result = await loadConfigFile(configPath);
 
     expect(result.providers.google.keys).toEqual(['key1', 'key2']);
     expect(result.version).toBe('1.0');
     expect(result.strategy).toBe('priority');
   });
 
-  it('parses a YAML file with env var interpolation', () => {
+  it('parses a YAML file with env var interpolation', async () => {
     process.env.GOOGLE_API_KEY = 'test-api-key';
 
     const configPath = join(tempDir, 'config.yml');
@@ -208,42 +208,42 @@ providers:
 `;
     writeFileSync(configPath, configContent, 'utf-8');
 
-    const result = loadConfigFile(configPath);
+    const result = await loadConfigFile(configPath);
 
     expect(result.providers.google.keys).toEqual(['test-api-key']);
 
     delete process.env.GOOGLE_API_KEY;
   });
 
-  it('throws ConfigError for invalid file path', () => {
+  it('throws ConfigError for invalid file path', async () => {
     const invalidPath = join(tempDir, 'nonexistent.json');
 
-    expect(() => loadConfigFile(invalidPath)).toThrow(ConfigError);
+    await expect(loadConfigFile(invalidPath)).rejects.toThrow(ConfigError);
   });
 
-  it('throws ConfigError for invalid JSON', () => {
+  it('throws ConfigError for invalid JSON', async () => {
     const configPath = join(tempDir, 'invalid.json');
     writeFileSync(configPath, '{ invalid json }', 'utf-8');
 
-    expect(() => loadConfigFile(configPath)).toThrow(ConfigError);
+    await expect(loadConfigFile(configPath)).rejects.toThrow(ConfigError);
   });
 
-  it('throws ConfigError for invalid config schema', () => {
+  it('throws ConfigError for invalid config schema', async () => {
     const configPath = join(tempDir, 'invalid-schema.json');
     const configContent = JSON.stringify({
       providers: {},
     });
     writeFileSync(configPath, configContent, 'utf-8');
 
-    expect(() => loadConfigFile(configPath)).toThrow(ConfigError);
+    await expect(loadConfigFile(configPath)).rejects.toThrow(ConfigError);
   });
 
-  it('throws ConfigError for unsupported file extension', () => {
+  it('throws ConfigError for unsupported file extension', async () => {
     const configPath = join(tempDir, 'config.txt');
     writeFileSync(configPath, 'some content', 'utf-8');
 
-    expect(() => loadConfigFile(configPath)).toThrow(ConfigError);
-    expect(() => loadConfigFile(configPath)).toThrow('Unsupported file extension');
+    await expect(loadConfigFile(configPath)).rejects.toThrow(ConfigError);
+    await expect(loadConfigFile(configPath)).rejects.toThrow('Unsupported file extension');
   });
 });
 

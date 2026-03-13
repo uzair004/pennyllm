@@ -2,6 +2,7 @@ import debug from 'debug';
 import { EventEmitter } from 'node:events';
 import type { StorageBackend } from '../types/interfaces.js';
 import type { EvaluationResult, LimitStatus, ResolvedPolicy } from './types.js';
+import { getResetAt } from '../usage/periods.js';
 
 const log = debug('llm-router:policy:engine');
 
@@ -83,10 +84,9 @@ export class PolicyEngine {
         limit.window,
       );
 
-      // Calculate reset time (next window boundary)
+      // Calculate reset time (next window boundary, calendar-aware)
       const now = Date.now();
-      const windowDurationMs = limit.window.durationMs;
-      const resetAt = new Date(Math.ceil(now / windowDurationMs) * windowDurationMs);
+      const resetAt = getResetAt(limit.window, now);
 
       // For token-based limits with estimation, add estimated usage
       let effectiveCurrent = current;
