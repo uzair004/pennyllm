@@ -21,3 +21,6 @@ export { estimateTokens, defaultCharRatioEstimator } from './estimation.js';
 
 // Cooldown management
 export { CooldownManager } from './cooldown.js';
+
+// Core tracker
+export { UsageTracker } from './UsageTracker.js';
