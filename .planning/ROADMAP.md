@@ -152,9 +152,9 @@ Plans:
 
 Plans:
 
-- [ ] 05-00-PLAN.md — Wave 0: test scaffolds for catalog and selection behaviors
-- [ ] 05-01-PLAN.md — Type contracts, interfaces, config schema, error classes, events
-- [ ] 05-02-PLAN.md — DefaultModelCatalog with live API fetch, caching, static fallback
+- [x] 05-00-PLAN.md — Wave 0: test scaffolds for catalog and selection behaviors
+- [x] 05-01-PLAN.md — Type contracts, interfaces, config schema, error classes, events
+- [x] 05-02-PLAN.md — DefaultModelCatalog with live API fetch, caching, static fallback
 - [ ] 05-03-PLAN.md — Selection strategies (priority, round-robin, least-used) and KeySelector coordinator
 - [ ] 05-04-PLAN.md — Router integration: wire catalog + selection into createRouter()
 

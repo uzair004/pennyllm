@@ -9,8 +9,8 @@ progress:
   total_phases: 12
   completed_phases: 4
   total_plans: 12
-  completed_plans: 8
-  percent: 67
+  completed_plans: 9
+  percent: 75
 ---
 
 # Project State: LLM Router
@@ -28,17 +28,17 @@ progress:
 ## Current Position
 
 **Phase:** 5 - Model Catalog & Selection
-**Plan:** 05-01 complete (2/5 plans done)
+**Plan:** 05-02 complete (3/5 plans done)
 **Status:** In progress
-**Progress:** [███████░░░] 67%
+**Progress:** [████████░░] 75%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 4/12
-- **Plans completed:** 9/12 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 2/5)
-- **Average plan duration:** 10m 22s (9 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s)
+- **Plans completed:** 10/12 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 3/5)
+- **Average plan duration:** 12m 52s (10 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s)
 - **Estimated completion:** Phase 5 in progress (2/5 plans complete)
 
 ### Quality
@@ -90,6 +90,8 @@ progress:
 | 2026-03-13 | Strategy.PRIORITY as default                | Matches plan requirement for priority-based selection by default                                                                  | Breaking change - updated 3 tests to reflect new default                         |
 | 2026-03-13 | Per-1M-tokens pricing format                | Industry standard for model pricing (OpenAI, Anthropic, etc.)                                                                     | Breaking change - existing ModelMetadata consumers must update                   |
 | 2026-03-13 | Array length guard with non-null assertion  | TypeScript strict mode requires explicit undefined handling                                                                       | Early validation prevents runtime errors in error class constructors             |
+| 2026-03-13 | Ignore scripts/ in ESLint type checking     | Scripts import from src/, creating circular tsconfig dependency. Scripts are utilities, not shipped code.                         | Pre-commit hooks pass, scripts excluded from type-checked linting                |
+| 2026-03-13 | Static snapshot embedded via readFileSync   | ESM-compatible file loading with import.meta.url, bundled by tsup automatically                                                   | No manual package.json files entry needed, snapshot embedded in dist/            |
 
 ### Active TODOs
 
@@ -135,32 +137,28 @@ progress:
 
 ### What Just Happened
 
-**Plan 05-01 complete:**
+**Plan 05-02 complete:**
 
-- Updated all type contracts, constants, and error classes for Phase 5
-- Added Strategy.PRIORITY constant and made it the default (breaking change)
-- Changed ModelMetadata.pricing from per1kTokens to per1MTokens (breaking change)
-- Updated ModelCatalog interface with close() method and filtered listModels()
-- Updated SelectionStrategy interface to use SelectionContext and SelectionResult
-- Created src/catalog/types.ts with ModelListFilter and CatalogRefreshedEvent
-- Created src/selection/types.ts with CandidateKey, SelectionContext, SelectionResult
-- Created RateLimitError and QuotaExhaustedError classes extending LLMRouterError
-- Added CooldownConfig to RouterConfig with 60s default
-- Updated KeyConfig to support label field in object form
-- Updated KeySelectedEvent with model, label, strategy fields
-- Added ProviderExhaustedEvent type
-- Updated config schema with PRIORITY strategy enum and cooldown section
-- Exported all new types from main package and subpath exports
-- Updated 3 tests to reflect priority default instead of round-robin
-- 2 tasks completed, 2 commits made (1da02ff, 7ac7235), 4 files created, 15 files modified, 31m 9s duration
-- All 74 tests pass with new type contracts
+- Implemented DefaultModelCatalog with live API integration and static fallback
+- Created fetchModelsDev() and fetchOpenRouter() with 5s timeout and Zod validation
+- Built static-catalog.json with 27 models across 12 providers (Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras, DeepSeek, Qwen, Cloudflare, NVIDIA, Cohere, GitHub)
+- Implemented 24h TTL cache with stale-on-failure serving
+- Added inflight deduplication to prevent thundering herd
+- Enriched quality tiers from static snapshot (frontier, high, mid, small)
+- Implemented filtered listModels() for provider, capabilities, qualityTier, maxPrice
+- Created close() method to cancel inflight fetches and clear cache
+- Emitted catalog:refreshed events with source (live/cache/static) and diff counts
+- Filled 5 test scaffolds with smoke tests (API fetch, static fallback, capabilities, tiers, pricing)
+- Added generate-catalog.ts script for future snapshot updates
+- 2 tasks completed, 2 commits made (55145e6, be0200a), 4 files created, 5 files modified, 35m 15s duration
+- All 79 tests pass (5 new, 74 existing)
 
-**Wave 1 foundation complete.** Type contracts established for catalog and selection implementations.
+**Wave 2 catalog implementation complete.** Model metadata layer ready for selection strategies.
 
 ### What's Next
 
-- **Phase 5: Model Catalog & Selection** — Continue with Plan 05-02 (catalog implementation)
-- Success when: Model catalog fetches from live APIs with filtering, selection strategies implemented
+- **Phase 5: Model Catalog & Selection** — Continue with Plan 05-03 (selection strategies)
+- Success when: Selection strategies implemented (priority, round-robin, least-used)
 
 ### Context for Next Session
 
@@ -174,4 +172,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T12:56:10Z — Phase 5 in progress (9/12 plans, 05-01 complete)_
+_Last updated: 2026-03-13T08:16:29Z — Phase 5 in progress (10/12 plans, 05-02 complete)_
