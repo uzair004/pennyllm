@@ -15,7 +15,7 @@
 - [x] **Phase 3: Policy Engine** - Declarative config loader, policy evaluation, versioning
 - [x] **Phase 4: Usage Tracking Core** - Multi-window tracking, atomic operations, reset logic, scenrios, reconciliation, accuracy, edge cases, how liteLLM handles this
 - [x] **Phase 5: Model Catalog & Selection** - Live model catalog (models.dev, OpenRouter), capability flags, quality tiers, selection algorithms, updates
-- [ ] **Phase 6: Base Router Integration** - Vercel AI SDK `wrapLanguageModel()` middleware, key injection via `create*({ apiKey })`
+- [x] **Phase 6: Base Router Integration** - Vercel AI SDK `wrapLanguageModel()` middleware, key injection via `create*({ apiKey })`
 - [ ] **Phase 7: Integration & Error Handling** - Error classification, streaming support, tool calling, structured output passthrough, observability hooks for routing decisions and errors, detailed error messages with context, other llm features (e.g., tool calling, structured output) we need to handle or don't need to worry about
 - [ ] **Phase 8: Provider Policies Catalog** - Default free tier policies for 12 providers with researched limits, reset behavior, and documentation for key acquisition, metadata for staleness warnings, source URLs, confidence levels, updates etc.
 - [ ] **Phase 9: Fallback & Budget Management** - Capability-aware fallback chains, cheap paid model routing, budget caps, threshold alerts, persistence, user-configurable fallback behavior, other fallback strategies (e.g., round-robin fallback across providers, weighted random based on remaining quota), how to handle requests that exceed any single provider's limits (e.g., 10k tokens when max is 8k), how to handle different reset window types in fallback logic (e.g., if primary key is blocked due to per-minute limit, do we consider it exhausted for fallback purposes until the minute resets?),
@@ -175,12 +175,12 @@ Plans:
 3. Real API call to Google Gemini succeeds with cost-avoidance logic active
 4. Usage tracking updates after successful API call with actual token counts from `result.usage`
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 06-01-PLAN.md — Provider registry, middleware factory, routerModel wrapper, Router.wrapModel() integration
-- [ ] 06-02-PLAN.md — Real Gemini API POC validation (end-to-end key injection + usage tracking)
+- [x] 06-01-PLAN.md — Provider registry, middleware factory, routerModel wrapper, Router.wrapModel() integration
+- [x] 06-02-PLAN.md — Real Gemini API POC validation (end-to-end key injection + usage tracking)
 
 ---
 
@@ -315,7 +315,7 @@ Plans:
 | 3. Policy Engine                | 2/2            | Complete    | ✅        |
 | 4. Usage Tracking Core          | 2/2            | Complete    | ✅        |
 | 5. Model Catalog & Selection    | 5/5            | Complete    | ✅        |
-| 6. Base Router Integration      | 0/2            | Planned     | -         |
+| 6. Base Router Integration      | 2/2            | Complete    | ✅        |
 | 7. Integration & Error Handling | 0/?            | Not started | -         |
 | 8. Provider Policies Catalog    | 0/?            | Not started | -         |
 | 9. Fallback & Budget Management | 0/?            | Not started | -         |
