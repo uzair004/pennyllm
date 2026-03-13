@@ -5,7 +5,7 @@
 **Base Package:** Vercel AI SDK (decided after evaluating LiteLLM fork, LangChain.js, OpenAI SDK, and 7 others)
 **Granularity:** Fine (12 phases)
 **Created:** 2026-03-11
-**Updated:** 2026-03-13
+**Updated:** 2026-03-14
 **Coverage:** 55/55 v1 requirements mapped
 
 ## Phases
@@ -212,20 +212,30 @@ Plans:
 
 ### Phase 8: Provider Policies Catalog
 
-**Goal:** Package ships with researched default policies for 12 free tier providers
+**Goal:** User-configured limits are the primary mechanism for all 12 providers, with builder helpers for easy configuration, typed provider configs with JSDoc, skeleton JSON for structural reference, and comprehensive key acquisition documentation
 
-**Depends on:** Phase 3 (policy engine), Phase 7 (can test with real APIs)
+**Depends on:** Phase 3 (policy engine), Phase 7 (retry proxy as safety net)
 
 **Requirements:** PROV-01 through PROV-12 (all 12 providers), DX-02 (key acquisition docs)
 
 **Success Criteria** (what must be TRUE):
 
-1. Default policies exist for all 12 providers: Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras, DeepSeek, Qwen, Cloudflare, NVIDIA, Cohere, GitHub
-2. Each policy includes limits (tokens, calls, rate), reset windows, enforcement behavior
-3. Documentation includes step-by-step guide for obtaining free tier API key from each provider
-4. Policies include metadata: researched date, confidence level, source URL
+1. Static default policies removed (google.ts, groq.ts, openrouter.ts, index.ts deleted)
+2. Config has `applyRegistryDefaults` toggle (default: false) for future registry integration
+3. Builder helpers (createTokenLimit, createRateLimit, createCallLimit) produce correct PolicyLimit objects
+4. Each of the 12 providers has a typed config with JSDoc documentation
+5. Empty provider skeleton JSON bundles all 12 providers with structural reference
+6. Documentation includes step-by-step guide for obtaining free tier API key from each provider
+7. Comparison table shows all 12 providers side-by-side
+8. README recommends 2-3 easiest providers as starter set
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+
+- [ ] 08-01-PLAN.md — Remove static defaults, config toggle, builder helpers, typed provider configs, skeleton JSON
+- [ ] 08-02-PLAN.md — Provider docs for Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras
+- [ ] 08-03-PLAN.md — Provider docs for DeepSeek, Qwen, Cloudflare, NVIDIA, Cohere, GitHub + comparison + README
 
 ---
 
@@ -323,7 +333,7 @@ Plans:
 | 5. Model Catalog & Selection    | 5/5            | Complete    | ✅         |
 | 6. Base Router Integration      | 2/3            | Gap closure | -          |
 | 7. Integration & Error Handling | 2/2            | Complete    | 2026-03-13 |
-| 8. Provider Policies Catalog    | 0/?            | Not started | -          |
+| 8. Provider Policies Catalog    | 0/3            | Planning    | -          |
 | 9. Fallback & Budget Management | 0/?            | Not started | -          |
 | 10. SQLite, Redis & Advanced    | 0/?            | Not started | -          |
 | 11. Developer Experience Polish | 0/?            | Not started | -          |
@@ -399,3 +409,4 @@ _Phase 5 revised: 5 plans in 4 waves (added Wave 0 test scaffolds)_
 _Phase 6 revised: 2 plans in 2 waves (added real API POC, removed test scaffolds per build-first strategy)_
 _Phase 6 gap closure: 1 plan added (lazy ProviderRegistry initialization to fix test timeouts)_
 _Phase 7 planned: 2 plans in 2 waves (error classification + retry proxy with key rotation)_
+_Phase 8 planned: 3 plans in 2 waves (code changes + provider documentation)_
