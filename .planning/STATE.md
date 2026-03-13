@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 7 (Integration & Error Handling)
 status: planning
-last_updated: '2026-03-13T16:08:43.301Z'
+last_updated: '2026-03-13T19:04:13.001Z'
 progress:
   total_phases: 12
   completed_phases: 6
-  total_plans: 15
-  completed_plans: 15
-  percent: 100
+  total_plans: 17
+  completed_plans: 16
+  percent: 94
 ---
 
 # Project State: LLM Router
@@ -23,21 +23,21 @@ progress:
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 6 complete. Vercel AI SDK integration validated end-to-end with real Gemini API. Ready for Phase 7 (Integration & Error Handling).
+**Current focus:** Phase 7 in progress. Error classification foundation complete (Plan 01). Retry proxy next (Plan 02).
 
 ## Current Position
 
 **Phase:** 7 - Integration & Error Handling
-**Plan:** Not started (0/? plans done)
-**Status:** Ready
-**Progress:** [██████████] 100%
+**Plan:** 1/2 plans done
+**Status:** Executing
+**Progress:** [█████████░] 94%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 6/12
-- **Plans completed:** 16/16 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3)
+- **Plans completed:** 17/17 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 1/2)
 - **Average plan duration:** 12m 14s (15 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s, 7m 14s, 2m 18s, 8m 26s, ~25m)
 - **Estimated completion:** Phase 6 complete, Phase 7 next
 
@@ -103,11 +103,14 @@ progress:
 | 2026-03-13   | AI SDK v4 to v6 upgrade                     | v4 LanguageModelV1 types incompatible with current @ai-sdk/google returning V3 models                                              | All wrapper code updated for V3 types and new usage API (inputTokens/outputTokens) |
 | 2026-03-13   | Defensive usage field access                | Gemini 2.5 Flash thinking mode returns empty text and undefined usage fields                                                       | Middleware and UsageTracker guard with Number(x) \|\| 0                            |
 | 2026-03-13   | Lazy-init ProviderRegistry in createRouter  | Dynamic import of @ai-sdk/google at init time caused 5s test timeouts. Registry only needed on first wrapModel() call.             | Deferred to first use via null-check async getter, tests complete in ~1s           |
+| 2026-03-13   | Switch-based ErrorType suggestion lookup    | noUncheckedIndexedAccess makes Record index potentially undefined even when exhaustive                                             | ProviderError uses switch instead of Record for type-safe suggestion mapping       |
+| 2026-03-13   | Error classification via isInstance()       | APICallError.isInstance() is required (never instanceof) per AI SDK cross-boundary pattern                                         | classifyError() correctly identifies errors across package boundaries              |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                            |
 | Phase 06 P01 | 8m 26s                                      | 3 tasks                                                                                                                            | 8 files                                                                            |
 | Phase 06 P02 | ~25m                                        | 2 tasks                                                                                                                            | 13 files                                                                           |
 | Phase 06 P03 | 1m 45s                                      | 2 tasks                                                                                                                            | 1 files                                                                            |
+| Phase 07 P01 | 6m                                          | 2 tasks                                                                                                                            | 9 files                                                                            |
 
 ### Active TODOs
 
@@ -153,33 +156,23 @@ progress:
 
 ### What Just Happened
 
-**Phase 6 complete (all 3 plans):**
+**Phase 7 Plan 01 complete (error classification foundation):**
 
-**Plan 06-01:** Built core AI SDK integration layer - provider registry, usage tracking middleware, routerModel wrapper, Router.wrapModel() method.
+**Plan 07-01:** Built error classification system:
 
-**Plan 06-02:** End-to-end validation with real Gemini API:
-
-- Created POC script (scripts/poc-gemini.ts) that calls real Gemini API through router.wrapModel()
-- Upgraded Vercel AI SDK from v4 to v6 (LanguageModelV3 types, inputTokens/outputTokens usage API)
-- Fixed stale static catalog (refreshed from models.dev)
-- Fixed undefined usage fields from Gemini thinking mode with Number(x) || 0 guards
-- Human-verified: POC runs successfully with real API key, usage tracking records actual token counts
-- 3 commits (dca47e5, 68615d1, 581d8b3), 13 files, ~25 min
-
-**Plan 06-03:** Gap closure -- lazy ProviderRegistry initialization:
-
-- Moved ProviderRegistry.createDefault() from createRouter() init to first wrapModel() call
-- Fixed 5-second test timeouts caused by eager dynamic import of @ai-sdk/google
-- Config tests now complete in ~1s, full suite (83 tests) passes with no regressions
-- 1 commit (e169c68), 1 file, ~2 min
-
-**Phase 6 research gate PASSED.** router.wrapModel() validated end-to-end with real provider API.
+- Created 3 error classes: AuthError (401/403), ProviderError (with type discriminator and attempts), NetworkError (connection failures)
+- classifyError() maps APICallError status codes (429, 401/403, 500+) and Node.js network errors to typed classifications
+- shouldRetry() enforces retry decisions: no server retry, single network retry, all-keys for rate_limit/auth
+- buildFinalError() wraps in LLMRouterError subclasses (never APICallError) to prevent AI SDK double-retry
+- 7 new event payload interfaces and RouterEvent constants ready for retry proxy
+- 2 commits (1cc1eb0, f056f31), 9 files, ~6 min
+- All 83 existing tests pass with no regressions
 
 ### What's Next
 
-- **Phase 7: Integration & Error Handling** -- streaming support, error classification, tool calling passthrough, structured output
+- **Phase 7 Plan 02:** Retry proxy -- builds on error classification to implement actual retry logic
 - Streaming usage tracking (onFinish callback) still needs validation (deferred prerequisite)
-- Success when: streamText() works with router-wrapped models, errors classified with actionable messages
+- Success when: retry proxy exhausts keys with proper error classification and event emission
 
 ### Context for Next Session
 

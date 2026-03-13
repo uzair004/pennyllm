@@ -39,7 +39,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **INTG-01**: Package wraps Vercel AI SDK via decorator pattern (user continues using generateText/streamText)
 - [ ] **INTG-02**: Wrapper preserves all AI SDK features (streaming, tool calling, structured output)
-- [ ] **INTG-03**: Router classifies errors (rate limit 429, auth 401, network, quota exhausted) with actionable messages
+- [x] **INTG-03**: Router classifies errors (rate limit 429, auth 401, network, quota exhausted) with actionable messages
 - [x] **INTG-04**: Router injects selected API key per request without user managing key selection
 - [ ] **INTG-05**: Wrapper works with both streaming and non-streaming requests
 
@@ -161,7 +161,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | POLICY-07   | Phase 3                                                                    | Complete |
 | INTG-01     | Phase 6                                                                    | Complete |
 | INTG-02     | Phase 7                                                                    | Pending  |
-| INTG-03     | Phase 7                                                                    | Pending  |
+| INTG-03     | Phase 7                                                                    | Complete |
 | INTG-04     | Phase 6                                                                    | Complete |
 | INTG-05     | Phase 7                                                                    | Pending  |
 | PROV-01     | Phase 8                                                                    | Pending  |
