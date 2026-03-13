@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 5 (Model Catalog & Selection)
 status: executing
-last_updated: '2026-03-13T09:28:37.485Z'
+last_updated: '2026-03-13T09:34:15.532Z'
 progress:
   total_phases: 12
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 12
-  completed_plans: 11
-  percent: 92
+  completed_plans: 12
+  percent: 100
 ---
 
 # Project State: LLM Router
@@ -28,18 +28,18 @@ progress:
 ## Current Position
 
 **Phase:** 5 - Model Catalog & Selection
-**Plan:** 05-03 complete (4/5 plans done)
-**Status:** In progress
-**Progress:** [█████████░] 92%
+**Plan:** 05-04 complete (5/5 plans done)
+**Status:** Complete
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
 ### Velocity
 
-- **Phases completed:** 4/12
-- **Plans completed:** 11/12 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 4/5)
-- **Average plan duration:** 12m 11s (11 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s, 7m 14s)
-- **Estimated completion:** Phase 5 in progress (4/5 plans complete)
+- **Phases completed:** 5/12
+- **Plans completed:** 12/12 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5)
+- **Average plan duration:** 11m 20s (12 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s, 7m 14s, 2m 18s)
+- **Estimated completion:** Phase 5 complete (5/5 plans complete)
 
 ### Quality
 
@@ -94,7 +94,11 @@ progress:
 | 2026-03-13   | Static snapshot embedded via readFileSync   | ESM-compatible file loading with import.meta.url, bundled by tsup automatically                                                    | No manual package.json files entry needed, snapshot embedded in dist/            |
 | 2026-03-13   | Synchronous strategies with Promise.resolve | SelectionStrategy interface requires async method, but strategies have no I/O. ESLint requires-await prevents async without await. | Built-in strategies return Promise.resolve() explicitly, no async keyword        |
 | 2026-03-13   | Explicit undefined handling for optionals   | exactOptionalPropertyTypes disallows passing `T \| undefined` to `T?` type                                                         | Build objects conditionally: `if (value !== undefined) obj.field = value`        |
-| Phase 05 P03 | 434                                         | 2 tasks                                                                                                                            | 9 files                                                                          |
+| 2026-03-13   | Eager catalog fetch at startup              | createRouter() awaits catalog.refresh() at startup with fallback to static snapshot on failure                                     | Balances freshness with startup reliability                                      |
+| 2026-03-13   | Permissive model validation                 | Unknown models logged but allowed to proceed with selection                                                                        | Avoids blocking legitimate requests when catalog is stale or model is new        |
+| 2026-03-13   | provider/model format required              | router.model() throws ConfigError if modelId lacks a slash                                                                         | Enforces consistent format and prevents ambiguous inputs                         |
+| Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                          |
+| Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                          |
 
 ### Active TODOs
 
@@ -140,27 +144,26 @@ progress:
 
 ### What Just Happened
 
-**Plan 05-03 complete:**
+**Plan 05-04 complete:**
 
-- Implemented 3 built-in selection strategies: PriorityStrategy (first eligible with headroom check), RoundRobinStrategy (stateful per-provider cycling), LeastUsedStrategy (worst-case remaining percentage)
-- Enhanced CooldownManager with exponential backoff (2^failures multiplier, only on default cooldown, respects Retry-After header)
-- Added onSuccess() method to reset consecutive failure count and clear cooldown
-- Built KeySelector coordinator orchestrating strategy resolution, policy evaluation, cooldown checking, event emission
-- Single-key short-circuit skips strategy logic for 1-key providers
-- Custom strategy support: accepts function or object, falls back to default on error
-- Emits key:selected (every selection) and provider:exhausted (before error) events
-- Throws RateLimitError (all cooldown) or QuotaExhaustedError (all exhausted)
-- Selection metrics tracked in-memory via getSelectionStats()/resetStats()
-- Filled 3 test scaffolds with smoke tests (round-robin distribution, least-used selection, cooldown skipping)
-- 2 tasks completed, 2 commits made (a8604cc, fd17d02), 4 files created, 5 files modified, 7m 14s duration
-- All 83 tests pass (4 new smoke tests, 38 todos for future coverage)
+- Wired DefaultModelCatalog and KeySelector into createRouter()
+- Updated Router interface with async model() returning {keyIndex, key, reason}
+- Added catalog and selection fields to Router interface
+- Implemented router.model() with provider/model format validation, catalog lookup, and key selection
+- Eager catalog initialization at startup with fallback to static snapshot on fetch failure
+- Custom catalog and strategy injectable via createRouter options
+- Updated router.close() to clean up catalog before storage
+- Exported DefaultModelCatalog, KeySelector, and strategies from main package
+- Handled exactOptionalPropertyTypes with conditional option object building
+- 1 task completed, 1 commit made (c199c02), 2 files modified, 2m 18s duration
+- All 83 tests pass without modification (catalog falls back gracefully in tests)
 
-**Wave 2 selection engine complete.** KeySelector ready for Router integration.
+**Phase 5 complete.** Router shell has full catalog and selection integration. router.model() is fully functional.
 
 ### What's Next
 
-- **Phase 5: Model Catalog & Selection** — Continue with Plan 05-04 (Router shell integration)
-- Success when: KeySelector + UsageTracker wired into createRouter(), selectKey() public API implemented
+- **Phase 6: Vercel AI SDK Integration** — Research and POC for wrapLanguageModel() middleware
+- Success when: router.model() wired into AI SDK middleware, per-request key injection working, usage tracking from result.usage
 
 ### Context for Next Session
 
@@ -174,4 +177,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T09:26:56Z — Phase 5 in progress (11/12 plans, 05-03 complete)_
+_Last updated: 2026-03-13T09:34:30Z — Phase 5 complete (12/12 plans, 05-04 complete)_
