@@ -118,7 +118,12 @@ Plans:
 4. Rolling 30-day windows calculate correctly (sum of last 30 days, drops day 31)
 5. Estimated vs actual token usage reconciles after provider response
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 04-01-PLAN.md — Usage types, period calculator, estimation, cooldown, StorageBackend/MemoryStorage updates, config schema
+- [ ] 04-02-PLAN.md — UsageTracker class, Router integration, getUsage()/resetUsage() API, exports
 
 ---
 
@@ -293,9 +298,9 @@ Plans:
 | Phase                           | Plans Complete | Status      | Completed |
 | ------------------------------- | -------------- | ----------- | --------- |
 | 1. Foundation Setup             | 2/2            | Complete    | ✅        |
-| 2. State Storage & Persistence  | 0/1            | Planned     | -         |
-| 3. Policy Engine                | 0/2            | Planned     | -         |
-| 4. Usage Tracking Core          | 0/?            | Not started | -         |
+| 2. State Storage & Persistence  | 1/1            | Complete    | ✅        |
+| 3. Policy Engine                | 2/2            | Complete    | ✅        |
+| 4. Usage Tracking Core          | 0/2            | Planned     | -         |
 | 5. Model Catalog & Selection    | 0/?            | Not started | -         |
 | 6. Base Router Integration      | 0/?            | Not started | -         |
 | 7. Integration & Error Handling | 0/?            | Not started | -         |
@@ -370,3 +375,4 @@ _Updated: 2026-03-12 (base package decided, model catalog added, capability-awar
 _Phase 1 complete: 2 plans in 2 waves_
 _Phase 2 planned: 1 plan in 1 wave_
 _Phase 3 planned: 2 plans in 2 waves_
+_Phase 4 planned: 2 plans in 2 waves_
