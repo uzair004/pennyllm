@@ -18,7 +18,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Usage Tracking
 
-- [ ] **USAGE-01**: Router tracks token usage (prompt + completion) per API key after each request
+- [x] **USAGE-01**: Router tracks token usage (prompt + completion) per API key after each request
 - [x] **USAGE-02**: StorageBackend contract with pluggable implementations; Phase 2 delivers MemoryStorage default (in-memory, no persistence), Phase 10 delivers SQLite and Redis adapters for persistence across restarts
 - [x] **USAGE-03**: Router tracks multiple time windows per provider (per-minute rate limits, daily request caps, monthly token quotas)
 - [x] **USAGE-04**: Time windows reset correctly based on provider policy (calendar month, rolling 30 days, per-minute sliding window)
@@ -146,7 +146,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CORE-04     | Phase 9                                                                    | Pending  |
 | CORE-05     | Phase 9                                                                    | Pending  |
 | CORE-06     | Phase 9                                                                    | Pending  |
-| USAGE-01    | Phase 4                                                                    | Pending  |
+| USAGE-01    | Phase 4                                                                    | Complete |
 | USAGE-02    | Phase 2 (contract + memory default), Phase 10 (SQLite + Redis persistence) | Complete |
 | USAGE-03    | Phase 4                                                                    | Complete |
 | USAGE-04    | Phase 4                                                                    | Complete |

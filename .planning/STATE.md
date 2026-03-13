@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 4 (Usage Tracking Core)
 status: executing
-last_updated: '2026-03-13T03:15:13.714Z'
+last_updated: '2026-03-13T03:31:56.298Z'
 progress:
   total_phases: 12
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 7
-  completed_plans: 6
-  percent: 86
+  completed_plans: 7
+  percent: 100
 ---
 
 # Project State: LLM Router
@@ -28,18 +28,18 @@ progress:
 ## Current Position
 
 **Phase:** 4 - Usage Tracking Core
-**Plan:** 04-01 complete (1/2 plans done)
-**Status:** In Progress
-**Progress:** [█████████░] 86%
+**Plan:** 04-02 complete (2/2 plans done)
+**Status:** Complete
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
 ### Velocity
 
-- **Phases completed:** 3/12
-- **Plans completed:** 6/7 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 1/2)
-- **Average plan duration:** 6m 53s (6 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s)
-- **Estimated completion:** Phase 4 in progress (1/2 plans complete)
+- **Phases completed:** 4/12
+- **Plans completed:** 7/7 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2)
+- **Average plan duration:** 6m 38s (7 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s)
+- **Estimated completion:** Phase 4 complete (2/2 plans)
 
 ### Quality
 
@@ -84,6 +84,9 @@ progress:
 | 2026-03-13 | Calendar-aware period keys                  | Monthly/daily periods use YYYY-MM/YYYY-MM-DD format, not duration division. Aligns with calendar boundaries.                      | Period calculation handles month boundaries correctly (Feb 28 → Mar 1)           |
 | 2026-03-13 | Token estimation graceful degradation       | estimateTokens() returns null on any error instead of throwing                                                                    | Usage tracking continues even if estimation fails                                |
 | 2026-03-13 | Structured usage API breaking change        | StorageBackend.getUsage() returns { promptTokens, completionTokens, totalTokens, callCount } instead of number                    | All storage adapters must implement new interface, PolicyEngine updated          |
+| 2026-03-13 | Fire-and-forget record() pattern            | Usage tracking is observability, not correctness. Recording failures should not break LLM calls.                                  | record() method wraps in try-catch and logs errors but never throws              |
+| 2026-03-13 | Lazy deduplication cleanup at 10k           | Unbounded Set growth is a memory leak. Clear at 10k to prevent while keeping dedup window large enough.                           | RequestId Set cleared when size exceeds 10k entries                              |
+| 2026-03-13 | Rolling 30-day storage limitation           | Current storage doesn't support querying historical buckets by timestamp                                                          | getUsage() queries same daily bucket 30 times, fix deferred to Phase 10          |
 
 ### Active TODOs
 
@@ -95,7 +98,7 @@ progress:
 - [x] Execute Plan 03-01 (complete: Policy types, resolver, default policies)
 - [x] Execute Plan 03-02 (complete: PolicyEngine with evaluation and events)
 - [x] Execute Plan 04-01 (complete: Usage tracking foundation - types, periods, estimation, cooldown)
-- [ ] Execute Plan 04-02 (next: UsageTracker class and integration)
+- [x] Execute Plan 04-02 (complete: UsageTracker class and Router integration)
 
 **Phase 6 prerequisite (before starting Phase 6):**
 
@@ -129,26 +132,27 @@ progress:
 
 ### What Just Happened
 
-**Plan 04-01 complete:**
+**Plan 04-02 complete:**
 
-- Created src/usage/ module with 5 files: types, periods, estimation, cooldown, index
-- getPeriodKey() handles all 5 window types with calendar-aware keys (monthly: YYYY-MM, hourly: YYYY-MM-DDTHH)
-- getResetAt() calculates next boundary using Date.UTC() for calendar-based windows
-- estimateTokens() concatenates messages/system/tools, uses custom estimator or default (~4 chars/token), returns null on error
-- CooldownManager tracks 429 state, parses Retry-After (int seconds or HTTP date), lazy cleanup on access
-- Updated StorageBackend interface: increment() accepts optional callCount, getUsage() returns StructuredUsage (breaking change)
-- Updated MemoryStorage: uses calendar-aware period keys, tracks call counts in parallel Map, cleans up both Maps on expiration
-- Fixed PolicyEngine to use structured getUsage return type (destructure totalTokens)
-- Added estimation config schema (defaultMaxTokens: 1024), tokenEstimator is runtime-only
-- Updated all contract tests to expect structured usage data
-- 2 tasks completed, 2 commits made (a3181e1, 88e3dff), 5 files created, 7 files modified, 6m 47s duration
+- Created UsageTracker class in src/usage/UsageTracker.ts with 5 public methods
+- estimate() delegates to estimateTokens utility for pre-call token estimation
+- record() performs multi-window recording, requestId deduplication, estimation fallback, fire-and-forget error handling
+- handle429() sets cooldown via CooldownManager and records call count (no tokens)
+- getUsage() overloaded: no args returns UsageSnapshot, provider arg returns ProviderUsage
+- resetUsage() clears storage, cooldowns, dedup set, estimated records based on scope
+- Updated UsageRecordedEvent with estimated and windows fields
+- Wired UsageTracker into createRouter with EstimationConfig from config + runtime tokenEstimator
+- Updated Router interface with typed getUsage overloads, resetUsage method, usage field
+- Exported UsageTracker, CooldownManager, and all usage types from main package
+- 2 tasks completed, 2 commits made (30422af, 5db83ff), 1 file created, 5 files modified, 5m 51s duration
+- All 74 tests pass
 
-**Phase 4 Plan 01 complete.** Usage tracking foundation ready with calendar-aware periods, token estimation, cooldown management, and structured usage API.
+**Phase 4 complete.** Usage tracking system fully integrated into Router with developer-facing API.
 
 ### What's Next
 
-- **Phase 4 Plan 02: UsageTracker class** — Assemble utilities into UsageTracker, integrate with createRouter
-- Success when: recordUsage() increments storage, getUsage() queries across windows, cooldown manager integrated
+- **Phase 5: Model Selection Strategy** — Build SelectionStrategy interface and default implementations
+- Success when: Round-robin and least-used strategies select keys based on usage/cooldown state
 
 ### Context for Next Session
 
@@ -162,4 +166,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T03:13:19Z — Phase 4 in progress (6/7 plans, 04-01 complete)_
+_Last updated: 2026-03-13T03:33:43Z — Phase 4 complete (7/7 plans, 04-02 complete)_

@@ -13,7 +13,7 @@
 - [x] **Phase 1: Foundation Setup** - Project scaffolding, TypeScript config, build tooling, core interfaces, domain types
 - [x] **Phase 2: State Storage & Persistence** - Memory storage default, StorageBackend contract tests, config schema update
 - [x] **Phase 3: Policy Engine** - Declarative config loader, policy evaluation, versioning
-- [ ] **Phase 4: Usage Tracking Core** - Multi-window tracking, atomic operations, reset logic, scenrios, reconciliation, accuracy, edge cases, how liteLLM handles this
+- [x] **Phase 4: Usage Tracking Core** - Multi-window tracking, atomic operations, reset logic, scenrios, reconciliation, accuracy, edge cases, how liteLLM handles this
 - [ ] **Phase 5: Model Catalog & Selection** - Live model catalog (models.dev, OpenRouter), capability flags, quality tiers, selection algorithms, updates
 - [ ] **Phase 6: Base Router Integration** - Vercel AI SDK `wrapLanguageModel()` middleware, key injection via `create*({ apiKey })`
 - [ ] **Phase 7: Integration & Error Handling** - Error classification, streaming support, tool calling, structured output passthrough, observability hooks for routing decisions and errors, detailed error messages with context, other llm features (e.g., tool calling, structured output) we need to handle or don't need to worry about
