@@ -4,42 +4,42 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 4 (Usage Tracking Core)
 status: planning
-last_updated: '2026-03-13T03:39:28.667Z'
+last_updated: '2026-03-13T07:14:27.911Z'
 progress:
   total_phases: 12
   completed_phases: 4
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_plans: 12
+  completed_plans: 8
+  percent: 67
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-13
-**Current phase:** Phase 4 (Usage Tracking Core)
-**Status:** Ready to plan
+**Current phase:** Phase 5 (Model Catalog & Selection)
+**Status:** In progress
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 4 in progress. Building usage tracking foundation with calendar-aware periods, token estimation, and cooldown management.
+**Current focus:** Phase 5 in progress. Building model catalog system with live API integration and selection strategy framework.
 
 ## Current Position
 
-**Phase:** 4 - Usage Tracking Core
-**Plan:** 04-02 complete (2/2 plans done)
-**Status:** Complete
-**Progress:** [██████████] 100%
+**Phase:** 5 - Model Catalog & Selection
+**Plan:** 05-00 complete (1/5 plans done)
+**Status:** In progress
+**Progress:** [███████░░░] 67%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 4/12
-- **Plans completed:** 7/7 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2)
-- **Average plan duration:** 6m 38s (7 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s)
-- **Estimated completion:** Phase 4 complete (2/2 plans)
+- **Plans completed:** 8/12 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 1/5)
+- **Average plan duration:** 6m 39s (8 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s)
+- **Estimated completion:** Phase 5 in progress (1/5 plans complete)
 
 ### Quality
 
@@ -57,36 +57,37 @@ progress:
 
 ### Key Decisions
 
-| Date       | Decision                                    | Rationale                                                                                                                         | Impact                                                                           |
-| ---------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| 2026-03-11 | 12-phase fine-grained structure             | Requirements naturally cluster into focused deliverables                                                                          | Phases 1-5 are independent testable units, Phases 6-12 build integration         |
-| 2026-03-11 | Core Engine first (Phases 1-5)              | Zero external dependencies, highest-risk logic                                                                                    | Can prove architecture before integrating Vercel AI SDK                          |
-| 2026-03-11 | Research gates at Phase 6 & 8               | Base router requires POC, free tier limits require empirical validation                                                           | Prevents premature commitment                                                    |
-| 2026-03-12 | Vercel AI SDK as base (decided)             | Only TS SDK with native `wrapLanguageModel()` middleware, 36M/wk downloads, per-request key injection. Evaluated 10 alternatives. | Core integration point for Phase 6+                                              |
-| 2026-03-12 | Rejected LiteLLM fork                       | Python (1M LOC), requires Postgres+Redis infrastructure, 2500 commits/month impossible to sync, no free-tier tracking             | Use as design reference only                                                     |
-| 2026-03-12 | Model catalog from live APIs                | models.dev (primary), OpenRouter (categories), Artificial Analysis (quality tiers). Not static files.                             | Phase 5 implements ModelCatalog interface                                        |
-| 2026-03-12 | Capability-aware fallback                   | Reasoning → reasoning, not generic. Quality tiers from benchmarks. Cheap paid fallback when budget > $0.                          | Phase 9 implements fallback chains                                               |
-| 2026-03-12 | Three abstractions only                     | StorageBackend, ModelCatalog, SelectionStrategy. No LLM SDK abstraction. Everything else concrete.                                | Prevents over-abstraction, keeps codebase navigable                              |
-| 2026-03-12 | Use Zod v3.23.0 instead of v4               | AI SDK peer dependency requires Zod v3, v4 causes npm install conflict                                                            | Stable Zod v3 API, compatible with AI SDK ecosystem                              |
-| 2026-03-12 | Use exactOptionalPropertyTypes in tsconfig  | Strictest TypeScript mode for catching undefined assignment bugs                                                                  | Required explicit undefined checks in error class constructors                   |
-| 2026-03-12 | 8 separate entry points via subpath exports | Tree-shakeable exports per PLAN.md spec, allows selective imports                                                                 | Users can import only what they need: 'llm-router/storage', 'llm-router/types'   |
-| 2026-03-12 | Use Zod .default() correctly                | Per RESEARCH.md pitfall 4: .default() alone makes field optional in input, guaranteed in output. Not .optional().default()        | Config schema accepts minimal input, returns complete config                     |
-| 2026-03-12 | Cast schema output to RouterConfig          | Zod output type incompatible with interface types under exactOptionalPropertyTypes (enabled: boolean vs enabled?: boolean)        | Safe cast maintains type safety while satisfying strict TypeScript mode          |
-| 2026-03-12 | Runtime storage injection via options       | createRouter accepts optional storage parameter, defaults to MemoryStorage. Config no longer has storage section.                 | Users can provide custom adapters, storage is runtime-injected not config-driven |
-| 2026-03-12 | Lazy expiration cleanup on access           | Prevents unbounded Map growth without background timers. Cleanup runs before increment/getUsage.                                  | No timer overhead, expiration happens naturally during normal operations         |
-| 2026-03-12 | Synchronous increment for atomicity         | MemoryStorage uses synchronous Map.get/Map.set with no await between. Ensures atomic read-modify-write.                           | Atomicity guaranteed in MemoryStorage, future adapters use DB transactions       |
-| 2026-03-12 | Empty array per-key limits as no override   | Empty array in { key, limits: [] } treated same as omitting limits field                                                          | Prevents accidental limit clearing, users must explicitly set limits to override |
-| 2026-03-12 | Validation runs after merge at startup      | Contradictory limit validation happens at resolve time not evaluation time                                                        | Fail-fast design catches config errors early before runtime                      |
-| 2026-03-12 | Debug warning for custom providers          | Providers without shipped defaults and no configured limits log debug message                                                     | Custom providers resolve to always-available with empty limits array             |
-| 2026-03-12 | Warning event deduplication via Set         | Prevents event spam when limit stays above threshold. Exceeded events fire every time for visibility.                             | Warning fires once per limit crossing, resetWarnings() clears deduplication      |
-| 2026-03-12 | Conditional closestLimit inclusion          | exactOptionalPropertyTypes requires explicit undefined handling for optional fields                                               | EvaluationResult only includes closestLimit field when it exists                 |
-| 2026-03-12 | Real EventEmitter in createRouter           | Router.on/off wired to node:events EventEmitter instead of stubs                                                                  | Users can subscribe to limit:warning, limit:exceeded, policy:stale events        |
-| 2026-03-13 | Calendar-aware period keys                  | Monthly/daily periods use YYYY-MM/YYYY-MM-DD format, not duration division. Aligns with calendar boundaries.                      | Period calculation handles month boundaries correctly (Feb 28 → Mar 1)           |
-| 2026-03-13 | Token estimation graceful degradation       | estimateTokens() returns null on any error instead of throwing                                                                    | Usage tracking continues even if estimation fails                                |
-| 2026-03-13 | Structured usage API breaking change        | StorageBackend.getUsage() returns { promptTokens, completionTokens, totalTokens, callCount } instead of number                    | All storage adapters must implement new interface, PolicyEngine updated          |
-| 2026-03-13 | Fire-and-forget record() pattern            | Usage tracking is observability, not correctness. Recording failures should not break LLM calls.                                  | record() method wraps in try-catch and logs errors but never throws              |
-| 2026-03-13 | Lazy deduplication cleanup at 10k           | Unbounded Set growth is a memory leak. Clear at 10k to prevent while keeping dedup window large enough.                           | RequestId Set cleared when size exceeds 10k entries                              |
-| 2026-03-13 | Rolling 30-day storage limitation           | Current storage doesn't support querying historical buckets by timestamp                                                          | getUsage() queries same daily bucket 30 times, fix deferred to Phase 10          |
+| Date         | Decision                                    | Rationale                                                                                                                         | Impact                                                                           |
+| ------------ | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| 2026-03-11   | 12-phase fine-grained structure             | Requirements naturally cluster into focused deliverables                                                                          | Phases 1-5 are independent testable units, Phases 6-12 build integration         |
+| 2026-03-11   | Core Engine first (Phases 1-5)              | Zero external dependencies, highest-risk logic                                                                                    | Can prove architecture before integrating Vercel AI SDK                          |
+| 2026-03-11   | Research gates at Phase 6 & 8               | Base router requires POC, free tier limits require empirical validation                                                           | Prevents premature commitment                                                    |
+| 2026-03-12   | Vercel AI SDK as base (decided)             | Only TS SDK with native `wrapLanguageModel()` middleware, 36M/wk downloads, per-request key injection. Evaluated 10 alternatives. | Core integration point for Phase 6+                                              |
+| 2026-03-12   | Rejected LiteLLM fork                       | Python (1M LOC), requires Postgres+Redis infrastructure, 2500 commits/month impossible to sync, no free-tier tracking             | Use as design reference only                                                     |
+| 2026-03-12   | Model catalog from live APIs                | models.dev (primary), OpenRouter (categories), Artificial Analysis (quality tiers). Not static files.                             | Phase 5 implements ModelCatalog interface                                        |
+| 2026-03-12   | Capability-aware fallback                   | Reasoning → reasoning, not generic. Quality tiers from benchmarks. Cheap paid fallback when budget > $0.                          | Phase 9 implements fallback chains                                               |
+| 2026-03-12   | Three abstractions only                     | StorageBackend, ModelCatalog, SelectionStrategy. No LLM SDK abstraction. Everything else concrete.                                | Prevents over-abstraction, keeps codebase navigable                              |
+| 2026-03-12   | Use Zod v3.23.0 instead of v4               | AI SDK peer dependency requires Zod v3, v4 causes npm install conflict                                                            | Stable Zod v3 API, compatible with AI SDK ecosystem                              |
+| 2026-03-12   | Use exactOptionalPropertyTypes in tsconfig  | Strictest TypeScript mode for catching undefined assignment bugs                                                                  | Required explicit undefined checks in error class constructors                   |
+| 2026-03-12   | 8 separate entry points via subpath exports | Tree-shakeable exports per PLAN.md spec, allows selective imports                                                                 | Users can import only what they need: 'llm-router/storage', 'llm-router/types'   |
+| 2026-03-12   | Use Zod .default() correctly                | Per RESEARCH.md pitfall 4: .default() alone makes field optional in input, guaranteed in output. Not .optional().default()        | Config schema accepts minimal input, returns complete config                     |
+| 2026-03-12   | Cast schema output to RouterConfig          | Zod output type incompatible with interface types under exactOptionalPropertyTypes (enabled: boolean vs enabled?: boolean)        | Safe cast maintains type safety while satisfying strict TypeScript mode          |
+| 2026-03-12   | Runtime storage injection via options       | createRouter accepts optional storage parameter, defaults to MemoryStorage. Config no longer has storage section.                 | Users can provide custom adapters, storage is runtime-injected not config-driven |
+| 2026-03-12   | Lazy expiration cleanup on access           | Prevents unbounded Map growth without background timers. Cleanup runs before increment/getUsage.                                  | No timer overhead, expiration happens naturally during normal operations         |
+| 2026-03-12   | Synchronous increment for atomicity         | MemoryStorage uses synchronous Map.get/Map.set with no await between. Ensures atomic read-modify-write.                           | Atomicity guaranteed in MemoryStorage, future adapters use DB transactions       |
+| 2026-03-12   | Empty array per-key limits as no override   | Empty array in { key, limits: [] } treated same as omitting limits field                                                          | Prevents accidental limit clearing, users must explicitly set limits to override |
+| 2026-03-12   | Validation runs after merge at startup      | Contradictory limit validation happens at resolve time not evaluation time                                                        | Fail-fast design catches config errors early before runtime                      |
+| 2026-03-12   | Debug warning for custom providers          | Providers without shipped defaults and no configured limits log debug message                                                     | Custom providers resolve to always-available with empty limits array             |
+| 2026-03-12   | Warning event deduplication via Set         | Prevents event spam when limit stays above threshold. Exceeded events fire every time for visibility.                             | Warning fires once per limit crossing, resetWarnings() clears deduplication      |
+| 2026-03-12   | Conditional closestLimit inclusion          | exactOptionalPropertyTypes requires explicit undefined handling for optional fields                                               | EvaluationResult only includes closestLimit field when it exists                 |
+| 2026-03-12   | Real EventEmitter in createRouter           | Router.on/off wired to node:events EventEmitter instead of stubs                                                                  | Users can subscribe to limit:warning, limit:exceeded, policy:stale events        |
+| 2026-03-13   | Calendar-aware period keys                  | Monthly/daily periods use YYYY-MM/YYYY-MM-DD format, not duration division. Aligns with calendar boundaries.                      | Period calculation handles month boundaries correctly (Feb 28 → Mar 1)           |
+| 2026-03-13   | Token estimation graceful degradation       | estimateTokens() returns null on any error instead of throwing                                                                    | Usage tracking continues even if estimation fails                                |
+| 2026-03-13   | Structured usage API breaking change        | StorageBackend.getUsage() returns { promptTokens, completionTokens, totalTokens, callCount } instead of number                    | All storage adapters must implement new interface, PolicyEngine updated          |
+| 2026-03-13   | Fire-and-forget record() pattern            | Usage tracking is observability, not correctness. Recording failures should not break LLM calls.                                  | record() method wraps in try-catch and logs errors but never throws              |
+| 2026-03-13   | Lazy deduplication cleanup at 10k           | Unbounded Set growth is a memory leak. Clear at 10k to prevent while keeping dedup window large enough.                           | RequestId Set cleared when size exceeds 10k entries                              |
+| 2026-03-13   | Rolling 30-day storage limitation           | Current storage doesn't support querying historical buckets by timestamp                                                          | getUsage() queries same daily bucket 30 times, fix deferred to Phase 10          |
+| Phase 05 P00 | 6m 44s                                      | 1 tasks                                                                                                                           | 4 files                                                                          |
 
 ### Active TODOs
 
@@ -132,27 +133,23 @@ progress:
 
 ### What Just Happened
 
-**Plan 04-02 complete:**
+**Plan 05-00 complete:**
 
-- Created UsageTracker class in src/usage/UsageTracker.ts with 5 public methods
-- estimate() delegates to estimateTokens utility for pre-call token estimation
-- record() performs multi-window recording, requestId deduplication, estimation fallback, fire-and-forget error handling
-- handle429() sets cooldown via CooldownManager and records call count (no tokens)
-- getUsage() overloaded: no args returns UsageSnapshot, provider arg returns ProviderUsage
-- resetUsage() clears storage, cooldowns, dedup set, estimated records based on scope
-- Updated UsageRecordedEvent with estimated and windows fields
-- Wired UsageTracker into createRouter with EstimationConfig from config + runtime tokenEstimator
-- Updated Router interface with typed getUsage overloads, resetUsage method, usage field
-- Exported UsageTracker, CooldownManager, and all usage types from main package
-- 2 tasks completed, 2 commits made (30422af, 5db83ff), 1 file created, 5 files modified, 5m 51s duration
-- All 74 tests pass
+- Created test scaffold files for all Phase 5 behaviors with 47 pending test cases
+- DefaultModelCatalog.test.ts with 24 it.todo() cases covering refresh, capabilities, quality tiers, pricing, offline fallback, listModels, and close
+- round-robin.test.ts with 4 it.todo() cases for even distribution, per-provider cycling, skip ineligible, and reset logic
+- least-used.test.ts with 4 it.todo() cases for quota-aware selection, no-limit handling, tiebreakers, and skip ineligible
+- KeySelector.test.ts with 15 it.todo() cases for per-provider override, skip ineligible, custom strategy, single-key shortcircuit, and events
+- Created src/selection/strategies directory to hold strategy test files
+- 1 task completed, 1 commit made (080563b), 4 files created, 6m 44s duration
+- All test files run successfully under Vitest showing 47 todo tests
 
-**Phase 4 complete.** Usage tracking system fully integrated into Router with developer-facing API.
+**Wave 0 complete.** Test scaffolds in place for implementation plans 05-02 and 05-03.
 
 ### What's Next
 
-- **Phase 5: Model Selection Strategy** — Build SelectionStrategy interface and default implementations
-- Success when: Round-robin and least-used strategies select keys based on usage/cooldown state
+- **Phase 5: Model Catalog & Selection** — Continue with Plan 05-01 (types and interfaces) then 05-02 (catalog implementation)
+- Success when: Model catalog fetches from live APIs, selection strategies distribute requests, KeySelector orchestrates strategy logic
 
 ### Context for Next Session
 
@@ -166,4 +163,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T03:33:43Z — Phase 4 complete (7/7 plans, 04-02 complete)_
+_Last updated: 2026-03-13T07:02:27Z — Phase 5 in progress (8/12 plans, 05-00 complete)_

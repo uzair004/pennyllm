@@ -70,19 +70,19 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Selection Algorithm
 
-- [ ] **ALGO-01**: Round-robin selection distributes requests evenly across available keys
-- [ ] **ALGO-02**: Least-used selection prefers keys with most remaining quota
-- [ ] **ALGO-03**: User can configure selection strategy per provider (round-robin or least-used)
-- [ ] **ALGO-04**: Selection skips keys that have exceeded any limit (rate, token, call count)
-- [ ] **ALGO-05**: Selection algorithm is pluggable (user can provide custom strategy)
+- [x] **ALGO-01**: Round-robin selection distributes requests evenly across available keys
+- [x] **ALGO-02**: Least-used selection prefers keys with most remaining quota
+- [x] **ALGO-03**: User can configure selection strategy per provider (round-robin or least-used)
+- [x] **ALGO-04**: Selection skips keys that have exceeded any limit (rate, token, call count)
+- [x] **ALGO-05**: Selection algorithm is pluggable (user can provide custom strategy)
 
 ### Model Catalog
 
-- [ ] **CAT-01**: Router fetches model metadata from live APIs (models.dev primary, OpenRouter supplementary) with periodic refresh
-- [ ] **CAT-02**: Models have capability flags: reasoning, tool calling, structured output, vision
-- [ ] **CAT-03**: Models have quality tiers derived from benchmark data (frontier, high, mid, small)
-- [ ] **CAT-04**: Catalog includes cheap paid models with pricing for fallback routing (not just free tier)
-- [ ] **CAT-05**: Catalog works offline with bundled static snapshot as fallback when APIs unreachable
+- [x] **CAT-01**: Router fetches model metadata from live APIs (models.dev primary, OpenRouter supplementary) with periodic refresh
+- [x] **CAT-02**: Models have capability flags: reasoning, tool calling, structured output, vision
+- [x] **CAT-03**: Models have quality tiers derived from benchmark data (frontier, high, mid, small)
+- [x] **CAT-04**: Catalog includes cheap paid models with pricing for fallback routing (not just free tier)
+- [x] **CAT-05**: Catalog works offline with bundled static snapshot as fallback when APIs unreachable
 - [ ] **CAT-06**: Fallback routing respects model capabilities (reasoning model falls back to reasoning, not generic)
 - [ ] **CAT-07**: Fallback routing prefers cheapest matching model when budget allows paid usage
 
@@ -183,16 +183,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DX-05       | Phase 9                                                                    | Pending  |
 | DX-06       | Phase 11                                                                   | Pending  |
 | DX-07       | Phase 1, Phase 11                                                          | Complete |
-| ALGO-01     | Phase 5                                                                    | Pending  |
-| ALGO-02     | Phase 5                                                                    | Pending  |
-| ALGO-03     | Phase 5                                                                    | Pending  |
-| ALGO-04     | Phase 5                                                                    | Pending  |
-| ALGO-05     | Phase 5                                                                    | Pending  |
-| CAT-01      | Phase 5                                                                    | Pending  |
-| CAT-02      | Phase 5                                                                    | Pending  |
-| CAT-03      | Phase 5                                                                    | Pending  |
-| CAT-04      | Phase 5                                                                    | Pending  |
-| CAT-05      | Phase 5                                                                    | Pending  |
+| ALGO-01     | Phase 5                                                                    | Complete |
+| ALGO-02     | Phase 5                                                                    | Complete |
+| ALGO-03     | Phase 5                                                                    | Complete |
+| ALGO-04     | Phase 5                                                                    | Complete |
+| ALGO-05     | Phase 5                                                                    | Complete |
+| CAT-01      | Phase 5                                                                    | Complete |
+| CAT-02      | Phase 5                                                                    | Complete |
+| CAT-03      | Phase 5                                                                    | Complete |
+| CAT-04      | Phase 5                                                                    | Complete |
+| CAT-05      | Phase 5                                                                    | Complete |
 | CAT-06      | Phase 9                                                                    | Pending  |
 | CAT-07      | Phase 9                                                                    | Pending  |
 
