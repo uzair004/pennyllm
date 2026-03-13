@@ -1,16 +1,20 @@
 /**
  * Manages rate limit cooldowns for API keys after 429 responses
+ * Includes exponential backoff for consecutive failures
  */
 export class CooldownManager {
   private cooldowns: Map<string, { until: number; reason: string }>;
+  private consecutiveFailures: Map<string, number>;
 
   constructor() {
     this.cooldowns = new Map();
+    this.consecutiveFailures = new Map();
   }
 
   /**
    * Set a cooldown for a specific provider key
    * Parses Retry-After header if provided
+   * Applies exponential backoff for consecutive failures (only when no Retry-After header)
    */
   setCooldown(
     provider: string,
@@ -34,12 +38,21 @@ export class CooldownManager {
         }
         // If both fail, use default
       }
+    } else {
+      // Apply exponential backoff to default cooldown when no Retry-After header
+      const failures = this.consecutiveFailures.get(key) ?? 0;
+      const multiplier = Math.pow(2, failures);
+      cooldownMs = defaultCooldownMs * multiplier;
     }
 
     this.cooldowns.set(key, {
       until: Date.now() + cooldownMs,
       reason: '429 rate limit',
     });
+
+    // Increment consecutive failure count
+    const currentFailures = this.consecutiveFailures.get(key) ?? 0;
+    this.consecutiveFailures.set(key, currentFailures + 1);
   }
 
   /**
@@ -95,6 +108,7 @@ export class CooldownManager {
    */
   clearAll(): void {
     this.cooldowns.clear();
+    this.consecutiveFailures.clear();
   }
 
   /**
@@ -102,6 +116,17 @@ export class CooldownManager {
    */
   clear(provider: string, keyIndex: number): void {
     const key = `${provider}:${keyIndex}`;
+    this.cooldowns.delete(key);
+    this.consecutiveFailures.delete(key);
+  }
+
+  /**
+   * Mark a successful call to reset consecutive failure count
+   * Also clears any existing cooldown for the key
+   */
+  onSuccess(provider: string, keyIndex: number): void {
+    const key = `${provider}:${keyIndex}`;
+    this.consecutiveFailures.set(key, 0);
     this.cooldowns.delete(key);
   }
 }
