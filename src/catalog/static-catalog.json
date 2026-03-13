@@ -1,143 +1,8 @@
 [
   {
-    "id": "google/gemini-2.0-flash",
-    "provider": "google",
-    "name": "Gemini 2.0 Flash",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": true
-    },
-    "qualityTier": "high",
-    "contextWindow": 1048576,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "google/gemini-2.0-flash-lite",
-    "provider": "google",
-    "name": "Gemini 2.0 Flash Lite",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": true
-    },
-    "qualityTier": "mid",
-    "contextWindow": 1048576,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "google/gemini-1.5-flash",
-    "provider": "google",
-    "name": "Gemini 1.5 Flash",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": true
-    },
-    "qualityTier": "mid",
-    "contextWindow": 1000000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "groq/llama-3.3-70b-versatile",
-    "provider": "groq",
-    "name": "Llama 3.3 70B Versatile",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": false
-    },
-    "qualityTier": "high",
-    "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "groq/llama-3.1-8b-instant",
-    "provider": "groq",
-    "name": "Llama 3.1 8B Instant",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": false
-    },
-    "qualityTier": "mid",
-    "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "groq/mixtral-8x7b-32768",
-    "provider": "groq",
-    "name": "Mixtral 8x7B",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": false,
-      "vision": false
-    },
-    "qualityTier": "high",
-    "contextWindow": 32768,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "openrouter/meta-llama/llama-3.2-3b-instruct:free",
-    "provider": "openrouter",
-    "name": "Llama 3.2 3B Instruct (Free)",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": false,
-      "structuredOutput": false,
-      "vision": false
-    },
-    "qualityTier": "small",
-    "contextWindow": 131072,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "openrouter/google/gemini-flash-1.5",
-    "provider": "openrouter",
-    "name": "Gemini Flash 1.5 (via OpenRouter)",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": true
-    },
-    "qualityTier": "mid",
-    "contextWindow": 1000000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "mistral/mistral-small-latest",
-    "provider": "mistral",
-    "name": "Mistral Small",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": false
-    },
-    "qualityTier": "mid",
-    "contextWindow": 32000,
-    "pricing": { "promptPer1MTokens": 200, "completionPer1MTokens": 600 },
-    "status": "active"
-  },
-  {
-    "id": "mistral/codestral-mamba-latest",
-    "provider": "mistral",
-    "name": "Codestral Mamba",
+    "id": "ai21/jamba-large-1.7",
+    "provider": "ai21",
+    "name": "AI21: Jamba Large 1.7",
     "capabilities": {
       "reasoning": false,
       "toolCall": false,
@@ -146,133 +11,1564 @@
     },
     "qualityTier": "mid",
     "contextWindow": 256000,
-    "pricing": { "promptPer1MTokens": 250, "completionPer1MTokens": 250 },
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 8
+    },
     "status": "active"
   },
   {
-    "id": "huggingface/meta-llama/Llama-3.2-3B-Instruct",
-    "provider": "huggingface",
-    "name": "Llama 3.2 3B Instruct",
+    "id": "aion-labs/aion-1.0",
+    "provider": "aion-labs",
+    "name": "AionLabs: Aion-1.0",
     "capabilities": {
       "reasoning": false,
       "toolCall": false,
       "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "small",
+    "qualityTier": "mid",
     "contextWindow": 131072,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 4,
+      "completionPer1MTokens": 8
+    },
     "status": "active"
   },
   {
-    "id": "huggingface/microsoft/Phi-4",
-    "provider": "huggingface",
-    "name": "Phi-4",
+    "id": "aion-labs/aion-1.0-mini",
+    "provider": "aion-labs",
+    "name": "AionLabs: Aion-1.0-Mini",
     "capabilities": {
       "reasoning": false,
       "toolCall": false,
       "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "small",
-    "contextWindow": 16384,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.7,
+      "completionPer1MTokens": 1.4
+    },
     "status": "active"
   },
   {
-    "id": "cerebras/llama-3.3-70b",
-    "provider": "cerebras",
-    "name": "Llama 3.3 70B",
+    "id": "aion-labs/aion-2.0",
+    "provider": "aion-labs",
+    "name": "AionLabs: Aion-2.0",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "high",
-    "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 1.5999999999999999
+    },
     "status": "active"
   },
   {
-    "id": "cerebras/llama-3.1-8b",
-    "provider": "cerebras",
-    "name": "Llama 3.1 8B",
+    "id": "aion-labs/aion-rp-llama-3.1-8b",
+    "provider": "aion-labs",
+    "name": "AionLabs: Aion-RP 1.0 (8B)",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 1.5999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "alfredpros/codellama-7b-instruct-solidity",
+    "provider": "alfredpros",
+    "name": "AlfredPros: CodeLLaMa 7B Instruct Solidity",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 4096,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "alibaba/tongyi-deepresearch-30b-a3b",
+    "provider": "alibaba",
+    "name": "Tongyi DeepResearch 30B A3B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.09,
+      "completionPer1MTokens": 0.44999999999999996
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/molmo-2-8b",
+    "provider": "allenai",
+    "name": "AllenAI: Molmo2 8B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 36864,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/olmo-2-0325-32b-instruct",
+    "provider": "allenai",
+    "name": "AllenAI: Olmo 2 32B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
     "qualityTier": "mid",
     "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 0.049999999999999996,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/olmo-3-32b-think",
+    "provider": "allenai",
+    "name": "AllenAI: Olmo 3 32B Think",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/olmo-3-7b-instruct",
+    "provider": "allenai",
+    "name": "AllenAI: Olmo 3 7B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/olmo-3-7b-think",
+    "provider": "allenai",
+    "name": "AllenAI: Olmo 3 7B Think",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.12,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/olmo-3.1-32b-instruct",
+    "provider": "allenai",
+    "name": "AllenAI: Olmo 3.1 32B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "allenai/olmo-3.1-32b-think",
+    "provider": "allenai",
+    "name": "AllenAI: Olmo 3.1 32B Think",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "alpindale/goliath-120b",
+    "provider": "alpindale",
+    "name": "Goliath 120B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 6144,
+    "pricing": {
+      "promptPer1MTokens": 3.75,
+      "completionPer1MTokens": 7.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "amazon/nova-2-lite-v1",
+    "provider": "amazon",
+    "name": "Amazon: Nova 2 Lite",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 2.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "amazon/nova-lite-v1",
+    "provider": "amazon",
+    "name": "Amazon: Nova Lite 1.0",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 300000,
+    "pricing": {
+      "promptPer1MTokens": 0.06,
+      "completionPer1MTokens": 0.24
+    },
+    "status": "active"
+  },
+  {
+    "id": "amazon/nova-micro-v1",
+    "provider": "amazon",
+    "name": "Amazon: Nova Micro 1.0",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.035,
+      "completionPer1MTokens": 0.14
+    },
+    "status": "active"
+  },
+  {
+    "id": "amazon/nova-premier-v1",
+    "provider": "amazon",
+    "name": "Amazon: Nova Premier 1.0",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 12.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "amazon/nova-pro-v1",
+    "provider": "amazon",
+    "name": "Amazon: Nova Pro 1.0",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 300000,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 3.1999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthracite-org/magnum-v4-72b",
+    "provider": "anthracite-org",
+    "name": "Magnum v4 72B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 16384,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 5
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-3-haiku",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude 3 Haiku",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 1.25
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-3.5-haiku",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude 3.5 Haiku",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 4
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-3.5-sonnet",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude 3.5 Sonnet",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 6,
+      "completionPer1MTokens": 30
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-3.7-sonnet",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude 3.7 Sonnet",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-3.7-sonnet:thinking",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude 3.7 Sonnet (thinking)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-haiku-4.5",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Haiku 4.5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 1,
+      "completionPer1MTokens": 5
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-opus-4",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Opus 4",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 15,
+      "completionPer1MTokens": 75
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-opus-4.1",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Opus 4.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 15,
+      "completionPer1MTokens": 75
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-opus-4.5",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Opus 4.5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 5,
+      "completionPer1MTokens": 25
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-opus-4.6",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Opus 4.6",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 5,
+      "completionPer1MTokens": 25
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-sonnet-4",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Sonnet 4",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-sonnet-4.5",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Sonnet 4.5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "anthropic/claude-sonnet-4.6",
+    "provider": "anthropic",
+    "name": "Anthropic: Claude Sonnet 4.6",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/coder-large",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Coder Large",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.5,
+      "completionPer1MTokens": 0.7999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/maestro-reasoning",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Maestro Reasoning",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.8999999999999999,
+      "completionPer1MTokens": 3.3000000000000003
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/spotlight",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Spotlight",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.18,
+      "completionPer1MTokens": 0.18
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/trinity-large-preview:free",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Trinity Large Preview (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/trinity-mini",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Trinity Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.045,
+      "completionPer1MTokens": 0.15
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/trinity-mini:free",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Trinity Mini (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "arcee-ai/virtuoso-large",
+    "provider": "arcee-ai",
+    "name": "Arcee AI: Virtuoso Large",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.75,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "baidu/ernie-4.5-21b-a3b",
+    "provider": "baidu",
+    "name": "Baidu: ERNIE 4.5 21B A3B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 120000,
+    "pricing": {
+      "promptPer1MTokens": 0.07,
+      "completionPer1MTokens": 0.28
+    },
+    "status": "active"
+  },
+  {
+    "id": "baidu/ernie-4.5-21b-a3b-thinking",
+    "provider": "baidu",
+    "name": "Baidu: ERNIE 4.5 21B A3B Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.07,
+      "completionPer1MTokens": 0.28
+    },
+    "status": "active"
+  },
+  {
+    "id": "baidu/ernie-4.5-300b-a47b",
+    "provider": "baidu",
+    "name": "Baidu: ERNIE 4.5 300B A47B ",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 123000,
+    "pricing": {
+      "promptPer1MTokens": 0.28,
+      "completionPer1MTokens": 1.1
+    },
+    "status": "active"
+  },
+  {
+    "id": "baidu/ernie-4.5-vl-28b-a3b",
+    "provider": "baidu",
+    "name": "Baidu: ERNIE 4.5 VL 28B A3B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 30000,
+    "pricing": {
+      "promptPer1MTokens": 0.14,
+      "completionPer1MTokens": 0.56
+    },
+    "status": "active"
+  },
+  {
+    "id": "baidu/ernie-4.5-vl-424b-a47b",
+    "provider": "baidu",
+    "name": "Baidu: ERNIE 4.5 VL 424B A47B ",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 123000,
+    "pricing": {
+      "promptPer1MTokens": 0.42,
+      "completionPer1MTokens": 1.25
+    },
+    "status": "active"
+  },
+  {
+    "id": "bytedance/ui-tars-1.5-7b",
+    "provider": "bytedance",
+    "name": "ByteDance: UI-TARS 7B ",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "bytedance-seed/seed-1.6",
+    "provider": "bytedance-seed",
+    "name": "ByteDance Seed: Seed 1.6",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "bytedance-seed/seed-1.6-flash",
+    "provider": "bytedance-seed",
+    "name": "ByteDance Seed: Seed 1.6 Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.075,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "bytedance-seed/seed-2.0-lite",
+    "provider": "bytedance-seed",
+    "name": "ByteDance Seed: Seed-2.0-Lite",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "bytedance-seed/seed-2.0-mini",
+    "provider": "bytedance-seed",
+    "name": "ByteDance Seed: Seed-2.0-Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+    "provider": "cognitivecomputations",
+    "name": "Venice: Uncensored (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "cohere/command-a",
+    "provider": "cohere",
+    "name": "Cohere: Command A",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "cohere/command-r-08-2024",
+    "provider": "cohere",
+    "name": "Cohere: Command R (08-2024)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "cohere/command-r-plus-08-2024",
+    "provider": "cohere",
+    "name": "Cohere: Command R+ (08-2024)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "cohere/command-r7b-12-2024",
+    "provider": "cohere",
+    "name": "Cohere: Command R7B (12-2024)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.0375,
+      "completionPer1MTokens": 0.15
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepcogito/cogito-v2.1-671b",
+    "provider": "deepcogito",
+    "name": "Deep Cogito: Cogito v2.1 671B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 1.25
+    },
     "status": "active"
   },
   {
     "id": "deepseek/deepseek-chat",
     "provider": "deepseek",
-    "name": "DeepSeek Chat",
+    "name": "DeepSeek: DeepSeek V3",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
     "qualityTier": "high",
-    "contextWindow": 64000,
-    "pricing": { "promptPer1MTokens": 140, "completionPer1MTokens": 280 },
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.32,
+      "completionPer1MTokens": 0.8899999999999999
+    },
     "status": "active"
   },
   {
-    "id": "deepseek/deepseek-reasoner",
+    "id": "deepseek/deepseek-chat-v3-0324",
     "provider": "deepseek",
-    "name": "DeepSeek Reasoner",
+    "name": "DeepSeek: DeepSeek V3 0324",
     "capabilities": {
-      "reasoning": true,
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.77
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-chat-v3.1",
+    "provider": "deepseek",
+    "name": "DeepSeek: DeepSeek V3.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.75
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-v3.1-terminus",
+    "provider": "deepseek",
+    "name": "DeepSeek: DeepSeek V3.1 Terminus",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.21,
+      "completionPer1MTokens": 0.7899999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-v3.2",
+    "provider": "deepseek",
+    "name": "DeepSeek: DeepSeek V3.2",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.26,
+      "completionPer1MTokens": 0.38
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-v3.2-exp",
+    "provider": "deepseek",
+    "name": "DeepSeek: DeepSeek V3.2 Exp",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.27,
+      "completionPer1MTokens": 0.41
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-v3.2-speciale",
+    "provider": "deepseek",
+    "name": "DeepSeek: DeepSeek V3.2 Speciale",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-r1",
+    "provider": "deepseek",
+    "name": "DeepSeek: R1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 64000,
+    "pricing": {
+      "promptPer1MTokens": 0.7,
+      "completionPer1MTokens": 2.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-r1-0528",
+    "provider": "deepseek",
+    "name": "DeepSeek: R1 0528",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.44999999999999996,
+      "completionPer1MTokens": 2.1500000000000004
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-r1-distill-llama-70b",
+    "provider": "deepseek",
+    "name": "DeepSeek: R1 Distill Llama 70B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.7,
+      "completionPer1MTokens": 0.7999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "deepseek/deepseek-r1-distill-qwen-32b",
+    "provider": "deepseek",
+    "name": "DeepSeek: R1 Distill Qwen 32B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.29,
+      "completionPer1MTokens": 0.29
+    },
+    "status": "active"
+  },
+  {
+    "id": "eleutherai/llemma_7b",
+    "provider": "eleutherai",
+    "name": "EleutherAI: Llemma 7b",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 4096,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "essentialai/rnj-1-instruct",
+    "provider": "essentialai",
+    "name": "EssentialAI: Rnj 1 Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.15
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.0-flash-001",
+    "provider": "google",
+    "name": "Google: Gemini 2.0 Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.0-flash-lite-001",
+    "provider": "google",
+    "name": "Google: Gemini 2.0 Flash Lite",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.075,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.5-flash",
+    "provider": "google",
+    "name": "Google: Gemini 2.5 Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "high",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 2.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.5-flash-lite",
+    "provider": "google",
+    "name": "Google: Gemini 2.5 Flash Lite",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.5-flash-lite-preview-09-2025",
+    "provider": "google",
+    "name": "Google: Gemini 2.5 Flash Lite Preview 09-2025",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.5-pro",
+    "provider": "google",
+    "name": "Google: Gemini 2.5 Pro",
+    "capabilities": {
+      "reasoning": false,
       "toolCall": false,
       "structuredOutput": false,
       "vision": false
     },
     "qualityTier": "frontier",
-    "contextWindow": 64000,
-    "pricing": { "promptPer1MTokens": 550, "completionPer1MTokens": 2190 },
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
     "status": "active"
   },
   {
-    "id": "qwen/qwen-2.5-72b-instruct",
-    "provider": "qwen",
-    "name": "Qwen 2.5 72B Instruct",
+    "id": "google/gemini-2.5-pro-preview-05-06",
+    "provider": "google",
+    "name": "Google: Gemini 2.5 Pro Preview 05-06",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "high",
-    "contextWindow": 32768,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
     "status": "active"
   },
   {
-    "id": "qwen/qwen-2.5-coder-32b-instruct",
-    "provider": "qwen",
-    "name": "Qwen 2.5 Coder 32B Instruct",
+    "id": "google/gemini-2.5-pro-preview",
+    "provider": "google",
+    "name": "Google: Gemini 2.5 Pro Preview 06-05",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "high",
-    "contextWindow": 32768,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
     "status": "active"
   },
   {
-    "id": "cloudflare/@cf/meta/llama-3.1-8b-instruct",
-    "provider": "cloudflare",
-    "name": "Llama 3.1 8B Instruct",
+    "id": "google/gemini-3-flash-preview",
+    "provider": "google",
+    "name": "Google: Gemini 3 Flash Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.5,
+      "completionPer1MTokens": 3
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-3-pro-preview",
+    "provider": "google",
+    "name": "Google: Gemini 3 Pro Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 12
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-3.1-flash-lite-preview",
+    "provider": "google",
+    "name": "Google: Gemini 3.1 Flash Lite Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 1.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-3.1-pro-preview",
+    "provider": "google",
+    "name": "Google: Gemini 3.1 Pro Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 12
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-3.1-pro-preview-customtools",
+    "provider": "google",
+    "name": "Google: Gemini 3.1 Pro Preview Custom Tools",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 12
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-2-27b-it",
+    "provider": "google",
+    "name": "Google: Gemma 2 27B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0.65,
+      "completionPer1MTokens": 0.65
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-2-9b-it",
+    "provider": "google",
+    "name": "Google: Gemma 2 9B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0.03,
+      "completionPer1MTokens": 0.09
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3-12b-it",
+    "provider": "google",
+    "name": "Google: Gemma 3 12B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.04,
+      "completionPer1MTokens": 0.13
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3-12b-it:free",
+    "provider": "google",
+    "name": "Google: Gemma 3 12B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3-27b-it",
+    "provider": "google",
+    "name": "Google: Gemma 3 27B",
     "capabilities": {
       "reasoning": false,
       "toolCall": false,
@@ -281,127 +1577,6148 @@
     },
     "qualityTier": "mid",
     "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 0.03,
+      "completionPer1MTokens": 0.11
+    },
     "status": "active"
   },
   {
-    "id": "cloudflare/@cf/meta/llama-3.2-3b-instruct",
-    "provider": "cloudflare",
-    "name": "Llama 3.2 3B Instruct",
+    "id": "google/gemma-3-27b-it:free",
+    "provider": "google",
+    "name": "Google: Gemma 3 27B (free)",
     "capabilities": {
       "reasoning": false,
       "toolCall": false,
       "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "small",
+    "qualityTier": "mid",
     "contextWindow": 131072,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3-4b-it",
+    "provider": "google",
+    "name": "Google: Gemma 3 4B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.04,
+      "completionPer1MTokens": 0.08
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3-4b-it:free",
+    "provider": "google",
+    "name": "Google: Gemma 3 4B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3n-e2b-it:free",
+    "provider": "google",
+    "name": "Google: Gemma 3n 2B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3n-e4b-it",
+    "provider": "google",
+    "name": "Google: Gemma 3n 4B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.02,
+      "completionPer1MTokens": 0.04
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemma-3n-e4b-it:free",
+    "provider": "google",
+    "name": "Google: Gemma 3n 4B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-2.5-flash-image",
+    "provider": "google",
+    "name": "Google: Nano Banana (Gemini 2.5 Flash Image)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 2.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-3.1-flash-image-preview",
+    "provider": "google",
+    "name": "Google: Nano Banana 2 (Gemini 3.1 Flash Image Preview)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.5,
+      "completionPer1MTokens": 3
+    },
+    "status": "active"
+  },
+  {
+    "id": "google/gemini-3-pro-image-preview",
+    "provider": "google",
+    "name": "Google: Nano Banana Pro (Gemini 3 Pro Image Preview)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 12
+    },
+    "status": "active"
+  },
+  {
+    "id": "gryphe/mythomax-l2-13b",
+    "provider": "gryphe",
+    "name": "MythoMax 13B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 4096,
+    "pricing": {
+      "promptPer1MTokens": 0.06,
+      "completionPer1MTokens": 0.06
+    },
+    "status": "active"
+  },
+  {
+    "id": "ibm-granite/granite-4.0-h-micro",
+    "provider": "ibm-granite",
+    "name": "IBM: Granite 4.0 Micro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131000,
+    "pricing": {
+      "promptPer1MTokens": 0.017,
+      "completionPer1MTokens": 0.11
+    },
+    "status": "active"
+  },
+  {
+    "id": "inception/mercury",
+    "provider": "inception",
+    "name": "Inception: Mercury",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 0.75
+    },
+    "status": "active"
+  },
+  {
+    "id": "inception/mercury-2",
+    "provider": "inception",
+    "name": "Inception: Mercury 2",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 0.75
+    },
+    "status": "active"
+  },
+  {
+    "id": "inception/mercury-coder",
+    "provider": "inception",
+    "name": "Inception: Mercury Coder",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 0.75
+    },
+    "status": "active"
+  },
+  {
+    "id": "inflection/inflection-3-pi",
+    "provider": "inflection",
+    "name": "Inflection: Inflection 3 Pi",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "inflection/inflection-3-productivity",
+    "provider": "inflection",
+    "name": "Inflection: Inflection 3 Productivity",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "kwaipilot/kat-coder-pro",
+    "provider": "kwaipilot",
+    "name": "Kwaipilot: KAT-Coder-Pro V1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0.207,
+      "completionPer1MTokens": 0.828
+    },
+    "status": "active"
+  },
+  {
+    "id": "liquid/lfm-2.2-6b",
+    "provider": "liquid",
+    "name": "LiquidAI: LFM2-2.6B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.01,
+      "completionPer1MTokens": 0.02
+    },
+    "status": "active"
+  },
+  {
+    "id": "liquid/lfm-2-24b-a2b",
+    "provider": "liquid",
+    "name": "LiquidAI: LFM2-24B-A2B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.03,
+      "completionPer1MTokens": 0.12
+    },
+    "status": "active"
+  },
+  {
+    "id": "liquid/lfm2-8b-a1b",
+    "provider": "liquid",
+    "name": "LiquidAI: LFM2-8B-A1B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.01,
+      "completionPer1MTokens": 0.02
+    },
+    "status": "active"
+  },
+  {
+    "id": "liquid/lfm-2.5-1.2b-instruct:free",
+    "provider": "liquid",
+    "name": "LiquidAI: LFM2.5-1.2B-Instruct (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "liquid/lfm-2.5-1.2b-thinking:free",
+    "provider": "liquid",
+    "name": "LiquidAI: LFM2.5-1.2B-Thinking (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "mancer/weaver",
+    "provider": "mancer",
+    "name": "Mancer: Weaver (alpha)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8000,
+    "pricing": {
+      "promptPer1MTokens": 0.75,
+      "completionPer1MTokens": 1
+    },
+    "status": "active"
+  },
+  {
+    "id": "meituan/longcat-flash-chat",
+    "provider": "meituan",
+    "name": "Meituan: LongCat Flash Chat",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.7999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-guard-3-8b",
+    "provider": "meta-llama",
+    "name": "Llama Guard 3 8B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.02,
+      "completionPer1MTokens": 0.06
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3-70b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3 70B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0.51,
+      "completionPer1MTokens": 0.74
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3-8b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3 8B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0.03,
+      "completionPer1MTokens": 0.04
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.1-405b",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.1 405B (base)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 4,
+      "completionPer1MTokens": 4
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.1-405b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.1 405B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131000,
+    "pricing": {
+      "promptPer1MTokens": 4,
+      "completionPer1MTokens": 4
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.1-70b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.1 70B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.1 8B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 16384,
+    "pricing": {
+      "promptPer1MTokens": 0.02,
+      "completionPer1MTokens": 0.049999999999999996
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.2-11b-vision-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.2 11B Vision Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.049,
+      "completionPer1MTokens": 0.049
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.2-1b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.2 1B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 60000,
+    "pricing": {
+      "promptPer1MTokens": 0.027,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.2-3b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.2 3B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 80000,
+    "pricing": {
+      "promptPer1MTokens": 0.051,
+      "completionPer1MTokens": 0.33999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.2-3b-instruct:free",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.2 3B Instruct (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.3 70B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.32
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-3.3-70b-instruct:free",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 3.3 70B Instruct (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-4-maverick",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 4 Maverick",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-4-scout",
+    "provider": "meta-llama",
+    "name": "Meta: Llama 4 Scout",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 327680,
+    "pricing": {
+      "promptPer1MTokens": 0.08,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "meta-llama/llama-guard-4-12b",
+    "provider": "meta-llama",
+    "name": "Meta: Llama Guard 4 12B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.18,
+      "completionPer1MTokens": 0.18
+    },
+    "status": "active"
+  },
+  {
+    "id": "microsoft/phi-4",
+    "provider": "microsoft",
+    "name": "Microsoft: Phi 4",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 16384,
+    "pricing": {
+      "promptPer1MTokens": 0.06,
+      "completionPer1MTokens": 0.14
+    },
+    "status": "active"
+  },
+  {
+    "id": "microsoft/wizardlm-2-8x22b",
+    "provider": "microsoft",
+    "name": "WizardLM-2 8x22B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65535,
+    "pricing": {
+      "promptPer1MTokens": 0.62,
+      "completionPer1MTokens": 0.62
+    },
+    "status": "active"
+  },
+  {
+    "id": "minimax/minimax-m1",
+    "provider": "minimax",
+    "name": "MiniMax: MiniMax M1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 2.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "minimax/minimax-m2",
+    "provider": "minimax",
+    "name": "MiniMax: MiniMax M2",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 196608,
+    "pricing": {
+      "promptPer1MTokens": 0.255,
+      "completionPer1MTokens": 1
+    },
+    "status": "active"
+  },
+  {
+    "id": "minimax/minimax-m2-her",
+    "provider": "minimax",
+    "name": "MiniMax: MiniMax M2-her",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "minimax/minimax-m2.1",
+    "provider": "minimax",
+    "name": "MiniMax: MiniMax M2.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 196608,
+    "pricing": {
+      "promptPer1MTokens": 0.27,
+      "completionPer1MTokens": 0.95
+    },
+    "status": "active"
+  },
+  {
+    "id": "minimax/minimax-m2.5",
+    "provider": "minimax",
+    "name": "MiniMax: MiniMax M2.5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 196608,
+    "pricing": {
+      "promptPer1MTokens": 0.27,
+      "completionPer1MTokens": 0.95
+    },
+    "status": "active"
+  },
+  {
+    "id": "minimax/minimax-01",
+    "provider": "minimax",
+    "name": "MiniMax: MiniMax-01",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000192,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 1.1
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-large",
+    "provider": "mistralai",
+    "name": "Mistral Large",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-large-2407",
+    "provider": "mistralai",
+    "name": "Mistral Large 2407",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-large-2411",
+    "provider": "mistralai",
+    "name": "Mistral Large 2411",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/codestral-2508",
+    "provider": "mistralai",
+    "name": "Mistral: Codestral 2508",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 0.8999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/devstral-2512",
+    "provider": "mistralai",
+    "name": "Mistral: Devstral 2 2512",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/devstral-medium",
+    "provider": "mistralai",
+    "name": "Mistral: Devstral Medium",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/devstral-small",
+    "provider": "mistralai",
+    "name": "Mistral: Devstral Small 1.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/ministral-14b-2512",
+    "provider": "mistralai",
+    "name": "Mistral: Ministral 3 14B 2512",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.19999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/ministral-3b-2512",
+    "provider": "mistralai",
+    "name": "Mistral: Ministral 3 3B 2512",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.09999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/ministral-8b-2512",
+    "provider": "mistralai",
+    "name": "Mistral: Ministral 3 8B 2512",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.15
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-7b-instruct-v0.1",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral 7B Instruct v0.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 2824,
+    "pricing": {
+      "promptPer1MTokens": 0.11,
+      "completionPer1MTokens": 0.19
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-large-2512",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Large 3 2512",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.5,
+      "completionPer1MTokens": 1.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-medium-3",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Medium 3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-medium-3.1",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Medium 3.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-nemo",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Nemo",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.02,
+      "completionPer1MTokens": 0.04
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-small-24b-instruct-2501",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Small 3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.049999999999999996,
+      "completionPer1MTokens": 0.08
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-small-3.1-24b-instruct",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Small 3.1 24B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.35,
+      "completionPer1MTokens": 0.56
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-small-3.1-24b-instruct:free",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Small 3.1 24B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Small 3.2 24B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.06,
+      "completionPer1MTokens": 0.18
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-small-creative",
+    "provider": "mistralai",
+    "name": "Mistral: Mistral Small Creative",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mixtral-8x22b-instruct",
+    "provider": "mistralai",
+    "name": "Mistral: Mixtral 8x22B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mixtral-8x7b-instruct",
+    "provider": "mistralai",
+    "name": "Mistral: Mixtral 8x7B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.54,
+      "completionPer1MTokens": 0.54
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/pixtral-large-2411",
+    "provider": "mistralai",
+    "name": "Mistral: Pixtral Large 2411",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/mistral-saba",
+    "provider": "mistralai",
+    "name": "Mistral: Saba",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "mistralai/voxtral-small-24b-2507",
+    "provider": "mistralai",
+    "name": "Mistral: Voxtral Small 24B 2507",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32000,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "moonshotai/kimi-k2",
+    "provider": "moonshotai",
+    "name": "MoonshotAI: Kimi K2 0711",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131000,
+    "pricing": {
+      "promptPer1MTokens": 0.55,
+      "completionPer1MTokens": 2.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "moonshotai/kimi-k2-0905",
+    "provider": "moonshotai",
+    "name": "MoonshotAI: Kimi K2 0905",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "moonshotai/kimi-k2-thinking",
+    "provider": "moonshotai",
+    "name": "MoonshotAI: Kimi K2 Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.47,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "moonshotai/kimi-k2.5",
+    "provider": "moonshotai",
+    "name": "MoonshotAI: Kimi K2.5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.44999999999999996,
+      "completionPer1MTokens": 2.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "morph/morph-v3-fast",
+    "provider": "morph",
+    "name": "Morph: Morph V3 Fast",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 81920,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "morph/morph-v3-large",
+    "provider": "morph",
+    "name": "Morph: Morph V3 Large",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.8999999999999999,
+      "completionPer1MTokens": 1.9
+    },
+    "status": "active"
+  },
+  {
+    "id": "nex-agi/deepseek-v3.1-nex-n1",
+    "provider": "nex-agi",
+    "name": "Nex AGI: DeepSeek V3.1 Nex N1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.27,
+      "completionPer1MTokens": 1
+    },
+    "status": "active"
+  },
+  {
+    "id": "nousresearch/hermes-3-llama-3.1-405b",
+    "provider": "nousresearch",
+    "name": "Nous: Hermes 3 405B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 1,
+      "completionPer1MTokens": 1
+    },
+    "status": "active"
+  },
+  {
+    "id": "nousresearch/hermes-3-llama-3.1-405b:free",
+    "provider": "nousresearch",
+    "name": "Nous: Hermes 3 405B Instruct (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "nousresearch/hermes-3-llama-3.1-70b",
+    "provider": "nousresearch",
+    "name": "Nous: Hermes 3 70B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "nousresearch/hermes-4-405b",
+    "provider": "nousresearch",
+    "name": "Nous: Hermes 4 405B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 1,
+      "completionPer1MTokens": 3
+    },
+    "status": "active"
+  },
+  {
+    "id": "nousresearch/hermes-4-70b",
+    "provider": "nousresearch",
+    "name": "Nous: Hermes 4 70B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.13,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "nousresearch/hermes-2-pro-llama-3-8b",
+    "provider": "nousresearch",
+    "name": "NousResearch: Hermes 2 Pro - Llama-3 8B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0.14,
+      "completionPer1MTokens": 0.14
+    },
     "status": "active"
   },
   {
     "id": "nvidia/llama-3.1-nemotron-70b-instruct",
     "provider": "nvidia",
-    "name": "Llama 3.1 Nemotron 70B Instruct",
-    "capabilities": {
-      "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": false
-    },
-    "qualityTier": "high",
-    "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
-    "status": "active"
-  },
-  {
-    "id": "nvidia/llama-3.2-3b-instruct",
-    "provider": "nvidia",
-    "name": "Llama 3.2 3B Instruct",
+    "name": "NVIDIA: Llama 3.1 Nemotron 70B Instruct",
     "capabilities": {
       "reasoning": false,
       "toolCall": false,
       "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "small",
+    "qualityTier": "high",
     "contextWindow": 131072,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 1.2,
+      "completionPer1MTokens": 1.2
+    },
     "status": "active"
   },
   {
-    "id": "cohere/command-r-plus",
-    "provider": "cohere",
-    "name": "Command R+",
+    "id": "nvidia/llama-3.3-nemotron-super-49b-v1.5",
+    "provider": "nvidia",
+    "name": "NVIDIA: Llama 3.3 Nemotron Super 49B V1.5",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "high",
-    "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 2500, "completionPer1MTokens": 10000 },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
     "status": "active"
   },
   {
-    "id": "cohere/command-r",
-    "provider": "cohere",
-    "name": "Command R",
+    "id": "nvidia/nemotron-3-nano-30b-a3b",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron 3 Nano 30B A3B",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "high",
-    "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 150, "completionPer1MTokens": 600 },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.049999999999999996,
+      "completionPer1MTokens": 0.19999999999999998
+    },
     "status": "active"
   },
   {
-    "id": "github/gpt-4o-mini",
-    "provider": "github",
-    "name": "GPT-4o Mini",
+    "id": "nvidia/nemotron-3-nano-30b-a3b:free",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron 3 Nano 30B A3B (free)",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
-      "vision": true
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "nvidia/nemotron-3-super-120b-a12b:free",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron 3 Super (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "nvidia/nemotron-nano-12b-v2-vl",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron Nano 12B 2 VL",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "nvidia/nemotron-nano-12b-v2-vl:free",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron Nano 12B 2 VL (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
     },
     "qualityTier": "mid",
     "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
     "status": "active"
   },
   {
-    "id": "github/meta-llama-3.1-405b-instruct",
-    "provider": "github",
-    "name": "Meta Llama 3.1 405B Instruct",
+    "id": "nvidia/nemotron-nano-9b-v2",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron Nano 9B V2",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "frontier",
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.04,
+      "completionPer1MTokens": 0.16
+    },
+    "status": "active"
+  },
+  {
+    "id": "nvidia/nemotron-nano-9b-v2:free",
+    "provider": "nvidia",
+    "name": "NVIDIA: Nemotron Nano 9B V2 (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
     "contextWindow": 128000,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
     "status": "active"
   },
   {
-    "id": "github/phi-4",
-    "provider": "github",
-    "name": "Phi-4",
+    "id": "openai/gpt-audio",
+    "provider": "openai",
+    "name": "OpenAI: GPT Audio",
     "capabilities": {
       "reasoning": false,
-      "toolCall": true,
-      "structuredOutput": true,
+      "toolCall": false,
+      "structuredOutput": false,
       "vision": false
     },
-    "qualityTier": "small",
-    "contextWindow": 16384,
-    "pricing": { "promptPer1MTokens": 0, "completionPer1MTokens": 0 },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-audio-mini",
+    "provider": "openai",
+    "name": "OpenAI: GPT Audio Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.6,
+      "completionPer1MTokens": 2.4
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-3.5-turbo",
+    "provider": "openai",
+    "name": "OpenAI: GPT-3.5 Turbo",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 16385,
+    "pricing": {
+      "promptPer1MTokens": 0.5,
+      "completionPer1MTokens": 1.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-3.5-turbo-0613",
+    "provider": "openai",
+    "name": "OpenAI: GPT-3.5 Turbo (older v0613)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 4095,
+    "pricing": {
+      "promptPer1MTokens": 1,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-3.5-turbo-16k",
+    "provider": "openai",
+    "name": "OpenAI: GPT-3.5 Turbo 16k",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 16385,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 4
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-3.5-turbo-instruct",
+    "provider": "openai",
+    "name": "OpenAI: GPT-3.5 Turbo Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 4095,
+    "pricing": {
+      "promptPer1MTokens": 1.5,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8191,
+    "pricing": {
+      "promptPer1MTokens": 30,
+      "completionPer1MTokens": 60
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4-0314",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4 (older v0314)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8191,
+    "pricing": {
+      "promptPer1MTokens": 30,
+      "completionPer1MTokens": 60
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4-turbo",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4 Turbo",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 10,
+      "completionPer1MTokens": 30
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4-1106-preview",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4 Turbo (older v1106)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 10,
+      "completionPer1MTokens": 30
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4-turbo-preview",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4 Turbo Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 10,
+      "completionPer1MTokens": 30
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4.1",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1047576,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 8
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4.1-mini",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4.1 Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1047576,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 1.5999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4.1-nano",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4.1 Nano",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1047576,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-2024-05-13",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o (2024-05-13)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 5,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-2024-08-06",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o (2024-08-06)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-2024-11-20",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o (2024-11-20)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o:extended",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o (extended)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 6,
+      "completionPer1MTokens": 18
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-audio-preview",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o Audio",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-search-preview",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o Search Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-mini",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o-mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-mini-2024-07-18",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o-mini (2024-07-18)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-4o-mini-search-preview",
+    "provider": "openai",
+    "name": "OpenAI: GPT-4o-mini Search Preview",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-chat",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Chat",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-codex",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Codex",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-image",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Image",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 10,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-image-mini",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Image Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-mini",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-nano",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Nano",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 0.049999999999999996,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5-pro",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5 Pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 15,
+      "completionPer1MTokens": 120
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.1",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.1-chat",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.1 Chat",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.1-codex",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.1-Codex",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.1-codex-max",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.1-Codex-Max",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.25,
+      "completionPer1MTokens": 10
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.1-codex-mini",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.1-Codex-Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 2
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.2",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.2",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.75,
+      "completionPer1MTokens": 14
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.2-chat",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.2 Chat",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 1.75,
+      "completionPer1MTokens": 14
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.2-pro",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.2 Pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 21,
+      "completionPer1MTokens": 168
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.2-codex",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.2-Codex",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.75,
+      "completionPer1MTokens": 14
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.3-chat",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.3 Chat",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 1.75,
+      "completionPer1MTokens": 14
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.3-codex",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.3-Codex",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 400000,
+    "pricing": {
+      "promptPer1MTokens": 1.75,
+      "completionPer1MTokens": 14
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.4",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.4",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1050000,
+    "pricing": {
+      "promptPer1MTokens": 2.5,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-5.4-pro",
+    "provider": "openai",
+    "name": "OpenAI: GPT-5.4 Pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1050000,
+    "pricing": {
+      "promptPer1MTokens": 30,
+      "completionPer1MTokens": 180
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-oss-120b",
+    "provider": "openai",
+    "name": "OpenAI: gpt-oss-120b",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.039,
+      "completionPer1MTokens": 0.19
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-oss-120b:free",
+    "provider": "openai",
+    "name": "OpenAI: gpt-oss-120b (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-oss-20b",
+    "provider": "openai",
+    "name": "OpenAI: gpt-oss-20b",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.03,
+      "completionPer1MTokens": 0.14
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-oss-20b:free",
+    "provider": "openai",
+    "name": "OpenAI: gpt-oss-20b (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/gpt-oss-safeguard-20b",
+    "provider": "openai",
+    "name": "OpenAI: gpt-oss-safeguard-20b",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.075,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o1",
+    "provider": "openai",
+    "name": "OpenAI: o1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 15,
+      "completionPer1MTokens": 60
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o1-pro",
+    "provider": "openai",
+    "name": "OpenAI: o1-pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 150,
+      "completionPer1MTokens": 600
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o3",
+    "provider": "openai",
+    "name": "OpenAI: o3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 8
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o3-deep-research",
+    "provider": "openai",
+    "name": "OpenAI: o3 Deep Research",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 10,
+      "completionPer1MTokens": 40
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o3-mini",
+    "provider": "openai",
+    "name": "OpenAI: o3 Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 1.1,
+      "completionPer1MTokens": 4.4
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o3-mini-high",
+    "provider": "openai",
+    "name": "OpenAI: o3 Mini High",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 1.1,
+      "completionPer1MTokens": 4.4
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o3-pro",
+    "provider": "openai",
+    "name": "OpenAI: o3 Pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 20,
+      "completionPer1MTokens": 80
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o4-mini",
+    "provider": "openai",
+    "name": "OpenAI: o4 Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 1.1,
+      "completionPer1MTokens": 4.4
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o4-mini-deep-research",
+    "provider": "openai",
+    "name": "OpenAI: o4 Mini Deep Research",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 8
+    },
+    "status": "active"
+  },
+  {
+    "id": "openai/o4-mini-high",
+    "provider": "openai",
+    "name": "OpenAI: o4 Mini High",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 1.1,
+      "completionPer1MTokens": 4.4
+    },
+    "status": "active"
+  },
+  {
+    "id": "openrouter/auto",
+    "provider": "openrouter",
+    "name": "Auto Router",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 2000000,
+    "pricing": {
+      "promptPer1MTokens": -1000000,
+      "completionPer1MTokens": -1000000
+    },
+    "status": "active"
+  },
+  {
+    "id": "openrouter/bodybuilder",
+    "provider": "openrouter",
+    "name": "Body Builder (beta)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": -1000000,
+      "completionPer1MTokens": -1000000
+    },
+    "status": "active"
+  },
+  {
+    "id": "openrouter/free",
+    "provider": "openrouter",
+    "name": "Free Models Router",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "openrouter/healer-alpha",
+    "provider": "openrouter",
+    "name": "Healer Alpha",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "openrouter/hunter-alpha",
+    "provider": "openrouter",
+    "name": "Hunter Alpha",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1048576,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "perplexity/sonar",
+    "provider": "perplexity",
+    "name": "Perplexity: Sonar",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 127072,
+    "pricing": {
+      "promptPer1MTokens": 1,
+      "completionPer1MTokens": 1
+    },
+    "status": "active"
+  },
+  {
+    "id": "perplexity/sonar-deep-research",
+    "provider": "perplexity",
+    "name": "Perplexity: Sonar Deep Research",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 8
+    },
+    "status": "active"
+  },
+  {
+    "id": "perplexity/sonar-pro",
+    "provider": "perplexity",
+    "name": "Perplexity: Sonar Pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "perplexity/sonar-pro-search",
+    "provider": "perplexity",
+    "name": "Perplexity: Sonar Pro Search",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 200000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "perplexity/sonar-reasoning-pro",
+    "provider": "perplexity",
+    "name": "Perplexity: Sonar Reasoning Pro",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 8
+    },
+    "status": "active"
+  },
+  {
+    "id": "prime-intellect/intellect-3",
+    "provider": "prime-intellect",
+    "name": "Prime Intellect: INTELLECT-3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 1.1
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-plus-2025-07-28",
+    "provider": "qwen",
+    "name": "Qwen: Qwen Plus 0728",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.26,
+      "completionPer1MTokens": 0.78
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-plus-2025-07-28:thinking",
+    "provider": "qwen",
+    "name": "Qwen: Qwen Plus 0728 (thinking)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.26,
+      "completionPer1MTokens": 0.78
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-vl-max",
+    "provider": "qwen",
+    "name": "Qwen: Qwen VL Max",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 3.1999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-vl-plus",
+    "provider": "qwen",
+    "name": "Qwen: Qwen VL Plus",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.1365,
+      "completionPer1MTokens": 0.40950000000000003
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-max",
+    "provider": "qwen",
+    "name": "Qwen: Qwen-Max ",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 1.04,
+      "completionPer1MTokens": 4.16
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-plus",
+    "provider": "qwen",
+    "name": "Qwen: Qwen-Plus",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 1.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-turbo",
+    "provider": "qwen",
+    "name": "Qwen: Qwen-Turbo",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.0325,
+      "completionPer1MTokens": 0.13
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-2.5-7b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen2.5 7B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.04,
+      "completionPer1MTokens": 0.09999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen2.5-coder-7b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen2.5 Coder 7B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.03,
+      "completionPer1MTokens": 0.09
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen2.5-vl-32b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen2.5 VL 32B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen2.5-vl-72b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen2.5 VL 72B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.7999999999999999,
+      "completionPer1MTokens": 0.7999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-2.5-vl-7b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen2.5-VL 7B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.2,
+      "completionPer1MTokens": 0.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-14b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 14B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 40960,
+    "pricing": {
+      "promptPer1MTokens": 0.06,
+      "completionPer1MTokens": 0.24
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-235b-a22b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 235B A22B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.45499999999999996,
+      "completionPer1MTokens": 1.8199999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-235b-a22b-2507",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 235B A22B Instruct 2507",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.071,
+      "completionPer1MTokens": 0.09999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-235b-a22b-thinking-2507",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 235B A22B Thinking 2507",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.11,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-30b-a3b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 30B A3B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 40960,
+    "pricing": {
+      "promptPer1MTokens": 0.08,
+      "completionPer1MTokens": 0.28
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-30b-a3b-instruct-2507",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 30B A3B Instruct 2507",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.09,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-30b-a3b-thinking-2507",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 30B A3B Thinking 2507",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.051,
+      "completionPer1MTokens": 0.33999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-32b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 32B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 40960,
+    "pricing": {
+      "promptPer1MTokens": 0.08,
+      "completionPer1MTokens": 0.24
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-4b:free",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 4B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 40960,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-8b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 8B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 40960,
+    "pricing": {
+      "promptPer1MTokens": 0.049999999999999996,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-coder-30b-a3b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Coder 30B A3B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 160000,
+    "pricing": {
+      "promptPer1MTokens": 0.07,
+      "completionPer1MTokens": 0.27
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-coder",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Coder 480B A35B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.22,
+      "completionPer1MTokens": 1
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-coder:free",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Coder 480B A35B (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-coder-flash",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Coder Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.195,
+      "completionPer1MTokens": 0.975
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-coder-next",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Coder Next",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.12,
+      "completionPer1MTokens": 0.75
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-coder-plus",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Coder Plus",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.65,
+      "completionPer1MTokens": 3.25
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-max",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Max",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 1.2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-max-thinking",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Max Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.78,
+      "completionPer1MTokens": 3.9
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-next-80b-a3b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Next 80B A3B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.09,
+      "completionPer1MTokens": 1.1
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-next-80b-a3b-instruct:free",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Next 80B A3B Instruct (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-next-80b-a3b-thinking",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 Next 80B A3B Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.0975,
+      "completionPer1MTokens": 0.78
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-235b-a22b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 235B A22B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.88
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-235b-a22b-thinking",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 235B A22B Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.26,
+      "completionPer1MTokens": 2.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-30b-a3b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 30B A3B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.13,
+      "completionPer1MTokens": 0.52
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-30b-a3b-thinking",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 30B A3B Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.13,
+      "completionPer1MTokens": 1.56
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-32b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 32B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.10400000000000001,
+      "completionPer1MTokens": 0.41600000000000004
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-8b-instruct",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 8B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.08,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3-vl-8b-thinking",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3 VL 8B Thinking",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.117,
+      "completionPer1MTokens": 1.365
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-397b-a17b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5 397B A17B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.39,
+      "completionPer1MTokens": 2.34
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-plus-02-15",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5 Plus 2026-02-15",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.26,
+      "completionPer1MTokens": 1.56
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-122b-a10b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5-122B-A10B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.26,
+      "completionPer1MTokens": 2.08
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-27b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5-27B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.195,
+      "completionPer1MTokens": 1.56
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-35b-a3b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5-35B-A3B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.1625,
+      "completionPer1MTokens": 1.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-9b",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5-9B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.15
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen3.5-flash-02-23",
+    "provider": "qwen",
+    "name": "Qwen: Qwen3.5-Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1000000,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwq-32b",
+    "provider": "qwen",
+    "name": "Qwen: QwQ 32B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-2.5-72b-instruct",
+    "provider": "qwen",
+    "name": "Qwen2.5 72B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "high",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.12,
+      "completionPer1MTokens": 0.39
+    },
+    "status": "active"
+  },
+  {
+    "id": "qwen/qwen-2.5-coder-32b-instruct",
+    "provider": "qwen",
+    "name": "Qwen2.5 Coder 32B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "high",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.2,
+      "completionPer1MTokens": 0.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "relace/relace-apply-3",
+    "provider": "relace",
+    "name": "Relace: Relace Apply 3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0.85,
+      "completionPer1MTokens": 1.25
+    },
+    "status": "active"
+  },
+  {
+    "id": "relace/relace-search",
+    "provider": "relace",
+    "name": "Relace: Relace Search",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 1,
+      "completionPer1MTokens": 3
+    },
+    "status": "active"
+  },
+  {
+    "id": "sao10k/l3-lunaris-8b",
+    "provider": "sao10k",
+    "name": "Sao10K: Llama 3 8B Lunaris",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 0.04,
+      "completionPer1MTokens": 0.049999999999999996
+    },
+    "status": "active"
+  },
+  {
+    "id": "sao10k/l3-euryale-70b",
+    "provider": "sao10k",
+    "name": "Sao10k: Llama 3 Euryale 70B v2.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 8192,
+    "pricing": {
+      "promptPer1MTokens": 1.48,
+      "completionPer1MTokens": 1.48
+    },
+    "status": "active"
+  },
+  {
+    "id": "sao10k/l3.1-70b-hanami-x1",
+    "provider": "sao10k",
+    "name": "Sao10K: Llama 3.1 70B Hanami x1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 16000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 3
+    },
+    "status": "active"
+  },
+  {
+    "id": "sao10k/l3.1-euryale-70b",
+    "provider": "sao10k",
+    "name": "Sao10K: Llama 3.1 Euryale 70B v2.2",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.85,
+      "completionPer1MTokens": 0.85
+    },
+    "status": "active"
+  },
+  {
+    "id": "sao10k/l3.3-euryale-70b",
+    "provider": "sao10k",
+    "name": "Sao10K: Llama 3.3 Euryale 70B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.65,
+      "completionPer1MTokens": 0.75
+    },
+    "status": "active"
+  },
+  {
+    "id": "stepfun/step-3.5-flash",
+    "provider": "stepfun",
+    "name": "StepFun: Step 3.5 Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.3
+    },
+    "status": "active"
+  },
+  {
+    "id": "stepfun/step-3.5-flash:free",
+    "provider": "stepfun",
+    "name": "StepFun: Step 3.5 Flash (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "switchpoint/router",
+    "provider": "switchpoint",
+    "name": "Switchpoint Router",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.85,
+      "completionPer1MTokens": 3.4
+    },
+    "status": "active"
+  },
+  {
+    "id": "tencent/hunyuan-a13b-instruct",
+    "provider": "tencent",
+    "name": "Tencent: Hunyuan A13B Instruct",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.14,
+      "completionPer1MTokens": 0.5700000000000001
+    },
+    "status": "active"
+  },
+  {
+    "id": "thedrummer/cydonia-24b-v4.1",
+    "provider": "thedrummer",
+    "name": "TheDrummer: Cydonia 24B V4.1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "thedrummer/rocinante-12b",
+    "provider": "thedrummer",
+    "name": "TheDrummer: Rocinante 12B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.16999999999999998,
+      "completionPer1MTokens": 0.43
+    },
+    "status": "active"
+  },
+  {
+    "id": "thedrummer/skyfall-36b-v2",
+    "provider": "thedrummer",
+    "name": "TheDrummer: Skyfall 36B V2",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.55,
+      "completionPer1MTokens": 0.7999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "thedrummer/unslopnemo-12b",
+    "provider": "thedrummer",
+    "name": "TheDrummer: UnslopNemo 12B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 32768,
+    "pricing": {
+      "promptPer1MTokens": 0.39999999999999997,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "tngtech/deepseek-r1t2-chimera",
+    "provider": "tngtech",
+    "name": "TNG: DeepSeek R1T2 Chimera",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 163840,
+    "pricing": {
+      "promptPer1MTokens": 0.25,
+      "completionPer1MTokens": 0.85
+    },
+    "status": "active"
+  },
+  {
+    "id": "undi95/remm-slerp-l2-13b",
+    "provider": "undi95",
+    "name": "ReMM SLERP 13B",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 6144,
+    "pricing": {
+      "promptPer1MTokens": 0.44999999999999996,
+      "completionPer1MTokens": 0.65
+    },
+    "status": "active"
+  },
+  {
+    "id": "302ai",
+    "provider": "unknown",
+    "name": "302.AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "abacus",
+    "provider": "unknown",
+    "name": "Abacus",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "aihubmix",
+    "provider": "unknown",
+    "name": "AIHubMix",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "alibaba",
+    "provider": "unknown",
+    "name": "Alibaba",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "alibaba-cn",
+    "provider": "unknown",
+    "name": "Alibaba (China)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "alibaba-coding-plan",
+    "provider": "unknown",
+    "name": "Alibaba Coding Plan",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "alibaba-coding-plan-cn",
+    "provider": "unknown",
+    "name": "Alibaba Coding Plan (China)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "amazon-bedrock",
+    "provider": "unknown",
+    "name": "Amazon Bedrock",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "anthropic",
+    "provider": "unknown",
+    "name": "Anthropic",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "azure",
+    "provider": "unknown",
+    "name": "Azure",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "azure-cognitive-services",
+    "provider": "unknown",
+    "name": "Azure Cognitive Services",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "bailing",
+    "provider": "unknown",
+    "name": "Bailing",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "baseten",
+    "provider": "unknown",
+    "name": "Baseten",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "berget",
+    "provider": "unknown",
+    "name": "Berget.AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "cerebras",
+    "provider": "unknown",
+    "name": "Cerebras",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "chutes",
+    "provider": "unknown",
+    "name": "Chutes",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "clarifai",
+    "provider": "unknown",
+    "name": "Clarifai",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "cloudferro-sherlock",
+    "provider": "unknown",
+    "name": "CloudFerro Sherlock",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "cloudflare-ai-gateway",
+    "provider": "unknown",
+    "name": "Cloudflare AI Gateway",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "cloudflare-workers-ai",
+    "provider": "unknown",
+    "name": "Cloudflare Workers AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "cohere",
+    "provider": "unknown",
+    "name": "Cohere",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "cortecs",
+    "provider": "unknown",
+    "name": "Cortecs",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "drun",
+    "provider": "unknown",
+    "name": "D.Run (China)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "deepinfra",
+    "provider": "unknown",
+    "name": "Deep Infra",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "deepseek",
+    "provider": "unknown",
+    "name": "DeepSeek",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "evroc",
+    "provider": "unknown",
+    "name": "evroc",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "fastrouter",
+    "provider": "unknown",
+    "name": "FastRouter",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "fireworks-ai",
+    "provider": "unknown",
+    "name": "Fireworks AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "firmware",
+    "provider": "unknown",
+    "name": "Firmware",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "friendli",
+    "provider": "unknown",
+    "name": "Friendli",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "github-copilot",
+    "provider": "unknown",
+    "name": "GitHub Copilot",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "github-models",
+    "provider": "unknown",
+    "name": "GitHub Models",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "gitlab",
+    "provider": "unknown",
+    "name": "GitLab Duo",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "google",
+    "provider": "unknown",
+    "name": "Google",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "groq",
+    "provider": "unknown",
+    "name": "Groq",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "helicone",
+    "provider": "unknown",
+    "name": "Helicone",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "huggingface",
+    "provider": "unknown",
+    "name": "Hugging Face",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "iflowcn",
+    "provider": "unknown",
+    "name": "iFlow",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "inception",
+    "provider": "unknown",
+    "name": "Inception",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "inference",
+    "provider": "unknown",
+    "name": "Inference",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "io-net",
+    "provider": "unknown",
+    "name": "IO.NET",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "jiekou",
+    "provider": "unknown",
+    "name": "Jiekou.AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "kilo",
+    "provider": "unknown",
+    "name": "Kilo Gateway",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "kimi-for-coding",
+    "provider": "unknown",
+    "name": "Kimi For Coding",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "kuae-cloud-coding-plan",
+    "provider": "unknown",
+    "name": "KUAE Cloud Coding Plan",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "llama",
+    "provider": "unknown",
+    "name": "Llama",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "lmstudio",
+    "provider": "unknown",
+    "name": "LMStudio",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "lucidquery",
+    "provider": "unknown",
+    "name": "LucidQuery AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "meganova",
+    "provider": "unknown",
+    "name": "Meganova",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "minimax",
+    "provider": "unknown",
+    "name": "MiniMax (minimax.io)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "minimax-cn",
+    "provider": "unknown",
+    "name": "MiniMax (minimaxi.com)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "minimax-coding-plan",
+    "provider": "unknown",
+    "name": "MiniMax Coding Plan (minimax.io)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "minimax-cn-coding-plan",
+    "provider": "unknown",
+    "name": "MiniMax Coding Plan (minimaxi.com)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "mistral",
+    "provider": "unknown",
+    "name": "Mistral",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "moark",
+    "provider": "unknown",
+    "name": "Moark",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "modelscope",
+    "provider": "unknown",
+    "name": "ModelScope",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "moonshotai",
+    "provider": "unknown",
+    "name": "Moonshot AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "moonshotai-cn",
+    "provider": "unknown",
+    "name": "Moonshot AI (China)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "morph",
+    "provider": "unknown",
+    "name": "Morph",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "nano-gpt",
+    "provider": "unknown",
+    "name": "NanoGPT",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "nebius",
+    "provider": "unknown",
+    "name": "Nebius Token Factory",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "nova",
+    "provider": "unknown",
+    "name": "Nova",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "novita-ai",
+    "provider": "unknown",
+    "name": "NovitaAI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "nvidia",
+    "provider": "unknown",
+    "name": "Nvidia",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "ollama-cloud",
+    "provider": "unknown",
+    "name": "Ollama Cloud",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "openai",
+    "provider": "unknown",
+    "name": "OpenAI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "opencode-go",
+    "provider": "unknown",
+    "name": "OpenCode Go",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "opencode",
+    "provider": "unknown",
+    "name": "OpenCode Zen",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "openrouter",
+    "provider": "unknown",
+    "name": "OpenRouter",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "ovhcloud",
+    "provider": "unknown",
+    "name": "OVHcloud AI Endpoints",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "perplexity",
+    "provider": "unknown",
+    "name": "Perplexity",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "perplexity-agent",
+    "provider": "unknown",
+    "name": "Perplexity Agent",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "poe",
+    "provider": "unknown",
+    "name": "Poe",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "privatemode-ai",
+    "provider": "unknown",
+    "name": "Privatemode AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "qihang-ai",
+    "provider": "unknown",
+    "name": "QiHang",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "qiniu-ai",
+    "provider": "unknown",
+    "name": "Qiniu",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "requesty",
+    "provider": "unknown",
+    "name": "Requesty",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "sap-ai-core",
+    "provider": "unknown",
+    "name": "SAP AI Core",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "scaleway",
+    "provider": "unknown",
+    "name": "Scaleway",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "siliconflow",
+    "provider": "unknown",
+    "name": "SiliconFlow",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "siliconflow-cn",
+    "provider": "unknown",
+    "name": "SiliconFlow (China)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "stackit",
+    "provider": "unknown",
+    "name": "STACKIT",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "stepfun",
+    "provider": "unknown",
+    "name": "StepFun",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "submodel",
+    "provider": "unknown",
+    "name": "submodel",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "synthetic",
+    "provider": "unknown",
+    "name": "Synthetic",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "togetherai",
+    "provider": "unknown",
+    "name": "Together AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "upstage",
+    "provider": "unknown",
+    "name": "Upstage",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "v0",
+    "provider": "unknown",
+    "name": "v0",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "venice",
+    "provider": "unknown",
+    "name": "Venice AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "vercel",
+    "provider": "unknown",
+    "name": "Vercel AI Gateway",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "google-vertex",
+    "provider": "unknown",
+    "name": "Vertex",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "google-vertex-anthropic",
+    "provider": "unknown",
+    "name": "Vertex (Anthropic)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "vivgrid",
+    "provider": "unknown",
+    "name": "Vivgrid",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "vultr",
+    "provider": "unknown",
+    "name": "Vultr",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "wandb",
+    "provider": "unknown",
+    "name": "Weights & Biases",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "xai",
+    "provider": "unknown",
+    "name": "xAI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "xiaomi",
+    "provider": "unknown",
+    "name": "Xiaomi",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "zai",
+    "provider": "unknown",
+    "name": "Z.AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "zai-coding-plan",
+    "provider": "unknown",
+    "name": "Z.AI Coding Plan",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "zenmux",
+    "provider": "unknown",
+    "name": "ZenMux",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "zhipuai",
+    "provider": "unknown",
+    "name": "Zhipu AI",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "zhipuai-coding-plan",
+    "provider": "unknown",
+    "name": "Zhipu AI Coding Plan",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 0,
+    "pricing": null,
+    "status": "active"
+  },
+  {
+    "id": "upstage/solar-pro-3",
+    "provider": "upstage",
+    "name": "Upstage: Solar Pro 3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.15,
+      "completionPer1MTokens": 0.6
+    },
+    "status": "active"
+  },
+  {
+    "id": "writer/palmyra-x5",
+    "provider": "writer",
+    "name": "Writer: Palmyra X5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 1040000,
+    "pricing": {
+      "promptPer1MTokens": 0.6,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-3",
+    "provider": "x-ai",
+    "name": "xAI: Grok 3",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-3-beta",
+    "provider": "x-ai",
+    "name": "xAI: Grok 3 Beta",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-3-mini",
+    "provider": "x-ai",
+    "name": "xAI: Grok 3 Mini",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-3-mini-beta",
+    "provider": "x-ai",
+    "name": "xAI: Grok 3 Mini Beta",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-4",
+    "provider": "x-ai",
+    "name": "xAI: Grok 4",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 3,
+      "completionPer1MTokens": 15
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-4-fast",
+    "provider": "x-ai",
+    "name": "xAI: Grok 4 Fast",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 2000000,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-4.1-fast",
+    "provider": "x-ai",
+    "name": "xAI: Grok 4.1 Fast",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 2000000,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 0.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-4.20-beta",
+    "provider": "x-ai",
+    "name": "xAI: Grok 4.20 Beta",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 2000000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-4.20-multi-agent-beta",
+    "provider": "x-ai",
+    "name": "xAI: Grok 4.20 Multi-Agent Beta",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 2000000,
+    "pricing": {
+      "promptPer1MTokens": 2,
+      "completionPer1MTokens": 6
+    },
+    "status": "active"
+  },
+  {
+    "id": "x-ai/grok-code-fast-1",
+    "provider": "x-ai",
+    "name": "xAI: Grok Code Fast 1",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 256000,
+    "pricing": {
+      "promptPer1MTokens": 0.19999999999999998,
+      "completionPer1MTokens": 1.5
+    },
+    "status": "active"
+  },
+  {
+    "id": "xiaomi/mimo-v2-flash",
+    "provider": "xiaomi",
+    "name": "Xiaomi: MiMo-V2-Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 262144,
+    "pricing": {
+      "promptPer1MTokens": 0.09,
+      "completionPer1MTokens": 0.29
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4-32b",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4 32B ",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 128000,
+    "pricing": {
+      "promptPer1MTokens": 0.09999999999999999,
+      "completionPer1MTokens": 0.09999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.5",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.6,
+      "completionPer1MTokens": 2.2
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.5-air",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.5 Air",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.13,
+      "completionPer1MTokens": 0.85
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.5-air:free",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.5 Air (free)",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0,
+      "completionPer1MTokens": 0
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.5v",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.5V",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 65536,
+    "pricing": {
+      "promptPer1MTokens": 0.6,
+      "completionPer1MTokens": 1.7999999999999998
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.6",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.6",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 204800,
+    "pricing": {
+      "promptPer1MTokens": 0.39,
+      "completionPer1MTokens": 1.9
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.6v",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.6V",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 131072,
+    "pricing": {
+      "promptPer1MTokens": 0.3,
+      "completionPer1MTokens": 0.8999999999999999
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.7",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.7",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 202752,
+    "pricing": {
+      "promptPer1MTokens": 0.38,
+      "completionPer1MTokens": 1.9800000000000002
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-4.7-flash",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 4.7 Flash",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 202752,
+    "pricing": {
+      "promptPer1MTokens": 0.06,
+      "completionPer1MTokens": 0.39999999999999997
+    },
+    "status": "active"
+  },
+  {
+    "id": "z-ai/glm-5",
+    "provider": "z-ai",
+    "name": "Z.ai: GLM 5",
+    "capabilities": {
+      "reasoning": false,
+      "toolCall": false,
+      "structuredOutput": false,
+      "vision": false
+    },
+    "qualityTier": "mid",
+    "contextWindow": 202752,
+    "pricing": {
+      "promptPer1MTokens": 0.72,
+      "completionPer1MTokens": 2.3
+    },
     "status": "active"
   }
 ]

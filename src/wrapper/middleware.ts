@@ -21,8 +21,10 @@ export function createRouterMiddleware(options: {
       // Call the original generate function
       const result = await doGenerate();
 
-      // Extract usage from result
+      // Extract usage from result (guard against undefined/NaN from providers)
       const usage = result.usage;
+      const promptTokens = Number(usage?.promptTokens) || 0;
+      const completionTokens = Number(usage?.completionTokens) || 0;
 
       // Fire-and-forget record
       tracker
@@ -30,8 +32,8 @@ export function createRouterMiddleware(options: {
           provider,
           keyIndex,
           {
-            promptTokens: usage.promptTokens,
-            completionTokens: usage.completionTokens,
+            promptTokens,
+            completionTokens,
           },
           requestId,
           null,
@@ -62,8 +64,8 @@ export function createRouterMiddleware(options: {
                 provider,
                 keyIndex,
                 {
-                  promptTokens: usage.promptTokens,
-                  completionTokens: usage.completionTokens,
+                  promptTokens: Number(usage?.promptTokens) || 0,
+                  completionTokens: Number(usage?.completionTokens) || 0,
                 },
                 requestId,
                 null,

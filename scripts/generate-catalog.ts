@@ -16,8 +16,10 @@ const QUALITY_TIER_MAP: Record<string, QualityTierType> = {
   // Frontier tier
   'deepseek/deepseek-reasoner': 'frontier',
   'github/meta-llama-3.1-405b-instruct': 'frontier',
+  'google/gemini-2.5-pro': 'frontier',
 
   // High tier
+  'google/gemini-2.5-flash': 'high',
   'google/gemini-2.0-flash': 'high',
   'groq/llama-3.3-70b-versatile': 'high',
   'groq/mixtral-8x7b-32768': 'high',
@@ -30,6 +32,7 @@ const QUALITY_TIER_MAP: Record<string, QualityTierType> = {
   'cohere/command-r': 'high',
 
   // Mid tier
+  'google/gemini-2.5-flash-lite': 'mid',
   'google/gemini-2.0-flash-lite': 'mid',
   'google/gemini-1.5-flash': 'mid',
   'groq/llama-3.1-8b-instant': 'mid',

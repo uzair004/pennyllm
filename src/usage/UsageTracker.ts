@@ -227,6 +227,11 @@ export class UsageTracker {
 
       for (const policy of policies) {
         const windows: KeyUsageWindow[] = [];
+        // Track per-key totals from the largest window only (avoid double-counting across windows)
+        let keyPromptTokens = 0;
+        let keyCompletionTokens = 0;
+        let keyCallCount = 0;
+        let largestWindowDuration = 0;
 
         // Query each window in the policy
         for (const limit of policy.limits) {
@@ -296,11 +301,19 @@ export class UsageTracker {
             resetAt: resetAt.toISOString(),
           });
 
-          // Accumulate totals
-          totalPromptTokens += usage.promptTokens;
-          totalCompletionTokens += usage.completionTokens;
-          totalCallCount += usage.callCount;
+          // Use the largest window for totals (avoids double-counting across windows)
+          if (limit.window.durationMs > largestWindowDuration) {
+            largestWindowDuration = limit.window.durationMs;
+            keyPromptTokens = usage.promptTokens;
+            keyCompletionTokens = usage.completionTokens;
+            keyCallCount = usage.callCount;
+          }
         }
+
+        // Accumulate totals from largest window only
+        totalPromptTokens += keyPromptTokens;
+        totalCompletionTokens += keyCompletionTokens;
+        totalCallCount += keyCallCount;
 
         // Get cooldown status
         const cooldownStatus = this.cooldown.getCooldown(providerName, policy.keyIndex);

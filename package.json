@@ -71,6 +71,7 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "prepare": "husky",
+    "catalog:update": "tsx scripts/generate-catalog.ts",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "npm run build && changeset publish",
