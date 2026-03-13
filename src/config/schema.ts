@@ -45,6 +45,16 @@ export const budgetConfigSchema = z.object({
 });
 
 /**
+ * Estimation configuration schema
+ * Note: tokenEstimator function is NOT validated by Zod (it's a runtime option, not JSON config)
+ */
+export const estimationSchema = z
+  .object({
+    defaultMaxTokens: z.number().int().positive().default(1024),
+  })
+  .default({ defaultMaxTokens: 1024 });
+
+/**
  * Main router configuration schema
  */
 export const configSchema = z
@@ -62,6 +72,8 @@ export const configSchema = z
       monthlyLimit: 0,
       alertThresholds: [0.8, 0.95],
     }),
+    estimation: estimationSchema,
+    warningThreshold: z.number().min(0).max(1).optional(),
   })
   .strict();
 

@@ -52,7 +52,7 @@ describe('MemoryStorage - specific behavior', () => {
     // Should only have the second increment's tokens
     const usage = await storage.getUsage('google', 0, window);
 
-    expect(usage).toBe(75); // Only the second increment
+    expect(usage.totalTokens).toBe(75); // Only the second increment
 
     vi.useRealTimers();
   });
@@ -74,7 +74,8 @@ describe('MemoryStorage - specific behavior', () => {
     // getUsage should trigger cleanup and return 0
     const usage = await storage.getUsage('google', 0, window);
 
-    expect(usage).toBe(0);
+    expect(usage.totalTokens).toBe(0);
+    expect(usage.callCount).toBe(0);
 
     vi.useRealTimers();
   });

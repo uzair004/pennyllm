@@ -72,7 +72,10 @@ export function createStorageContractTests(
 
       const usage = await storage.getUsage('google', 0, window);
 
-      expect(usage).toBe(225); // 150 + 75
+      expect(usage.totalTokens).toBe(225); // 150 + 75
+      expect(usage.promptTokens).toBe(150);
+      expect(usage.completionTokens).toBe(75);
+      expect(usage.callCount).toBe(0); // No calls tracked yet
     });
 
     it('getUsage returns 0 for unknown key', async () => {
@@ -83,7 +86,10 @@ export function createStorageContractTests(
 
       const usage = await storage.getUsage('unknown-provider', 99, window);
 
-      expect(usage).toBe(0);
+      expect(usage.totalTokens).toBe(0);
+      expect(usage.promptTokens).toBe(0);
+      expect(usage.completionTokens).toBe(0);
+      expect(usage.callCount).toBe(0);
     });
 
     it('reset clears usage for specific key and window', async () => {
@@ -97,7 +103,8 @@ export function createStorageContractTests(
 
       const usage = await storage.getUsage('google', 0, window);
 
-      expect(usage).toBe(0);
+      expect(usage.totalTokens).toBe(0);
+      expect(usage.callCount).toBe(0);
     });
 
     it('reset does not affect other keys', async () => {
@@ -114,8 +121,8 @@ export function createStorageContractTests(
       const usage0 = await storage.getUsage('google', 0, window);
       const usage1 = await storage.getUsage('google', 1, window);
 
-      expect(usage0).toBe(0);
-      expect(usage1).toBe(300); // Unaffected
+      expect(usage0.totalTokens).toBe(0);
+      expect(usage1.totalTokens).toBe(300); // Unaffected
     });
 
     it('different windows track independently', async () => {
@@ -135,8 +142,8 @@ export function createStorageContractTests(
       const perMinuteUsage = await storage.getUsage('google', 0, perMinuteWindow);
       const hourlyUsage = await storage.getUsage('google', 0, hourlyWindow);
 
-      expect(perMinuteUsage).toBe(150);
-      expect(hourlyUsage).toBe(300);
+      expect(perMinuteUsage.totalTokens).toBe(150);
+      expect(hourlyUsage.totalTokens).toBe(300);
     });
 
     it('close prevents further increment operations', async () => {

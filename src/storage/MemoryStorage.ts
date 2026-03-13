@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import type { StorageBackend } from '../types/interfaces.js';
 import type { TimeWindow, UsageRecord } from '../types/domain.js';
 import { LLMRouterError } from '../errors/base.js';
+import { getPeriodKey } from '../usage/periods.js';
 
 const debug = debugFactory('llm-router:storage');
 
@@ -12,10 +13,12 @@ const debug = debugFactory('llm-router:storage');
  */
 export class MemoryStorage implements StorageBackend {
   private data: Map<string, UsageRecord>;
+  private callCounts: Map<string, number>;
   private closed: boolean;
 
   constructor() {
     this.data = new Map();
+    this.callCounts = new Map();
     this.closed = false;
 
     // Emit warning to stderr
@@ -27,24 +30,29 @@ export class MemoryStorage implements StorageBackend {
   }
 
   /**
-   * Generate composite key for storage
+   * Generate composite key for storage using calendar-aware period keys
    */
   private makeKey(provider: string, keyIndex: number, window: TimeWindow): string {
-    const period = Math.floor(Date.now() / window.durationMs);
-    return `${provider}:${keyIndex}:${window.type}:${period}`;
+    const periodKey = getPeriodKey(window, Date.now());
+    return `${provider}:${keyIndex}:${window.type}:${periodKey}`;
   }
 
   /**
    * Clean up expired records for a specific window type
    */
   private cleanupExpired(window: TimeWindow): void {
-    const currentPeriod = Math.floor(Date.now() / window.durationMs);
+    const currentPeriodKey = getPeriodKey(window, Date.now());
 
     for (const [key, record] of this.data.entries()) {
       if (record.window.type === window.type) {
-        const recordPeriod = Math.floor(record.timestamp / window.durationMs);
-        if (recordPeriod < currentPeriod) {
+        // Extract period key from composite key (4th segment: provider:keyIndex:type:periodKey)
+        const segments = key.split(':');
+        const storedPeriodKey = segments.slice(3).join(':'); // Handle period keys with colons
+
+        // If period keys differ, record is expired
+        if (storedPeriodKey !== currentPeriodKey) {
           this.data.delete(key);
+          this.callCounts.delete(key);
           debug('Cleaned up expired record: %s', key);
         }
       }
@@ -102,6 +110,7 @@ export class MemoryStorage implements StorageBackend {
     keyIndex: number,
     tokens: { prompt: number; completion: number },
     window: TimeWindow,
+    callCount?: number,
   ): Promise<UsageRecord> {
     this.ensureOpen();
 
@@ -134,12 +143,17 @@ export class MemoryStorage implements StorageBackend {
 
     this.data.set(key, record);
 
+    // Increment call count
+    const currentCallCount = this.callCounts.get(key) ?? 0;
+    this.callCounts.set(key, currentCallCount + (callCount ?? 0));
+
     debug(
-      'increment() updated key: %s (prompt: +%d, completion: +%d, total: %d)',
+      'increment() updated key: %s (prompt: +%d, completion: +%d, total: %d, calls: +%d)',
       key,
       tokens.prompt,
       tokens.completion,
       record.totalTokens,
+      callCount ?? 0,
     );
 
     return record;
@@ -147,9 +161,19 @@ export class MemoryStorage implements StorageBackend {
 
   /**
    * Get current usage for a key within a time window
+   * Returns structured usage data with token counts and call count
    */
   // eslint-disable-next-line @typescript-eslint/require-await
-  async getUsage(provider: string, keyIndex: number, window: TimeWindow): Promise<number> {
+  async getUsage(
+    provider: string,
+    keyIndex: number,
+    window: TimeWindow,
+  ): Promise<{
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+    callCount: number;
+  }> {
     this.ensureOpen();
 
     // Clean up expired records first
@@ -157,9 +181,23 @@ export class MemoryStorage implements StorageBackend {
 
     const key = this.makeKey(provider, keyIndex, window);
     const record = this.data.get(key);
+    const callCount = this.callCounts.get(key) ?? 0;
 
-    const usage = record?.totalTokens ?? 0;
-    debug('getUsage(%s, %d, %s) returned %d', provider, keyIndex, window.type, usage);
+    const usage = {
+      promptTokens: record?.promptTokens ?? 0,
+      completionTokens: record?.completionTokens ?? 0,
+      totalTokens: record?.totalTokens ?? 0,
+      callCount,
+    };
+
+    debug(
+      'getUsage(%s, %d, %s) returned tokens: %d, calls: %d',
+      provider,
+      keyIndex,
+      window.type,
+      usage.totalTokens,
+      usage.callCount,
+    );
 
     return usage;
   }
@@ -173,8 +211,39 @@ export class MemoryStorage implements StorageBackend {
 
     const key = this.makeKey(provider, keyIndex, window);
     const deleted = this.data.delete(key);
+    this.callCounts.delete(key);
 
     debug('reset(%s, %d, %s) deleted: %s', provider, keyIndex, window.type, deleted);
+  }
+
+  /**
+   * Reset all usage data, optionally filtered by provider and/or key
+   */
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async resetAll(provider?: string, keyIndex?: number): Promise<void> {
+    this.ensureOpen();
+
+    if (!provider) {
+      // Clear everything
+      this.data.clear();
+      this.callCounts.clear();
+      debug('resetAll() cleared all data');
+      return;
+    }
+
+    const prefix = keyIndex !== undefined ? `${provider}:${keyIndex}:` : `${provider}:`;
+
+    // Delete entries matching the prefix
+    let deletedCount = 0;
+    for (const key of this.data.keys()) {
+      if (key.startsWith(prefix)) {
+        this.data.delete(key);
+        this.callCounts.delete(key);
+        deletedCount++;
+      }
+    }
+
+    debug('resetAll(%s, %s) deleted %d entries', provider, keyIndex, deletedCount);
   }
 
   /**
@@ -184,6 +253,7 @@ export class MemoryStorage implements StorageBackend {
   async close(): Promise<void> {
     this.closed = true;
     this.data.clear();
+    this.callCounts.clear();
     debug('MemoryStorage closed');
   }
 }

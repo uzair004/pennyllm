@@ -11,6 +11,13 @@ export interface BudgetConfig {
 }
 
 /**
+ * Estimation configuration
+ */
+export interface EstimationConfig {
+  defaultMaxTokens: number;
+}
+
+/**
  * Provider-specific configuration
  */
 export interface ProviderConfig {
@@ -28,5 +35,6 @@ export interface RouterConfig {
   providers: Record<string, ProviderConfig>;
   strategy: StrategyType;
   budget: BudgetConfig;
+  estimation: EstimationConfig;
   warningThreshold?: number;
 }

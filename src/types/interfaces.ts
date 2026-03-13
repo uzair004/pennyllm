@@ -1,6 +1,16 @@
 import type { ModelMetadata, TimeWindow, UsageRecord } from './domain.js';
 
 /**
+ * Structured usage data returned by StorageBackend.getUsage()
+ */
+export interface StructuredUsage {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+  callCount: number;
+}
+
+/**
  * Storage backend interface for persistence layer
  */
 export interface StorageBackend {
@@ -16,23 +26,31 @@ export interface StorageBackend {
 
   /**
    * Increment usage for a key and return the updated record
+   * @param callCount Optional call count to increment (defaults to 0)
    */
   increment(
     provider: string,
     keyIndex: number,
     tokens: { prompt: number; completion: number },
     window: TimeWindow,
+    callCount?: number,
   ): Promise<UsageRecord>;
 
   /**
    * Get current usage for a key within a time window
+   * Returns structured usage data with token counts and call count
    */
-  getUsage(provider: string, keyIndex: number, window: TimeWindow): Promise<number>;
+  getUsage(provider: string, keyIndex: number, window: TimeWindow): Promise<StructuredUsage>;
 
   /**
    * Reset usage for a key within a time window
    */
   reset(provider: string, keyIndex: number, window: TimeWindow): Promise<void>;
+
+  /**
+   * Reset all usage data, optionally filtered by provider and/or key
+   */
+  resetAll(provider?: string, keyIndex?: number): Promise<void>;
 
   /**
    * Close the storage backend and cleanup resources

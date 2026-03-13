@@ -77,7 +77,11 @@ export class PolicyEngine {
 
     // Query usage for all limits concurrently
     const limitStatusPromises = policy.limits.map(async (limit) => {
-      const current = await this.storage.getUsage(provider, keyIndex, limit.window);
+      const { totalTokens: current } = await this.storage.getUsage(
+        provider,
+        keyIndex,
+        limit.window,
+      );
 
       // Calculate reset time (next window boundary)
       const now = Date.now();
