@@ -2,44 +2,44 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 5 (Model Catalog & Selection)
-status: planning
-last_updated: '2026-03-13T09:41:15.639Z'
+current_phase: Phase 6 (Base Router Integration)
+status: executing
+last_updated: '2026-03-13T13:58:00.000Z'
 progress:
   total_phases: 12
   completed_phases: 5
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 13
+  completed_plans: 13
   percent: 100
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-13
-**Current phase:** Phase 5 (Model Catalog & Selection)
-**Status:** Ready to plan
+**Current phase:** Phase 6 (Base Router Integration)
+**Status:** In progress
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 5 in progress. Building model catalog system with live API integration and selection strategy framework.
+**Current focus:** Phase 6 in progress. Building Vercel AI SDK integration with wrapLanguageModel middleware and key injection.
 
 ## Current Position
 
-**Phase:** 5 - Model Catalog & Selection
-**Plan:** 05-04 complete (5/5 plans done)
-**Status:** Complete
-**Progress:** [██████████] 100%
+**Phase:** 6 - Base Router Integration
+**Plan:** 06-01 complete (1/? plans done)
+**Status:** In progress
+**Progress:** [█░░░░░░░░░] 10%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 5/12
-- **Plans completed:** 12/12 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5)
-- **Average plan duration:** 11m 20s (12 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s, 7m 14s, 2m 18s)
-- **Estimated completion:** Phase 5 complete (5/5 plans complete)
+- **Plans completed:** 13/13 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 1/?)
+- **Average plan duration:** 11m 17s (13 plans: 9m 39s, 8m 6s, 10m 26s, 3m 35s, 4m 3s, 6m 47s, 5m 51s, 6m 44s, 31m 9s, 35m 15s, 7m 14s, 2m 18s, 8m 26s)
+- **Estimated completion:** Phase 6 in progress (1/? plans complete)
 
 ### Quality
 
@@ -97,8 +97,12 @@ progress:
 | 2026-03-13   | Eager catalog fetch at startup              | createRouter() awaits catalog.refresh() at startup with fallback to static snapshot on failure                                     | Balances freshness with startup reliability                                      |
 | 2026-03-13   | Permissive model validation                 | Unknown models logged but allowed to proceed with selection                                                                        | Avoids blocking legitimate requests when catalog is stale or model is new        |
 | 2026-03-13   | provider/model format required              | router.model() throws ConfigError if modelId lacks a slash                                                                         | Enforces consistent format and prevents ambiguous inputs                         |
+| 2026-03-13   | V3 to any cast for wrapLanguageModel        | wrapLanguageModel accepts both V1 and V3 models at runtime but TypeScript signature only shows V1                                  | Runtime compatibility maintained, type safety preserved with eslint-disable      |
+| 2026-03-13   | TransformStream for streaming usage         | Use Web Streams API to intercept finish chunk without modifying stream behavior                                                    | Standard API, all chunks pass through unmodified, usage recorded on completion   |
+| 2026-03-13   | Fire-and-forget usage recording             | Usage tracking never throws to user, all errors caught and logged                                                                  | LLM calls succeed even if usage recording fails                                  |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                          |
 | Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                          |
+| Phase 06 P01 | 8m 26s                                      | 3 tasks                                                                                                                            | 8 files                                                                          |
 
 ### Active TODOs
 
@@ -144,26 +148,24 @@ progress:
 
 ### What Just Happened
 
-**Plan 05-04 complete:**
+**Plan 06-01 complete:**
 
-- Wired DefaultModelCatalog and KeySelector into createRouter()
-- Updated Router interface with async model() returning {keyIndex, key, reason}
-- Added catalog and selection fields to Router interface
-- Implemented router.model() with provider/model format validation, catalog lookup, and key selection
-- Eager catalog initialization at startup with fallback to static snapshot on fetch failure
-- Custom catalog and strategy injectable via createRouter options
-- Updated router.close() to clean up catalog before storage
-- Exported DefaultModelCatalog, KeySelector, and strategies from main package
-- Handled exactOptionalPropertyTypes with conditional option object building
-- 1 task completed, 1 commit made (c199c02), 2 files modified, 2m 18s duration
-- All 83 tests pass without modification (catalog falls back gracefully in tests)
+- Created ProviderRegistry class with dynamic @ai-sdk/google loading
+- Created createRouterMiddleware factory returning LanguageModelV1Middleware
+- Implemented wrapGenerate with fire-and-forget usage recording from result.usage
+- Implemented wrapStream with TransformStream that intercepts finish chunk
+- Created routerModel() function combining key selection, provider creation, and middleware
+- Added Router.wrapModel() method on router instances
+- Updated main exports to include wrapper module
+- Added ./wrapper subpath export to package.json
+- 3 tasks completed, 3 commits made (ffb1733, 9048566, 537b7de), 8 files, 8m 26s duration
 
-**Phase 5 complete.** Router shell has full catalog and selection integration. router.model() is fully functional.
+**Phase 6 Plan 01 complete.** Core AI SDK integration layer built. Users can now call router.wrapModel() to get a wrapped model with automatic key injection and usage tracking.
 
 ### What's Next
 
-- **Phase 6: Vercel AI SDK Integration** — Research and POC for wrapLanguageModel() middleware
-- Success when: router.model() wired into AI SDK middleware, per-request key injection working, usage tracking from result.usage
+- **Phase 6 next plans** — Integration testing, error handling, streaming support, real LLM calls
+- Success when: generateText() and streamText() working with router-wrapped models, usage tracking confirmed working
 
 ### Context for Next Session
 
@@ -177,4 +179,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T09:34:30Z — Phase 5 complete (12/12 plans, 05-04 complete)_
+_Last updated: 2026-03-13T13:58:00Z — Phase 6 in progress (13/13 plans, 06-01 complete)_
