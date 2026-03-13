@@ -201,7 +201,12 @@ Plans:
 4. Router classifies errors: 429 rate limit, 401 auth, quota exhausted, network failures
 5. Error messages include actionable context (which key, which limit, when resets)
 
-**Plans:** TBD
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 07-01-PLAN.md — Error classes (AuthError, ProviderError, NetworkError), error classifier, event types, RouterEvent constants
+- [ ] 07-02-PLAN.md — Retry proxy with key rotation, wrapModel integration, middleware keyIndex tracking fix
 
 ---
 
@@ -317,7 +322,7 @@ Plans:
 | 4. Usage Tracking Core          | 2/2            | Complete    | ✅        |
 | 5. Model Catalog & Selection    | 5/5            | Complete    | ✅        |
 | 6. Base Router Integration      | 2/3            | Gap closure | -         |
-| 7. Integration & Error Handling | 0/?            | Not started | -         |
+| 7. Integration & Error Handling | 0/2            | Planned     | -         |
 | 8. Provider Policies Catalog    | 0/?            | Not started | -         |
 | 9. Fallback & Budget Management | 0/?            | Not started | -         |
 | 10. SQLite, Redis & Advanced    | 0/?            | Not started | -         |
@@ -393,3 +398,4 @@ _Phase 4 planned: 2 plans in 2 waves_
 _Phase 5 revised: 5 plans in 4 waves (added Wave 0 test scaffolds)_
 _Phase 6 revised: 2 plans in 2 waves (added real API POC, removed test scaffolds per build-first strategy)_
 _Phase 6 gap closure: 1 plan added (lazy ProviderRegistry initialization to fix test timeouts)_
+_Phase 7 planned: 2 plans in 2 waves (error classification + retry proxy with key rotation)_
