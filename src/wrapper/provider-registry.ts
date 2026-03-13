@@ -1,4 +1,4 @@
-import type { LanguageModelV1 } from 'ai';
+import type { LanguageModelV3 } from '@ai-sdk/provider';
 import debugFactory from 'debug';
 import { ConfigError } from '../errors/config-error.js';
 
@@ -7,13 +7,8 @@ const debug = debugFactory('llm-router:registry');
 /**
  * Provider factory function type
  * Matches the shape of AI SDK provider factories (createGoogleGenerativeAI, createOpenAI, etc.)
- * Note: Providers may return V1 or V3 models - wrapLanguageModel handles both
  */
-export type ProviderFactory = (options: {
-  apiKey: string;
-}) => (
-  modelId: string,
-) => LanguageModelV1 | { specificationVersion: 'v3'; doGenerate: unknown; doStream: unknown };
+export type ProviderFactory = (options: { apiKey: string }) => (modelId: string) => LanguageModelV3;
 
 /**
  * Registry for AI SDK provider factories
@@ -66,7 +61,6 @@ export class ProviderRegistry {
 
 /**
  * Create a provider instance from the registry
- * Returns V1 or V3 model (wrapLanguageModel handles both)
  * @throws ConfigError if provider is not registered
  */
 export function createProviderInstance(
@@ -74,7 +68,7 @@ export function createProviderInstance(
   provider: string,
   modelName: string,
   apiKey: string,
-): LanguageModelV1 | { specificationVersion: 'v3'; doGenerate: unknown; doStream: unknown } {
+): LanguageModelV3 {
   const factory = registry.get(provider);
 
   if (!factory) {

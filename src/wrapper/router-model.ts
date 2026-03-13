@@ -1,12 +1,12 @@
 import { wrapLanguageModel } from 'ai';
-import type { LanguageModelV1 } from 'ai';
+import type { LanguageModelV3 } from '@ai-sdk/provider';
 import type { Router } from '../config/index.js';
 import { ProviderRegistry, createProviderInstance } from './provider-registry.js';
 import { createRouterMiddleware } from './middleware.js';
 import { randomUUID } from 'node:crypto';
 
 /**
- * Create a wrapped LanguageModelV1 with router-managed key selection and usage tracking
+ * Create a wrapped LanguageModelV3 with router-managed key selection and usage tracking
  * This is the user-facing integration between the router and Vercel AI SDK
  */
 export async function routerModel(
@@ -18,7 +18,7 @@ export async function routerModel(
     requestId?: string;
     registry?: ProviderRegistry;
   },
-): Promise<LanguageModelV1> {
+): Promise<LanguageModelV3> {
   // Select key using router
   const selection = await router.model(modelId, options);
 
@@ -45,11 +45,8 @@ export async function routerModel(
   });
 
   // Wrap model with middleware and return
-  // Note: wrapLanguageModel accepts both V1 and V3 models at runtime,
-  // but TypeScript signature only shows V1
   const wrappedModel = wrapLanguageModel({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-    model: baseModel as any,
+    model: baseModel,
     middleware,
     modelId,
     providerId: 'llm-router',
@@ -67,13 +64,13 @@ export function createModelWrapper(
 ): (
   modelId: string,
   options?: { strategy?: string; estimatedTokens?: number; requestId?: string },
-) => Promise<LanguageModelV1> {
+) => Promise<LanguageModelV3> {
   let resolvedRegistry: ProviderRegistry | undefined = registry;
 
   return async (
     modelId: string,
     options?: { strategy?: string; estimatedTokens?: number; requestId?: string },
-  ): Promise<LanguageModelV1> => {
+  ): Promise<LanguageModelV3> => {
     if (!resolvedRegistry) {
       resolvedRegistry = await ProviderRegistry.createDefault();
     }

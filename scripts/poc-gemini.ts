@@ -63,8 +63,8 @@ async function main() {
     console.log();
 
     // Display token usage (guard against undefined)
-    const promptTokens = Number(result.usage?.promptTokens) || 0;
-    const completionTokens = Number(result.usage?.completionTokens) || 0;
+    const promptTokens = Number(result.usage?.inputTokens) || 0;
+    const completionTokens = Number(result.usage?.outputTokens) || 0;
     const totalTokens = promptTokens + completionTokens;
 
     console.log('📊 Token Usage:');

@@ -1,4 +1,4 @@
-import type { LanguageModelV1Middleware, LanguageModelV1StreamPart } from 'ai';
+import type { LanguageModelV3Middleware, LanguageModelV3StreamPart } from '@ai-sdk/provider';
 import type { UsageTracker } from '../usage/UsageTracker.js';
 import debugFactory from 'debug';
 
@@ -13,18 +13,20 @@ export function createRouterMiddleware(options: {
   model: string;
   tracker: UsageTracker;
   requestId: string;
-}): LanguageModelV1Middleware {
+}): LanguageModelV3Middleware {
   const { provider, keyIndex, tracker, requestId } = options;
 
   return {
+    specificationVersion: 'v3',
+
     wrapGenerate: async ({ doGenerate }) => {
       // Call the original generate function
       const result = await doGenerate();
 
       // Extract usage from result (guard against undefined/NaN from providers)
       const usage = result.usage;
-      const promptTokens = Number(usage?.promptTokens) || 0;
-      const completionTokens = Number(usage?.completionTokens) || 0;
+      const promptTokens = Number(usage?.inputTokens) || 0;
+      const completionTokens = Number(usage?.outputTokens) || 0;
 
       // Fire-and-forget record
       tracker
@@ -50,7 +52,7 @@ export function createRouterMiddleware(options: {
       const result = await doStream();
 
       // Create a transform stream that intercepts the finish chunk
-      const transform = new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
+      const transform = new TransformStream<LanguageModelV3StreamPart, LanguageModelV3StreamPart>({
         transform(chunk, controller) {
           // Pass every chunk through unmodified
           controller.enqueue(chunk);
@@ -64,8 +66,8 @@ export function createRouterMiddleware(options: {
                 provider,
                 keyIndex,
                 {
-                  promptTokens: Number(usage?.promptTokens) || 0,
-                  completionTokens: Number(usage?.completionTokens) || 0,
+                  promptTokens: Number(usage?.inputTokens) || 0,
+                  completionTokens: Number(usage?.outputTokens) || 0,
                 },
                 requestId,
                 null,

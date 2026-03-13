@@ -1,7 +1,7 @@
 import debugFactory from 'debug';
 import { EventEmitter } from 'node:events';
 import { randomUUID } from 'node:crypto';
-import type { LanguageModelV1 } from 'ai';
+import type { LanguageModelV3 } from '@ai-sdk/provider';
 import { wrapLanguageModel } from 'ai';
 import type { RouterConfig } from '../types/config.js';
 import type { StorageBackend, ModelCatalog, SelectionStrategy } from '../types/interfaces.js';
@@ -34,7 +34,7 @@ export interface Router {
   wrapModel: (
     modelId: string,
     options?: { strategy?: string; estimatedTokens?: number; requestId?: string },
-  ) => Promise<LanguageModelV1>;
+  ) => Promise<LanguageModelV3>;
   getUsage: {
     (): Promise<UsageSnapshot>;
     (provider: string): Promise<ProviderUsage>;
@@ -237,11 +237,8 @@ export async function createRouter(
         });
 
         // Wrap and return
-        // Note: wrapLanguageModel accepts both V1 and V3 models at runtime,
-        // but TypeScript signature only shows V1
         const wrappedModel = wrapLanguageModel({
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-          model: baseModel as any,
+          model: baseModel,
           middleware,
           modelId,
           providerId: 'llm-router',
