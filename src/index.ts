@@ -21,6 +21,17 @@ export { PolicyEngine } from './policy/index.js';
 // Usage
 export { UsageTracker, CooldownManager } from './usage/index.js';
 
+// Catalog
+export { DefaultModelCatalog } from './catalog/index.js';
+
+// Selection
+export {
+  KeySelector,
+  PriorityStrategy,
+  RoundRobinStrategy,
+  LeastUsedStrategy,
+} from './selection/index.js';
+
 // Constants
 export {
   EnforcementBehavior,

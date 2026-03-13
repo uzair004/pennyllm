@@ -1,7 +1,7 @@
 import debugFactory from 'debug';
 import { EventEmitter } from 'node:events';
 import type { RouterConfig } from '../types/config.js';
-import type { StorageBackend } from '../types/interfaces.js';
+import type { StorageBackend, ModelCatalog, SelectionStrategy } from '../types/interfaces.js';
 import { MemoryStorage } from '../storage/index.js';
 import { ConfigError } from '../errors/config-error.js';
 import { configSchema, type ConfigInput } from './schema.js';
@@ -12,15 +12,20 @@ import { shippedDefaults } from '../policy/defaults/index.js';
 import { checkStaleness } from '../policy/staleness.js';
 import { UsageTracker } from '../usage/UsageTracker.js';
 import type { UsageSnapshot, ProviderUsage, EstimationConfig } from '../usage/types.js';
+import { DefaultModelCatalog } from '../catalog/DefaultModelCatalog.js';
+import { KeySelector } from '../selection/KeySelector.js';
+import type { SelectionContext, SelectionResult } from '../selection/types.js';
 
 const debug = debugFactory('llm-router:config');
 
 /**
- * Router instance interface with UsageTracker and PolicyEngine
- * Full model() implementation deferred to Phase 6+
+ * Router instance interface with full Phase 5 integration
  */
 export interface Router {
-  model: (modelId: string) => unknown;
+  model: (
+    modelId: string,
+    options?: { strategy?: string; estimatedTokens?: number; requestId?: string },
+  ) => Promise<{ keyIndex: number; key: string; reason: string }>;
   getUsage: {
     (): Promise<UsageSnapshot>;
     (provider: string): Promise<ProviderUsage>;
@@ -31,26 +36,34 @@ export interface Router {
   storage: StorageBackend;
   policy: PolicyEngine;
   usage: UsageTracker;
+  catalog: ModelCatalog;
+  selection: KeySelector;
   close: () => Promise<void>;
   on: (event: string, handler: (...args: unknown[]) => void) => void;
   off: (event: string, handler: (...args: unknown[]) => void) => void;
 }
 
 /**
- * Create a router instance from configuration
- * Currently a stub that validates config and returns placeholder
- * Full implementation in Phase 6+
+ * Create a router instance from configuration with full catalog and selection integration
  * @param configOrPath - Configuration object or path to config file
  * @param options - Optional configuration options
  * @param options.storage - Custom storage backend (defaults to MemoryStorage)
  * @param options.tokenEstimator - Custom token estimation function
- * @returns Router instance (stub)
+ * @param options.catalog - Custom model catalog (defaults to DefaultModelCatalog)
+ * @param options.strategy - Custom selection strategy
+ * @returns Router instance
  * @throws {ConfigError} If configuration is invalid
  */
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function createRouter(
   configOrPath: ConfigInput | string,
-  options?: { storage?: StorageBackend; tokenEstimator?: (text: string) => number },
+  options?: {
+    storage?: StorageBackend;
+    tokenEstimator?: (text: string) => number;
+    catalog?: ModelCatalog;
+    strategy?:
+      | SelectionStrategy
+      | ((context: SelectionContext) => SelectionResult | Promise<SelectionResult>);
+  },
 ): Promise<Router> {
   let config: RouterConfig;
 
@@ -93,13 +106,88 @@ export async function createRouter(
     // Create UsageTracker
     const usageTracker = new UsageTracker(storage, resolvedPolicies, emitter, estimationConfig);
 
+    // Initialize catalog
+    const catalog = options?.catalog ?? new DefaultModelCatalog(emitter);
+
+    // Eager init: fetch catalog at startup (non-blocking — falls back to static)
+    try {
+      await catalog.refresh();
+    } catch (err) {
+      debug(
+        'Catalog initial fetch failed, will use static snapshot: %s',
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+
+    // Initialize KeySelector
+    const cooldownManager = usageTracker.getCooldownManager();
+    const keySelector = new KeySelector(
+      config,
+      policyEngine,
+      cooldownManager,
+      emitter,
+      options?.strategy,
+    );
+
     debug('Router created with config (keys redacted)');
 
-    // Return implementation with UsageTracker and PolicyEngine
+    // Return implementation with full Phase 5 integration
     return {
-      model: (modelId: string) => {
-        debug('model() stub called with: %s', modelId);
-        return {};
+      model: async (
+        modelId: string,
+        opts?: { strategy?: string; estimatedTokens?: number; requestId?: string },
+      ) => {
+        // Parse provider/model format: 'google/gemini-2.0-flash'
+        const slashIndex = modelId.indexOf('/');
+        if (slashIndex === -1) {
+          throw new ConfigError(
+            'Model ID must be in provider/model format (e.g., "google/gemini-2.0-flash")',
+            {
+              field: 'modelId',
+            },
+          );
+        }
+        const provider = modelId.substring(0, slashIndex);
+        const model = modelId.substring(slashIndex + 1);
+
+        // Check model in catalog (warn but allow unknown)
+        const modelMeta = await catalog.getModel(modelId);
+        if (!modelMeta) {
+          debug('Model %s not in catalog, proceeding with selection', modelId);
+        }
+
+        // Select key
+        const selectOptions: { strategy?: string; estimatedTokens?: number; requestId?: string } =
+          {};
+        if (opts?.strategy !== undefined) {
+          selectOptions.strategy = opts.strategy;
+        }
+        if (opts?.estimatedTokens !== undefined) {
+          selectOptions.estimatedTokens = opts.estimatedTokens;
+        }
+        if (opts?.requestId !== undefined) {
+          selectOptions.requestId = opts.requestId;
+        }
+        const result = await keySelector.selectKey(provider, model, selectOptions);
+
+        // Resolve actual API key string
+        const providerConfig = config.providers[provider];
+        if (!providerConfig) {
+          throw new ConfigError(`Provider ${provider} not configured`, { field: 'providers' });
+        }
+        const keyConfig = providerConfig.keys[result.keyIndex];
+        if (keyConfig === undefined) {
+          throw new ConfigError(`Key index ${result.keyIndex} not found for provider ${provider}`, {
+            field: 'providers',
+          });
+        }
+        const apiKey = typeof keyConfig === 'string' ? keyConfig : keyConfig.key;
+
+        return {
+          keyIndex: result.keyIndex,
+          key: apiKey,
+          reason: result.reason,
+        };
       },
       getUsage: (async (provider?: string) => {
         if (provider !== undefined) {
@@ -122,9 +210,12 @@ export async function createRouter(
       storage,
       policy: policyEngine,
       usage: usageTracker,
+      catalog,
+      selection: keySelector,
 
       close: async () => {
-        debug('close() stub called');
+        debug('Closing router');
+        await catalog.close();
         await storage.close();
       },
       on: (event: string, handler: (...args: unknown[]) => void) => {
