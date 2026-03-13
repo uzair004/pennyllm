@@ -73,18 +73,23 @@
   },
   "peerDependencies": {
     "ai": "^4.0.0",
+    "@ai-sdk/google": "^1.0.0",
     "js-yaml": "^4.0.0"
   },
   "peerDependenciesMeta": {
+    "@ai-sdk/google": {
+      "optional": true
+    },
     "js-yaml": {
       "optional": true
     }
   },
   "dependencies": {
-    "zod": "^3.23.0",
-    "debug": "^4.3.0"
+    "debug": "^4.3.0",
+    "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@ai-sdk/google": "^3.0.43",
     "@changesets/cli": "^2.27.10",
     "@commitlint/cli": "^19.6.2",
     "@commitlint/config-conventional": "^19.6.0",
