@@ -42,6 +42,13 @@ export const RouterEvent = {
   PROVIDER_EXHAUSTED: 'provider:exhausted',
   CATALOG_REFRESHED: 'catalog:refreshed',
   ERROR: 'error',
+  ERROR_RATE_LIMIT: 'error:rate_limit',
+  ERROR_AUTH: 'error:auth',
+  ERROR_SERVER: 'error:server',
+  ERROR_NETWORK: 'error:network',
+  KEY_RETRIED: 'key:retried',
+  KEY_DISABLED: 'key:disabled',
+  REQUEST_COMPLETE: 'request:complete',
 } as const;
 
 export type RouterEventType = (typeof RouterEvent)[keyof typeof RouterEvent];

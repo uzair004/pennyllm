@@ -97,6 +97,85 @@ export interface ErrorEvent extends RouterEventPayload {
 }
 
 /**
+ * Error rate limit event - emitted when a key hits 429
+ */
+export interface ErrorRateLimitEvent extends RouterEventPayload {
+  provider: string;
+  keyIndex: number;
+  modelId: string;
+  statusCode: number;
+  message: string;
+}
+
+/**
+ * Error auth event - emitted when a key hits 401/403
+ */
+export interface ErrorAuthEvent extends RouterEventPayload {
+  provider: string;
+  keyIndex: number;
+  modelId: string;
+  statusCode: number;
+  message: string;
+}
+
+/**
+ * Error server event - emitted when a key hits 500+
+ */
+export interface ErrorServerEvent extends RouterEventPayload {
+  provider: string;
+  keyIndex: number;
+  modelId: string;
+  statusCode: number;
+  message: string;
+}
+
+/**
+ * Error network event - emitted on connection failure
+ */
+export interface ErrorNetworkEvent extends RouterEventPayload {
+  provider: string;
+  keyIndex: number;
+  modelId: string;
+  message: string;
+}
+
+/**
+ * Key retried event - emitted when retrying with a different key
+ */
+export interface KeyRetriedEvent extends RouterEventPayload {
+  provider: string;
+  modelId: string;
+  failedKeyIndex: number;
+  newKeyIndex: number;
+  reason: string;
+  attempt: number;
+  maxAttempts: number;
+}
+
+/**
+ * Key disabled event - emitted when a key is put into cooldown
+ */
+export interface KeyDisabledEvent extends RouterEventPayload {
+  provider: string;
+  keyIndex: number;
+  reason: string;
+  statusCode: number;
+}
+
+/**
+ * Request complete event - emitted after successful LLM call
+ */
+export interface RequestCompleteEvent extends RouterEventPayload {
+  provider: string;
+  modelId: string;
+  keyIndex: number;
+  promptTokens: number;
+  completionTokens: number;
+  latencyMs: number;
+  retries: number;
+}
+
+/**
  * Type-safe event map
  */
 export interface RouterEventMap {
@@ -110,6 +189,13 @@ export interface RouterEventMap {
   'catalog:refreshed': CatalogRefreshedEventType;
   'policy:stale': PolicyStaleEventType;
   error: ErrorEvent;
+  'error:rate_limit': ErrorRateLimitEvent;
+  'error:auth': ErrorAuthEvent;
+  'error:server': ErrorServerEvent;
+  'error:network': ErrorNetworkEvent;
+  'key:retried': KeyRetriedEvent;
+  'key:disabled': KeyDisabledEvent;
+  'request:complete': RequestCompleteEvent;
 }
 
 /**
@@ -125,4 +211,11 @@ export type RouterEvents =
   | ProviderExhaustedEvent
   | CatalogRefreshedEventType
   | PolicyStaleEventType
-  | ErrorEvent;
+  | ErrorEvent
+  | ErrorRateLimitEvent
+  | ErrorAuthEvent
+  | ErrorServerEvent
+  | ErrorNetworkEvent
+  | KeyRetriedEvent
+  | KeyDisabledEvent
+  | RequestCompleteEvent;
