@@ -49,4 +49,5 @@ export interface RouterConfig {
   fallback: FallbackConfig;
   warningThreshold?: number;
   applyRegistryDefaults: boolean;
+  dryRun: boolean;
 }

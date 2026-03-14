@@ -113,6 +113,7 @@ export const configSchema = z
     cooldown: cooldownSchema,
     warningThreshold: z.number().min(0).max(1).optional(),
     applyRegistryDefaults: z.boolean().default(false),
+    dryRun: z.boolean().default(false),
   })
   .strict()
   .refine(

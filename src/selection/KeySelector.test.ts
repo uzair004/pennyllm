@@ -48,6 +48,7 @@ const mockConfig = (keys: string[]): RouterConfig => ({
   estimation: { defaultMaxTokens: 1024 },
   cooldown: { defaultDurationMs: 60000 },
   applyRegistryDefaults: false,
+  dryRun: false,
 });
 
 describe('KeySelector', () => {

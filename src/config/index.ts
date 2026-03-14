@@ -25,6 +25,16 @@ import { FallbackResolver } from '../fallback/FallbackResolver.js';
 import { AffinityCache } from '../fallback/AffinityCache.js';
 import { createFallbackProxy } from '../fallback/FallbackProxy.js';
 import { BudgetTracker } from '../budget/BudgetTracker.js';
+import type {
+  KeySelectedEvent,
+  UsageRecordedEvent,
+  LimitWarningEvent,
+  LimitExceededEvent,
+  FallbackTriggeredEvent,
+  ErrorEvent,
+} from '../types/events.js';
+import type { BudgetAlertEvent, BudgetExceededEvent } from '../budget/types.js';
+import { RouterEvent } from '../constants/index.js';
 
 const debug = debugFactory('llm-router:config');
 
@@ -61,6 +71,15 @@ export interface Router {
   close: () => Promise<void>;
   on: (event: string, handler: (...args: unknown[]) => void) => void;
   off: (event: string, handler: (...args: unknown[]) => void) => void;
+  // Typed observability hooks
+  onKeySelected: (cb: (event: KeySelectedEvent) => void) => () => void;
+  onUsageRecorded: (cb: (event: UsageRecordedEvent) => void) => () => void;
+  onLimitWarning: (cb: (event: LimitWarningEvent) => void) => () => void;
+  onLimitExceeded: (cb: (event: LimitExceededEvent) => void) => () => void;
+  onFallbackTriggered: (cb: (event: FallbackTriggeredEvent) => void) => () => void;
+  onBudgetAlert: (cb: (event: BudgetAlertEvent) => void) => () => void;
+  onBudgetExceeded: (cb: (event: BudgetExceededEvent) => void) => () => void;
+  onError: (cb: (event: ErrorEvent) => void) => () => void;
 }
 
 /**
@@ -172,6 +191,17 @@ export async function createRouter(
     }
 
     debug('Router created with config (keys redacted)');
+
+    // Typed hook helper factory -- wraps emitter.on and returns unsubscribe function
+    function createHook<T>(eventName: string): (cb: (event: T) => void) => () => void {
+      return (cb: (event: T) => void) => {
+        const handler = (...args: unknown[]) => cb(args[0] as T);
+        emitter.on(eventName, handler);
+        return () => {
+          emitter.off(eventName, handler);
+        };
+      };
+    }
 
     // Return implementation with full Phase 5 integration
     // Using self-reference pattern for wrapModel to call router.model()
@@ -318,6 +348,7 @@ export async function createRouter(
           modelIdRef,
           tracker: usageTracker,
           requestId,
+          dryRun: config.dryRun,
         });
 
         // Wrap fallback proxy (not retry proxy) with middleware
@@ -365,6 +396,15 @@ export async function createRouter(
       off: (event: string, handler: (...args: unknown[]) => void) => {
         emitter.off(event, handler);
       },
+      // Typed observability hooks
+      onKeySelected: createHook<KeySelectedEvent>(RouterEvent.KEY_SELECTED),
+      onUsageRecorded: createHook<UsageRecordedEvent>(RouterEvent.USAGE_RECORDED),
+      onLimitWarning: createHook<LimitWarningEvent>(RouterEvent.LIMIT_WARNING),
+      onLimitExceeded: createHook<LimitExceededEvent>(RouterEvent.LIMIT_EXCEEDED),
+      onFallbackTriggered: createHook<FallbackTriggeredEvent>(RouterEvent.FALLBACK_TRIGGERED),
+      onBudgetAlert: createHook<BudgetAlertEvent>(RouterEvent.BUDGET_ALERT),
+      onBudgetExceeded: createHook<BudgetExceededEvent>(RouterEvent.BUDGET_EXCEEDED),
+      onError: createHook<ErrorEvent>(RouterEvent.ERROR),
     });
 
     return routerImpl;

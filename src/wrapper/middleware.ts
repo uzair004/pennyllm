@@ -15,6 +15,7 @@ export function createRouterMiddleware(options: {
   modelIdRef: { current: string };
   tracker: UsageTracker;
   requestId: string;
+  dryRun: boolean;
 }): LanguageModelV3Middleware {
   const { providerRef, keyIndexRef, tracker, requestId } = options;
 
@@ -22,6 +23,35 @@ export function createRouterMiddleware(options: {
     specificationVersion: 'v3',
 
     wrapGenerate: async ({ doGenerate }) => {
+      // Dry-run mode: return mock result without calling the provider
+      if (options.dryRun) {
+        debug('Dry-run mode: returning mock generate result');
+        return {
+          content: [
+            {
+              type: 'text' as const,
+              text: `[DRY RUN] Request would route to ${providerRef.current} key ${keyIndexRef.current}`,
+            },
+          ],
+          finishReason: { unified: 'stop' as const, raw: 'dry-run' },
+          usage: {
+            inputTokens: {
+              total: 0,
+              noCache: undefined,
+              cacheRead: undefined,
+              cacheWrite: undefined,
+            },
+            outputTokens: { total: 0, text: undefined, reasoning: undefined },
+          },
+          response: {
+            id: `dry-run-${requestId}`,
+            modelId: options.modelIdRef.current,
+            timestamp: new Date(),
+          },
+          warnings: [],
+        };
+      }
+
       // Call the original generate function
       const result = await doGenerate();
 
@@ -50,6 +80,47 @@ export function createRouterMiddleware(options: {
     },
 
     wrapStream: async ({ doStream }) => {
+      // Dry-run mode: return mock stream that immediately completes
+      if (options.dryRun) {
+        debug('Dry-run mode: returning mock stream result');
+        const mockStream = new ReadableStream<LanguageModelV3StreamPart>({
+          start(controller) {
+            controller.enqueue({
+              type: 'stream-start',
+              warnings: [],
+            });
+            controller.enqueue({
+              type: 'text-start',
+              id: 'dry-run-text',
+            });
+            controller.enqueue({
+              type: 'text-delta',
+              id: 'dry-run-text',
+              delta: `[DRY RUN] Request would route to ${providerRef.current}`,
+            });
+            controller.enqueue({
+              type: 'text-end',
+              id: 'dry-run-text',
+            });
+            controller.enqueue({
+              type: 'finish',
+              finishReason: { unified: 'stop' as const, raw: 'dry-run' },
+              usage: {
+                inputTokens: {
+                  total: 0,
+                  noCache: undefined,
+                  cacheRead: undefined,
+                  cacheWrite: undefined,
+                },
+                outputTokens: { total: 0, text: undefined, reasoning: undefined },
+              },
+            });
+            controller.close();
+          },
+        });
+        return { stream: mockStream };
+      }
+
       // Call the original stream function
       const result = await doStream();
 

@@ -42,12 +42,14 @@ export async function routerModel(
   const modelIdRef = { current: modelId };
 
   // Create middleware for usage tracking
+  // routerModel() is a convenience function; dry-run is always false (use router.wrapModel for dry-run)
   const middleware = createRouterMiddleware({
     providerRef,
     keyIndexRef,
     modelIdRef,
     tracker: router.usage,
     requestId,
+    dryRun: false,
   });
 
   // Wrap model with middleware and return
