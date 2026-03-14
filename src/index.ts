@@ -29,6 +29,12 @@ export { UsageTracker, CooldownManager } from './usage/index.js';
 // Catalog
 export { DefaultModelCatalog } from './catalog/index.js';
 
+// Budget
+export { BudgetTracker } from './budget/index.js';
+
+// Fallback
+export { FallbackResolver, AffinityCache, createFallbackProxy } from './fallback/index.js';
+
 // Selection
 export {
   KeySelector,
@@ -127,8 +133,11 @@ export type {
 // Errors
 export {
   AllProvidersExhaustedError,
+  AuthError,
   ConfigError,
   LLMRouterError,
+  NetworkError,
+  ProviderError,
   RateLimitError,
   QuotaExhaustedError,
 } from './errors/index.js';
