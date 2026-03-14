@@ -2,42 +2,42 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 10 (SQLite, Redis & Advanced Features)
-status: planning
-last_updated: '2026-03-14T18:44:34.740Z'
+current_phase: Phase 11 (Developer Experience Polish)
+status: executing
+last_updated: '2026-03-14T20:00:07.000Z'
 progress:
   total_phases: 12
   completed_phases: 10
-  total_plans: 26
-  completed_plans: 26
-  percent: 100
+  total_plans: 29
+  completed_plans: 27
+  percent: 93
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-14
-**Current phase:** Phase 10 (SQLite, Redis & Advanced Features)
-**Status:** Ready to plan
+**Current phase:** Phase 11 (Developer Experience Polish)
+**Status:** Executing
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 10 complete (3/3 plans). SQLite/Redis adapters built and wired, observability hooks, dry-run mode. Ready for Phase 11.
+**Current focus:** Phase 11 in progress (1/3 plans). Debug mode, config validation, typed defineConfig complete. JSDoc and remaining DX polish next.
 
 ## Current Position
 
-**Phase:** 10 - SQLite, Redis & Advanced Features
-**Plan:** 3/3 plans
-**Status:** Complete
-**Progress:** [██████████] 100%
+**Phase:** 11 - Developer Experience Polish
+**Plan:** 1/3 plans
+**Status:** Executing
+**Progress:** [█████████░] 93%
 
 ## Performance Metrics
 
 ### Velocity
 
 - **Phases completed:** 10/12
-- **Plans completed:** 26/26 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3, Phase 10: 3/3)
+- **Plans completed:** 27/29 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3, Phase 10: 3/3, Phase 11: 1/3)
 - **Estimated completion:** Phase 9 complete, Phase 10 next
 
 ### Quality
@@ -121,6 +121,8 @@ progress:
 | 2026-03-14   | Dry-run intercept after key selection       | Events should still fire in dry-run mode for observability testing                                                                 | Middleware intercepts after router.model() and key:selected event emission         |
 | 2026-03-14   | createHook factory for typed hooks          | DRY pattern wrapping EventEmitter.on with typed callback and unsubscribe return                                                    | 8 typed hooks without duplicating emitter wiring code                              |
 | 2026-03-14   | Conditional property for exactOptional      | estimatedTokens/originalQualityTier need conditional inclusion under strict TS mode                                                | Build objects conditionally instead of spreading undefined values                  |
+| 2026-03-14   | ProviderType union for autocomplete         | `ProviderType \| (string & {})` prevents TypeScript from widening to plain string                                                  | defineConfig() autocompletes 12 known providers while accepting custom strings     |
+| 2026-03-14   | Levenshtein threshold of 2 for typos        | Edit distance 2 catches common typos (googel, grooq) without false positives                                                       | suggestProvider() returns closest match or null                                    |
 | 2026-03-14   | Redis key as deterministic id               | Same composite key returns same id across increment calls, satisfying contract test record2.id === record1.id                      | No UUID generation needed, Redis key string is the natural identifier              |
 | 2026-03-14   | Cursor-based SCAN instead of scanStream     | Simpler async/await control flow, no stream event handling needed                                                                  | scanKeys() helper with manual cursor iteration for get() and resetAll()            |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                            |
@@ -137,6 +139,7 @@ progress:
 | Phase 09 P02 | 3m 39s                                      | 2 tasks                                                                                                                            | 4 files                                                                            |
 | Phase 09 P03 | 8m 54s                                      | 2 tasks                                                                                                                            | 7 files                                                                            |
 | Phase 10 P03 | 7m 4s                                       | 2 tasks                                                                                                                            | 9 files                                                                            |
+| Phase 11 P01 | 5m 55s                                      | 2 tasks                                                                                                                            | 8 files                                                                            |
 
 ### Active TODOs
 
@@ -182,20 +185,22 @@ progress:
 
 ### What Just Happened
 
-**Phase 10 Plan 03 complete:**
+**Phase 11 Plan 01 complete:**
 
-**Plan 10-03:** Build wiring, observability hooks, dry-run mode:
+**Plan 11-01:** Debug mode, config validation, typed defineConfig:
 
-- Subpath exports for llm-router/sqlite and llm-router/redis in package.json
-- tsup entry points for sqlite and redis bundles producing .mjs, .cjs, .d.ts
-- better-sqlite3 and ioredis as optional peer dependencies
-- 8 typed observability hook helpers (onKeySelected, onUsageRecorded, etc.) on Router returning unsubscribe functions
-- dryRun config option in Zod schema (defaults false), middleware intercepts before API call
-- 2 commits (ef2aa89, fe3e0ea), 9 files, 7m
+- DebugLogger class subscribing to 8 typed observability hooks with structured stdout output
+- debug: z.boolean().default(false) in config schema, wired into createRouter
+- DEBUG=llm-router:\* env var also enables debug mode
+- Levenshtein-based typo suggestions for provider names (threshold 2 edits)
+- ZodError transformed into actionable ConfigError with human-readable messages
+- defineConfig() with ProviderType union for IDE autocomplete of 12 known providers
+- 2 commits (4ed55bc, 812eb15), 8 files, 5m 55s
 
 ### What's Next
 
-- **Phase 11:** Developer Experience Polish
+- **Phase 11 Plan 02:** JSDoc documentation
+- **Phase 11 Plan 03:** Remaining DX polish
 - **Phase 12:** Testing & Validation
 
 ### Context for Next Session
@@ -205,7 +210,7 @@ progress:
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
 - Phases 1-10 complete: core engine + integration + error handling + provider validation + fallback + storage adapters all built
-- Phase 10 complete: SQLite (WAL, prepared stmts), Redis (pipeline HINCRBY, TTL), subpath exports, typed hooks, dry-run
+- Phase 11 Plan 01 complete: DebugLogger, config validation with typo suggestions, typed defineConfig
 - Full request flow: wrapModel() -> middleware -> FallbackProxy -> RetryProxy -> provider API
 - Dry-run intercepts in middleware AFTER key selection (events still fire)
 - All 93 tests pass + 1 skipped (Redis) + 38 todo, tsc --noEmit clean (pre-existing rootDir test error)
@@ -213,4 +218,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T18:34:46Z -- Phase 10 Plan 03 complete (26/26 plans)_
+_Last updated: 2026-03-14T20:00:07Z -- Phase 11 Plan 01 complete (27/29 plans)_
