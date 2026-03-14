@@ -261,11 +261,15 @@ export async function createRouter(
           keySelector,
         });
 
-        // Create middleware for usage tracking (uses keyIndexRef for correct key)
+        // Mutable refs for fallback provider tracking
+        const providerRef = { current: provider };
+        const modelIdRef = { current: modelId };
+
+        // Create middleware for usage tracking (uses refs for correct key after fallback)
         const middleware = createRouterMiddleware({
-          provider,
+          providerRef,
           keyIndexRef,
-          model: modelName,
+          modelIdRef,
           tracker: usageTracker,
           requestId,
         });

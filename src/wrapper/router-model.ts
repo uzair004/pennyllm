@@ -36,14 +36,16 @@ export async function routerModel(
   // Generate requestId if not provided
   const requestId = options?.requestId ?? randomUUID();
 
-  // Mutable ref for middleware keyIndex tracking (consistent with retry proxy pattern)
+  // Mutable refs for middleware tracking (consistent with retry/fallback proxy pattern)
   const keyIndexRef = { current: selection.keyIndex };
+  const providerRef = { current: provider };
+  const modelIdRef = { current: modelId };
 
   // Create middleware for usage tracking
   const middleware = createRouterMiddleware({
-    provider,
+    providerRef,
     keyIndexRef,
-    model: modelName,
+    modelIdRef,
     tracker: router.usage,
     requestId,
   });

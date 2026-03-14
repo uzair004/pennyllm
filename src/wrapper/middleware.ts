@@ -6,17 +6,17 @@ const debug = debugFactory('llm-router:middleware');
 
 /**
  * Create middleware that tracks usage for both generate and stream calls.
- * Uses a mutable keyIndexRef so the retry proxy can update which key
- * actually succeeded, ensuring usage is recorded against the correct key.
+ * Uses mutable refs so the retry proxy and fallback proxy can update which
+ * provider/key actually succeeded, ensuring usage is recorded correctly.
  */
 export function createRouterMiddleware(options: {
-  provider: string;
+  providerRef: { current: string };
   keyIndexRef: { current: number };
-  model: string;
+  modelIdRef: { current: string };
   tracker: UsageTracker;
   requestId: string;
 }): LanguageModelV3Middleware {
-  const { provider, keyIndexRef, tracker, requestId } = options;
+  const { providerRef, keyIndexRef, tracker, requestId } = options;
 
   return {
     specificationVersion: 'v3',
@@ -30,10 +30,10 @@ export function createRouterMiddleware(options: {
       const promptTokens = Number(usage?.inputTokens?.total) || 0;
       const completionTokens = Number(usage?.outputTokens?.total) || 0;
 
-      // Fire-and-forget record (keyIndexRef.current reflects the key that actually succeeded)
+      // Fire-and-forget record (refs reflect the provider/key that actually succeeded after fallback)
       tracker
         .record(
-          provider,
+          providerRef.current,
           keyIndexRef.current,
           {
             promptTokens,
@@ -65,7 +65,7 @@ export function createRouterMiddleware(options: {
 
             tracker
               .record(
-                provider,
+                providerRef.current,
                 keyIndexRef.current,
                 {
                   promptTokens: Number(usage?.inputTokens?.total) || 0,
