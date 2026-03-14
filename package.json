@@ -55,6 +55,7 @@
   },
   "files": [
     "dist",
+    "data",
     "LICENSE",
     "README.md"
   ],

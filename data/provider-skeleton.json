@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0",
+  "description": "Provider policy skeleton for llm-router. No limit values included — configure limits in your router config or refer to docs/providers/ for recommended values.",
+  "providers": {
+    "google": {
+      "name": "Google AI Studio (Gemini)",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/google",
+      "envVar": "GOOGLE_GENERATIVE_AI_API_KEY"
+    },
+    "groq": {
+      "name": "Groq",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/groq",
+      "envVar": "GROQ_API_KEY"
+    },
+    "openrouter": {
+      "name": "OpenRouter",
+      "limits": [],
+      "enforcement": "throttle",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/openai-compatible",
+      "envVar": "OPENROUTER_API_KEY"
+    },
+    "mistral": {
+      "name": "Mistral (La Plateforme)",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/mistral",
+      "envVar": "MISTRAL_API_KEY"
+    },
+    "huggingface": {
+      "name": "HuggingFace Inference API",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "monthly-credits",
+      "aiSdkPackage": "@ai-sdk/huggingface",
+      "envVar": "HUGGINGFACE_API_KEY"
+    },
+    "cerebras": {
+      "name": "Cerebras",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/cerebras",
+      "envVar": "CEREBRAS_API_KEY"
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "trial-credits",
+      "aiSdkPackage": "@ai-sdk/deepseek",
+      "envVar": "DEEPSEEK_API_KEY"
+    },
+    "qwen": {
+      "name": "Qwen (Alibaba Cloud Model Studio)",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "trial-credits",
+      "aiSdkPackage": "@ai-sdk/openai-compatible",
+      "envVar": "DASHSCOPE_API_KEY"
+    },
+    "cloudflare": {
+      "name": "Cloudflare Workers AI",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/openai-compatible",
+      "envVar": "CLOUDFLARE_API_TOKEN"
+    },
+    "nvidia": {
+      "name": "NVIDIA NIM",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "trial-credits",
+      "aiSdkPackage": "@ai-sdk/openai-compatible",
+      "envVar": "NIM_API_KEY"
+    },
+    "cohere": {
+      "name": "Cohere",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@ai-sdk/cohere",
+      "envVar": "COHERE_API_KEY"
+    },
+    "github": {
+      "name": "GitHub Models",
+      "limits": [],
+      "enforcement": "hard-block",
+      "resetWindows": [],
+      "tierType": "recurring",
+      "aiSdkPackage": "@github/models",
+      "envVar": "GITHUB_TOKEN"
+    }
+  }
+}
