@@ -61,7 +61,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Developer Experience
 
 - [ ] **DX-01**: Package works with minimal config (just API keys + provider names, sensible defaults for everything else)
-- [ ] **DX-02**: Documentation includes step-by-step guide for obtaining free tier keys from each supported provider
+- [x] **DX-02**: Documentation includes step-by-step guide for obtaining free tier keys from each supported provider
 - [ ] **DX-03**: Observability hooks fire events for key selection, usage recording, limit warnings, and fallback triggers
 - [ ] **DX-04**: Dry-run mode validates configuration and simulates routing without making API calls
 - [ ] **DX-05**: Budget alerts notify via hooks when usage reaches configurable thresholds (e.g., 80%, 95%)
@@ -177,7 +177,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROV-11     | Phase 8                                                                    | Complete |
 | PROV-12     | Phase 8                                                                    | Complete |
 | DX-01       | Phase 11                                                                   | Pending  |
-| DX-02       | Phase 8                                                                    | Pending  |
+| DX-02       | Phase 8                                                                    | Complete |
 | DX-03       | Phase 10                                                                   | Pending  |
 | DX-04       | Phase 10                                                                   | Pending  |
 | DX-05       | Phase 9                                                                    | Pending  |

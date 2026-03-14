@@ -4,33 +4,33 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 8 (Provider Validation)
 status: executing
-last_updated: '2026-03-14T00:06:14.891Z'
+last_updated: '2026-03-14T00:12:44.720Z'
 progress:
   total_phases: 12
   completed_phases: 7
   total_plans: 20
-  completed_plans: 18
-  percent: 90
+  completed_plans: 19
+  percent: 95
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-14
 **Current phase:** Phase 8 (Provider Validation)
-**Status:** Executing plan 08-01 complete (1/3 plans done)
+**Status:** Executing plan 08-02 complete (2/3 plans done)
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 8 plan 01 complete. Removed stale defaults, added limit builders and provider configs. Plans 02-03 remaining.
+**Current focus:** Phase 8 plan 02 complete. 6 provider docs written (Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras). Plan 03 remaining.
 
 ## Current Position
 
 **Phase:** 8 - Provider Validation
-**Plan:** 1/3 plans done
+**Plan:** 2/3 plans done
 **Status:** Executing
-**Progress:** [█████████░] 90%
+**Progress:** [██████████] 95%
 
 ## Performance Metrics
 
@@ -120,6 +120,7 @@ progress:
 | Phase 07 P01 | 6m                                          | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 07 P02 | 5m 17s                                      | 2 tasks                                                                                                                            | 5 files                                                                            |
 | Phase 08 P01 | 5m 51s                                      | 3 tasks                                                                                                                            | 14 files                                                                           |
+| Phase 08 P02 | 3m 14s                                      | 2 tasks                                                                                                                            | 6 files                                                                            |
 
 ### Active TODOs
 
@@ -165,36 +166,36 @@ progress:
 
 ### What Just Happened
 
-**Phase 8 plan 01 complete (1/3 plans):**
+**Phase 8 plan 02 complete (2/3 plans):**
 
-**Plan 08-01:** Remove stale defaults, add limit builders and provider configs:
+**Plan 08-02:** Provider key acquisition documentation for first 6 providers:
 
-- Deleted src/policy/defaults/ (4 files: google.ts, groq.ts, openrouter.ts, index.ts)
-- Added `applyRegistryDefaults: boolean` to config schema and RouterConfig (defaults to false)
-- Created createTokenLimit, createRateLimit, createCallLimit builder helpers
-- Created 12 typed provider configs with JSDoc (sign-up URLs, env vars, AI SDK packages, tier info)
-- Created data/provider-skeleton.json with 12 provider shapes (empty limits, bundled in npm)
-- 3 commits (e23bfdc, e82773c, c02f32e), 14 files, ~6 min
-- All 83 existing tests pass with zero regressions
+- Wrote 6 provider docs in docs/providers/: google.md, groq.md, openrouter.md, mistral.md, huggingface.md, cerebras.md
+- Each doc includes: Quick Reference table, key acquisition steps, free tier limits, config snippet with builder helpers, gotchas
+- OpenRouter doc includes "How OpenRouter Works" meta-provider explainer with top 5 free models
+- HuggingFace uses createCallLimit (compute-time billing, not token-based)
+- All config snippets use placeholder values with comments directing to official docs
+- 2 commits (802a3fa, a12b0ba), 6 files, ~3 min
 
 ### What's Next
 
-- **Phase 8 Plan 02:** Provider key acquisition documentation (docs/providers/ markdown files)
-- **Phase 8 Plan 03:** Remaining phase 8 deliverables
-- createRouter now uses empty Map -- no shipped defaults, retry proxy is the runtime safety net
+- **Phase 8 Plan 03:** Remaining phase 8 deliverables (6 more provider docs, comparison table, overview README)
+- Doc template pattern established and reusable for remaining 6 providers
 
 ### Context for Next Session
 
 - TypeScript npm package (not web app or CLI tool)
-- Standard npm package conventions — flat src/, debug for logging, EventEmitter for events
+- Standard npm package conventions -- flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
 - Phases 1-7 complete: core engine + integration + error handling all built
 - Phase 8 plan 01: stale defaults removed, limit builders and provider configs added
+- Phase 8 plan 02: 6 provider docs written (Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras)
 - Retry proxy transparent to callers: wrapModel() returns a model that auto-rotates keys on failure
 - Builder helpers exported from `llm-router/policy` and top-level `llm-router`
+- Provider doc template: Quick Reference, Getting Your API Key, Free Tier Summary, Configuration, Gotchas & Tips, Paid Tier
 
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-13T19:11:31Z -- Phase 7 complete (18/18 plans), ready for Phase 8_
+_Last updated: 2026-03-14T00:12:00Z -- Phase 8 plan 02 complete (19/20 plans)_
