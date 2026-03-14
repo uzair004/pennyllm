@@ -1,6 +1,7 @@
 import debugFactory from 'debug';
 import { EventEmitter } from 'node:events';
 import { randomUUID } from 'node:crypto';
+import { ZodError } from 'zod';
 import type { LanguageModelV3 } from '@ai-sdk/provider';
 import { wrapLanguageModel } from 'ai';
 import type { RouterConfig } from '../types/config.js';
@@ -8,6 +9,7 @@ import type { StorageBackend, ModelCatalog, SelectionStrategy } from '../types/i
 import { MemoryStorage } from '../storage/index.js';
 import { ConfigError } from '../errors/config-error.js';
 import { configSchema, type ConfigInput } from './schema.js';
+import { formatConfigErrors } from './validation.js';
 import { loadConfigFile } from './loader.js';
 import { PolicyEngine } from '../policy/PolicyEngine.js';
 import { resolvePolicies } from '../policy/resolver.js';
@@ -419,6 +421,14 @@ export async function createRouter(
   } catch (error) {
     if (error instanceof ConfigError) {
       throw error;
+    }
+    if (error instanceof ZodError) {
+      const formatted = formatConfigErrors(error, configOrPath);
+      const configErrorOpts: { field?: string; cause?: Error } = { cause: error };
+      if (formatted.field !== undefined) {
+        configErrorOpts.field = formatted.field;
+      }
+      throw new ConfigError(formatted.message, configErrorOpts);
     }
     const options: { field?: string; cause?: Error } = {};
     if (error instanceof Error) {
