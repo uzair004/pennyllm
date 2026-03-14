@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 9 (Fallback & Budget Management)
 status: executing
-last_updated: '2026-03-14T15:21:00Z'
+last_updated: '2026-03-14T15:34:19.370Z'
 progress:
   total_phases: 12
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 23
-  completed_plans: 22
-  percent: 93
+  completed_plans: 23
+  percent: 100
 ---
 
 # Project State: LLM Router
@@ -23,14 +23,14 @@ progress:
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 9 plan 02 complete. FallbackResolver and BudgetTracker implemented. Plan 03 remaining.
+**Current focus:** Phase 9 complete (all 3 plans). Cross-provider fallback fully operational. Ready for Phase 10.
 
 ## Current Position
 
 **Phase:** 9 - Fallback & Budget Management
-**Plan:** 2/3 plans done
-**Status:** Executing
-**Progress:** [█████████░] 93%
+**Plan:** 3/3 plans done
+**Status:** Complete
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -117,6 +117,9 @@ progress:
 | 2026-03-14   | Provider config types as JSDoc aliases      | IDE discoverability without type divergence; each provider gets JSDoc with sign-up URLs, env vars, tier info                       | Users get autocomplete and inline docs when configuring providers                  |
 | 2026-03-14   | Exhaustion type categorization              | ProviderExhaustedEvent needs cooldown/quota/mixed for downstream decisions                                                         | Fallback resolver can distinguish rate limits from quota exhaustion                |
 | 2026-03-14   | Cross-field Zod .strict().refine() chain    | cheapest-paid behavior requires non-zero budget to be meaningful                                                                   | Config validation catches contradictory fallback+budget settings early             |
+| 2026-03-14   | PromiseLike callFn in FallbackProxy         | LanguageModelV3 doGenerate/doStream return PromiseLike not Promise                                                                 | Shared attemptWithFallback uses PromiseLike for type correctness                   |
+| 2026-03-14   | Stream results skip providerMetadata        | LanguageModelV3StreamResult has no providerMetadata field, only generate results do                                                | Fallback info only on generate, not stream responses                               |
+| 2026-03-14   | Conditional property for exactOptional      | estimatedTokens/originalQualityTier need conditional inclusion under strict TS mode                                                | Build objects conditionally instead of spreading undefined values                  |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                            |
 | Phase 06 P01 | 8m 26s                                      | 3 tasks                                                                                                                            | 8 files                                                                            |
@@ -129,6 +132,7 @@ progress:
 | Phase 08 P03 | 5m                                          | 2 tasks                                                                                                                            | 8 files                                                                            |
 | Phase 09 P01 | 4m 14s                                      | 1 tasks                                                                                                                            | 12 files                                                                           |
 | Phase 09 P02 | 3m 39s                                      | 2 tasks                                                                                                                            | 4 files                                                                            |
+| Phase 09 P03 | 8m 54s                                      | 2 tasks                                                                                                                            | 7 files                                                                            |
 
 ### Active TODOs
 
@@ -174,26 +178,26 @@ progress:
 
 ### What Just Happened
 
-**Phase 9 plan 02 complete (2/3 plans):**
+**Phase 9 complete (3/3 plans):**
 
-**Plan 09-02:** FallbackResolver and BudgetTracker core logic:
+**Plan 09-03:** FallbackProxy integration and createRouter wiring:
 
-- Implemented FallbackResolver with tiered capability matching (same tier first, then any tier)
-- FallbackResolver ranks free models first, unknown pricing next, cheapest paid last
-- inferCapabilities defensively extracts toolCall, vision from request params
-- Context window pre-check filters undersized models
-- Model mappings checked before catalog query, strictModel returns empty
-- Implemented BudgetTracker with micro-dollar storage via StorageBackend
-- recordCost() stores cost, skips free calls, checks thresholds
-- isExceeded() returns true when spend >= limit or $0 budget
-- Deduplicated budget:alert events at configured thresholds
-- budget:exceeded event when cap hit
-- 2 commits (4df19dd, c06ef1e), 4 files, 3m 39s
+- Created FallbackProxy wrapping retry proxy with cross-provider fallback orchestration
+- Shared attemptWithFallback() helper for doGenerate and doStream
+- Budget gate blocks paid fallback models when budget exceeded
+- AffinityCache stores last successful fallback for 60s TTL
+- Middleware uses providerRef/modelIdRef refs for correct post-fallback tracking
+- createRouter() creates FallbackResolver, BudgetTracker, AffinityCache at startup
+- wrapModel() wraps retry proxy in FallbackProxy, middleware wraps FallbackProxy
+- Router.budget exposes BudgetTracker, wrapModel accepts reasoning option
+- BudgetTracker, FallbackResolver, AffinityCache, ProviderError, AuthError, NetworkError exported
+- 2 commits (f3c2701, 8fe4f9b), 7 files, 8m 54s
 
 ### What's Next
 
-- **Phase 9 Plan 03:** FallbackProxy orchestration (wires resolver + budget tracker + retry proxy)
-- FallbackResolver and BudgetTracker ready for integration
+- **Phase 10:** Storage Adapters (SQLite, Redis)
+- **Phase 11:** Registry Defaults
+- **Phase 12:** CLI Playground
 
 ### Context for Next Session
 
@@ -201,15 +205,15 @@ progress:
 - Standard npm package conventions -- flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
-- Phases 1-8 complete: core engine + integration + error handling + provider validation all built
-- Phase 9 plan 01: type contracts for fallback/budget established
-- FallbackConfig has enabled, maxDepth, strictModel, behavior, modelMappings, reasoning fields
-- ProviderAttempt tracks reason enum: quota_exhausted, rate_limited, server_error, budget_exceeded, no_match, auth_failed
-- AllProvidersExhaustedError computes earliestRecovery across all attempts automatically
-- configSchema now has .strict().refine() chain for cross-field validation
-- Retry proxy transparent to callers: wrapModel() returns a model that auto-rotates keys on failure
+- Phases 1-9 complete: core engine + integration + error handling + provider validation + fallback all built
+- Full request flow: wrapModel() -> middleware -> FallbackProxy -> RetryProxy -> provider API
+- Cross-provider fallback triggers on QuotaExhaustedError, RateLimitError, server ProviderError
+- Budget gating prevents paid calls when budget exceeded
+- FallbackResolver uses tiered capability matching (same tier first, then any tier)
+- providerRef/modelIdRef mutable refs shared across proxy and middleware for correct usage tracking
+- All 83 tests pass, tsc --noEmit clean
 
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T15:21:00Z -- Phase 9 plan 02 complete (22/23 plans)_
+_Last updated: 2026-03-14T15:33:11Z -- Phase 9 complete (23/23 plans)_
