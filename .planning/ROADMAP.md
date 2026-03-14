@@ -5,7 +5,7 @@
 **Base Package:** Vercel AI SDK (decided after evaluating LiteLLM fork, LangChain.js, OpenAI SDK, and 7 others)
 **Granularity:** Fine (12 phases)
 **Created:** 2026-03-11
-**Updated:** 2026-03-14
+**Updated:** 2026-03-15
 **Coverage:** 55/55 v1 requirements mapped
 
 ## Phases
@@ -310,7 +310,13 @@ Plans:
 4. All public API exports have TypeScript types (config, events, error classes)
 5. Documentation includes quickstart, configuration reference, and troubleshooting guide
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+
+- [ ] 11-01-PLAN.md — Debug mode implementation, config validation improvements, typed defineConfig
+- [ ] 11-02-PLAN.md — README.md rewrite (npm landing page with quickstart, examples, architecture)
+- [ ] 11-03-PLAN.md — Reference docs (configuration.md, events.md, troubleshooting.md) + CONTRIBUTING refresh
 
 ---
 
@@ -348,7 +354,7 @@ Plans:
 | 8. Provider Policies Catalog    | 3/3            | Complete    | 2026-03-14 |
 | 9. Fallback & Budget Management | 3/3            | Complete    | 2026-03-14 |
 | 10. SQLite, Redis & Advanced    | 3/3            | Complete    | 2026-03-14 |
-| 11. Developer Experience Polish | 0/?            | Not started | -          |
+| 11. Developer Experience Polish | 0/3            | Planned     | -          |
 | 12. Testing & Validation        | 0/?            | Not started | -          |
 
 ## Research Milestones
@@ -424,3 +430,4 @@ _Phase 7 planned: 2 plans in 2 waves (error classification + retry proxy with ke
 _Phase 8 planned: 3 plans in 2 waves (code changes + provider documentation)_
 _Phase 9 planned: 3 plans in 3 waves (type contracts + core logic modules + integration wiring)_
 _Phase 10 planned: 3 plans in 2 waves (SQLite adapter + Redis adapter parallel, then wiring + DX features)_
+_Phase 11 planned: 3 plans in 2 waves (code changes, then README + reference docs parallel)_
