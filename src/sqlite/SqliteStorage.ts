@@ -39,6 +39,7 @@ interface CounterRow {
   completion_tokens: number;
   call_count: number;
   updated_at: number;
+  record_id: string | null;
 }
 
 /**
@@ -116,13 +117,14 @@ export class SqliteStorage implements StorageBackend {
     `);
 
     this.putStmt = db.prepare(`
-      INSERT INTO usage_counters (provider, key_index, window_type, period_key, prompt_tokens, completion_tokens, call_count, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO usage_counters (provider, key_index, window_type, period_key, prompt_tokens, completion_tokens, call_count, updated_at, record_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT (provider, key_index, window_type, period_key) DO UPDATE SET
         prompt_tokens = excluded.prompt_tokens,
         completion_tokens = excluded.completion_tokens,
         call_count = excluded.call_count,
-        updated_at = excluded.updated_at
+        updated_at = excluded.updated_at,
+        record_id = excluded.record_id
     `);
 
     this.getByCompositeStmt = db.prepare(
@@ -279,7 +281,8 @@ export class SqliteStorage implements StorageBackend {
     const rows = this.getByProviderStmt.all(key) as CounterRow[];
 
     return rows.map((row) => ({
-      id: this.makeId(row.provider, row.key_index, row.window_type, row.period_key),
+      id:
+        row.record_id ?? this.makeId(row.provider, row.key_index, row.window_type, row.period_key),
       provider: row.provider,
       keyIndex: Number(row.key_index),
       promptTokens: Number(row.prompt_tokens),
@@ -297,7 +300,7 @@ export class SqliteStorage implements StorageBackend {
 
     const periodKey = getPeriodKey(record.window, record.timestamp);
 
-    // Use REPLACE semantics (not additive) via putStmt
+    // Use REPLACE semantics (not additive) via putStmt, preserving original record ID
     this.putStmt.run(
       record.provider,
       record.keyIndex,
@@ -307,6 +310,7 @@ export class SqliteStorage implements StorageBackend {
       record.completionTokens,
       0, // call_count not tracked in put
       record.timestamp,
+      record.id,
     );
   }
 

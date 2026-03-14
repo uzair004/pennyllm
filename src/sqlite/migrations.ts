@@ -33,6 +33,7 @@ export function migrate(db: BetterSqlite3.Database): void {
         completion_tokens INTEGER NOT NULL DEFAULT 0,
         call_count INTEGER NOT NULL DEFAULT 0,
         updated_at INTEGER NOT NULL,
+        record_id TEXT,
         PRIMARY KEY (provider, key_index, window_type, period_key)
       )
     `);
