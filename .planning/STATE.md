@@ -199,6 +199,7 @@ progress:
 
 - **Phase 12:** Testing & Validation — E2E tests, empirical limit validation, npm publishing
 - This is the final phase before v1.0 release
+- **v2.0 milestone** defined in ROADMAP.md: 10 phases (13-22) covering registry, credits, CLI, advanced fallback, routing intelligence, extended providers, docs site, storage optimizations, admin UI, and enterprise features
 
 ### Context for Next Session
 

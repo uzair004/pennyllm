@@ -88,7 +88,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ## v2 Requirements
 
-Deferred to future release. Tracked but not in current roadmap.
+Planned for v2.0 milestone (Phases 13-22). See ROADMAP.md for phase details and dependency graph.
 
 ### Advanced Routing
 
@@ -217,8 +217,52 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Phase 11: 4 requirements (DX Polish)
 - Phase 12: 2 requirements (Testing & Validation)
 
+### v2 Requirements Traceability
+
+| Requirement | Phase    | Status      |
+| ----------- | -------- | ----------- |
+| AROUTE-01   | Phase 17 | Not started |
+| AROUTE-02   | Phase 17 | Not started |
+| AROUTE-03   | Phase 17 | Not started |
+| AROUTE-04   | Phase 17 | Not started |
+| EXPROV-01   | Phase 18 | Not started |
+| EXPROV-02   | Phase 18 | Not started |
+| EXPROV-03   | Phase 18 | Not started |
+| EXPROV-04   | Phase 18 | Not started |
+| EXPROV-05   | Phase 18 | Not started |
+| UI-01       | Phase 21 | Not started |
+| UI-02       | Phase 21 | Not started |
+| UI-03       | Phase 21 | Not started |
+| UI-04       | Phase 21 | Not started |
+| UI-05       | Phase 21 | Not started |
+| UI-06       | Phase 21 | Not started |
+| UI-07       | Phase 21 | Not started |
+| UI-08       | Phase 21 | Not started |
+| ENT-01      | Phase 22 | Not started |
+| ENT-02      | Phase 22 | Not started |
+| ENT-03      | Phase 22 | Not started |
+
+**v2 Coverage:**
+
+- v2 requirements: 20 total
+- Mapped to phases: 20/20 (100%)
+- Unmapped: 0
+
+**v2 Phase Distribution:**
+
+- Phase 13: extends POLICY-01, POLICY-06 (Registry)
+- Phase 14: extends POLICY-04 (Credits)
+- Phase 15: extends DX-01, DX-04 (CLI Tools)
+- Phase 16: extends CORE-05, CAT-06, CAT-07 (Fallback)
+- Phase 17: 4 requirements (Advanced Routing)
+- Phase 18: 5 requirements (Extended Providers)
+- Phase 19: extends DX-01 through DX-07 (Docs & DX)
+- Phase 20: extends USAGE-02 (Storage Optimizations)
+- Phase 21: 8 requirements (Admin UI)
+- Phase 22: 3 requirements (Enterprise)
+
 ---
 
 _Requirements defined: 2026-03-11_
-_Last updated: 2026-03-12 after model catalog and capability-aware fallback requirements added (55 total)_
+_Last updated: 2026-03-15 — v2 traceability added (20 requirements mapped to phases 13-22)_
 _USAGE-02 updated: 2026-03-12 — clarified phased delivery (Phase 2: contract + memory, Phase 10: persistence)_
