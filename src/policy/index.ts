@@ -17,9 +17,6 @@ export type {
 // Re-export resolver functions
 export { mergeLimits, resolvePolicies } from './resolver.js';
 
-// Re-export default policies
-export { googlePolicy, groqPolicy, openrouterPolicy, shippedDefaults } from './defaults/index.js';
-
 // Re-export PolicyEngine
 export { PolicyEngine } from './PolicyEngine.js';
 

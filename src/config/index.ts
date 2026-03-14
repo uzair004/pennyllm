@@ -11,7 +11,7 @@ import { configSchema, type ConfigInput } from './schema.js';
 import { loadConfigFile } from './loader.js';
 import { PolicyEngine } from '../policy/PolicyEngine.js';
 import { resolvePolicies } from '../policy/resolver.js';
-import { shippedDefaults } from '../policy/defaults/index.js';
+import type { Policy } from '../types/domain.js';
 import { checkStaleness } from '../policy/staleness.js';
 import { UsageTracker } from '../usage/UsageTracker.js';
 import type { UsageSnapshot, ProviderUsage, EstimationConfig } from '../usage/types.js';
@@ -92,8 +92,11 @@ export async function createRouter(
     // Create EventEmitter for router events
     const emitter = new EventEmitter();
 
-    // Resolve policies from config and shipped defaults
-    const resolvedPolicies = resolvePolicies(config, shippedDefaults);
+    // Resolve policies with empty defaults (shipped defaults removed in Phase 8)
+    // When applyRegistryDefaults toggle is implemented in registry phase,
+    // this will conditionally use registry data instead of empty map
+    const emptyDefaults = new Map<string, Policy>();
+    const resolvedPolicies = resolvePolicies(config, emptyDefaults);
 
     // Create PolicyEngine
     const policyEngineOptions: { warningThreshold?: number } = {};

@@ -45,4 +45,5 @@ export interface RouterConfig {
   estimation: EstimationConfig;
   cooldown: CooldownConfig;
   warningThreshold?: number;
+  applyRegistryDefaults: boolean;
 }

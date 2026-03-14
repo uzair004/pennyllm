@@ -87,6 +87,7 @@ export const configSchema = z
     estimation: estimationSchema,
     cooldown: cooldownSchema,
     warningThreshold: z.number().min(0).max(1).optional(),
+    applyRegistryDefaults: z.boolean().default(false),
   })
   .strict();
 

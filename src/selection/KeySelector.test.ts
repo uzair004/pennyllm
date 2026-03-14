@@ -40,6 +40,7 @@ const mockConfig = (keys: string[]): RouterConfig => ({
   budget: { monthlyLimit: 0, alertThresholds: [0.8, 0.95] },
   estimation: { defaultMaxTokens: 1024 },
   cooldown: { defaultDurationMs: 60000 },
+  applyRegistryDefaults: false,
 });
 
 describe('KeySelector', () => {
