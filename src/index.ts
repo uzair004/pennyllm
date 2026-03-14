@@ -68,7 +68,9 @@ export type {
 
 // Types
 export type {
+  BudgetAlertEvent,
   BudgetConfig,
+  BudgetExceededEvent,
   CandidateKey,
   CatalogRefreshedEvent,
   CerebrasProviderConfig,
@@ -80,6 +82,8 @@ export type {
   ErrorEvent,
   EstimationConfig,
   EstimationResult,
+  FallbackCandidate,
+  FallbackConfig,
   FallbackTriggeredEvent,
   GitHubProviderConfig,
   GoogleProviderConfig,
@@ -99,8 +103,10 @@ export type {
   Policy,
   PolicyLimit,
   PolicyStaleEvent,
+  ProviderAttempt,
   ProviderConfig,
   ProviderExhaustedEvent,
+  ProviderFallbackOverride,
   ProviderUsage,
   QwenProviderConfig,
   ResetWindow,
@@ -120,6 +126,7 @@ export type {
 
 // Errors
 export {
+  AllProvidersExhaustedError,
   ConfigError,
   LLMRouterError,
   RateLimitError,

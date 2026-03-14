@@ -2,10 +2,14 @@ import type { LimitTypeValue } from '../constants/index.js';
 import type { LLMRouterError } from '../errors/base.js';
 import type { PolicyStaleEvent as PolicyStaleEventType } from '../policy/types.js';
 import type { CatalogRefreshedEvent as CatalogRefreshedEventType } from '../catalog/types.js';
+import type { BudgetAlertEvent, BudgetExceededEvent } from '../budget/types.js';
 
 // Re-export PolicyStaleEvent so it can be exported from types/index.ts
 export type { PolicyStaleEventType as PolicyStaleEvent };
 export type { CatalogRefreshedEventType as CatalogRefreshedEvent };
+
+// Re-export budget event types
+export type { BudgetAlertEvent, BudgetExceededEvent };
 
 /**
  * Base event payload
@@ -68,6 +72,8 @@ export interface FallbackTriggeredEvent extends RouterEventPayload {
   fromProvider: string;
   toProvider: string;
   reason: string;
+  fromModel?: string;
+  toModel?: string;
 }
 
 /**
@@ -87,6 +93,7 @@ export interface ProviderExhaustedEvent extends RouterEventPayload {
   exhaustedCount: number;
   cooldownCount: number;
   earliestRecovery: string | null;
+  exhaustionType: 'cooldown' | 'quota' | 'mixed';
 }
 
 /**
@@ -186,6 +193,8 @@ export interface RouterEventMap {
   'fallback:triggered': FallbackTriggeredEvent;
   'config:loaded': ConfigLoadedEvent;
   'provider:exhausted': ProviderExhaustedEvent;
+  'budget:alert': BudgetAlertEvent;
+  'budget:exceeded': BudgetExceededEvent;
   'catalog:refreshed': CatalogRefreshedEventType;
   'policy:stale': PolicyStaleEventType;
   error: ErrorEvent;
@@ -209,6 +218,8 @@ export type RouterEvents =
   | FallbackTriggeredEvent
   | ConfigLoadedEvent
   | ProviderExhaustedEvent
+  | BudgetAlertEvent
+  | BudgetExceededEvent
   | CatalogRefreshedEventType
   | PolicyStaleEventType
   | ErrorEvent

@@ -178,6 +178,14 @@ export class KeySelector {
         }
       }
 
+      // Determine exhaustion type
+      const exhaustionType: 'cooldown' | 'quota' | 'mixed' =
+        cooldownKeys.length > 0 && exhaustedKeys.length > 0
+          ? 'mixed'
+          : cooldownKeys.length > 0
+            ? 'cooldown'
+            : 'quota';
+
       // Emit provider:exhausted event
       this.emitter.emit('provider:exhausted', {
         provider,
@@ -185,6 +193,7 @@ export class KeySelector {
         exhaustedCount: exhaustedKeys.length,
         cooldownCount: cooldownKeys.length,
         earliestRecovery,
+        exhaustionType,
         timestamp: Date.now(),
       });
 

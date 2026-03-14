@@ -1,4 +1,5 @@
 import type { StrategyType } from '../constants/index.js';
+import type { FallbackConfig, ProviderFallbackOverride } from '../fallback/types.js';
 import type { KeyConfig } from '../policy/types.js';
 import type { PolicyLimit } from './domain.js';
 
@@ -32,6 +33,7 @@ export interface ProviderConfig {
   strategy?: StrategyType;
   limits?: PolicyLimit[];
   enabled?: boolean;
+  fallback?: ProviderFallbackOverride;
 }
 
 /**
@@ -44,6 +46,7 @@ export interface RouterConfig {
   budget: BudgetConfig;
   estimation: EstimationConfig;
   cooldown: CooldownConfig;
+  fallback: FallbackConfig;
   warningThreshold?: number;
   applyRegistryDefaults: boolean;
 }

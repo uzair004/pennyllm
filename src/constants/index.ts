@@ -40,6 +40,8 @@ export const RouterEvent = {
   FALLBACK_TRIGGERED: 'fallback:triggered',
   CONFIG_LOADED: 'config:loaded',
   PROVIDER_EXHAUSTED: 'provider:exhausted',
+  BUDGET_ALERT: 'budget:alert',
+  BUDGET_EXCEEDED: 'budget:exceeded',
   CATALOG_REFRESHED: 'catalog:refreshed',
   ERROR: 'error',
   ERROR_RATE_LIMIT: 'error:rate_limit',

@@ -38,6 +38,13 @@ const mockConfig = (keys: string[]): RouterConfig => ({
   },
   strategy: 'priority',
   budget: { monthlyLimit: 0, alertThresholds: [0.8, 0.95] },
+  fallback: {
+    enabled: true,
+    maxDepth: 3,
+    strictModel: false,
+    behavior: 'auto',
+    reasoning: false,
+  },
   estimation: { defaultMaxTokens: 1024 },
   cooldown: { defaultDurationMs: 60000 },
   applyRegistryDefaults: false,

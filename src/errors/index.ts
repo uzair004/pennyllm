@@ -2,6 +2,7 @@
  * Error classes for LLM Router
  */
 
+export { AllProvidersExhaustedError } from './all-providers-exhausted-error.js';
 export { AuthError } from './auth-error.js';
 export { ConfigError } from './config-error.js';
 export { LLMRouterError } from './base.js';
