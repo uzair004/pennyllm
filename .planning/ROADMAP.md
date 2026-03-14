@@ -20,7 +20,7 @@
 - [x] **Phase 8: Provider Policies Catalog** - Default free tier policies for 12 providers with researched limits, reset behavior, and documentation for key acquisition, metadata for staleness warnings, source URLs, confidence levels, updates etc.
 - [x] **Phase 9: Fallback & Budget Management** - Capability-aware fallback chains, cheap paid model routing, budget caps, threshold alerts, persistence, user-configurable fallback behavior, other fallback strategies (e.g., round-robin fallback across providers, weighted random based on remaining quota), how to handle requests that exceed any single provider's limits (e.g., 10k tokens when max is 8k), how to handle different reset window types in fallback logic (e.g., if primary key is blocked due to per-minute limit, do we consider it exhausted for fallback purposes until the minute resets?), (completed 2026-03-14)
 - [x] **Phase 10: SQLite, Redis & Advanced Features** - SQLite + Redis adapters, observability hooks, dry-run mode, (completed 2026-03-14)
-- [ ] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs, minimal config example, multiple keys per provider config, troubleshooting guide, how to test your config, how to monitor usage and costs, best practices for key management, etc. how it can fit with other tools in the ecosystem (e.g., LangChain.js, custom implementations)
+- [x] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs, minimal config example, multiple keys per provider config, troubleshooting guide, how to test your config, how to monitor usage and costs, best practices for key management, etc. how it can fit with other tools in the ecosystem (e.g., LangChain.js, custom implementations) (completed 2026-03-14)
 - [ ] **Phase 12: Testing & Validation** - E2E tests, empirical limit validation, npm publishing
 
 ## Phase Details
@@ -310,7 +310,7 @@ Plans:
 4. All public API exports have TypeScript types (config, events, error classes)
 5. Documentation includes quickstart, configuration reference, and troubleshooting guide
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 
@@ -354,7 +354,7 @@ Plans:
 | 8. Provider Policies Catalog    | 3/3            | Complete    | 2026-03-14 |
 | 9. Fallback & Budget Management | 3/3            | Complete    | 2026-03-14 |
 | 10. SQLite, Redis & Advanced    | 3/3            | Complete    | 2026-03-14 |
-| 11. Developer Experience Polish | 2/3            | In Progress |            |
+| 11. Developer Experience Polish | 3/3            | Complete    | 2026-03-14 |
 | 12. Testing & Validation        | 0/?            | Not started | -          |
 
 ## Research Milestones

@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 11 (Developer Experience Polish)
 status: executing
-last_updated: '2026-03-14T20:08:56.164Z'
+last_updated: '2026-03-14T20:11:08.633Z'
 progress:
   total_phases: 12
-  completed_phases: 10
+  completed_phases: 11
   total_plans: 29
-  completed_plans: 28
-  percent: 97
+  completed_plans: 29
+  percent: 100
 ---
 
 # Project State: LLM Router
@@ -23,22 +23,22 @@ progress:
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 11 in progress (2/3 plans). Debug mode, config validation, typed defineConfig, and README complete. Remaining DX polish next.
+**Current focus:** Phase 11 complete (3/3 plans). All DX polish done: debug mode, config validation, defineConfig, README, reference docs, troubleshooting.
 
 ## Current Position
 
 **Phase:** 11 - Developer Experience Polish
-**Plan:** 2/3 plans
-**Status:** Executing
-**Progress:** [██████████] 97%
+**Plan:** 3/3 plans
+**Status:** Complete
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
 ### Velocity
 
-- **Phases completed:** 10/12
-- **Plans completed:** 28/29 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3, Phase 10: 3/3, Phase 11: 2/3)
-- **Estimated completion:** Phase 9 complete, Phase 10 next
+- **Phases completed:** 11/12
+- **Plans completed:** 29/29 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3, Phase 10: 3/3, Phase 11: 3/3)
+- **Estimated completion:** Phase 11 complete, Phase 12 next
 
 ### Quality
 
@@ -141,6 +141,7 @@ progress:
 | Phase 10 P03 | 7m 4s                                       | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 11 P01 | 5m 55s                                      | 2 tasks                                                                                                                            | 8 files                                                                            |
 | Phase 11 P02 | 3m 2s                                       | 1 task                                                                                                                             | 1 file                                                                             |
+| Phase 11 P03 | 5m 32s                                      | 2 tasks                                                                                                                            | 4 files                                                                            |
 
 ### Active TODOs
 
@@ -186,23 +187,20 @@ progress:
 
 ### What Just Happened
 
-**Phase 11 Plan 02 complete:**
+**Phase 11 Plan 03 complete:**
 
-**Plan 11-02:** README as npm landing page:
+**Plan 11-03:** Reference docs and troubleshooting:
 
-- Complete README.md rewrite with Drizzle-style concise, code-first documentation
-- Problem statement lead with 5-line working quickstart
-- 3 configuration examples: minimal, multi-provider+budget, SQLite storage adapter
-- ASCII flow diagram showing request pipeline (not mermaid -- npm compatibility)
-- All 12 providers listed in table with SDK packages and links to docs/providers/ guides
-- Comparison table vs manual key management vs LiteLLM
-- Debug mode, storage adapters, events & hooks, API reference sections
-- 1 commit (31126ed), 1 file, 3m 2s
+- docs/configuration.md (354 lines): full config reference with per-section examples
+- docs/events.md (406 lines): all 18 events, 8 typed hooks, usage patterns
+- docs/troubleshooting.md (300 lines): config errors, runtime errors, storage issues, debug tips
+- CONTRIBUTING.md (122 lines): refreshed with project structure and current scripts
+- 2 commits (287eaeb, 255108a), 4 files, 5m 32s
 
 ### What's Next
 
-- **Phase 11 Plan 03:** Remaining DX polish
 - **Phase 12:** Testing & Validation
+- Phase 11 (Developer Experience Polish) is fully complete (3/3 plans)
 
 ### Context for Next Session
 
@@ -210,8 +208,8 @@ progress:
 - Standard npm package conventions -- flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
-- Phases 1-10 complete: core engine + integration + error handling + provider validation + fallback + storage adapters all built
-- Phase 11 Plans 01-02 complete: DebugLogger, config validation, typed defineConfig, README landing page
+- Phases 1-11 complete: core engine + integration + error handling + provider validation + fallback + storage adapters + DX polish all built
+- Phase 11 complete: DebugLogger, config validation, typed defineConfig, README, reference docs, troubleshooting
 - Full request flow: wrapModel() -> middleware -> FallbackProxy -> RetryProxy -> provider API
 - Dry-run intercepts in middleware AFTER key selection (events still fire)
 - All 93 tests pass + 1 skipped (Redis) + 38 todo, tsc --noEmit clean (pre-existing rootDir test error)
@@ -219,4 +217,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T20:08:56Z -- Phase 11 Plan 02 complete (28/29 plans)_
+_Last updated: 2026-03-14T20:10:24Z -- Phase 11 complete (29/29 plans)_
