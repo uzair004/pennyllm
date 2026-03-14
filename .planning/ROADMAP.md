@@ -241,7 +241,7 @@ Plans:
 
 ### Phase 9: Fallback & Budget Management
 
-**Goal:** Router enforces budget caps, handles exhaustion with capability-aware fallback to matching models (reasoning → reasoning), and routes to cheapest paid options when budget allows
+**Goal:** Router enforces budget caps, handles exhaustion with capability-aware fallback to matching models (reasoning -> reasoning), and routes to cheapest paid options when budget allows
 
 **Depends on:** Phase 5 (selection + model catalog), Phase 7 (error handling)
 
@@ -257,7 +257,13 @@ Plans:
 6. Budget alert fires hook when usage reaches 80% and 95% thresholds
 7. Budget tracking persists across restarts
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+
+- [ ] 09-01-PLAN.md — Type contracts, config schema (fallback section), AllProvidersExhaustedError, budget/fallback event types
+- [ ] 09-02-PLAN.md — FallbackResolver (capability matching + ranking) and BudgetTracker (cost recording + events)
+- [ ] 09-03-PLAN.md — FallbackProxy orchestration, AffinityCache, middleware provider-ref update, createRouter integration
 
 ---
 
@@ -334,7 +340,7 @@ Plans:
 | 6. Base Router Integration      | 2/3            | Gap closure | -          |
 | 7. Integration & Error Handling | 2/2            | Complete    | 2026-03-13 |
 | 8. Provider Policies Catalog    | 0/3            | Planning    | -          |
-| 9. Fallback & Budget Management | 0/?            | Not started | -          |
+| 9. Fallback & Budget Management | 0/3            | Planned     | -          |
 | 10. SQLite, Redis & Advanced    | 0/?            | Not started | -          |
 | 11. Developer Experience Polish | 0/?            | Not started | -          |
 | 12. Testing & Validation        | 0/?            | Not started | -          |
@@ -410,3 +416,4 @@ _Phase 6 revised: 2 plans in 2 waves (added real API POC, removed test scaffolds
 _Phase 6 gap closure: 1 plan added (lazy ProviderRegistry initialization to fix test timeouts)_
 _Phase 7 planned: 2 plans in 2 waves (error classification + retry proxy with key rotation)_
 _Phase 8 planned: 3 plans in 2 waves (code changes + provider documentation)_
+_Phase 9 planned: 3 plans in 3 waves (type contracts + core logic modules + integration wiring)_
