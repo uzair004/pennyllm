@@ -284,13 +284,13 @@ Plans:
 5. Dry-run mode validates config and logs routing decisions without making API calls
 6. Redis connection failures fall back to error (does not silently use memory)
 
-**Plans:** 3/3 plans complete
+**Plans:** 3/3 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 10-01-PLAN.md — SQLite storage adapter (SqliteStorage with better-sqlite3, XDG paths, WAL mode, migrations, contract tests)
-- [ ] 10-02-PLAN.md — Redis storage adapter (RedisStorage with ioredis, HINCRBY pipeline, TTL expiration, contract tests)
-- [ ] 10-03-PLAN.md — Build wiring (package.json exports, tsup entries, peer deps), typed observability hooks, dry-run mode
+- [x] 10-01-PLAN.md — SQLite storage adapter (SqliteStorage with better-sqlite3, XDG paths, WAL mode, migrations, contract tests)
+- [x] 10-02-PLAN.md — Redis storage adapter (RedisStorage with ioredis, HINCRBY pipeline, TTL expiration, contract tests)
+- [x] 10-03-PLAN.md — Build wiring (package.json exports, tsup entries, peer deps), typed observability hooks, dry-run mode
 
 ---
 
@@ -310,13 +310,13 @@ Plans:
 4. All public API exports have TypeScript types (config, events, error classes)
 5. Documentation includes quickstart, configuration reference, and troubleshooting guide
 
-**Plans:** 3/3 plans complete
+**Plans:** 3/3 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 11-01-PLAN.md — Debug mode implementation, config validation improvements, typed defineConfig
-- [ ] 11-02-PLAN.md — README.md rewrite (npm landing page with quickstart, examples, architecture)
-- [ ] 11-03-PLAN.md — Reference docs (configuration.md, events.md, troubleshooting.md) + CONTRIBUTING refresh
+- [x] 11-01-PLAN.md — Debug mode implementation, config validation improvements, typed defineConfig
+- [x] 11-02-PLAN.md — README.md rewrite (npm landing page with quickstart, examples, architecture)
+- [x] 11-03-PLAN.md — Reference docs (configuration.md, events.md, troubleshooting.md) + CONTRIBUTING refresh
 
 ---
 
@@ -431,3 +431,4 @@ _Phase 8 planned: 3 plans in 2 waves (code changes + provider documentation)_
 _Phase 9 planned: 3 plans in 3 waves (type contracts + core logic modules + integration wiring)_
 _Phase 10 planned: 3 plans in 2 waves (SQLite adapter + Redis adapter parallel, then wiring + DX features)_
 _Phase 11 planned: 3 plans in 2 waves (code changes, then README + reference docs parallel)_
+_Phase 11 complete: 3 plans in 2 waves (debug mode + config validation, then README + reference docs parallel)_

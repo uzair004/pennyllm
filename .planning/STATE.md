@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 11 (Developer Experience Polish)
-status: planning
+current_phase: Phase 12 (Testing & Validation)
+status: not_started
 last_updated: '2026-03-14T20:17:49.260Z'
 progress:
   total_phases: 12
@@ -15,22 +15,22 @@ progress:
 
 # Project State: LLM Router
 
-**Last updated:** 2026-03-14
-**Current phase:** Phase 11 (Developer Experience Polish)
+**Last updated:** 2026-03-15
+**Current phase:** Phase 12 (Testing & Validation)
 **Status:** Ready to plan
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 11 complete (3/3 plans). All DX polish done: debug mode, config validation, defineConfig, README, reference docs, troubleshooting.
+**Current focus:** Phase 12 next (Testing & Validation). Phase 11 complete: debug mode, config validation, defineConfig, README, reference docs, troubleshooting. 11/12 phases done.
 
 ## Current Position
 
-**Phase:** 11 - Developer Experience Polish
-**Plan:** 3/3 plans
-**Status:** Complete
-**Progress:** [██████████] 100%
+**Phase:** 12 - Testing & Validation
+**Plan:** 0/? plans
+**Status:** Not started
+**Progress:** [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
@@ -38,7 +38,7 @@ progress:
 
 - **Phases completed:** 11/12
 - **Plans completed:** 29/29 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3, Phase 10: 3/3, Phase 11: 3/3)
-- **Estimated completion:** Phase 11 complete, Phase 12 next
+- **Estimated completion:** Phase 12 is the final phase (E2E tests, limit validation, npm publishing)
 
 ### Quality
 
@@ -187,20 +187,18 @@ progress:
 
 ### What Just Happened
 
-**Phase 11 Plan 03 complete:**
+**Phase 11 complete (Developer Experience Polish):**
 
-**Plan 11-03:** Reference docs and troubleshooting:
-
-- docs/configuration.md (354 lines): full config reference with per-section examples
-- docs/events.md (406 lines): all 18 events, 8 typed hooks, usage patterns
-- docs/troubleshooting.md (300 lines): config errors, runtime errors, storage issues, debug tips
-- CONTRIBUTING.md (122 lines): refreshed with project structure and current scripts
-- 2 commits (287eaeb, 255108a), 4 files, 5m 32s
+- **Plan 11-01:** Debug mode (DebugLogger + 8 hooks), config validation (Levenshtein typo detection, ZodError→ConfigError), typed defineConfig with IDE autocomplete
+- **Plan 11-02:** README.md rewrite — 379-line npm landing page (Drizzle-style, 3 examples, ASCII flow diagram, 12-provider table)
+- **Plan 11-03:** Reference docs (configuration.md 354 lines, events.md 406 lines, troubleshooting.md 300 lines) + CONTRIBUTING refresh (122 lines)
+- Verification: 17/17 must-haves passed, all 4 requirements (CORE-02, DX-01, DX-06, DX-07) satisfied
+- 8 commits, 13 files created/modified, all 93 tests passing
 
 ### What's Next
 
-- **Phase 12:** Testing & Validation
-- Phase 11 (Developer Experience Polish) is fully complete (3/3 plans)
+- **Phase 12:** Testing & Validation — E2E tests, empirical limit validation, npm publishing
+- This is the final phase before v1.0 release
 
 ### Context for Next Session
 
@@ -208,8 +206,8 @@ progress:
 - Standard npm package conventions -- flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
-- Phases 1-11 complete: core engine + integration + error handling + provider validation + fallback + storage adapters + DX polish all built
-- Phase 11 complete: DebugLogger, config validation, typed defineConfig, README, reference docs, troubleshooting
+- Phases 1-11 complete: core engine + integration + error handling + provider validation + fallback + storage adapters + DX polish all done
+- Phase 12 remaining: E2E tests, empirical limit validation, npm publish
 - Full request flow: wrapModel() -> middleware -> FallbackProxy -> RetryProxy -> provider API
 - Dry-run intercepts in middleware AFTER key selection (events still fire)
 - All 93 tests pass + 1 skipped (Redis) + 38 todo, tsc --noEmit clean (pre-existing rootDir test error)
@@ -217,4 +215,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T20:10:24Z -- Phase 11 complete (29/29 plans)_
+_Last updated: 2026-03-15 -- Phase 11 complete (29/29 plans), advancing to Phase 12_
