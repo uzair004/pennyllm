@@ -2,35 +2,35 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 8 (Provider Validation)
-status: planning
-last_updated: '2026-03-14T00:18:58.214Z'
+current_phase: Phase 9 (Fallback & Budget Management)
+status: executing
+last_updated: '2026-03-14T15:16:11.904Z'
 progress:
   total_phases: 12
   completed_phases: 8
-  total_plans: 20
-  completed_plans: 20
-  percent: 100
+  total_plans: 23
+  completed_plans: 21
+  percent: 91
 ---
 
 # Project State: LLM Router
 
 **Last updated:** 2026-03-14
-**Current phase:** Phase 8 (Provider Validation)
-**Status:** Ready to plan
+**Current phase:** Phase 9 (Fallback & Budget Management)
+**Status:** Executing
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 8 plan 02 complete. 6 provider docs written (Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras). Plan 03 remaining.
+**Current focus:** Phase 9 plan 01 complete. Fallback/budget type contracts defined. Plans 02-03 remaining.
 
 ## Current Position
 
-**Phase:** 8 - Provider Validation
-**Plan:** 2/3 plans done
+**Phase:** 9 - Fallback & Budget Management
+**Plan:** 1/3 plans done
 **Status:** Executing
-**Progress:** [██████████] 100%
+**Progress:** [█████████░] 91%
 
 ## Performance Metrics
 
@@ -112,6 +112,8 @@ progress:
 | 2026-03-14   | Pass empty Map to resolvePolicies           | Retry proxy handles runtime 429s as safety net; no stale shipped defaults                                                          | createRouter no longer ships active routing data                                   |
 | 2026-03-14   | applyRegistryDefaults defaults to false     | Wired for future registry phase; not optional, guaranteed by Zod .default()                                                        | Users must opt in to registry defaults when implemented                            |
 | 2026-03-14   | Provider config types as JSDoc aliases      | IDE discoverability without type divergence; each provider gets JSDoc with sign-up URLs, env vars, tier info                       | Users get autocomplete and inline docs when configuring providers                  |
+| 2026-03-14   | Exhaustion type categorization              | ProviderExhaustedEvent needs cooldown/quota/mixed for downstream decisions                                                         | Fallback resolver can distinguish rate limits from quota exhaustion                |
+| 2026-03-14   | Cross-field Zod .strict().refine() chain    | cheapest-paid behavior requires non-zero budget to be meaningful                                                                   | Config validation catches contradictory fallback+budget settings early             |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                            |
 | Phase 06 P01 | 8m 26s                                      | 3 tasks                                                                                                                            | 8 files                                                                            |
@@ -122,6 +124,7 @@ progress:
 | Phase 08 P01 | 5m 51s                                      | 3 tasks                                                                                                                            | 14 files                                                                           |
 | Phase 08 P02 | 3m 14s                                      | 2 tasks                                                                                                                            | 6 files                                                                            |
 | Phase 08 P03 | 5m                                          | 2 tasks                                                                                                                            | 8 files                                                                            |
+| Phase 09 P01 | 4m 14s                                      | 1 tasks                                                                                                                            | 12 files                                                                           |
 
 ### Active TODOs
 
@@ -167,21 +170,24 @@ progress:
 
 ### What Just Happened
 
-**Phase 8 plan 02 complete (2/3 plans):**
+**Phase 9 plan 01 complete (1/3 plans):**
 
-**Plan 08-02:** Provider key acquisition documentation for first 6 providers:
+**Plan 09-01:** Fallback and budget type contracts:
 
-- Wrote 6 provider docs in docs/providers/: google.md, groq.md, openrouter.md, mistral.md, huggingface.md, cerebras.md
-- Each doc includes: Quick Reference table, key acquisition steps, free tier limits, config snippet with builder helpers, gotchas
-- OpenRouter doc includes "How OpenRouter Works" meta-provider explainer with top 5 free models
-- HuggingFace uses createCallLimit (compute-time billing, not token-based)
-- All config snippets use placeholder values with comments directing to official docs
-- 2 commits (802a3fa, a12b0ba), 6 files, ~3 min
+- Created src/fallback/types.ts with FallbackConfig, FallbackCandidate, ProviderAttempt, AffinityEntry, FallbackProxyOptions
+- Created src/budget/types.ts with BudgetAlertEvent, BudgetExceededEvent
+- Implemented AllProvidersExhaustedError with attempts tracking and earliest recovery computation
+- Added fallbackConfigSchema and providerFallbackOverrideSchema to config/schema.ts
+- Added cross-field validation: cheapest-paid fallback requires non-zero budget
+- Extended ProviderExhaustedEvent with exhaustionType, FallbackTriggeredEvent with fromModel/toModel
+- Added BUDGET_ALERT and BUDGET_EXCEEDED RouterEvent constants
+- 1 commit (539cfc5), 12 files, 4m 14s
 
 ### What's Next
 
-- **Phase 8 Plan 03:** Remaining phase 8 deliverables (6 more provider docs, comparison table, overview README)
-- Doc template pattern established and reusable for remaining 6 providers
+- **Phase 9 Plan 02:** FallbackResolver implementation
+- **Phase 9 Plan 03:** BudgetTracker implementation
+- All type contracts ready for downstream plans
 
 ### Context for Next Session
 
@@ -189,14 +195,15 @@ progress:
 - Standard npm package conventions -- flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
-- Phases 1-7 complete: core engine + integration + error handling all built
-- Phase 8 plan 01: stale defaults removed, limit builders and provider configs added
-- Phase 8 plan 02: 6 provider docs written (Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras)
+- Phases 1-8 complete: core engine + integration + error handling + provider validation all built
+- Phase 9 plan 01: type contracts for fallback/budget established
+- FallbackConfig has enabled, maxDepth, strictModel, behavior, modelMappings, reasoning fields
+- ProviderAttempt tracks reason enum: quota_exhausted, rate_limited, server_error, budget_exceeded, no_match, auth_failed
+- AllProvidersExhaustedError computes earliestRecovery across all attempts automatically
+- configSchema now has .strict().refine() chain for cross-field validation
 - Retry proxy transparent to callers: wrapModel() returns a model that auto-rotates keys on failure
-- Builder helpers exported from `llm-router/policy` and top-level `llm-router`
-- Provider doc template: Quick Reference, Getting Your API Key, Free Tier Summary, Configuration, Gotchas & Tips, Paid Tier
 
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T00:12:00Z -- Phase 8 plan 02 complete (19/20 plans)_
+_Last updated: 2026-03-14T15:14:00Z -- Phase 9 plan 01 complete (21/23 plans)_

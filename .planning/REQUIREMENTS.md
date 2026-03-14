@@ -12,9 +12,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CORE-01**: Package initializes with API keys and provider configuration via TypeScript config object or JSON/YAML file
 - [ ] **CORE-02**: User can configure multiple API keys per provider (e.g., 3 Google keys, 2 Groq keys)
 - [ ] **CORE-03**: Router automatically selects the best available key for each request based on usage and limits
-- [ ] **CORE-04**: Router enforces hard-stop when all keys for a provider are exhausted (no request made, error thrown)
-- [ ] **CORE-05**: User can configure fallback behavior per provider (hard stop, cheapest paid model, or alternative free provider)
-- [ ] **CORE-06**: User can set monthly budget cap including $0 (never spend money)
+- [x] **CORE-04**: Router enforces hard-stop when all keys for a provider are exhausted (no request made, error thrown)
+- [x] **CORE-05**: User can configure fallback behavior per provider (hard stop, cheapest paid model, or alternative free provider)
+- [x] **CORE-06**: User can set monthly budget cap including $0 (never spend money)
 
 ### Usage Tracking
 
@@ -64,7 +64,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DX-02**: Documentation includes step-by-step guide for obtaining free tier keys from each supported provider
 - [ ] **DX-03**: Observability hooks fire events for key selection, usage recording, limit warnings, and fallback triggers
 - [ ] **DX-04**: Dry-run mode validates configuration and simulates routing without making API calls
-- [ ] **DX-05**: Budget alerts notify via hooks when usage reaches configurable thresholds (e.g., 80%, 95%)
+- [x] **DX-05**: Budget alerts notify via hooks when usage reaches configurable thresholds (e.g., 80%, 95%)
 - [ ] **DX-06**: Debug mode logs routing decisions (which key selected, why, remaining quota)
 - [x] **DX-07**: TypeScript types exported for all configuration, events, and public API
 
@@ -143,9 +143,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CORE-01     | Phase 1                                                                    | Complete |
 | CORE-02     | Phase 11                                                                   | Pending  |
 | CORE-03     | Phase 12                                                                   | Pending  |
-| CORE-04     | Phase 9                                                                    | Pending  |
-| CORE-05     | Phase 9                                                                    | Pending  |
-| CORE-06     | Phase 9                                                                    | Pending  |
+| CORE-04     | Phase 9                                                                    | Complete |
+| CORE-05     | Phase 9                                                                    | Complete |
+| CORE-06     | Phase 9                                                                    | Complete |
 | USAGE-01    | Phase 4                                                                    | Complete |
 | USAGE-02    | Phase 2 (contract + memory default), Phase 10 (SQLite + Redis persistence) | Complete |
 | USAGE-03    | Phase 4                                                                    | Complete |
@@ -180,7 +180,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DX-02       | Phase 8                                                                    | Complete |
 | DX-03       | Phase 10                                                                   | Pending  |
 | DX-04       | Phase 10                                                                   | Pending  |
-| DX-05       | Phase 9                                                                    | Pending  |
+| DX-05       | Phase 9                                                                    | Complete |
 | DX-06       | Phase 11                                                                   | Pending  |
 | DX-07       | Phase 1, Phase 11                                                          | Complete |
 | ALGO-01     | Phase 5                                                                    | Complete |
