@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 10 (SQLite, Redis & Advanced Features)
 status: executing
-last_updated: '2026-03-14T16:34:01Z'
+last_updated: '2026-03-14T18:34:46Z'
 progress:
   total_phases: 12
-  completed_phases: 9
+  completed_phases: 10
   total_plans: 26
-  completed_plans: 25
-  percent: 96
+  completed_plans: 26
+  percent: 100
 ---
 
 # Project State: LLM Router
@@ -23,21 +23,21 @@ progress:
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 10 in progress (2/3 plans complete). SQLite and Redis storage adapters built. Plan 03 (wiring + DX) next.
+**Current focus:** Phase 10 complete (3/3 plans). SQLite/Redis adapters built and wired, observability hooks, dry-run mode. Ready for Phase 11.
 
 ## Current Position
 
 **Phase:** 10 - SQLite, Redis & Advanced Features
-**Plan:** 2/3 plans
-**Status:** Executing
-**Progress:** [██████░░░░] 67%
+**Plan:** 3/3 plans
+**Status:** Complete
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
 ### Velocity
 
-- **Phases completed:** 9/12
-- **Plans completed:** 23/23 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3)
+- **Phases completed:** 10/12
+- **Plans completed:** 26/26 (Phase 1: 2/2, Phase 2: 1/1, Phase 3: 2/2, Phase 4: 2/2, Phase 5: 5/5, Phase 6: 3/3, Phase 7: 2/2, Phase 8: 3/3, Phase 9: 3/3, Phase 10: 3/3)
 - **Estimated completion:** Phase 9 complete, Phase 10 next
 
 ### Quality
@@ -118,6 +118,8 @@ progress:
 | 2026-03-14   | Cross-field Zod .strict().refine() chain    | cheapest-paid behavior requires non-zero budget to be meaningful                                                                   | Config validation catches contradictory fallback+budget settings early             |
 | 2026-03-14   | PromiseLike callFn in FallbackProxy         | LanguageModelV3 doGenerate/doStream return PromiseLike not Promise                                                                 | Shared attemptWithFallback uses PromiseLike for type correctness                   |
 | 2026-03-14   | Stream results skip providerMetadata        | LanguageModelV3StreamResult has no providerMetadata field, only generate results do                                                | Fallback info only on generate, not stream responses                               |
+| 2026-03-14   | Dry-run intercept after key selection       | Events should still fire in dry-run mode for observability testing                                                                 | Middleware intercepts after router.model() and key:selected event emission         |
+| 2026-03-14   | createHook factory for typed hooks          | DRY pattern wrapping EventEmitter.on with typed callback and unsubscribe return                                                    | 8 typed hooks without duplicating emitter wiring code                              |
 | 2026-03-14   | Conditional property for exactOptional      | estimatedTokens/originalQualityTier need conditional inclusion under strict TS mode                                                | Build objects conditionally instead of spreading undefined values                  |
 | 2026-03-14   | Redis key as deterministic id               | Same composite key returns same id across increment calls, satisfying contract test record2.id === record1.id                      | No UUID generation needed, Redis key string is the natural identifier              |
 | 2026-03-14   | Cursor-based SCAN instead of scanStream     | Simpler async/await control flow, no stream event handling needed                                                                  | scanKeys() helper with manual cursor iteration for get() and resetAll()            |
@@ -134,6 +136,7 @@ progress:
 | Phase 09 P01 | 4m 14s                                      | 1 tasks                                                                                                                            | 12 files                                                                           |
 | Phase 09 P02 | 3m 39s                                      | 2 tasks                                                                                                                            | 4 files                                                                            |
 | Phase 09 P03 | 8m 54s                                      | 2 tasks                                                                                                                            | 7 files                                                                            |
+| Phase 10 P03 | 7m 4s                                       | 2 tasks                                                                                                                            | 9 files                                                                            |
 
 ### Active TODOs
 
@@ -179,21 +182,19 @@ progress:
 
 ### What Just Happened
 
-**Phase 10 Plan 02 complete:**
+**Phase 10 Plan 03 complete:**
 
-**Plan 10-02:** Redis storage adapter (RedisStorage with ioredis):
+**Plan 10-03:** Build wiring, observability hooks, dry-run mode:
 
-- RedisStorage class implementing full StorageBackend interface
-- Pipeline-based atomic HINCRBY for concurrent-safe increment operations
-- TTL-based expiration with 2x safety margin per window type
-- Dynamic ioredis import with clear MISSING_PEER_DEPENDENCY error
-- Configurable key prefix (default: llm-router:), cursor-based SCAN for key enumeration
-- Contract test reusing all 10 createStorageContractTests(), graceful skip when Redis unavailable
-- 2 commits (22b1416, c3d68af), 5 files, 10m
+- Subpath exports for llm-router/sqlite and llm-router/redis in package.json
+- tsup entry points for sqlite and redis bundles producing .mjs, .cjs, .d.ts
+- better-sqlite3 and ioredis as optional peer dependencies
+- 8 typed observability hook helpers (onKeySelected, onUsageRecorded, etc.) on Router returning unsubscribe functions
+- dryRun config option in Zod schema (defaults false), middleware intercepts before API call
+- 2 commits (ef2aa89, fe3e0ea), 9 files, 7m
 
 ### What's Next
 
-- **Plan 10-03:** Build wiring (package.json exports, tsup entries, peer deps), observability hooks, dry-run mode
 - **Phase 11:** Developer Experience Polish
 - **Phase 12:** Testing & Validation
 
@@ -203,14 +204,13 @@ progress:
 - Standard npm package conventions -- flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
-- Phases 1-9 complete: core engine + integration + error handling + provider validation + fallback all built
-- Phase 10: Plans 01 (SQLite) and 02 (Redis) complete, Plan 03 (wiring + DX) next
-- RedisStorage: src/redis/RedisStorage.ts -- pipeline HINCRBY, TTL expiration, dynamic ioredis import
-- SqliteStorage: src/sqlite/SqliteStorage.ts -- WAL mode, prepared statements, XDG paths
+- Phases 1-10 complete: core engine + integration + error handling + provider validation + fallback + storage adapters all built
+- Phase 10 complete: SQLite (WAL, prepared stmts), Redis (pipeline HINCRBY, TTL), subpath exports, typed hooks, dry-run
 - Full request flow: wrapModel() -> middleware -> FallbackProxy -> RetryProxy -> provider API
-- All 82 tests pass + 1 skipped (Redis) + 1 pre-existing timeout, tsc --noEmit clean (pre-existing sqlite type errors)
+- Dry-run intercepts in middleware AFTER key selection (events still fire)
+- All 93 tests pass + 1 skipped (Redis) + 38 todo, tsc --noEmit clean (pre-existing rootDir test error)
 
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T16:34:01Z -- Phase 10 Plan 02 complete (25/26 plans)_
+_Last updated: 2026-03-14T18:34:46Z -- Phase 10 Plan 03 complete (26/26 plans)_

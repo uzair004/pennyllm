@@ -62,8 +62,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **DX-01**: Package works with minimal config (just API keys + provider names, sensible defaults for everything else)
 - [x] **DX-02**: Documentation includes step-by-step guide for obtaining free tier keys from each supported provider
-- [ ] **DX-03**: Observability hooks fire events for key selection, usage recording, limit warnings, and fallback triggers
-- [ ] **DX-04**: Dry-run mode validates configuration and simulates routing without making API calls
+- [x] **DX-03**: Observability hooks fire events for key selection, usage recording, limit warnings, and fallback triggers
+- [x] **DX-04**: Dry-run mode validates configuration and simulates routing without making API calls
 - [x] **DX-05**: Budget alerts notify via hooks when usage reaches configurable thresholds (e.g., 80%, 95%)
 - [ ] **DX-06**: Debug mode logs routing decisions (which key selected, why, remaining quota)
 - [x] **DX-07**: TypeScript types exported for all configuration, events, and public API
@@ -178,8 +178,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROV-12     | Phase 8                                                                    | Complete |
 | DX-01       | Phase 11                                                                   | Pending  |
 | DX-02       | Phase 8                                                                    | Complete |
-| DX-03       | Phase 10                                                                   | Pending  |
-| DX-04       | Phase 10                                                                   | Pending  |
+| DX-03       | Phase 10                                                                   | Complete |
+| DX-04       | Phase 10                                                                   | Complete |
 | DX-05       | Phase 9                                                                    | Complete |
 | DX-06       | Phase 11                                                                   | Pending  |
 | DX-07       | Phase 1, Phase 11                                                          | Complete |
