@@ -284,7 +284,7 @@ Plans:
 5. Dry-run mode validates config and logs routing decisions without making API calls
 6. Redis connection failures fall back to error (does not silently use memory)
 
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 
@@ -347,7 +347,7 @@ Plans:
 | 7. Integration & Error Handling | 2/2            | Complete    | 2026-03-13 |
 | 8. Provider Policies Catalog    | 3/3            | Complete    | 2026-03-14 |
 | 9. Fallback & Budget Management | 3/3            | Complete    | 2026-03-14 |
-| 10. SQLite, Redis & Advanced    | 1/3            | In Progress |            |
+| 10. SQLite, Redis & Advanced    | 2/3            | In Progress |            |
 | 11. Developer Experience Polish | 0/?            | Not started | -          |
 | 12. Testing & Validation        | 0/?            | Not started | -          |
 
