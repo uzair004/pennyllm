@@ -49,6 +49,7 @@ const mockConfig = (keys: string[]): RouterConfig => ({
   cooldown: { defaultDurationMs: 60000 },
   applyRegistryDefaults: false,
   dryRun: false,
+  debug: false,
 });
 
 describe('KeySelector', () => {

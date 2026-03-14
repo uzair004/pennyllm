@@ -25,6 +25,7 @@ import { FallbackResolver } from '../fallback/FallbackResolver.js';
 import { AffinityCache } from '../fallback/AffinityCache.js';
 import { createFallbackProxy } from '../fallback/FallbackProxy.js';
 import { BudgetTracker } from '../budget/BudgetTracker.js';
+import { DebugLogger } from '../debug/index.js';
 import type {
   KeySelectedEvent,
   UsageRecordedEvent,
@@ -406,6 +407,13 @@ export async function createRouter(
       onBudgetExceeded: createHook<BudgetExceededEvent>(RouterEvent.BUDGET_EXCEEDED),
       onError: createHook<ErrorEvent>(RouterEvent.ERROR),
     });
+
+    // Enable debug mode from config flag or DEBUG env var
+    const shouldDebug = config.debug || /llm-router/.test(process.env['DEBUG'] ?? '');
+    if (shouldDebug) {
+      const debugLogger = new DebugLogger();
+      debugLogger.attach(routerImpl);
+    }
 
     return routerImpl;
   } catch (error) {

@@ -50,4 +50,5 @@ export interface RouterConfig {
   warningThreshold?: number;
   applyRegistryDefaults: boolean;
   dryRun: boolean;
+  debug: boolean;
 }

@@ -36,6 +36,9 @@ export { UsageTracker, CooldownManager } from './usage/index.js';
 // Catalog
 export { DefaultModelCatalog } from './catalog/index.js';
 
+// Debug
+export { DebugLogger } from './debug/index.js';
+
 // Budget
 export { BudgetTracker } from './budget/index.js';
 

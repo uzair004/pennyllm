@@ -114,6 +114,7 @@ export const configSchema = z
     warningThreshold: z.number().min(0).max(1).optional(),
     applyRegistryDefaults: z.boolean().default(false),
     dryRun: z.boolean().default(false),
+    debug: z.boolean().default(false),
   })
   .strict()
   .refine(
