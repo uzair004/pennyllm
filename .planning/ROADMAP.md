@@ -17,7 +17,7 @@
 - [x] **Phase 5: Model Catalog & Selection** - Live model catalog (models.dev, OpenRouter), capability flags, quality tiers, selection algorithms, updates
 - [x] **Phase 6: Base Router Integration** - Vercel AI SDK `wrapLanguageModel()` middleware, key injection via `create*({ apiKey })`
 - [x] **Phase 7: Integration & Error Handling** - Error classification, streaming support, tool calling, structured output passthrough, observability hooks for routing decisions and errors, detailed error messages with context, other llm features (e.g., tool calling, structured output) we need to handle or don't need to worry about (completed 2026-03-13)
-- [ ] **Phase 8: Provider Policies Catalog** - Default free tier policies for 12 providers with researched limits, reset behavior, and documentation for key acquisition, metadata for staleness warnings, source URLs, confidence levels, updates etc.
+- [x] **Phase 8: Provider Policies Catalog** - Default free tier policies for 12 providers with researched limits, reset behavior, and documentation for key acquisition, metadata for staleness warnings, source URLs, confidence levels, updates etc.
 - [x] **Phase 9: Fallback & Budget Management** - Capability-aware fallback chains, cheap paid model routing, budget caps, threshold alerts, persistence, user-configurable fallback behavior, other fallback strategies (e.g., round-robin fallback across providers, weighted random based on remaining quota), how to handle requests that exceed any single provider's limits (e.g., 10k tokens when max is 8k), how to handle different reset window types in fallback logic (e.g., if primary key is blocked due to per-minute limit, do we consider it exhausted for fallback purposes until the minute resets?), (completed 2026-03-14)
 - [ ] **Phase 10: SQLite, Redis & Advanced Features** - SQLite + Redis adapters, observability hooks, dry-run mode,
 - [ ] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs, minimal config example, multiple keys per provider config, troubleshooting guide, how to test your config, how to monitor usage and costs, best practices for key management, etc. how it can fit with other tools in the ecosystem (e.g., LangChain.js, custom implementations)
@@ -118,12 +118,12 @@ Plans:
 4. Rolling 30-day windows calculate correctly (sum of last 30 days, drops day 31)
 5. Estimated vs actual token usage reconciles after provider response
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 04-01-PLAN.md — Usage types, period calculator, estimation, cooldown, StorageBackend/MemoryStorage updates, config schema
-- [ ] 04-02-PLAN.md — UsageTracker class, Router integration, getUsage()/resetUsage() API, exports
+- [x] 04-01-PLAN.md — Usage types, period calculator, estimation, cooldown, StorageBackend/MemoryStorage updates, config schema
+- [x] 04-02-PLAN.md — UsageTracker class, Router integration, getUsage()/resetUsage() API, exports
 
 ---
 
@@ -148,15 +148,15 @@ Plans:
 9. Selection automatically skips keys that exceeded any limit
 10. User can provide custom selection function via TypeScript plugin interface
 
-**Plans:** 5 plans
+**Plans:** 5/5 plans executed ✅ **Complete**
 
 Plans:
 
 - [x] 05-00-PLAN.md — Wave 0: test scaffolds for catalog and selection behaviors
 - [x] 05-01-PLAN.md — Type contracts, interfaces, config schema, error classes, events
 - [x] 05-02-PLAN.md — DefaultModelCatalog with live API fetch, caching, static fallback
-- [ ] 05-03-PLAN.md — Selection strategies (priority, round-robin, least-used) and KeySelector coordinator
-- [ ] 05-04-PLAN.md — Router integration: wire catalog + selection into createRouter()
+- [x] 05-03-PLAN.md — Selection strategies (priority, round-robin, least-used) and KeySelector coordinator
+- [x] 05-04-PLAN.md — Router integration: wire catalog + selection into createRouter()
 
 ---
 
@@ -175,13 +175,13 @@ Plans:
 3. Real API call to Google Gemini succeeds with cost-avoidance logic active
 4. Usage tracking updates after successful API call with actual token counts from `result.usage`
 
-**Plans:** 3 plans
+**Plans:** 3/3 plans executed ✅ **Complete**
 
 Plans:
 
 - [x] 06-01-PLAN.md — Provider registry, middleware factory, routerModel wrapper, Router.wrapModel() integration
 - [x] 06-02-PLAN.md — Real Gemini API POC validation (end-to-end key injection + usage tracking)
-- [ ] 06-03-PLAN.md — Gap closure: lazy ProviderRegistry initialization to fix createRouter test timeouts
+- [x] 06-03-PLAN.md — Gap closure: lazy ProviderRegistry initialization to fix createRouter test timeouts
 
 ---
 
@@ -205,8 +205,8 @@ Plans:
 
 Plans:
 
-- [ ] 07-01-PLAN.md — Error classes (AuthError, ProviderError, NetworkError), error classifier, event types, RouterEvent constants
-- [ ] 07-02-PLAN.md — Retry proxy with key rotation, wrapModel integration, middleware keyIndex tracking fix
+- [x] 07-01-PLAN.md — Error classes (AuthError, ProviderError, NetworkError), error classifier, event types, RouterEvent constants
+- [x] 07-02-PLAN.md — Retry proxy with key rotation, wrapModel integration, middleware keyIndex tracking fix
 
 ---
 
@@ -229,13 +229,13 @@ Plans:
 7. Comparison table shows all 12 providers side-by-side
 8. README recommends 2-3 easiest providers as starter set
 
-**Plans:** 3 plans
+**Plans:** 3/3 plans executed ✅ **Complete**
 
 Plans:
 
-- [ ] 08-01-PLAN.md — Remove static defaults, config toggle, builder helpers, typed provider configs, skeleton JSON
-- [ ] 08-02-PLAN.md — Provider docs for Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras
-- [ ] 08-03-PLAN.md — Provider docs for DeepSeek, Qwen, Cloudflare, NVIDIA, Cohere, GitHub + comparison + README
+- [x] 08-01-PLAN.md — Remove static defaults, config toggle, builder helpers, typed provider configs, skeleton JSON
+- [x] 08-02-PLAN.md — Provider docs for Google, Groq, OpenRouter, Mistral, HuggingFace, Cerebras
+- [x] 08-03-PLAN.md — Provider docs for DeepSeek, Qwen, Cloudflare, NVIDIA, Cohere, GitHub + comparison + README
 
 ---
 
@@ -261,9 +261,9 @@ Plans:
 
 Plans:
 
-- [ ] 09-01-PLAN.md — Type contracts, config schema (fallback section), AllProvidersExhaustedError, budget/fallback event types
-- [ ] 09-02-PLAN.md — FallbackResolver (capability matching + ranking) and BudgetTracker (cost recording + events)
-- [ ] 09-03-PLAN.md — FallbackProxy orchestration, AffinityCache, middleware provider-ref update, createRouter integration
+- [x] 09-01-PLAN.md — Type contracts, config schema (fallback section), AllProvidersExhaustedError, budget/fallback event types
+- [x] 09-02-PLAN.md — FallbackResolver (capability matching + ranking) and BudgetTracker (cost recording + events)
+- [x] 09-03-PLAN.md — FallbackProxy orchestration, AffinityCache, middleware provider-ref update, createRouter integration
 
 ---
 
@@ -337,9 +337,9 @@ Plans:
 | 3. Policy Engine                | 2/2            | Complete    | ✅         |
 | 4. Usage Tracking Core          | 2/2            | Complete    | ✅         |
 | 5. Model Catalog & Selection    | 5/5            | Complete    | ✅         |
-| 6. Base Router Integration      | 2/3            | Gap closure | -          |
+| 6. Base Router Integration      | 3/3            | Complete    | 2026-03-13 |
 | 7. Integration & Error Handling | 2/2            | Complete    | 2026-03-13 |
-| 8. Provider Policies Catalog    | 0/3            | Planning    | -          |
+| 8. Provider Policies Catalog    | 3/3            | Complete    | 2026-03-14 |
 | 9. Fallback & Budget Management | 3/3            | Complete    | 2026-03-14 |
 | 10. SQLite, Redis & Advanced    | 0/?            | Not started | -          |
 | 11. Developer Experience Polish | 0/?            | Not started | -          |
