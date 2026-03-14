@@ -57,3 +57,19 @@ export type { ModelListFilter } from '../catalog/types.js';
 
 // Selection types
 export type { CandidateKey, SelectionContext, SelectionResult } from '../selection/types.js';
+
+// Provider config types
+export type {
+  GoogleProviderConfig,
+  GroqProviderConfig,
+  OpenRouterProviderConfig,
+  MistralProviderConfig,
+  HuggingFaceProviderConfig,
+  CerebrasProviderConfig,
+  DeepSeekProviderConfig,
+  QwenProviderConfig,
+  CloudflareProviderConfig,
+  NvidiaProviderConfig,
+  CohereProviderConfig,
+  GitHubProviderConfig,
+} from './providers.js';

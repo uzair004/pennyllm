@@ -17,6 +17,9 @@ export type {
 // Re-export resolver functions
 export { mergeLimits, resolvePolicies } from './resolver.js';
 
+// Re-export builder helpers
+export { createTokenLimit, createRateLimit, createCallLimit } from './builders.js';
+
 // Re-export PolicyEngine
 export { PolicyEngine } from './PolicyEngine.js';
 

@@ -16,7 +16,12 @@ export type { ConfigInput, ConfigOutput, Router } from './config/index.js';
 export { MemoryStorage } from './storage/index.js';
 
 // Policy
-export { PolicyEngine } from './policy/index.js';
+export {
+  PolicyEngine,
+  createTokenLimit,
+  createRateLimit,
+  createCallLimit,
+} from './policy/index.js';
 
 // Usage
 export { UsageTracker, CooldownManager } from './usage/index.js';
@@ -66,26 +71,38 @@ export type {
   BudgetConfig,
   CandidateKey,
   CatalogRefreshedEvent,
+  CerebrasProviderConfig,
+  CloudflareProviderConfig,
+  CohereProviderConfig,
   ConfigLoadedEvent,
   CooldownConfig,
+  DeepSeekProviderConfig,
   ErrorEvent,
   EstimationConfig,
   EstimationResult,
   FallbackTriggeredEvent,
+  GitHubProviderConfig,
+  GoogleProviderConfig,
+  GroqProviderConfig,
+  HuggingFaceProviderConfig,
   KeySelectedEvent,
   KeyUsage,
   KeyUsageWindow,
   LimitExceededEvent,
   LimitWarningEvent,
+  MistralProviderConfig,
   ModelCatalog,
   ModelListFilter,
   ModelMetadata,
+  NvidiaProviderConfig,
+  OpenRouterProviderConfig,
   Policy,
   PolicyLimit,
   PolicyStaleEvent,
   ProviderConfig,
   ProviderExhaustedEvent,
   ProviderUsage,
+  QwenProviderConfig,
   ResetWindow,
   RouterConfig,
   RouterEventMap,
