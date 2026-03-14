@@ -269,7 +269,7 @@ Plans:
 
 ### Phase 10: SQLite, Redis & Advanced Features
 
-**Goal:** SQLite and Redis storage adapters work for persistent and multi-process deployments with observability hooks
+**Goal:** SQLite and Redis storage adapters work for persistent and multi-process deployments with observability hooks and dry-run mode
 
 **Depends on:** Phase 2 (StorageBackend interface + contract tests), Phase 9 (core features complete)
 
@@ -284,7 +284,13 @@ Plans:
 5. Dry-run mode validates config and logs routing decisions without making API calls
 6. Redis connection failures fall back to error (does not silently use memory)
 
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+
+- [ ] 10-01-PLAN.md — SQLite storage adapter (SqliteStorage with better-sqlite3, XDG paths, WAL mode, migrations, contract tests)
+- [ ] 10-02-PLAN.md — Redis storage adapter (RedisStorage with ioredis, HINCRBY pipeline, TTL expiration, contract tests)
+- [ ] 10-03-PLAN.md — Build wiring (package.json exports, tsup entries, peer deps), typed observability hooks, dry-run mode
 
 ---
 
@@ -341,7 +347,7 @@ Plans:
 | 7. Integration & Error Handling | 2/2            | Complete    | 2026-03-13 |
 | 8. Provider Policies Catalog    | 3/3            | Complete    | 2026-03-14 |
 | 9. Fallback & Budget Management | 3/3            | Complete    | 2026-03-14 |
-| 10. SQLite, Redis & Advanced    | 0/?            | Not started | -          |
+| 10. SQLite, Redis & Advanced    | 0/3            | Planned     | -          |
 | 11. Developer Experience Polish | 0/?            | Not started | -          |
 | 12. Testing & Validation        | 0/?            | Not started | -          |
 
@@ -417,3 +423,4 @@ _Phase 6 gap closure: 1 plan added (lazy ProviderRegistry initialization to fix 
 _Phase 7 planned: 2 plans in 2 waves (error classification + retry proxy with key rotation)_
 _Phase 8 planned: 3 plans in 2 waves (code changes + provider documentation)_
 _Phase 9 planned: 3 plans in 3 waves (type contracts + core logic modules + integration wiring)_
+_Phase 10 planned: 3 plans in 2 waves (SQLite adapter + Redis adapter parallel, then wiring + DX features)_
