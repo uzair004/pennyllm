@@ -11,6 +11,8 @@ export default defineConfig({
     'src/errors/index.ts',
     'src/constants/index.ts',
     'src/wrapper/index.ts',
+    'src/sqlite/index.ts',
+    'src/redis/index.ts',
   ],
   format: ['esm', 'cjs'],
   dts: true,

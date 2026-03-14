@@ -15,6 +15,13 @@ export type { ConfigInput, ConfigOutput, Router } from './config/index.js';
 // Storage
 export { MemoryStorage } from './storage/index.js';
 
+// Storage adapters (optional peer dependencies)
+// Users import directly: import { SqliteStorage } from 'llm-router/sqlite'
+// Users import directly: import { RedisStorage } from 'llm-router/redis'
+// Type-only exports are safe (erased at compile time)
+export type { SqliteStorageOptions } from './sqlite/index.js';
+export type { RedisStorageOptions } from './redis/index.js';
+
 // Policy
 export {
   PolicyEngine,

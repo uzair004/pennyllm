@@ -51,6 +51,16 @@
       "types": "./dist/wrapper/index.d.ts",
       "import": "./dist/wrapper/index.mjs",
       "require": "./dist/wrapper/index.cjs"
+    },
+    "./sqlite": {
+      "types": "./dist/sqlite/index.d.ts",
+      "import": "./dist/sqlite/index.mjs",
+      "require": "./dist/sqlite/index.cjs"
+    },
+    "./redis": {
+      "types": "./dist/redis/index.d.ts",
+      "import": "./dist/redis/index.mjs",
+      "require": "./dist/redis/index.cjs"
     }
   },
   "files": [
@@ -81,13 +91,21 @@
   "peerDependencies": {
     "@ai-sdk/google": "^3.0.0",
     "ai": "^6.0.0",
-    "js-yaml": "^4.0.0"
+    "js-yaml": "^4.0.0",
+    "better-sqlite3": "^11.0.0 || ^12.0.0",
+    "ioredis": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "@ai-sdk/google": {
       "optional": true
     },
     "js-yaml": {
+      "optional": true
+    },
+    "better-sqlite3": {
+      "optional": true
+    },
+    "ioredis": {
       "optional": true
     }
   },
