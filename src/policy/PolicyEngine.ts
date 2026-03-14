@@ -78,20 +78,22 @@ export class PolicyEngine {
 
     // Query usage for all limits concurrently
     const limitStatusPromises = policy.limits.map(async (limit) => {
-      const { totalTokens: current } = await this.storage.getUsage(
-        provider,
-        keyIndex,
-        limit.window,
-      );
+      const usage = await this.storage.getUsage(provider, keyIndex, limit.window);
+      const current =
+        limit.type === 'rate' || limit.type === 'calls' ? usage.callCount : usage.totalTokens;
 
       // Calculate reset time (next window boundary, calendar-aware)
       const now = Date.now();
       const resetAt = getResetAt(limit.window, now);
 
-      // For token-based limits with estimation, add estimated usage
+      // For pre-call checks with estimation, project usage after the upcoming call
       let effectiveCurrent = current;
-      if (estimatedTokens && limit.type === 'tokens') {
-        effectiveCurrent = current + estimatedTokens.prompt + estimatedTokens.completion;
+      if (estimatedTokens) {
+        if (limit.type === 'rate' || limit.type === 'calls') {
+          effectiveCurrent = current + 1;
+        } else {
+          effectiveCurrent = current + estimatedTokens.prompt + estimatedTokens.completion;
+        }
       }
 
       const remaining = Math.max(0, limit.value - effectiveCurrent);

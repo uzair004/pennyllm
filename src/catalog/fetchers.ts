@@ -11,22 +11,19 @@ const debug = debugFactory('llm-router:catalog');
 const modelsDevEntrySchema = z.object({
   id: z.string(),
   name: z.string(),
-  provider: z.string().optional(),
-  context_length: z.number().optional(),
-  pricing: z
+  tool_call: z.boolean().optional(),
+  structured_output: z.boolean().optional(),
+  reasoning: z.boolean().optional(),
+  cost: z
     .object({
-      prompt: z.union([z.string(), z.number()]).optional(),
-      completion: z.union([z.string(), z.number()]).optional(),
+      input: z.number().optional(),
+      output: z.number().optional(),
     })
     .optional(),
-  capabilities: z
+  limit: z
     .object({
-      reasoning: z.boolean().optional(),
-      toolCall: z.boolean().optional(),
-      tool_call: z.boolean().optional(),
-      structuredOutput: z.boolean().optional(),
-      structured_output: z.boolean().optional(),
-      vision: z.boolean().optional(),
+      context: z.number().optional(),
+      output: z.number().optional(),
     })
     .optional(),
 });
@@ -55,9 +52,7 @@ const openRouterEntrySchema = z.object({
 /**
  * Fetch model metadata from models.dev API
  */
-export async function fetchModelsDev(
-  fetchFn: typeof fetch = fetch,
-): Promise<ModelMetadata[]> {
+export async function fetchModelsDev(fetchFn: typeof fetch = fetch): Promise<ModelMetadata[]> {
   try {
     const response = await fetchFn('https://models.dev/api.json', {
       signal: AbortSignal.timeout(5000),
@@ -69,13 +64,24 @@ export async function fetchModelsDev(
 
     const data = await response.json();
 
-    // Handle response format - could be array or object with model entries
+    // Handle response format - nested provider→models structure or flat array
     let entries: unknown[] = [];
     if (Array.isArray(data)) {
       entries = data;
     } else if (data && typeof data === 'object') {
-      // If it's an object, try to extract model entries
-      entries = Object.values(data);
+      for (const providerObj of Object.values(data as Record<string, unknown>)) {
+        if (
+          providerObj &&
+          typeof providerObj === 'object' &&
+          'models' in providerObj &&
+          providerObj.models &&
+          typeof providerObj.models === 'object'
+        ) {
+          for (const model of Object.values(providerObj.models as Record<string, unknown>)) {
+            entries.push(model);
+          }
+        }
+      }
     }
 
     const models: ModelMetadata[] = [];
@@ -89,13 +95,13 @@ export async function fetchModelsDev(
       }
 
       const model = parsed.data;
-      const provider = model.provider || extractProviderFromId(model.id);
+      const provider = extractProviderFromId(model.id);
 
-      // Normalize pricing to per-1M-tokens
+      // Normalize pricing to per-1M-tokens (cost fields are per-token)
       let pricing: ModelMetadata['pricing'] = null;
-      if (model.pricing) {
-        const promptPrice = parseFloat(String(model.pricing.prompt || '0'));
-        const completionPrice = parseFloat(String(model.pricing.completion || '0'));
+      if (model.cost) {
+        const promptPrice = model.cost.input ?? 0;
+        const completionPrice = model.cost.output ?? 0;
         pricing = {
           promptPer1MTokens: promptPrice * 1_000_000,
           completionPer1MTokens: completionPrice * 1_000_000,
@@ -107,16 +113,13 @@ export async function fetchModelsDev(
         provider,
         name: model.name,
         capabilities: {
-          reasoning: model.capabilities?.reasoning ?? false,
-          toolCall: model.capabilities?.toolCall ?? model.capabilities?.tool_call ?? false,
-          structuredOutput:
-            model.capabilities?.structuredOutput ??
-            model.capabilities?.structured_output ??
-            false,
-          vision: model.capabilities?.vision ?? false,
+          reasoning: model.reasoning ?? false,
+          toolCall: model.tool_call ?? false,
+          structuredOutput: model.structured_output ?? false,
+          vision: false,
         },
         qualityTier: 'mid', // Default, overridden by static snapshot
-        contextWindow: model.context_length ?? 0,
+        contextWindow: model.limit?.context ?? 0,
         pricing,
         status: ModelStatus.ACTIVE,
       });
@@ -137,9 +140,7 @@ export async function fetchModelsDev(
 /**
  * Fetch model metadata from OpenRouter API
  */
-export async function fetchOpenRouter(
-  fetchFn: typeof fetch = fetch,
-): Promise<ModelMetadata[]> {
+export async function fetchOpenRouter(fetchFn: typeof fetch = fetch): Promise<ModelMetadata[]> {
   try {
     const response = await fetchFn('https://openrouter.ai/api/v1/models', {
       signal: AbortSignal.timeout(5000),
@@ -177,8 +178,7 @@ export async function fetchOpenRouter(
       }
 
       // Infer vision from modality if available
-      const vision =
-        model.architecture?.modality?.toLowerCase().includes('vision') ?? false;
+      const vision = model.architecture?.modality?.toLowerCase().includes('vision') ?? false;
 
       models.push({
         id: model.id,
