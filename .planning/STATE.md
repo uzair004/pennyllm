@@ -3,34 +3,34 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 8 (Provider Validation)
-status: planning
-last_updated: '2026-03-13T19:19:26.576Z'
+status: executing
+last_updated: '2026-03-14T00:06:14.891Z'
 progress:
   total_phases: 12
   completed_phases: 7
-  total_plans: 17
-  completed_plans: 17
-  percent: 100
+  total_plans: 20
+  completed_plans: 18
+  percent: 90
 ---
 
 # Project State: LLM Router
 
-**Last updated:** 2026-03-13
+**Last updated:** 2026-03-14
 **Current phase:** Phase 8 (Provider Validation)
-**Status:** Ready to plan
+**Status:** Executing plan 08-01 complete (1/3 plans done)
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 7 complete. Error classification + retry proxy deliver INTG-02, INTG-03, INTG-05. Ready for Phase 8.
+**Current focus:** Phase 8 plan 01 complete. Removed stale defaults, added limit builders and provider configs. Plans 02-03 remaining.
 
 ## Current Position
 
 **Phase:** 8 - Provider Validation
-**Plan:** 0 plans done
-**Status:** Ready to plan
-**Progress:** [██████████] 100% (through Phase 7)
+**Plan:** 1/3 plans done
+**Status:** Executing
+**Progress:** [█████████░] 90%
 
 ## Performance Metrics
 
@@ -109,6 +109,9 @@ progress:
 | 2026-03-13   | disabledKeys Set in createRouter scope      | Auth-failed keys persist across wrapModel() calls within same router instance                                                      | Prevents repeated attempts with known-bad keys for session lifetime                |
 | 2026-03-13   | routerModel() without retry proxy           | Standalone convenience function stays simple; retry available via router.wrapModel()                                               | Users who need retry use router.wrapModel(), simple path remains clean             |
 | 2026-03-13   | ErrorEventPayload typed interface           | Record<string, unknown> causes TS4111 under exactOptionalPropertyTypes for statusCode access                                       | Typed interface avoids index signature access issue                                |
+| 2026-03-14   | Pass empty Map to resolvePolicies           | Retry proxy handles runtime 429s as safety net; no stale shipped defaults                                                          | createRouter no longer ships active routing data                                   |
+| 2026-03-14   | applyRegistryDefaults defaults to false     | Wired for future registry phase; not optional, guaranteed by Zod .default()                                                        | Users must opt in to registry defaults when implemented                            |
+| 2026-03-14   | Provider config types as JSDoc aliases      | IDE discoverability without type divergence; each provider gets JSDoc with sign-up URLs, env vars, tier info                       | Users get autocomplete and inline docs when configuring providers                  |
 | Phase 05 P03 | 7m 14s                                      | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 05 P04 | 2m 18s                                      | 1 task                                                                                                                             | 2 files                                                                            |
 | Phase 06 P01 | 8m 26s                                      | 3 tasks                                                                                                                            | 8 files                                                                            |
@@ -116,6 +119,7 @@ progress:
 | Phase 06 P03 | 1m 45s                                      | 2 tasks                                                                                                                            | 1 files                                                                            |
 | Phase 07 P01 | 6m                                          | 2 tasks                                                                                                                            | 9 files                                                                            |
 | Phase 07 P02 | 5m 17s                                      | 2 tasks                                                                                                                            | 5 files                                                                            |
+| Phase 08 P01 | 5m 51s                                      | 3 tasks                                                                                                                            | 14 files                                                                           |
 
 ### Active TODOs
 
@@ -161,27 +165,23 @@ progress:
 
 ### What Just Happened
 
-**Phase 7 complete (2/2 plans):**
+**Phase 8 plan 01 complete (1/3 plans):**
 
-**Plan 07-01:** Error classification foundation:
+**Plan 08-01:** Remove stale defaults, add limit builders and provider configs:
 
-- classifyError(), shouldRetry(), buildFinalError() for typed error handling
-- 3 error classes (AuthError, ProviderError, NetworkError), 7 event payload interfaces
-- 2 commits (1cc1eb0, f056f31), 9 files, ~6 min
-
-**Plan 07-02:** Retry proxy with key rotation:
-
-- createRetryProxy() returns LanguageModelV3-compatible proxy with doGenerate/doStream retry
-- Integrated into router.wrapModel() with shared disabledKeys Set and mutable keyIndexRef
-- Middleware updated to keyIndexRef.current for post-retry usage tracking
-- 2 commits (28cbb6f, bb76d0e), 5 files, ~5 min
-- All 83 existing tests pass with no regressions
+- Deleted src/policy/defaults/ (4 files: google.ts, groq.ts, openrouter.ts, index.ts)
+- Added `applyRegistryDefaults: boolean` to config schema and RouterConfig (defaults to false)
+- Created createTokenLimit, createRateLimit, createCallLimit builder helpers
+- Created 12 typed provider configs with JSDoc (sign-up URLs, env vars, AI SDK packages, tier info)
+- Created data/provider-skeleton.json with 12 provider shapes (empty limits, bundled in npm)
+- 3 commits (e23bfdc, e82773c, c02f32e), 14 files, ~6 min
+- All 83 existing tests pass with zero regressions
 
 ### What's Next
 
-- **Phase 8:** Provider validation (empirical testing of free tier limits)
-- Phase 8 prerequisite: create test accounts, validate limits, document behaviors
-- Phase 7 deliverables (INTG-02, INTG-03, INTG-05) are ready for real-world testing
+- **Phase 8 Plan 02:** Provider key acquisition documentation (docs/providers/ markdown files)
+- **Phase 8 Plan 03:** Remaining phase 8 deliverables
+- createRouter now uses empty Map -- no shipped defaults, retry proxy is the runtime safety net
 
 ### Context for Next Session
 
@@ -189,9 +189,10 @@ progress:
 - Standard npm package conventions — flat src/, debug for logging, EventEmitter for events
 - Three interfaces only: StorageBackend, ModelCatalog, SelectionStrategy
 - Vercel AI SDK is a peer dependency, not wrapped behind our own abstraction
-- LiteLLM Router patterns are design reference (deployment groups, cooldown, weighted routing)
 - Phases 1-7 complete: core engine + integration + error handling all built
+- Phase 8 plan 01: stale defaults removed, limit builders and provider configs added
 - Retry proxy transparent to callers: wrapModel() returns a model that auto-rotates keys on failure
+- Builder helpers exported from `llm-router/policy` and top-level `llm-router`
 
 ---
 

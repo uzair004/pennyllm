@@ -45,18 +45,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Provider Support
 
-- [ ] **PROV-01**: Google AI Studio (Gemini) — default policy with free tier limits
-- [ ] **PROV-02**: Groq — default policy with free tier limits
-- [ ] **PROV-03**: OpenRouter (free models) — default policy with free tier limits
-- [ ] **PROV-04**: Mistral (La Plateforme) — default policy with free tier limits
-- [ ] **PROV-05**: HuggingFace Inference API — default policy with free tier limits
-- [ ] **PROV-06**: Cerebras — default policy with free tier limits
-- [ ] **PROV-07**: DeepSeek — default policy with free tier limits
-- [ ] **PROV-08**: Qwen (Alibaba) — default policy with free tier limits
-- [ ] **PROV-09**: Cloudflare Workers AI — default policy with free tier limits
-- [ ] **PROV-10**: NVIDIA NIM — default policy with free tier limits
-- [ ] **PROV-11**: Cohere — default policy with free tier limits
-- [ ] **PROV-12**: GitHub Models — default policy with free tier limits
+- [x] **PROV-01**: Google AI Studio (Gemini) — default policy with free tier limits
+- [x] **PROV-02**: Groq — default policy with free tier limits
+- [x] **PROV-03**: OpenRouter (free models) — default policy with free tier limits
+- [x] **PROV-04**: Mistral (La Plateforme) — default policy with free tier limits
+- [x] **PROV-05**: HuggingFace Inference API — default policy with free tier limits
+- [x] **PROV-06**: Cerebras — default policy with free tier limits
+- [x] **PROV-07**: DeepSeek — default policy with free tier limits
+- [x] **PROV-08**: Qwen (Alibaba) — default policy with free tier limits
+- [x] **PROV-09**: Cloudflare Workers AI — default policy with free tier limits
+- [x] **PROV-10**: NVIDIA NIM — default policy with free tier limits
+- [x] **PROV-11**: Cohere — default policy with free tier limits
+- [x] **PROV-12**: GitHub Models — default policy with free tier limits
 
 ### Developer Experience
 
@@ -164,18 +164,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INTG-03     | Phase 7                                                                    | Complete |
 | INTG-04     | Phase 6                                                                    | Complete |
 | INTG-05     | Phase 7                                                                    | Complete |
-| PROV-01     | Phase 8                                                                    | Pending  |
-| PROV-02     | Phase 8                                                                    | Pending  |
-| PROV-03     | Phase 8                                                                    | Pending  |
-| PROV-04     | Phase 8                                                                    | Pending  |
-| PROV-05     | Phase 8                                                                    | Pending  |
-| PROV-06     | Phase 8                                                                    | Pending  |
-| PROV-07     | Phase 8                                                                    | Pending  |
-| PROV-08     | Phase 8                                                                    | Pending  |
-| PROV-09     | Phase 8                                                                    | Pending  |
-| PROV-10     | Phase 8                                                                    | Pending  |
-| PROV-11     | Phase 8                                                                    | Pending  |
-| PROV-12     | Phase 8                                                                    | Pending  |
+| PROV-01     | Phase 8                                                                    | Complete |
+| PROV-02     | Phase 8                                                                    | Complete |
+| PROV-03     | Phase 8                                                                    | Complete |
+| PROV-04     | Phase 8                                                                    | Complete |
+| PROV-05     | Phase 8                                                                    | Complete |
+| PROV-06     | Phase 8                                                                    | Complete |
+| PROV-07     | Phase 8                                                                    | Complete |
+| PROV-08     | Phase 8                                                                    | Complete |
+| PROV-09     | Phase 8                                                                    | Complete |
+| PROV-10     | Phase 8                                                                    | Complete |
+| PROV-11     | Phase 8                                                                    | Complete |
+| PROV-12     | Phase 8                                                                    | Complete |
 | DX-01       | Phase 11                                                                   | Pending  |
 | DX-02       | Phase 8                                                                    | Pending  |
 | DX-03       | Phase 10                                                                   | Pending  |
