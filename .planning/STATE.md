@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: Phase 9 (Fallback & Budget Management)
 status: executing
-last_updated: '2026-03-14T15:16:11.904Z'
+last_updated: '2026-03-14T15:21:00Z'
 progress:
   total_phases: 12
   completed_phases: 8
   total_plans: 23
-  completed_plans: 21
-  percent: 91
+  completed_plans: 22
+  percent: 93
 ---
 
 # Project State: LLM Router
@@ -23,14 +23,14 @@ progress:
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 9 plan 01 complete. Fallback/budget type contracts defined. Plans 02-03 remaining.
+**Current focus:** Phase 9 plan 02 complete. FallbackResolver and BudgetTracker implemented. Plan 03 remaining.
 
 ## Current Position
 
 **Phase:** 9 - Fallback & Budget Management
-**Plan:** 1/3 plans done
+**Plan:** 2/3 plans done
 **Status:** Executing
-**Progress:** [█████████░] 91%
+**Progress:** [█████████░] 93%
 
 ## Performance Metrics
 
@@ -109,6 +109,9 @@ progress:
 | 2026-03-13   | disabledKeys Set in createRouter scope      | Auth-failed keys persist across wrapModel() calls within same router instance                                                      | Prevents repeated attempts with known-bad keys for session lifetime                |
 | 2026-03-13   | routerModel() without retry proxy           | Standalone convenience function stays simple; retry available via router.wrapModel()                                               | Users who need retry use router.wrapModel(), simple path remains clean             |
 | 2026-03-13   | ErrorEventPayload typed interface           | Record<string, unknown> causes TS4111 under exactOptionalPropertyTypes for statusCode access                                       | Typed interface avoids index signature access issue                                |
+| 2026-03-14   | Deterministic free model ordering           | FallbackResolver lacks direct quota access; sort free models by provider name                                                      | FallbackProxy handles actual quota-based selection among same-provider candidates  |
+| 2026-03-14   | Micro-dollar budget storage repurposing     | Store cost as microDollars in promptTokens field to avoid StorageBackend interface changes                                         | Keeps interface stable for Phase 10 adapters                                       |
+| 2026-03-14   | $0 budget = always exceeded                 | monthlyLimit 0 means isExceeded() returns true, blocking all paid calls per CONTEXT.md                                             | Consistent with "never spend money" specification                                  |
 | 2026-03-14   | Pass empty Map to resolvePolicies           | Retry proxy handles runtime 429s as safety net; no stale shipped defaults                                                          | createRouter no longer ships active routing data                                   |
 | 2026-03-14   | applyRegistryDefaults defaults to false     | Wired for future registry phase; not optional, guaranteed by Zod .default()                                                        | Users must opt in to registry defaults when implemented                            |
 | 2026-03-14   | Provider config types as JSDoc aliases      | IDE discoverability without type divergence; each provider gets JSDoc with sign-up URLs, env vars, tier info                       | Users get autocomplete and inline docs when configuring providers                  |
@@ -125,6 +128,7 @@ progress:
 | Phase 08 P02 | 3m 14s                                      | 2 tasks                                                                                                                            | 6 files                                                                            |
 | Phase 08 P03 | 5m                                          | 2 tasks                                                                                                                            | 8 files                                                                            |
 | Phase 09 P01 | 4m 14s                                      | 1 tasks                                                                                                                            | 12 files                                                                           |
+| Phase 09 P02 | 3m 39s                                      | 2 tasks                                                                                                                            | 4 files                                                                            |
 
 ### Active TODOs
 
@@ -170,24 +174,26 @@ progress:
 
 ### What Just Happened
 
-**Phase 9 plan 01 complete (1/3 plans):**
+**Phase 9 plan 02 complete (2/3 plans):**
 
-**Plan 09-01:** Fallback and budget type contracts:
+**Plan 09-02:** FallbackResolver and BudgetTracker core logic:
 
-- Created src/fallback/types.ts with FallbackConfig, FallbackCandidate, ProviderAttempt, AffinityEntry, FallbackProxyOptions
-- Created src/budget/types.ts with BudgetAlertEvent, BudgetExceededEvent
-- Implemented AllProvidersExhaustedError with attempts tracking and earliest recovery computation
-- Added fallbackConfigSchema and providerFallbackOverrideSchema to config/schema.ts
-- Added cross-field validation: cheapest-paid fallback requires non-zero budget
-- Extended ProviderExhaustedEvent with exhaustionType, FallbackTriggeredEvent with fromModel/toModel
-- Added BUDGET_ALERT and BUDGET_EXCEEDED RouterEvent constants
-- 1 commit (539cfc5), 12 files, 4m 14s
+- Implemented FallbackResolver with tiered capability matching (same tier first, then any tier)
+- FallbackResolver ranks free models first, unknown pricing next, cheapest paid last
+- inferCapabilities defensively extracts toolCall, vision from request params
+- Context window pre-check filters undersized models
+- Model mappings checked before catalog query, strictModel returns empty
+- Implemented BudgetTracker with micro-dollar storage via StorageBackend
+- recordCost() stores cost, skips free calls, checks thresholds
+- isExceeded() returns true when spend >= limit or $0 budget
+- Deduplicated budget:alert events at configured thresholds
+- budget:exceeded event when cap hit
+- 2 commits (4df19dd, c06ef1e), 4 files, 3m 39s
 
 ### What's Next
 
-- **Phase 9 Plan 02:** FallbackResolver implementation
-- **Phase 9 Plan 03:** BudgetTracker implementation
-- All type contracts ready for downstream plans
+- **Phase 9 Plan 03:** FallbackProxy orchestration (wires resolver + budget tracker + retry proxy)
+- FallbackResolver and BudgetTracker ready for integration
 
 ### Context for Next Session
 
@@ -206,4 +212,4 @@ progress:
 ---
 
 _State tracking started: 2026-03-11_
-_Last updated: 2026-03-14T15:14:00Z -- Phase 9 plan 01 complete (21/23 plans)_
+_Last updated: 2026-03-14T15:21:00Z -- Phase 9 plan 02 complete (22/23 plans)_

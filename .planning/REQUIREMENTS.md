@@ -83,8 +83,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CAT-03**: Models have quality tiers derived from benchmark data (frontier, high, mid, small)
 - [x] **CAT-04**: Catalog includes cheap paid models with pricing for fallback routing (not just free tier)
 - [x] **CAT-05**: Catalog works offline with bundled static snapshot as fallback when APIs unreachable
-- [ ] **CAT-06**: Fallback routing respects model capabilities (reasoning model falls back to reasoning, not generic)
-- [ ] **CAT-07**: Fallback routing prefers cheapest matching model when budget allows paid usage
+- [x] **CAT-06**: Fallback routing respects model capabilities (reasoning model falls back to reasoning, not generic)
+- [x] **CAT-07**: Fallback routing prefers cheapest matching model when budget allows paid usage
 
 ## v2 Requirements
 
@@ -193,8 +193,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CAT-03      | Phase 5                                                                    | Complete |
 | CAT-04      | Phase 5                                                                    | Complete |
 | CAT-05      | Phase 5                                                                    | Complete |
-| CAT-06      | Phase 9                                                                    | Pending  |
-| CAT-07      | Phase 9                                                                    | Pending  |
+| CAT-06      | Phase 9                                                                    | Complete |
+| CAT-07      | Phase 9                                                                    | Complete |
 
 **Coverage:**
 
