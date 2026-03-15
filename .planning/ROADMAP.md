@@ -22,6 +22,7 @@
 - [x] **Phase 10: SQLite, Redis & Advanced Features** - SQLite + Redis adapters, observability hooks, dry-run mode, (completed 2026-03-14)
 - [x] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs, minimal config example, multiple keys per provider config, troubleshooting guide, how to test your config, how to monitor usage and costs, best practices for key management, etc. how it can fit with other tools in the ecosystem (e.g., LangChain.js, custom implementations) (completed 2026-03-14)
 - [ ] **Phase 12: Provider Overhaul & Validation** - Wire up 7 target providers, user-configured model priority chain, typed model IDs (free+paid), runtime validation, refresh docs, E2E testing with real APIs
+- [ ] **Phase 12.1: Provider Nuance Gap Analysis** (INSERTED) - Audit PennyLLM abstractions against real provider behavior, categorize gaps (per-model limits, per-account limits, credit billing, per-second rates, per-request token caps), prioritize fixes vs deferrals
 
 ### v2.0 Milestone
 
@@ -646,6 +647,7 @@ _(c) Missing capability:_
 | 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
 | 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
 | 12. Provider Overhaul & Validation | 0/?            | Not started | -          |
+| 12.1 Provider Nuance Gap Analysis  | 0/?            | Not started | -          |
 
 ## v2.0 Progress Table
 
