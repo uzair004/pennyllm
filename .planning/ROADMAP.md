@@ -21,7 +21,7 @@
 - [x] **Phase 9: Fallback & Budget Management** - Capability-aware fallback chains, cheap paid model routing, budget caps, threshold alerts, persistence, user-configurable fallback behavior, other fallback strategies (e.g., round-robin fallback across providers, weighted random based on remaining quota), how to handle requests that exceed any single provider's limits (e.g., 10k tokens when max is 8k), how to handle different reset window types in fallback logic (e.g., if primary key is blocked due to per-minute limit, do we consider it exhausted for fallback purposes until the minute resets?), (completed 2026-03-14)
 - [x] **Phase 10: SQLite, Redis & Advanced Features** - SQLite + Redis adapters, observability hooks, dry-run mode, (completed 2026-03-14)
 - [x] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs, minimal config example, multiple keys per provider config, troubleshooting guide, how to test your config, how to monitor usage and costs, best practices for key management, etc. how it can fit with other tools in the ecosystem (e.g., LangChain.js, custom implementations) (completed 2026-03-14)
-- [ ] **Phase 12: Testing & Validation** - E2E tests, empirical limit validation, npm publishing
+- [ ] **Phase 12: Provider Overhaul & Validation** - Wire up 7 target providers, user-configured model priority chain, typed model IDs (free+paid), runtime validation, refresh docs, E2E testing with real APIs
 
 ### v2.0 Milestone
 
@@ -30,11 +30,10 @@
 - [ ] **Phase 15: CLI & Configuration Tools** - Config validator, interactive init wizard, CI-friendly exit codes
 - [ ] **Phase 16: Advanced Fallback Strategies** - Round-robin cross-provider fallback, weighted random, health scores, recovery events
 - [ ] **Phase 17: Advanced Routing Intelligence** - Model equivalency mapping, quality-tier fallback, usage forecasting, rate limit prediction
-- [ ] **Phase 18: Extended Provider Support** - Together AI, Fireworks, SambaNova, Scaleway, Venice.ai
+- [ ] **Phase 18: Extended Provider Support** - SambaNova, Scaleway, Venice.ai
 - [ ] **Phase 19: Documentation & DX Enhancements** - Auto-generated API reference, docs site, runnable examples, playground, auto CHANGELOG
 - [ ] **Phase 20: Storage & Performance Optimizations** - Hybrid memory/Redis sync, Redis Cluster, sql.js browser fallback, catalog disk persistence
 - [ ] **Phase 21: Admin UI Dashboard** - Web-based dashboard for key management, usage analytics, policy editing, budget monitoring
-- [ ] **Phase 22: Enterprise Features** - Multi-tenant key isolation, centralized policy server, cost analytics
 
 ## Phase Details
 
@@ -333,25 +332,82 @@ Plans:
 
 ---
 
-### Phase 12: Testing & Validation
+### Phase 12: Provider Overhaul & Validation
 
-**Goal:** Package is validated with real APIs, tested end-to-end, and published to npm
+**Goal:** Wire up 7 target providers, replace broken catalog-based fallback with user-configured model priority chain, add typed model IDs with validation, and validate everything with real API calls
 
 **Depends on:** Phase 11 (all features and docs complete)
 
 **Requirements:** CORE-03 (automatic selection), POLICY-06 (staleness warnings work)
 
+**Context:** Provider audit (2026-03-15) revealed PennyLLM was targeting wrong providers and fallback is broken (static catalog doesn't match real provider model offerings). See `docs/providers/notes/` for detailed intelligence. No npm publish — private package for now.
+
+**Target providers (7):** Cerebras, Google AI Studio, Groq, GitHub Models, SambaNova, NVIDIA NIM, Mistral
+**Dropped (8):** HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek, Fireworks
+
+**Scope:**
+
+1. **Provider wiring** — Install AI SDK packages, register all 7 in ProviderRegistry (`@ai-sdk/cerebras`, `@ai-sdk/groq`, `@ai-sdk/mistral`, OpenAI-compat adapters for GitHub/SambaNova/NVIDIA)
+2. **User-configured model priority chain** — Replace broken catalog-based FallbackResolver with explicit `models: [...]` config. User defines priority order, router tries in sequence. Free models first, paid as fallback.
+3. **Typed model IDs per provider** — TypeScript union types for each provider's available models (free + paid). IDE autocomplete for `'cerebras/llama-4-maverick'`, `'google/gemini-2.5-flash'`, etc. Models array validated at type level.
+4. **Runtime validation** — `createRouter()` validates models have matching configured providers, warns on mismatches/typos, optional live probe on first call or dry-run
+5. **Provider config refresh** — Update typed provider configs for new 7, add SambaNova (missing entirely), update user-facing docs from intelligence notes
+6. **E2E testing** — Real API calls through the router for each provider. Verify: key injection, usage tracking, retry on 429, model chain fallback across providers
+7. **Cleanup** — Mark dropped providers as unsupported, update README, comparison table, examples
+
 **Success Criteria** (what must be TRUE):
 
-1. E2E test suite passes with real API keys for 3+ providers
-2. Empirical testing validates at least 5 provider free tier limits (match documentation)
-3. Package published to npm registry with semantic version 1.0.0
-4. Installation from npm works: `npm install pennyllm` succeeds in blank project
-5. Limit staleness warning triggers correctly for policies older than 30 days
+1. All 7 providers registered in ProviderRegistry and can make real API calls
+2. User-configured model chain works: router tries models in order, falls back when exhausted
+3. TypeScript autocomplete works for model IDs per provider (free + paid)
+4. `createRouter()` validates model-provider consistency and warns on errors
+5. E2E test passes with real API keys for 4+ providers
+6. Provider docs updated for all 7 target providers
+7. Dropped providers clearly marked as unsupported
 
 **Plans:** TBD
 
 ---
+
+### Phase 12.1: Provider Nuance Gap Analysis (INSERTED)
+
+**Goal:** Audit PennyLLM's abstractions against real provider behavior and identify gaps where the current design doesn't match reality
+
+**Depends on:** Phase 12 (real API testing reveals the gaps)
+
+**Input:** Provider intelligence notes in `docs/providers/notes/` (9 providers researched, 7 kept)
+
+**Target providers (locked 2026-03-15):** Cerebras, Google AI Studio, Groq, GitHub Models, SambaNova, NVIDIA NIM, Mistral
+**Dropped:** HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek, Fireworks (see `docs/providers/notes/DROPPED.md`)
+
+**Scope:**
+
+- Systematic comparison of each target provider's actual behavior vs PennyLLM's per-key limit model
+- Categorize gaps: (a) works but suboptimal, (b) incorrect behavior, (c) missing capability
+- Produce a prioritized gap report that feeds into Phase 13+ planning
+- Recommend which gaps to fix in a patch release vs defer to v2.0
+
+**Known gaps (categorized):**
+
+_(a) Works but suboptimal:_
+
+- Per-model limits (Groq, Google, SambaNova): PennyLLM tracks per-key not per-model — may under-utilize free tier
+- Google 0/0/0 models: no "model unavailable on tier" concept — would try and get 429
+- Mistral pool-based shared quotas across models
+- Mistral 5-minute sliding windows for large models — PennyLLM only supports 1-minute
+
+_(b) Incorrect behavior:_
+
+- Per-account limits where key rotation is useless (Mistral, Cerebras): PennyLLM would assume key 2 has fresh quota but it doesn't
+
+_(c) Missing capability:_
+
+- Per-second rate limits (Mistral 1 RPS): PennyLLM has no per-second window
+- Credit-based billing (NVIDIA NIM): no concept of credit balance depletion
+- Per-request token caps (GitHub Models: 8K in / 4K out for high-tier): PennyLLM has no per-request token limit concept
+- SambaNova free vs developer tier distinction: need to document card-linking for 600x limit increase
+
+**Plans:** TBD
 
 ### Phase 13: Remote Registry & Provider Metadata
 
@@ -576,20 +632,20 @@ Plans:
 
 ## v1.0 Progress Table
 
-| Phase                           | Plans Complete | Status      | Completed  |
-| ------------------------------- | -------------- | ----------- | ---------- |
-| 1. Foundation Setup             | 2/2            | Complete    | ✅         |
-| 2. State Storage & Persistence  | 1/1            | Complete    | ✅         |
-| 3. Policy Engine                | 2/2            | Complete    | ✅         |
-| 4. Usage Tracking Core          | 2/2            | Complete    | ✅         |
-| 5. Model Catalog & Selection    | 5/5            | Complete    | ✅         |
-| 6. Base Router Integration      | 3/3            | Complete    | 2026-03-13 |
-| 7. Integration & Error Handling | 2/2            | Complete    | 2026-03-13 |
-| 8. Provider Policies Catalog    | 3/3            | Complete    | 2026-03-14 |
-| 9. Fallback & Budget Management | 3/3            | Complete    | 2026-03-14 |
-| 10. SQLite, Redis & Advanced    | 3/3            | Complete    | 2026-03-14 |
-| 11. Developer Experience Polish | 3/3            | Complete    | 2026-03-14 |
-| 12. Testing & Validation        | 0/?            | Not started | -          |
+| Phase                              | Plans Complete | Status      | Completed  |
+| ---------------------------------- | -------------- | ----------- | ---------- |
+| 1. Foundation Setup                | 2/2            | Complete    | ✅         |
+| 2. State Storage & Persistence     | 1/1            | Complete    | ✅         |
+| 3. Policy Engine                   | 2/2            | Complete    | ✅         |
+| 4. Usage Tracking Core             | 2/2            | Complete    | ✅         |
+| 5. Model Catalog & Selection       | 5/5            | Complete    | ✅         |
+| 6. Base Router Integration         | 3/3            | Complete    | 2026-03-13 |
+| 7. Integration & Error Handling    | 2/2            | Complete    | 2026-03-13 |
+| 8. Provider Policies Catalog       | 3/3            | Complete    | 2026-03-14 |
+| 9. Fallback & Budget Management    | 3/3            | Complete    | 2026-03-14 |
+| 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
+| 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
+| 12. Provider Overhaul & Validation | 0/?            | Not started | -          |
 
 ## v2.0 Progress Table
 

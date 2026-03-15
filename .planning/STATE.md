@@ -2,7 +2,7 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 12 (Testing & Validation)
+current_phase: Phase 12 (Provider Overhaul & Validation)
 status: not_started
 last_updated: '2026-03-14T20:17:49.260Z'
 progress:
@@ -16,18 +16,18 @@ progress:
 # Project State: PennyLLM
 
 **Last updated:** 2026-03-15
-**Current phase:** Phase 12 (Testing & Validation)
+**Current phase:** Phase 12 (Provider Overhaul & Validation)
 **Status:** Ready to plan
 
 ## Project Reference
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.
 
-**Current focus:** Phase 12 next (Testing & Validation). Phase 11 complete: debug mode, config validation, defineConfig, README, reference docs, troubleshooting. 11/12 phases done.
+**Current focus:** Phase 12 next (Provider Overhaul & Validation). Phase 11 complete. 11/12 v1 phases done. Provider audit (2026-03-15) revealed need to overhaul provider targets (12→7), fix broken fallback, add user-configured model chains. See `docs/providers/notes/` for intelligence and `memory/project_phase12_direction.md` for design decisions.
 
 ## Current Position
 
-**Phase:** 12 - Testing & Validation
+**Phase:** 12 - Provider Overhaul & Validation
 **Plan:** 0/? plans
 **Status:** Not started
 **Progress:** [░░░░░░░░░░] 0%
@@ -168,6 +168,10 @@ progress:
 - [ ] Empirically validate free tier limits
 - [ ] Document enforcement behaviors and reset timing
 
+### Roadmap Evolution
+
+- Phase 12.1 inserted after Phase 12: Provider Nuance Gap Analysis (INSERTED) — audit PennyLLM abstractions against real provider behavior (per-model limits, org-level ceilings, credit systems, etc.)
+
 ### Known Blockers
 
 **None currently.** Phase 1 has no external dependencies.
@@ -197,7 +201,7 @@ progress:
 
 ### What's Next
 
-- **Phase 12:** Testing & Validation — E2E tests, empirical limit validation, npm publishing
+- **Phase 12:** Provider Overhaul & Validation — E2E tests, empirical limit validation, npm publishing
 - This is the final phase before v1.0 release
 - **v2.0 milestone** defined in ROADMAP.md: 10 phases (13-22) covering registry, credits, CLI, advanced fallback, routing intelligence, extended providers, docs site, storage optimizations, admin UI, and enterprise features
 
