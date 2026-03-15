@@ -504,13 +504,12 @@ _(c) Missing capability:_
 
 ## v2.0 Progress Table
 
-| Phase                                   | Plans Complete | Status      | Completed |
-| --------------------------------------- | -------------- | ----------- | --------- |
-| 13. Remote Registry & Provider Metadata | 0/?            | Not started | -         |
-| 13. Credit-Based Limits                 | 0/?            | Not started | -         |
-| 14. Health Scoring & Circuit Breakers   | 0/?            | Not started | -         |
-| 15. CLI Validator                       | 0/?            | Not started | -         |
-| 16. Provider Data Registry              | 0/?            | Not started | -         |
+| Phase                                 | Plans Complete | Status      | Completed |
+| ------------------------------------- | -------------- | ----------- | --------- |
+| 13. Credit-Based Limits               | 0/?            | Not started | -         |
+| 14. Health Scoring & Circuit Breakers | 0/?            | Not started | -         |
+| 15. CLI Validator                     | 0/?            | Not started | -         |
+| 16. Provider Data Registry            | 0/?            | Not started | -         |
 
 ## v2.0 Dependency Graph
 
