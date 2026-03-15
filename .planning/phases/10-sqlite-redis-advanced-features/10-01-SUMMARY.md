@@ -33,7 +33,7 @@ key-files:
     - package-lock.json
 
 key-decisions:
-  - "Dynamic import of better-sqlite3 with LLMRouterError on missing peer dep"
+  - "Dynamic import of better-sqlite3 with PennyLLMError on missing peer dep"
   - "record_id column added to preserve original IDs from put() in get() round-trip"
   - "better-sqlite3 installed as dev dependency (peer dep for consumers)"
 

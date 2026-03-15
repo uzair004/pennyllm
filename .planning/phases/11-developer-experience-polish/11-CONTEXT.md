@@ -29,8 +29,8 @@ Requirements: CORE-02 (multiple keys config), DX-01 (minimal config), DX-06 (deb
 
 ### Debug Mode Design
 
-- **Activation:** Two ways — `createRouter({ debug: true })` config flag OR `DEBUG=llm-router:*` env var. Config flag is the primary, discoverable path.
-- **Output format:** Structured per-request summary. One clean line per routing decision: `[llm-router] google/gemini-2.0-flash → key#0 (priority, 847/1500 RPM used, 3 limits checked)`
+- **Activation:** Two ways — `createRouter({ debug: true })` config flag OR `DEBUG=pennyllm:*` env var. Config flag is the primary, discoverable path.
+- **Output format:** Structured per-request summary. One clean line per routing decision: `[pennyllm] google/gemini-2.0-flash → key#0 (priority, 847/1500 RPM used, 3 limits checked)`
 - **Scope:** Full routing pipeline — key selection + fallback triggers + budget checks + retry attempts. Shows the complete decision chain.
 - **Destination:** `console.log` to stdout. Separate from debug package's stderr output.
 - **Implementation:** Debug mode listens to Phase 10's typed observability hooks (onKeySelected, onFallbackTriggered, onBudgetAlert, etc.) and pretty-prints structured summaries. The debug package's raw output (stderr) remains available for low-level debugging.
@@ -51,7 +51,7 @@ Requirements: CORE-02 (multiple keys config), DX-01 (minimal config), DX-06 (deb
 - **Examples:** 3 code examples — 1) Minimal setup (one provider), 2) Multi-provider with budget, 3) Storage adapter (SQLite or Redis).
 - **How it works:** Detailed flow diagram (ASCII/mermaid) showing request → key selection → fallback → retry → provider pipeline.
 - **Providers:** All 12 provider names in a clean grid/list with logos/icons. Link to docs/providers/ for details.
-- **Comparison:** Brief table/bullets — llm-router vs manual management vs LiteLLM. Not adversarial.
+- **Comparison:** Brief table/bullets — pennyllm vs manual management vs LiteLLM. Not adversarial.
 - **Roadmap:** Link to GitHub milestones. No inline roadmap.
 - **License:** Badge only + LICENSE file. No separate section.
 - **CONTRIBUTING:** Light refresh of existing CONTRIBUTING.md to reflect current project structure and build commands.
@@ -84,7 +84,7 @@ Requirements: CORE-02 (multiple keys config), DX-01 (minimal config), DX-06 (deb
 
 ### Reusable Assets
 
-- `debug` package: 86 debug() calls across 17 files already wired with namespaced logging (llm-router:config, llm-router:storage, etc.)
+- `debug` package: 86 debug() calls across 17 files already wired with namespaced logging (pennyllm:config, pennyllm:storage, etc.)
 - EventEmitter: Already wired in createRouter with typed event payloads for all router events
 - 8 typed observability hooks: `router.onKeySelected()`, `router.onUsageRecorded()`, etc. — return unsubscribe functions (Phase 10)
 - Zod schema with `.default()`: All config fields except `providers` have sensible defaults
@@ -105,7 +105,7 @@ Requirements: CORE-02 (multiple keys config), DX-01 (minimal config), DX-06 (deb
 - `createRouter()` in src/config/index.ts — needs `debug` config option
 - `configSchema` in src/config/schema.ts — needs `debug: z.boolean().default(false)`
 - `Router` interface in src/config/index.ts — debug mode listener setup
-- README.md — currently empty (just `# llm-router`)
+- README.md — currently empty (just `# pennyllm`)
 - package.json — exports field has all 11 subpath entries
 - CONTRIBUTING.md — exists, needs light refresh
 

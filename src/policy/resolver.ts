@@ -5,7 +5,7 @@ import type { RouterConfig } from '../types/config.js';
 import type { Policy, PolicyLimit } from '../types/domain.js';
 import type { ResolvedPolicy } from './types.js';
 
-const log = debug('llm-router:policy:resolver');
+const log = debug('pennyllm:policy:resolver');
 
 /**
  * Merge limit arrays where later layers override earlier ones

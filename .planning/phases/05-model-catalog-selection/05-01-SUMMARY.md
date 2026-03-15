@@ -134,13 +134,13 @@ metrics:
 
 **src/errors/rate-limit-error.ts:**
 
-- Extends `LLMRouterError` with code `RATE_LIMITED`
+- Extends `PennyLLMError` with code `RATE_LIMITED`
 - Computes earliest recovery time from all rate-limited keys
 - Stores all key cooldown details in metadata
 
 **src/errors/quota-exhausted-error.ts:**
 
-- Extends `LLMRouterError` with code `QUOTA_EXHAUSTED`
+- Extends `PennyLLMError` with code `QUOTA_EXHAUSTED`
 - Computes next reset time from all exhausted keys
 - Stores all key quota details in metadata
 

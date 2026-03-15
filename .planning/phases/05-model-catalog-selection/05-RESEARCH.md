@@ -178,7 +178,7 @@ This phase addresses the following requirements from REQUIREMENTS.md:
 | Library        | Version  | Purpose            | Why Standard                                                                                  |
 | -------------- | -------- | ------------------ | --------------------------------------------------------------------------------------------- |
 | zod            | ^3.23.0  | Runtime validation | Already used for config validation. Handles safeParse() for skipping invalid array entries.   |
-| debug          | ^4.3.0   | Structured logging | Already used. Add namespaces: llm-router:catalog, llm-router:selection                        |
+| debug          | ^4.3.0   | Structured logging | Already used. Add namespaces: pennyllm:catalog, pennyllm:selection                            |
 | native fetch() | Node 18+ | HTTP requests      | Built-in since Node 18. No need for axios/node-fetch. Use AbortSignal.timeout() for timeouts. |
 
 ### No New Dependencies Required
@@ -614,7 +614,7 @@ Verified patterns from research:
 ```typescript
 // Source: AbortSignal.timeout() pattern
 async function fetchModelsDev(): Promise<ModelMetadata[]> {
-  const debug = createDebug('llm-router:catalog');
+  const debug = createDebug('pennyllm:catalog');
 
   try {
     const response = await fetch('https://models.dev/api.json', {

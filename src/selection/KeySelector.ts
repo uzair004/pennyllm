@@ -11,7 +11,7 @@ import { RoundRobinStrategy } from './strategies/round-robin.js';
 import { LeastUsedStrategy } from './strategies/least-used.js';
 import type { CandidateKey, SelectionContext, SelectionResult } from './types.js';
 
-const log = debug('llm-router:selection');
+const log = debug('pennyllm:selection');
 
 /**
  * KeySelector orchestrates key selection across strategies

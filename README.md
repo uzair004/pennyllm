@@ -1,15 +1,15 @@
-# llm-router
+# pennyllm
 
 **Stop paying for LLM API calls during development.**
 
-[![npm](https://img.shields.io/npm/v/llm-router)](https://www.npmjs.com/package/llm-router)
+[![npm](https://img.shields.io/npm/v/pennyllm)](https://www.npmjs.com/package/pennyllm)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Zero runtime dependencies beyond peer deps. Works with [Vercel AI SDK](https://sdk.vercel.ai/).
 
 ```typescript
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 import { generateText } from 'ai';
 
 const router = await createRouter({
@@ -40,7 +40,7 @@ const { text } = await generateText({ model, prompt: 'Hello!' });
 ## Installation
 
 ```bash
-npm install llm-router ai @ai-sdk/google
+npm install pennyllm ai @ai-sdk/google
 ```
 
 `ai` (Vercel AI SDK) is a peer dependency. Install provider SDKs for each provider you use:
@@ -64,7 +64,7 @@ Sign up at [Google AI Studio](https://aistudio.google.com/apikey) -- it takes 30
 ### 2. Create a router
 
 ```typescript
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 import { generateText } from 'ai';
 
 const router = await createRouter({
@@ -95,7 +95,7 @@ Request ──> Router ──> Key Selection ──> [Fallback Chain] ──> Pr
                +── Usage Tracking ──+── Retry Proxy ──+
 ```
 
-llm-router wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently manage API keys. It checks quotas, selects the best available key, handles rate limits with automatic retry and key rotation, and falls back to alternative providers when all keys are exhausted.
+pennyllm wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently manage API keys. It checks quotas, selects the best available key, handles rate limits with automatic retry and key rotation, and falls back to alternative providers when all keys are exhausted.
 
 **Key concepts:**
 
@@ -109,7 +109,7 @@ llm-router wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently mana
 ### Minimal (single provider)
 
 ```typescript
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 
 const router = await createRouter({
   providers: {
@@ -123,7 +123,7 @@ All configuration fields besides `providers` have sensible defaults. That's all 
 ### Multi-provider with budget
 
 ```typescript
-import { createRouter, defineConfig } from 'llm-router';
+import { createRouter, defineConfig } from 'pennyllm';
 
 const config = defineConfig({
   providers: {
@@ -148,8 +148,8 @@ const router = await createRouter(config);
 By default, usage data lives in memory and resets when your process restarts. For persistence across restarts, use a storage adapter:
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { SqliteStorage } from 'llm-router/sqlite';
+import { createRouter } from 'pennyllm';
+import { SqliteStorage } from 'pennyllm/sqlite';
 
 const router = await createRouter(
   {
@@ -169,14 +169,14 @@ Usage data persists in `usage.db` -- key rotation decisions survive process rest
 ### Config file (YAML/JSON)
 
 ```typescript
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 
 const router = await createRouter('./router.config.yaml');
 ```
 
 ## Providers
 
-llm-router supports 12 providers out of the box. Each provider has a detailed setup guide with free tier limits, key acquisition steps, and configuration examples.
+pennyllm supports 12 providers out of the box. Each provider has a detailed setup guide with free tier limits, key acquisition steps, and configuration examples.
 
 | Provider              | Package               | Guide                                                          |
 | --------------------- | --------------------- | -------------------------------------------------------------- |
@@ -211,16 +211,16 @@ const router = await createRouter({
 ### Enable via environment variable
 
 ```bash
-DEBUG=llm-router:* node app.js
+DEBUG=pennyllm:* node app.js
 ```
 
 ### Example output
 
 ```
-[llm-router:key-selected]     google/gemini-2.0-flash -> key#0 (priority)
-[llm-router:usage-recorded]   google key#0: +1247 tokens (847/1500 RPM)
-[llm-router:fallback]         google exhausted -> groq/llama-3.3-70b (quality-match)
-[llm-router:budget-alert]     $3.47 / $5.00 monthly (69%)
+[pennyllm:key-selected]     google/gemini-2.0-flash -> key#0 (priority)
+[pennyllm:usage-recorded]   google key#0: +1247 tokens (847/1500 RPM)
+[pennyllm:fallback]         google exhausted -> groq/llama-3.3-70b (quality-match)
+[pennyllm:budget-alert]     $3.47 / $5.00 monthly (69%)
 ```
 
 Debug mode subscribes to the router's typed observability hooks and prints structured summaries to stdout. The `debug` npm package's low-level output (stderr) remains available separately.
@@ -232,7 +232,7 @@ Debug mode subscribes to the router's typed observability hooks and prints struc
 In-memory storage. Usage data resets when the process exits. Good for development and short-lived scripts.
 
 ```typescript
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 
 // MemoryStorage is the default -- no configuration needed
 const router = await createRouter({
@@ -249,8 +249,8 @@ npm install better-sqlite3
 ```
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { SqliteStorage } from 'llm-router/sqlite';
+import { createRouter } from 'pennyllm';
+import { SqliteStorage } from 'pennyllm/sqlite';
 
 const router = await createRouter(config, {
   storage: new SqliteStorage({ path: './usage.db' }),
@@ -266,8 +266,8 @@ npm install ioredis
 ```
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { RedisStorage } from 'llm-router/redis';
+import { createRouter } from 'pennyllm';
+import { RedisStorage } from 'pennyllm/redis';
 
 const router = await createRouter(config, {
   storage: new RedisStorage({ url: 'redis://localhost:6379' }),
@@ -317,7 +317,7 @@ You can also use the raw `router.on(event, handler)` / `router.off(event, handle
 
 ## Comparison
 
-| Feature              | llm-router                       | Manual Key Management | LiteLLM           |
+| Feature              | pennyllm                         | Manual Key Management | LiteLLM           |
 | -------------------- | -------------------------------- | --------------------- | ----------------- |
 | Language             | TypeScript                       | Any                   | Python            |
 | Setup                | `npm install`                    | DIY                   | Docker + Postgres |
@@ -328,7 +328,7 @@ You can also use the raw `router.on(event, handler)` / `router.off(event, handle
 | AI SDK integration   | Native                           | None                  | Proxy             |
 | Runtime dependencies | 3 (zod, debug, @ai-sdk/provider) | 0                     | 100+              |
 
-**llm-router** is purpose-built for TypeScript developers using the Vercel AI SDK who want to maximize free tier usage across multiple providers. If you're building in Python or need a universal proxy, LiteLLM is the better choice.
+**pennyllm** is purpose-built for TypeScript developers using the Vercel AI SDK who want to maximize free tier usage across multiple providers. If you're building in Python or need a universal proxy, LiteLLM is the better choice.
 
 ## API Reference
 
@@ -354,11 +354,11 @@ You can also use the raw `router.on(event, handler)` / `router.off(event, handle
 
 ### Storage Adapters
 
-| Export          | Import Path           |
-| --------------- | --------------------- |
-| `MemoryStorage` | `'llm-router'`        |
-| `SqliteStorage` | `'llm-router/sqlite'` |
-| `RedisStorage`  | `'llm-router/redis'`  |
+| Export          | Import Path         |
+| --------------- | ------------------- |
+| `MemoryStorage` | `'pennyllm'`        |
+| `SqliteStorage` | `'pennyllm/sqlite'` |
+| `RedisStorage`  | `'pennyllm/redis'`  |
 
 ### Policy Helpers
 
@@ -368,7 +368,7 @@ You can also use the raw `router.on(event, handler)` / `router.off(event, handle
 | `createRateLimit(max, window)`  | Create a rate limit (requests/window) |
 | `createCallLimit(max, window)`  | Create a call count limit             |
 
-All types are exported from `llm-router` and `llm-router/types`.
+All types are exported from `pennyllm` and `pennyllm/types`.
 
 ## Contributing
 

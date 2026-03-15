@@ -27,8 +27,8 @@ The codebase already has 86 `debug()` calls across 17 files using the `debug` np
 - **Code examples:** Illustrative TypeScript snippets in docs. No runnable examples/ directory.
 - **No CHANGELOG** -- rely on git history and GitHub releases.
 - **No migration guide** for v1.
-- **Debug mode activation:** `createRouter({ debug: true })` config flag OR `DEBUG=llm-router:*` env var. Config flag is the primary path.
-- **Debug output format:** Structured per-request summary. One clean line per routing decision: `[llm-router] google/gemini-2.0-flash -> key#0 (priority, 847/1500 RPM used, 3 limits checked)`
+- **Debug mode activation:** `createRouter({ debug: true })` config flag OR `DEBUG=pennyllm:*` env var. Config flag is the primary path.
+- **Debug output format:** Structured per-request summary. One clean line per routing decision: `[pennyllm] google/gemini-2.0-flash -> key#0 (priority, 847/1500 RPM used, 3 limits checked)`
 - **Debug scope:** Full routing pipeline -- key selection + fallback triggers + budget checks + retry attempts.
 - **Debug destination:** `console.log` to stdout. Separate from debug package's stderr.
 - **Debug implementation:** Listens to Phase 10's typed observability hooks and pretty-prints structured summaries.
@@ -43,7 +43,7 @@ The codebase already has 86 `debug()` calls across 17 files using the `debug` np
 - **README examples:** 3 code examples -- minimal, multi-provider+budget, storage adapter.
 - **README how it works:** Flow diagram (ASCII/mermaid).
 - **README providers:** All 12 in clean grid/list with link to docs/providers/.
-- **README comparison:** Brief table -- llm-router vs manual vs LiteLLM.
+- **README comparison:** Brief table -- pennyllm vs manual vs LiteLLM.
 - **CONTRIBUTING:** Light refresh of existing file.
 
 ### Claude's Discretion
@@ -131,7 +131,7 @@ CONTRIBUTING.md        # UPDATE: Refresh for current project
 ### Pattern 1: Debug Mode via Hook Subscription
 
 **What:** Debug mode subscribes to the existing typed observability hooks from Phase 10 and formats structured log lines to stdout.
-**When to use:** When `debug: true` is set in config or `DEBUG=llm-router:*` env var is detected.
+**When to use:** When `debug: true` is set in config or `DEBUG=pennyllm:*` env var is detected.
 **Example:**
 
 ```typescript
@@ -146,14 +146,14 @@ export class DebugLogger {
       this.router.onKeySelected((event) => {
         const label = event.label ? ` (${event.label})` : '';
         console.log(
-          `[llm-router] ${event.provider}/${event.model ?? '?'} -> key#${event.keyIndex}${label} (${event.strategy}, ${event.reason})`,
+          `[pennyllm] ${event.provider}/${event.model ?? '?'} -> key#${event.keyIndex}${label} (${event.strategy}, ${event.reason})`,
         );
       }),
     );
     this.unsubscribers.push(
       this.router.onFallbackTriggered((event) => {
         console.log(
-          `[llm-router] fallback: ${event.fromProvider} -> ${event.toProvider} (${event.reason})`,
+          `[pennyllm] fallback: ${event.fromProvider} -> ${event.toProvider} (${event.reason})`,
         );
       }),
     );
@@ -236,7 +236,7 @@ export function defineConfig(config: TypedConfigInput): ConfigInput {
 - **Auto-generating docs from Zod schema:** Produces unreadable output. Hand-written is the locked decision.
 - **Adding debug mode as middleware:** Debug mode observes events, it does not intercept the request pipeline. Keep it read-only.
 - **Blocking on debug output:** Debug logging must never slow down routing. Use synchronous `console.log` (already synchronous in Node.js) after event emission.
-- **Color libraries for debug output:** Avoid adding `chalk` or `picocolors`. The `debug` package already handles colors on stderr. For stdout debug lines, plain text with `[llm-router]` prefix is sufficient and works in all environments (CI, piped output, etc.).
+- **Color libraries for debug output:** Avoid adding `chalk` or `picocolors`. The `debug` package already handles colors on stderr. For stdout debug lines, plain text with `[pennyllm]` prefix is sufficient and works in all environments (CI, piped output, etc.).
 - **Validating API key format:** Keys differ across providers. Only validate non-empty strings. Bad keys fail at runtime with clear errors from the provider.
 
 ## Don't Hand-Roll
@@ -262,7 +262,7 @@ export function defineConfig(config: TypedConfigInput): ConfigInput {
 
 **What goes wrong:** Users forget to disable debug mode and it pollutes production stdout.
 **Why it happens:** `debug: true` in config is persistent.
-**How to avoid:** Default is `false` in Zod schema. The `DEBUG=llm-router:*` env var path is better for dev environments (not committed to config). Document both paths clearly with guidance on when to use which.
+**How to avoid:** Default is `false` in Zod schema. The `DEBUG=pennyllm:*` env var path is better for dev environments (not committed to config). Document both paths clearly with guidance on when to use which.
 **Warning signs:** Users reporting unexpected stdout output.
 
 ### Pitfall 2: Config Schema `.strict()` Rejecting Unknown Provider Names
@@ -283,8 +283,8 @@ export function defineConfig(config: TypedConfigInput): ConfigInput {
 
 **What goes wrong:** Documentation shows API shapes that differ from the actual implementation.
 **Why it happens:** Copy-paste errors, assumptions about API, not verifying against actual types.
-**How to avoid:** Every code example in README/docs should be type-checkable against actual exports. Use the real import paths (`llm-router`, `llm-router/types`, etc.). Cross-reference with `src/index.ts` exports.
-**Warning signs:** Users reporting "X is not exported from llm-router".
+**How to avoid:** Every code example in README/docs should be type-checkable against actual exports. Use the real import paths (`pennyllm`, `pennyllm/types`, etc.). Cross-reference with `src/index.ts` exports.
+**Warning signs:** Users reporting "X is not exported from pennyllm".
 
 ### Pitfall 5: Mermaid Diagrams Not Rendering on npm
 
@@ -309,7 +309,7 @@ export function defineConfig(config: TypedConfigInput): ConfigInput {
 // Source: Project pattern (hook subscription)
 
 // Check for debug mode: config flag or DEBUG env var
-const shouldDebug = config.debug || /llm-router/.test(process.env.DEBUG ?? '');
+const shouldDebug = config.debug || /pennyllm/.test(process.env.DEBUG ?? '');
 
 if (shouldDebug) {
   const debugLogger = new DebugLogger();
@@ -345,7 +345,7 @@ try {
 ```typescript
 // Source: Actual schema defaults from src/config/schema.ts
 // This ALREADY works today. Phase 11 documents it.
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 
 const router = await createRouter({
   providers: {
@@ -362,7 +362,7 @@ const model = await router.wrapModel('google/gemini-2.0-flash');
 
 ```typescript
 // Source: Actual schema from src/config/schema.ts - keys accepts array
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 
 const router = await createRouter({
   providers: {
@@ -380,7 +380,7 @@ const router = await createRouter({
 
 ```typescript
 // Source: TypeScript open-ended union pattern
-import { defineConfig } from 'llm-router';
+import { defineConfig } from 'pennyllm';
 
 // IDE autocompletes 'google', 'groq', 'openrouter', etc.
 // Custom providers like 'my-custom' also accepted
@@ -418,7 +418,7 @@ const config = defineConfig({
 2. **Debug output color support**
    - What we know: `console.log` to stdout is plain text. The `debug` package on stderr handles colors.
    - What's unclear: Whether to add color support to debug mode stdout output.
-   - Recommendation: No colors in debug mode. Plain text with `[llm-router]` prefix. Works in all environments. Users who want colored output can use `DEBUG=llm-router:*` which already has colors via the `debug` package.
+   - Recommendation: No colors in debug mode. Plain text with `[pennyllm]` prefix. Works in all environments. Users who want colored output can use `DEBUG=pennyllm:*` which already has colors via the `debug` package.
 
 3. **Levenshtein threshold value**
    - What we know: A threshold of 2 catches most typos (googel->google, groc->groq).

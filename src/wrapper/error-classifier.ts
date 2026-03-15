@@ -147,8 +147,8 @@ export function shouldRetry(classified: ClassifiedError, triedKeys: Set<number>)
 // ── buildFinalError ────────────────────────────────────────────────
 
 /**
- * Build the appropriate LLMRouterError subclass for a classified error.
- * Always returns LLMRouterError subclass (never APICallError) to prevent
+ * Build the appropriate PennyLLMError subclass for a classified error.
+ * Always returns PennyLLMError subclass (never APICallError) to prevent
  * double-retry with the AI SDK's own retry mechanism.
  */
 export function buildFinalError(

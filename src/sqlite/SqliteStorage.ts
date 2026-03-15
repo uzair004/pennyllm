@@ -4,7 +4,7 @@ import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import type { StorageBackend, StructuredUsage } from '../types/interfaces.js';
 import type { TimeWindow, UsageRecord } from '../types/domain.js';
-import { LLMRouterError } from '../errors/base.js';
+import { PennyLLMError } from '../errors/base.js';
 import { getPeriodKey } from '../usage/periods.js';
 import { getDefaultDbPath } from './paths.js';
 import { migrate } from './migrations.js';
@@ -12,7 +12,7 @@ import { migrate } from './migrations.js';
 type Database = BetterSqlite3.Database;
 type Statement = BetterSqlite3.Statement;
 
-const debug = debugFactory('llm-router:sqlite');
+const debug = debugFactory('pennyllm:sqlite');
 
 /**
  * Duration constants for reconstructing TimeWindow from stored window_type
@@ -81,7 +81,7 @@ export class SqliteStorage implements StorageBackend {
       const mod = await import('better-sqlite3');
       Sqlite3Constructor = mod.default;
     } catch {
-      throw new LLMRouterError(
+      throw new PennyLLMError(
         'better-sqlite3 is required for SqliteStorage. Install it: npm install better-sqlite3',
         { code: 'MISSING_PEER_DEPENDENCY' },
       );
@@ -156,7 +156,7 @@ export class SqliteStorage implements StorageBackend {
 
   private ensureOpen(): void {
     if (this.closed) {
-      throw new LLMRouterError('Storage backend is closed', { code: 'STORAGE_CLOSED' });
+      throw new PennyLLMError('Storage backend is closed', { code: 'STORAGE_CLOSED' });
     }
   }
 
@@ -187,7 +187,7 @@ export class SqliteStorage implements StorageBackend {
   private windowFromType(windowType: string): TimeWindow {
     const durationMs = DURATION_MAP[windowType];
     if (durationMs === undefined) {
-      throw new LLMRouterError(`Unknown window type in database: ${windowType}`, {
+      throw new PennyLLMError(`Unknown window type in database: ${windowType}`, {
         code: 'INVALID_WINDOW_TYPE',
       });
     }

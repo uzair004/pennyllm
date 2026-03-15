@@ -41,9 +41,9 @@
 ## Configuration
 
 ```typescript
-import { createRateLimit } from 'llm-router/policy';
+import { createRateLimit } from 'pennyllm/policy';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import type { NvidiaProviderConfig } from 'llm-router/types';
+import type { NvidiaProviderConfig } from 'pennyllm/types';
 
 // Set up the OpenAI-compatible provider for NVIDIA NIM
 const nvidiaProvider = createOpenAICompatible({

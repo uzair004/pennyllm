@@ -15,6 +15,7 @@
 LiteLLM has two deployment modes:
 
 ### Python SDK (Library Mode)
+
 - Install: `pip install litellm`
 - Import directly: `from litellm import completion` or `from litellm import Router`
 - Zero infrastructure required (no Postgres, no Redis, no Docker)
@@ -23,6 +24,7 @@ LiteLLM has two deployment modes:
 - Best for: solo devs, small teams, prototyping
 
 ### Proxy Server Mode (AI Gateway)
+
 - Runs as a standalone HTTP server (FastAPI-based)
 - Exposes OpenAI-compatible REST endpoints
 - Deployment: Docker, Kubernetes, Helm, or CLI (`litellm --config config.yaml`)
@@ -31,6 +33,7 @@ LiteLLM has two deployment modes:
 - Best for: centralized team management, production deployments
 
 ### Minimal Deployment
+
 - **Absolute minimum:** `pip install litellm` + one `completion()` call in Python
 - **Proxy minimum:** `litellm --model gpt-3.5-turbo` (single command, no config file)
 - **Proxy with config:** `litellm --config config.yaml` (YAML file defining models)
@@ -43,12 +46,14 @@ LiteLLM has two deployment modes:
 ## 2. Provider Support and Free Tiers
 
 ### Total Provider Count
+
 - **140+ providers** supported
 - **2,600+ models** cataloged with pricing, context windows, and features
 - Full provider list: https://docs.litellm.ai/docs/providers
 - Model catalog: https://models.litellm.ai/
 
 ### Supported Providers (Partial List)
+
 Major cloud: OpenAI, Azure OpenAI, Azure AI, Google Vertex AI, Google AI Studio, Anthropic, AWS Bedrock, AWS Sagemaker
 AI/ML platforms: Anyscale, Cohere, Mistral AI, Together AI, Groq, DeepInfra, Fireworks AI, HuggingFace, Replicate
 Specialized: AI21, Aleph Alpha, Cerebras, DeepSeek, FriendliAI, Meta Llama, Perplexity AI, xAI
@@ -58,23 +63,23 @@ Additional: Baseten, Clarifai, Cloudflare Workers AI, GitHub Models, Lambda AI, 
 
 ### Free Tier Providers (LiteLLM-Compatible)
 
-| Provider | Free Tier Limits | Models | LiteLLM Support |
-|----------|-----------------|--------|-----------------|
-| **Google AI Studio (Gemini)** | ~1M tokens/min on Gemini 2.5 Flash; free on most Gemini models (2.5 Flash, Flash-Lite, 2.0 Flash) | Gemini 2.5 Flash, 2.0 Flash, Flash-Lite, Gemma | Yes |
-| **Groq** | 1,000-14,400 req/day (varies by model), 6,000 tokens/min | Llama 3.3 70B, Mixtral, Gemma | Yes |
-| **Mistral AI** | 1 billion tokens/month, 1 req/sec, 500K tokens/min per model | Mistral models, Codestral | Yes |
-| **OpenRouter** | 20 req/min, 200 req/day (free tier); 27+ free models | Various (GPT, Claude, Llama, etc.) | Yes |
-| **Cloudflare Workers AI** | 10,000 neurons/day | Various open-source models | Yes |
-| **HuggingFace Inference** | Models <10GB, rate limited | Open-source models | Yes |
-| **xAI (Grok)** | Free tier via Grok 4.1 Fast | Grok models | Yes |
-| **Cohere** | 20 req/min, 1,000 req/month | Command models | Yes |
-| **DeepSeek** | Free tier available | DeepSeek R1, V3 | Yes |
-| **Together AI** | Generous free tier / trial credits | Open-source models | Yes |
-| **Cerebras** | Free beta, 8K context limit | Open-source models (fast inference) | Yes |
-| **NVIDIA NIM** | 40 req/min (phone verification required) | Various open models | Yes |
-| **GitHub Models** | Free tier available | Various models | Yes |
-| **Fireworks AI** | $1 trial credit | Open-source models | Yes |
-| **Nebius** | $1 trial credit | Various models | Yes |
+| Provider                      | Free Tier Limits                                                                                  | Models                                         | LiteLLM Support |
+| ----------------------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------- | --------------- |
+| **Google AI Studio (Gemini)** | ~1M tokens/min on Gemini 2.5 Flash; free on most Gemini models (2.5 Flash, Flash-Lite, 2.0 Flash) | Gemini 2.5 Flash, 2.0 Flash, Flash-Lite, Gemma | Yes             |
+| **Groq**                      | 1,000-14,400 req/day (varies by model), 6,000 tokens/min                                          | Llama 3.3 70B, Mixtral, Gemma                  | Yes             |
+| **Mistral AI**                | 1 billion tokens/month, 1 req/sec, 500K tokens/min per model                                      | Mistral models, Codestral                      | Yes             |
+| **OpenRouter**                | 20 req/min, 200 req/day (free tier); 27+ free models                                              | Various (GPT, Claude, Llama, etc.)             | Yes             |
+| **Cloudflare Workers AI**     | 10,000 neurons/day                                                                                | Various open-source models                     | Yes             |
+| **HuggingFace Inference**     | Models <10GB, rate limited                                                                        | Open-source models                             | Yes             |
+| **xAI (Grok)**                | Free tier via Grok 4.1 Fast                                                                       | Grok models                                    | Yes             |
+| **Cohere**                    | 20 req/min, 1,000 req/month                                                                       | Command models                                 | Yes             |
+| **DeepSeek**                  | Free tier available                                                                               | DeepSeek R1, V3                                | Yes             |
+| **Together AI**               | Generous free tier / trial credits                                                                | Open-source models                             | Yes             |
+| **Cerebras**                  | Free beta, 8K context limit                                                                       | Open-source models (fast inference)            | Yes             |
+| **NVIDIA NIM**                | 40 req/min (phone verification required)                                                          | Various open models                            | Yes             |
+| **GitHub Models**             | Free tier available                                                                               | Various models                                 | Yes             |
+| **Fireworks AI**              | $1 trial credit                                                                                   | Open-source models                             | Yes             |
+| **Nebius**                    | $1 trial credit                                                                                   | Various models                                 | Yes             |
 
 **Total free tier providers compatible with LiteLLM: 15+ confirmed**
 
@@ -159,15 +164,16 @@ router_settings:
 
 ### Routing Strategies
 
-| Strategy | Description | Use Case |
-|----------|-------------|----------|
+| Strategy                     | Description                                  | Use Case                  |
+| ---------------------------- | -------------------------------------------- | ------------------------- |
 | **simple-shuffle** (default) | Random selection, weighted by RPM/TPM if set | General load distribution |
-| **usage-based-routing** | Picks based on RPM/TPM headroom | Respect rate limits |
-| **least-busy** | Fewest active in-flight requests | Real-time load balancing |
-| **lowest-cost** | Uses pricing database to pick cheapest | Cost minimization |
-| **latency-based** | Picks deployment with lowest response time | Speed optimization |
+| **usage-based-routing**      | Picks based on RPM/TPM headroom              | Respect rate limits       |
+| **least-busy**               | Fewest active in-flight requests             | Real-time load balancing  |
+| **lowest-cost**              | Uses pricing database to pick cheapest       | Cost minimization         |
+| **latency-based**            | Picks deployment with lowest response time   | Speed optimization        |
 
 ### Advanced Features
+
 - **Priority ordering:** `order` parameter (lower = higher priority); requires `enable_pre_call_checks=True`
 - **Weighted distribution:** `weight` parameter for biased selection
 - **Cooldown mechanism:** After `allowed_fails` failures per minute, deployment is cooled down for `cooldown_time` seconds; auto-recovers after cooldown expires
@@ -181,12 +187,14 @@ router_settings:
 **Answer: Yes, with detailed granularity -- but full tracking requires the Proxy Server + PostgreSQL.**
 
 ### SDK Mode (Library)
+
 - Basic token counting from provider responses
 - No persistent cost tracking (in-memory only)
 - No per-key spend attribution
 - You must implement your own tracking layer
 
 ### Proxy Server Mode (Full Tracking)
+
 - **Per API Key:** spend, prompt_tokens, completion_tokens, total_tokens, api_requests
 - **Per Provider:** broken down by provider (openai, azure_ai, google, etc.)
 - **Per Model:** per-model cost tracking
@@ -196,17 +204,20 @@ router_settings:
 - **Daily Activity:** `/user/daily/activity` endpoint provides daily breakdowns by models, providers, and API keys
 
 ### Pricing Data
+
 - Maintains pricing database for 2,600+ models
 - Automatically applies correct cost per token based on model
 - Supports custom pricing (set `input_cost_per_token` and `output_cost_per_token` to 0 for free models)
 - Provider-specific tier pricing (Vertex AI PayGo, Bedrock service tiers)
 
 ### Budget Enforcement
+
 - Maximum budgets per key, per user, per team
 - Automatic enforcement (requests blocked when budget exceeded)
 - Budget reset functionality (`/global/spend/reset`)
 
 ### Requirements for Full Tracking
+
 - PostgreSQL database (required)
 - LiteLLM Proxy Server running (required)
 - UI dashboard available at `/ui` for visual spend analysis
@@ -219,14 +230,15 @@ router_settings:
 
 ### Fallback Types
 
-| Type | Trigger | Example |
-|------|---------|---------|
-| **General fallbacks** (`fallbacks`) | Any error (rate limit, server error, etc.) | GPT-4 fails -> try Claude |
-| **Context window fallbacks** (`context_window_fallbacks`) | `ContextWindowExceededError` | GPT-3.5 -> GPT-3.5-16k |
-| **Content policy fallbacks** (`content_policy_fallbacks`) | `ContentPolicyViolationError` | Azure OpenAI -> Anthropic |
-| **Default fallbacks** (`default_fallbacks`) | Misconfigured model group | Any model -> default model |
+| Type                                                      | Trigger                                    | Example                    |
+| --------------------------------------------------------- | ------------------------------------------ | -------------------------- |
+| **General fallbacks** (`fallbacks`)                       | Any error (rate limit, server error, etc.) | GPT-4 fails -> try Claude  |
+| **Context window fallbacks** (`context_window_fallbacks`) | `ContextWindowExceededError`               | GPT-3.5 -> GPT-3.5-16k     |
+| **Content policy fallbacks** (`content_policy_fallbacks`) | `ContentPolicyViolationError`              | Azure OpenAI -> Anthropic  |
+| **Default fallbacks** (`default_fallbacks`)               | Misconfigured model group                  | Any model -> default model |
 
 ### Fallback Flow
+
 1. Request sent to primary deployment
 2. On failure: retry with exponential backoff (up to `num_retries`)
 3. After retries exhausted: try other deployments in same model group
@@ -252,13 +264,14 @@ router = Router(
 ```yaml
 router_settings:
   fallbacks:
-    - gemini-flash: ["groq-llama", "mistral-small"]
+    - gemini-flash: ['groq-llama', 'mistral-small']
   context_window_fallbacks:
     - gpt-3.5-turbo: gpt-3.5-turbo-16k
   num_retries: 3
 ```
 
 ### Fallback Management API (Proxy)
+
 - `POST /fallback/create` -- add fallback models
 - `GET /fallback/list` -- retrieve current configuration
 - `DELETE /fallback/delete` -- remove fallback models
@@ -270,40 +283,42 @@ router_settings:
 
 ### Python SDK (Library Mode)
 
-| Dependency | Required? | Purpose |
-|------------|-----------|---------|
-| Python 3.9+ | Required | Runtime |
-| `litellm` PyPI package | Required | Core library |
-| PostgreSQL | **Not needed** | N/A in SDK mode |
-| Redis | **Not needed** | N/A in SDK mode |
-| Docker | **Not needed** | N/A in SDK mode |
+| Dependency             | Required?      | Purpose         |
+| ---------------------- | -------------- | --------------- |
+| Python 3.9+            | Required       | Runtime         |
+| `litellm` PyPI package | Required       | Core library    |
+| PostgreSQL             | **Not needed** | N/A in SDK mode |
+| Redis                  | **Not needed** | N/A in SDK mode |
+| Docker                 | **Not needed** | N/A in SDK mode |
 
 The SDK is lightweight with minimal Python dependencies. No external infrastructure needed.
 
 ### Proxy Server (Minimal)
 
-| Dependency | Required? | Purpose |
-|------------|-----------|---------|
-| Python 3.9+ or Docker | Required | Runtime |
-| YAML config file | Required | Model/routing configuration |
-| `LITELLM_MASTER_KEY` | Required | Admin authentication |
+| Dependency            | Required? | Purpose                     |
+| --------------------- | --------- | --------------------------- |
+| Python 3.9+ or Docker | Required  | Runtime                     |
+| YAML config file      | Required  | Model/routing configuration |
+| `LITELLM_MASTER_KEY`  | Required  | Admin authentication        |
 
 ### Proxy Server (Production)
 
-| Dependency | Required? | Purpose |
-|------------|-----------|---------|
-| PostgreSQL | **Required** | Virtual keys, budgets, teams, spend logs, persistent config |
-| Redis | **Optional** (recommended) | Distributed rate limiting, caching, multi-instance coordination, DB deadlock prevention |
-| Docker/K8s | Recommended | Container deployment |
-| Prometheus | Optional | Metrics export |
+| Dependency | Required?                  | Purpose                                                                                 |
+| ---------- | -------------------------- | --------------------------------------------------------------------------------------- |
+| PostgreSQL | **Required**               | Virtual keys, budgets, teams, spend logs, persistent config                             |
+| Redis      | **Optional** (recommended) | Distributed rate limiting, caching, multi-instance coordination, DB deadlock prevention |
+| Docker/K8s | Recommended                | Container deployment                                                                    |
+| Prometheus | Optional                   | Metrics export                                                                          |
 
 ### When Redis Becomes Important
+
 - Multi-instance deployments (load balancing across LiteLLM containers)
 - 10+ instances (prevents PostgreSQL deadlocks by using Redis queue)
 - Caching (reduce API costs and improve response times)
 - High-RPS scenarios (500+ req/sec)
 
 ### Infrastructure Cost Estimate (Production)
+
 - Typical mid-sized deployment: $200-$500/month on AWS for 1-5M requests/month
 - Plus 2-4 weeks initial setup time
 
@@ -321,11 +336,11 @@ import OpenAI from 'openai';
 // Point OpenAI SDK at LiteLLM proxy
 const client = new OpenAI({
   apiKey: 'sk-litellm-master-key',
-  baseURL: 'http://localhost:4000',  // LiteLLM proxy
+  baseURL: 'http://localhost:4000', // LiteLLM proxy
 });
 
 const response = await client.chat.completions.create({
-  model: 'gemini-flash',  // model alias configured in LiteLLM
+  model: 'gemini-flash', // model alias configured in LiteLLM
   messages: [{ role: 'user', content: 'Hello!' }],
 });
 ```
@@ -361,6 +376,7 @@ const response = await completion({
 | DeepInfra | Yes | No | No |
 
 **Missing features (vs Python LiteLLM):**
+
 - NO Router / load balancing / key rotation
 - NO caching
 - NO proxy
@@ -400,24 +416,24 @@ Our use case: **Lightweight TypeScript npm package for free tier API key rotatio
 
 ### Critical Blockers
 
-| Limitation | Impact | Severity |
-|-----------|--------|----------|
-| **Python-only SDK** | Cannot import as TypeScript library; must run proxy server | BLOCKER |
-| **Proxy requires infrastructure** | PostgreSQL + Redis for full features defeats "lightweight" goal | BLOCKER |
-| **No native TS/JS SDK** | Community port is abandoned, missing all key features | BLOCKER |
-| **Heavy runtime overhead** | 200-400MB RAM for proxy; Python GIL limits concurrency | HIGH |
-| **Operational complexity** | Users must deploy and maintain a Python proxy server | HIGH |
+| Limitation                        | Impact                                                          | Severity |
+| --------------------------------- | --------------------------------------------------------------- | -------- |
+| **Python-only SDK**               | Cannot import as TypeScript library; must run proxy server      | BLOCKER  |
+| **Proxy requires infrastructure** | PostgreSQL + Redis for full features defeats "lightweight" goal | BLOCKER  |
+| **No native TS/JS SDK**           | Community port is abandoned, missing all key features           | BLOCKER  |
+| **Heavy runtime overhead**        | 200-400MB RAM for proxy; Python GIL limits concurrency          | HIGH     |
+| **Operational complexity**        | Users must deploy and maintain a Python proxy server            | HIGH     |
 
 ### Significant Drawbacks
 
-| Limitation | Impact | Severity |
-|-----------|--------|----------|
-| **No free-tier-specific tracking** | LiteLLM tracks spend in dollars, not free tier quotas per provider | MEDIUM |
-| **No multi-window time tracking** | No per-minute + daily + monthly combined limit tracking | MEDIUM |
-| **No policy engine for free tiers** | No concept of "this key has X tokens/month free" with enforcement | MEDIUM |
-| **GIL performance degradation** | Python's Global Interpreter Lock limits high-concurrency scenarios | MEDIUM |
-| **DB scaling issues** | Logging slows after 1M+ logs (reached in ~10 days at 100K req/day) | MEDIUM |
-| **Enterprise features paywalled** | SSO, RBAC, team budgets behind paid Enterprise license | LOW (not needed) |
+| Limitation                          | Impact                                                             | Severity         |
+| ----------------------------------- | ------------------------------------------------------------------ | ---------------- |
+| **No free-tier-specific tracking**  | LiteLLM tracks spend in dollars, not free tier quotas per provider | MEDIUM           |
+| **No multi-window time tracking**   | No per-minute + daily + monthly combined limit tracking            | MEDIUM           |
+| **No policy engine for free tiers** | No concept of "this key has X tokens/month free" with enforcement  | MEDIUM           |
+| **GIL performance degradation**     | Python's Global Interpreter Lock limits high-concurrency scenarios | MEDIUM           |
+| **DB scaling issues**               | Logging slows after 1M+ logs (reached in ~10 days at 100K req/day) | MEDIUM           |
+| **Enterprise features paywalled**   | SSO, RBAC, team budgets behind paid Enterprise license             | LOW (not needed) |
 
 ### What LiteLLM Does Well (But We Don't Need via Proxy)
 
@@ -431,15 +447,15 @@ Our use case: **Lightweight TypeScript npm package for free tier API key rotatio
 
 LiteLLM is designed as a **Python AI gateway for teams managing LLM spend at scale**. Our project is a **TypeScript npm package for individual developers maximizing free tiers**. These are fundamentally different products:
 
-| Aspect | LiteLLM | Our Project |
-|--------|---------|-------------|
-| Language | Python | TypeScript |
-| Deployment | Server/proxy | Library (in-process) |
-| Target | Teams, enterprise | Individual devs |
-| Cost model | Dollar-based budgets | Free tier quota tracking |
-| Infrastructure | Postgres + Redis | SQLite (zero infra) |
-| Tracking | Spend per key/team | Free quota remaining per key/window |
-| Overhead | 200-400MB RAM | Zero (in-process) |
+| Aspect         | LiteLLM              | Our Project                         |
+| -------------- | -------------------- | ----------------------------------- |
+| Language       | Python               | TypeScript                          |
+| Deployment     | Server/proxy         | Library (in-process)                |
+| Target         | Teams, enterprise    | Individual devs                     |
+| Cost model     | Dollar-based budgets | Free tier quota tracking            |
+| Infrastructure | Postgres + Redis     | SQLite (zero infra)                 |
+| Tracking       | Spend per key/team   | Free quota remaining per key/window |
+| Overhead       | 200-400MB RAM        | Zero (in-process)                   |
 
 ---
 
@@ -448,19 +464,21 @@ LiteLLM is designed as a **Python AI gateway for teams managing LLM spend at sca
 **Answer: No official TypeScript/JavaScript SDK exists.**
 
 ### Official Status
+
 - LiteLLM is a **Python-only** project
 - The recommended TypeScript integration is: run the proxy, use the OpenAI Node.js SDK pointed at it
 - No plans announced for an official TypeScript SDK
 
 ### Community Attempts
 
-| Package | npm Downloads | Last Updated | Providers | Router Support |
-|---------|-------------|-------------|-----------|----------------|
-| `litellm` (zya/litellmjs) | 357/week | Jan 2024 (abandoned) | 8 | No |
-| `@skadefro/litellm` | ~0 | 2+ years ago | 8 | No |
-| `@yucekj/litellm` | ~0 | Unknown | Fork | No |
+| Package                   | npm Downloads | Last Updated         | Providers | Router Support |
+| ------------------------- | ------------- | -------------------- | --------- | -------------- |
+| `litellm` (zya/litellmjs) | 357/week      | Jan 2024 (abandoned) | 8         | No             |
+| `@skadefro/litellm`       | ~0            | 2+ years ago         | 8         | No             |
+| `@yucekj/litellm`         | ~0            | Unknown              | Fork      | No             |
 
 ### Related TypeScript Tooling
+
 - `litellm-config-generator` (jvanmelckebeke): CDK-like TypeScript library for generating LiteLLM proxy YAML configs. Not an SDK -- just config generation.
 
 **Verdict: The TypeScript ecosystem for LiteLLM is effectively non-existent.** No production-ready option exists.
@@ -470,12 +488,14 @@ LiteLLM is designed as a **Python AI gateway for teams managing LLM spend at sca
 ## 10. Overhead of Running LiteLLM Proxy Alongside Node.js
 
 ### Performance Benchmarks (Official)
+
 - **Claimed:** 8ms P95 latency at 1,000 RPS
 - **Proxy overhead:** ~3.25ms additional latency vs direct API calls
 - **With load balancer:** 30% increase in throughput
 - **Q1 2026 target:** Sub-millisecond proxy overhead (via optional sidecar architecture)
 
 ### Real-World Performance Issues
+
 - At ~500 RPS: P99 latency shoots to 90+ seconds (acknowledged architectural issue)
 - Memory: 300-400MB RAM for what is marketed as a "thin proxy"
 - Performance degrades under high concurrency due to Python GIL
@@ -483,17 +503,18 @@ LiteLLM is designed as a **Python AI gateway for teams managing LLM spend at sca
 
 ### Resource Requirements
 
-| Metric | Value |
-|--------|-------|
-| RAM (idle) | ~200MB |
-| RAM (under load) | 300-400MB |
-| CPU | 1 worker per CPU core recommended |
-| Scaling | 2x instances = ~2x throughput, halves median latency |
-| Optimal workers | Match CPU count |
+| Metric           | Value                                                |
+| ---------------- | ---------------------------------------------------- |
+| RAM (idle)       | ~200MB                                               |
+| RAM (under load) | 300-400MB                                            |
+| CPU              | 1 worker per CPU core recommended                    |
+| Scaling          | 2x instances = ~2x throughput, halves median latency |
+| Optimal workers  | Match CPU count                                      |
 
 ### Deployment Complexity for Our Use Case
 
 To run alongside a Node.js application:
+
 1. User installs Python 3.9+ (or Docker)
 2. User installs `litellm` (`pip install litellm` or Docker image)
 3. User creates YAML config file
@@ -556,14 +577,14 @@ LiteLLM's concept of a "deployment" maps well to our concept of a "key registrat
 ```typescript
 // LiteLLM-inspired key configuration
 interface KeyDeployment {
-  modelAlias: string;        // user-facing name (like model_name)
-  provider: string;          // actual provider
-  model: string;             // actual model ID
-  apiKey: string;            // the API key
-  rpm?: number;              // rate limit for this key
-  tpm?: number;              // token limit for this key
-  weight?: number;           // selection weight
-  order?: number;            // priority (lower = higher)
+  modelAlias: string; // user-facing name (like model_name)
+  provider: string; // actual provider
+  model: string; // actual model ID
+  apiKey: string; // the API key
+  rpm?: number; // rate limit for this key
+  tpm?: number; // token limit for this key
+  weight?: number; // selection weight
+  order?: number; // priority (lower = higher)
 }
 ```
 
@@ -572,8 +593,8 @@ interface KeyDeployment {
 ```typescript
 // LiteLLM-inspired cooldown
 interface CooldownConfig {
-  allowedFails: number;      // failures per minute before cooldown
-  cooldownTime: number;      // seconds to cool down
+  allowedFails: number; // failures per minute before cooldown
+  cooldownTime: number; // seconds to cool down
   // Auto-recovery: check if cooldown expired before each request
 }
 ```
@@ -583,9 +604,9 @@ interface CooldownConfig {
 ```typescript
 // LiteLLM-inspired fallback configuration
 interface FallbackConfig {
-  fallbacks: Record<string, string[]>;              // general fallbacks
-  contextWindowFallbacks: Record<string, string>;   // for context overflow
-  maxFallbackDepth: number;                          // prevent infinite loops
+  fallbacks: Record<string, string[]>; // general fallbacks
+  contextWindowFallbacks: Record<string, string>; // for context overflow
+  maxFallbackDepth: number; // prevent infinite loops
 }
 ```
 
@@ -595,10 +616,7 @@ interface FallbackConfig {
 // LiteLLM-inspired pluggable routing
 interface RoutingStrategy {
   name: string;
-  select(
-    availableKeys: KeyDeployment[],
-    context: RequestContext,
-  ): KeyDeployment;
+  select(availableKeys: KeyDeployment[], context: RequestContext): KeyDeployment;
 }
 ```
 
@@ -610,7 +628,7 @@ interface RoutingStrategy {
 - [LiteLLM Official Documentation](https://docs.litellm.ai/docs/)
 - [LiteLLM Providers List](https://docs.litellm.ai/docs/providers)
 - [LiteLLM Model Catalog](https://models.litellm.ai/)
-- [LiteLLM Router Documentation](https://docs.litellm.ai/docs/routing)
+- [LitePennyLLM Documentation](https://docs.litellm.ai/docs/routing)
 - [LiteLLM Proxy Load Balancing](https://docs.litellm.ai/docs/proxy/load_balancing)
 - [LiteLLM Fallbacks Documentation](https://docs.litellm.ai/docs/proxy/reliability)
 - [LiteLLM Cost Tracking](https://docs.litellm.ai/docs/proxy/cost_tracking)
@@ -632,5 +650,5 @@ interface RoutingStrategy {
 
 ---
 
-*Research completed: 2026-03-11*
-*Confidence: HIGH (based on official documentation, GitHub source, community packages, and web research)*
+_Research completed: 2026-03-11_
+_Confidence: HIGH (based on official documentation, GitHub source, community packages, and web research)_

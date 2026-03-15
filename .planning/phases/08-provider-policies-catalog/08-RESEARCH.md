@@ -265,7 +265,7 @@ Also needs to be added to the `RouterConfig` interface in `src/types/config.ts`.
 ### Pitfall 2: Policy Index Re-exports
 
 **What goes wrong:** `src/policy/index.ts` exports `shippedDefaults` and individual policy objects. Removing the defaults directory breaks these exports.
-**Why it happens:** Consumers may import from `llm-router/policy`.
+**Why it happens:** Consumers may import from `pennyllm/policy`.
 **How to avoid:** Update `src/policy/index.ts` to remove the defaults re-export line. Add new exports for builders. The `./policy` subpath export in package.json stays, just with different contents.
 
 ### Pitfall 3: Stale Documentation
@@ -630,7 +630,7 @@ OpenRouter is a meta-provider that proxies requests to multiple underlying AI pr
 
 - Pricing is in "neurons" not tokens -- conversion varies by model
 - Two integration paths: REST API (works from any server) vs Workers binding (requires Cloudflare Worker)
-- For llm-router, the REST API with OpenAI-compatible endpoint is the right approach
+- For pennyllm, the REST API with OpenAI-compatible endpoint is the right approach
 - API token needs `Workers AI - Read` and `Workers AI - Edit` permissions
 - Requires both ACCOUNT_ID and API_TOKEN (two env vars)
 - The `workers-ai-provider` community package is Workers-only, not suitable for general server use
@@ -801,7 +801,7 @@ Approximate total monthly free capacity across all 12 providers (very rough, var
 ### Limit Builder Usage
 
 ```typescript
-import { createTokenLimit, createRateLimit, createCallLimit } from 'llm-router/policy';
+import { createTokenLimit, createRateLimit, createCallLimit } from 'pennyllm/policy';
 
 const googleLimits = [
   createRateLimit(15, 'per-minute'), // 15 RPM
@@ -822,8 +822,8 @@ const config = {
 ### Provider Config with Types
 
 ```typescript
-import type { GoogleProviderConfig, GroqProviderConfig } from 'llm-router/types';
-import { createTokenLimit, createRateLimit } from 'llm-router/policy';
+import type { GoogleProviderConfig, GroqProviderConfig } from 'pennyllm/types';
+import { createTokenLimit, createRateLimit } from 'pennyllm/policy';
 
 // Users get autocomplete and JSDoc hover docs
 const google: GoogleProviderConfig = {

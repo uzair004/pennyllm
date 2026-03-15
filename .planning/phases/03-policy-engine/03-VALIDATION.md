@@ -72,9 +72,9 @@ _Status: pending / green / red / flaky_
 
 ## Manual-Only Verifications
 
-| Behavior                  | Requirement | Why Manual                | Test Instructions                                                   |
-| ------------------------- | ----------- | ------------------------- | ------------------------------------------------------------------- |
-| Debug log output readable | POLICY-06   | Console output formatting | Run with `DEBUG=llm-router:*` and verify warning messages are clear |
+| Behavior                  | Requirement | Why Manual                | Test Instructions                                                 |
+| ------------------------- | ----------- | ------------------------- | ----------------------------------------------------------------- |
+| Debug log output readable | POLICY-06   | Console output formatting | Run with `DEBUG=pennyllm:*` and verify warning messages are clear |
 
 ---
 

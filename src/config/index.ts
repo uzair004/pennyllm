@@ -39,7 +39,7 @@ import type {
 import type { BudgetAlertEvent, BudgetExceededEvent } from '../budget/types.js';
 import { RouterEvent } from '../constants/index.js';
 
-const debug = debugFactory('llm-router:config');
+const debug = debugFactory('pennyllm:config');
 
 /**
  * Router instance interface with full Phase 5 integration
@@ -359,7 +359,7 @@ export async function createRouter(
           model: fallbackProxy,
           middleware,
           modelId,
-          providerId: 'llm-router',
+          providerId: 'pennyllm',
         });
         return wrappedModel;
       },
@@ -411,7 +411,7 @@ export async function createRouter(
     });
 
     // Enable debug mode from config flag or DEBUG env var
-    const shouldDebug = config.debug || /llm-router/.test(process.env['DEBUG'] ?? '');
+    const shouldDebug = config.debug || /pennyllm/.test(process.env['DEBUG'] ?? '');
     if (shouldDebug) {
       const debugLogger = new DebugLogger();
       debugLogger.attach(routerImpl);

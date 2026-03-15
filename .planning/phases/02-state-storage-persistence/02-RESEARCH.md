@@ -59,8 +59,8 @@ The memory backend uses JavaScript Map for counter storage with automatic time-w
 
 - Keep existing interface unchanged: get, put, increment, getUsage, reset, close
 - Export adapter classes directly — no factory pattern
-- MemoryStorage exported from main package (import { MemoryStorage } from 'llm-router')
-- Future: SqliteStorage from llm-router/sqlite, RedisStorage from llm-router/redis (Phase 10)
+- MemoryStorage exported from main package (import { MemoryStorage } from 'pennyllm')
+- Future: SqliteStorage from pennyllm/sqlite, RedisStorage from pennyllm/redis (Phase 10)
 
 **Contract Testing**
 
@@ -104,7 +104,7 @@ The memory backend uses JavaScript Map for counter storage with automatic time-w
 | -------------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | JavaScript Map | Built-in | In-memory key-value storage | Native, zero dependencies, O(1) access, synchronous operations prevent race conditions in Node.js event loop |
 | Vitest         | ^2.1.8   | Contract testing framework  | Already project dependency, supports describe.for parameterized tests, TypeScript-first, Vite-powered        |
-| debug          | ^4.3.0   | Component-based logging     | Already project dependency, namespace-based (llm-router:storage), zero cost when disabled                    |
+| debug          | ^4.3.0   | Component-based logging     | Already project dependency, namespace-based (pennyllm:storage), zero cost when disabled                      |
 
 ### Supporting
 
@@ -482,7 +482,7 @@ async close() {
 
 **Why it happens:** Simple string concatenation without escaping assumes delimiter never appears in data.
 
-**How to avoid:** Choose delimiter unlikely to appear in provider names, or escape delimiter in data before concatenation. For llm-router, provider names are controlled (google, groq, mistral, etc.) so ':' is safe.
+**How to avoid:** Choose delimiter unlikely to appear in provider names, or escape delimiter in data before concatenation. For pennyllm, provider names are controlled (google, groq, mistral, etc.) so ':' is safe.
 
 **Warning signs:** Usage counts for different providers get mixed together; key collisions in tests with synthetic provider names.
 

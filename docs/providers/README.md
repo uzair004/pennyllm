@@ -1,6 +1,6 @@
 # Provider Setup Guide
 
-This directory contains key acquisition guides and configuration references for all 12 providers supported by llm-router.
+This directory contains key acquisition guides and configuration references for all 12 providers supported by pennyllm.
 
 ## Recommended Starter Set
 
@@ -23,7 +23,7 @@ The easiest providers to set up (no credit card, generous limits, instant key):
 
 ## Aggregate Capacity Estimate
 
-Using all 12 providers in rotation with llm-router:
+Using all 12 providers in rotation with pennyllm:
 
 - **~30-50M tokens/month** combined free tier capacity
 - **~5,000-15,000 requests/day** across all providers
@@ -53,7 +53,7 @@ These estimates assume moderate usage patterns. Actual capacity depends on which
 A minimal config using the recommended starter set (Google + Groq + OpenRouter) with builder helpers:
 
 ```typescript
-import { createRouter, createRateLimit, createTokenLimit } from 'llm-router';
+import { createRouter, createRateLimit, createTokenLimit } from 'pennyllm';
 
 const router = await createRouter({
   providers: {
@@ -84,7 +84,7 @@ const router = await createRouter({
 const model = router.model('google/gemini-2.5-flash');
 ```
 
-## How Limits Work in llm-router
+## How Limits Work in pennyllm
 
 - **User-configured limits are primary.** You set limits in your config based on your provider's current quotas.
 - **No limits = key always available.** If you configure no limits, the key is used until the provider rejects it.

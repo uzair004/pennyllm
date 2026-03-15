@@ -32,7 +32,7 @@
                                 │
                                 v
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Base LLM Router                              │
+│                    Base PennyLLM                              │
 │  (handles model selection: reasoning, coding, embedding, etc.)  │
 └───────────────────────────────┬─────────────────────────────────┘
                                 │
@@ -44,15 +44,15 @@
 
 ### Component Boundaries
 
-| Component | Responsibility | Dependencies | Interface |
-|-----------|---------------|--------------|-----------|
-| **Request Interceptor** | Capture incoming LLM requests, extract provider/model info | None | Public API (receives user requests) |
-| **Policy Engine** | Evaluate which keys are eligible based on usage limits | Usage Tracker, State Storage | Internal (used by Key Selection) |
-| **Key Selection Strategy** | Choose optimal key from eligible set | Policy Engine | Internal (returns selected key) |
-| **Usage Tracker** | Record usage per key, update quotas | State Storage | Internal (tracks tokens/calls) |
-| **State Storage** | Persist usage data across restarts | Redis/SQLite adapter | Internal (CRUD for usage state) |
-| **Fallback Handler** | Decide what to do when all free keys exhausted | Policy Engine, Config | Internal (returns fallback action) |
-| **Base LLM Router** | Model selection and API calling | Provider SDKs | External dependency |
+| Component                  | Responsibility                                             | Dependencies                 | Interface                           |
+| -------------------------- | ---------------------------------------------------------- | ---------------------------- | ----------------------------------- |
+| **Request Interceptor**    | Capture incoming LLM requests, extract provider/model info | None                         | Public API (receives user requests) |
+| **Policy Engine**          | Evaluate which keys are eligible based on usage limits     | Usage Tracker, State Storage | Internal (used by Key Selection)    |
+| **Key Selection Strategy** | Choose optimal key from eligible set                       | Policy Engine                | Internal (returns selected key)     |
+| **Usage Tracker**          | Record usage per key, update quotas                        | State Storage                | Internal (tracks tokens/calls)      |
+| **State Storage**          | Persist usage data across restarts                         | Redis/SQLite adapter         | Internal (CRUD for usage state)     |
+| **Fallback Handler**       | Decide what to do when all free keys exhausted             | Policy Engine, Config        | Internal (returns fallback action)  |
+| **Base PennyLLM**          | Model selection and API calling                            | Provider SDKs                | External dependency                 |
 
 ## Layered Architecture
 
@@ -73,10 +73,10 @@ interface CostAvoidanceRouter {
 // Implementation wraps base router
 class CostAvoidanceRouterImpl implements CostAvoidanceRouter {
   constructor(
-    private baseRouter: BaseLLMRouter,
+    private baseRouter: BasePennyLLM,
     private keySelector: KeySelectionStrategy,
     private usageTracker: UsageTracker,
-    private config: RouterConfig
+    private config: RouterConfig,
   ) {}
 
   async chat(request: ChatRequest): Promise<ChatResponse> {
@@ -101,6 +101,7 @@ class CostAvoidanceRouterImpl implements CostAvoidanceRouter {
 ```
 
 **Why this pattern:**
+
 - Minimal changes to base router (just pass through API key)
 - Can swap base routers easily
 - Cost-avoidance logic is isolated and testable
@@ -137,7 +138,7 @@ class PolicyEngine {
   async evaluateKey(
     keyId: string,
     provider: string,
-    currentUsage: Usage
+    currentUsage: Usage,
   ): Promise<{ eligible: boolean; reason?: string }> {
     const policy = this.policies.get(provider);
     if (!policy) return { eligible: true }; // No policy = no limits
@@ -147,7 +148,7 @@ class PolicyEngine {
       if (used >= limit.value) {
         return {
           eligible: false,
-          reason: `${limit.type} limit reached (${used}/${limit.value})`
+          reason: `${limit.type} limit reached (${used}/${limit.value})`,
         };
       }
     }
@@ -189,6 +190,7 @@ providers:
 ```
 
 **Why this pattern:**
+
 - Policies are data, not code (user can override without recompiling)
 - Easy to update when providers change limits
 - Testable in isolation
@@ -303,11 +305,11 @@ interface UsageTracker {
 
 **Storage Options:**
 
-| Storage | Pros | Cons | When to Use |
-|---------|------|------|-------------|
-| **Redis** | Fast, atomic increments, TTL for auto-reset, multi-process safe | External dependency, persistence config needed | Multi-service deployment, high throughput |
-| **SQLite** | File-based, no external service, simple backup | Locking for writes, slower than Redis | Single-process, local development, simple deployment |
-| **In-Memory (Map)** | Fastest, zero setup | Lost on restart, not multi-process safe | Testing, ephemeral usage |
+| Storage             | Pros                                                            | Cons                                           | When to Use                                          |
+| ------------------- | --------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------- |
+| **Redis**           | Fast, atomic increments, TTL for auto-reset, multi-process safe | External dependency, persistence config needed | Multi-service deployment, high throughput            |
+| **SQLite**          | File-based, no external service, simple backup                  | Locking for writes, slower than Redis          | Single-process, local development, simple deployment |
+| **In-Memory (Map)** | Fastest, zero setup                                             | Lost on restart, not multi-process safe        | Testing, ephemeral usage                             |
 
 **Recommended approach:** Abstract storage behind interface, default to SQLite, allow Redis via config.
 
@@ -345,10 +347,7 @@ type FallbackAction =
   | { type: 'wait'; retryAfter: number };
 
 interface FallbackStrategy {
-  handle(
-    provider: string,
-    request: LLMRequest
-  ): Promise<FallbackAction>;
+  handle(provider: string, request: LLMRequest): Promise<FallbackAction>;
 }
 
 class ConfigurableFallbackHandler implements FallbackStrategy {
@@ -359,7 +358,7 @@ class ConfigurableFallbackHandler implements FallbackStrategy {
       case 'hard_stop':
         return {
           type: 'error',
-          message: 'All free tier keys exhausted, hard stop enabled'
+          message: 'All free tier keys exhausted, hard stop enabled',
         };
 
       case 'cheapest_paid':
@@ -397,7 +396,7 @@ class ConfigurableFallbackHandler implements FallbackStrategy {
    ↓
 6. Request Interceptor injects API key into request
    ↓
-7. Base LLM Router makes API call to provider
+7. Base PennyLLM makes API call to provider
    ↓
 8. Response returns with usage metadata (tokens used, etc.)
    ↓
@@ -493,13 +492,13 @@ Build in dependency order to enable incremental testing:
 
 ## Routing Algorithm Comparison
 
-| Algorithm | Complexity | Use Case | Pros | Cons |
-|-----------|-----------|----------|------|------|
-| **Round-robin** | O(1) | Default, fair distribution | Simple, predictable, no hotspots | Doesn't consider usage patterns |
-| **Least-used** | O(n log n) | Maximize runway before exhaustion | Uses keys efficiently | Requires querying all usage |
-| **Random** | O(1) | Simple load distribution | Very simple | Can create hotspots |
-| **Policy-aware** | O(n log n) | Complex multi-window limits | Optimal for time-windowed resets | Complex to implement, test |
-| **Weighted** | O(n) | Different key priorities | Can prefer certain keys | Requires manual weight config |
+| Algorithm        | Complexity | Use Case                          | Pros                             | Cons                            |
+| ---------------- | ---------- | --------------------------------- | -------------------------------- | ------------------------------- |
+| **Round-robin**  | O(1)       | Default, fair distribution        | Simple, predictable, no hotspots | Doesn't consider usage patterns |
+| **Least-used**   | O(n log n) | Maximize runway before exhaustion | Uses keys efficiently            | Requires querying all usage     |
+| **Random**       | O(1)       | Simple load distribution          | Very simple                      | Can create hotspots             |
+| **Policy-aware** | O(n log n) | Complex multi-window limits       | Optimal for time-windowed resets | Complex to implement, test      |
+| **Weighted**     | O(n)       | Different key priorities          | Can prefer certain keys          | Requires manual weight config   |
 
 **Recommendation:** Ship with round-robin, add least-used if users hit exhaustion faster than expected.
 
@@ -510,6 +509,7 @@ Build in dependency order to enable incremental testing:
 **Decision:** Stateful (persistent usage tracking required)
 
 **Rationale:**
+
 - Free tier limits persist across restarts (e.g., monthly token quotas)
 - Must track usage across multiple processes/instances
 - Cannot rely on provider APIs to report usage (many don't, or have delays)
@@ -521,6 +521,7 @@ Build in dependency order to enable incremental testing:
 **Decision:** Async (Promise-based)
 
 **Rationale:**
+
 - Usage queries to storage are async (SQLite I/O, Redis network)
 - Policy evaluation may need network calls (future: query provider for current usage)
 - Allows parallel queries for optimization
@@ -532,6 +533,7 @@ Build in dependency order to enable incremental testing:
 **Decision:** Post-call (record actual usage from response)
 
 **Rationale:**
+
 - Providers return actual token usage in response metadata
 - Pre-call estimation is inaccurate (tokenization varies)
 - More accurate limit tracking
@@ -543,22 +545,24 @@ Build in dependency order to enable incremental testing:
 **Decision:** User-provided config file with shipped defaults
 
 **Rationale:**
+
 - Providers change limits frequently (can't wait for package updates)
 - Users may have custom limits (e.g., negotiated enterprise free tier)
 - Defaults make it work out-of-box
 
 **Format:**
+
 ```typescript
 const router = new CostAvoidanceRouter({
-  baseRouter: baseLLMRouter,
+  baseRouter: basePennyLLM,
   storage: { type: 'sqlite', path: './usage.db' },
   policies: './my-policies.yaml', // Optional override
   fallback: { mode: 'hard_stop', monthlyBudget: 0 },
   keys: [
     { provider: 'openai', value: process.env.OPENAI_KEY_1 },
     { provider: 'openai', value: process.env.OPENAI_KEY_2 },
-    { provider: 'groq', value: process.env.GROQ_KEY }
-  ]
+    { provider: 'groq', value: process.env.GROQ_KEY },
+  ],
 });
 ```
 
@@ -567,23 +571,28 @@ const router = new CostAvoidanceRouter({
 **Decision:** Throw descriptive errors, user decides retry logic
 
 **Rationale:**
+
 - Different use cases need different retry behavior (user-facing vs batch)
 - Clear errors enable debugging (which key, which limit, when resets)
 - Follows principle of least surprise
 
 **Error types:**
+
 ```typescript
 class NoEligibleKeysError extends Error {
   constructor(
     public provider: string,
-    public exhaustedKeys: { id: string; reason: string }[]
+    public exhaustedKeys: { id: string; reason: string }[],
   ) {
     super(`No eligible keys for ${provider}`);
   }
 }
 
 class BudgetExceededError extends Error {
-  constructor(public spent: number, public limit: number) {
+  constructor(
+    public spent: number,
+    public limit: number,
+  ) {
     super(`Budget exceeded: $${spent} / $${limit}`);
   }
 }
@@ -597,7 +606,7 @@ User code unchanged, just swap router instance:
 
 ```typescript
 // Before
-const response = await baseLLMRouter.chat(request);
+const response = await basePennyLLM.chat(request);
 
 // After (same API)
 const response = await costAvoidanceRouter.chat(request);
@@ -630,7 +639,7 @@ Cost-avoidance as middleware in a chain:
 const router = createRouter()
   .use(costAvoidanceMiddleware(config))
   .use(loggingMiddleware())
-  .use(baseLLMRouter);
+  .use(basePennyLLM);
 
 await router.chat(request);
 ```
@@ -642,19 +651,20 @@ await router.chat(request);
 
 ## Scalability Considerations
 
-| Concern | At 1 project | At 10 projects | At 100+ projects |
-|---------|--------------|----------------|------------------|
-| **State storage** | SQLite file | SQLite per project or shared Redis | Shared Redis cluster |
-| **Key selection** | Round-robin | Least-used to balance | Policy-aware with reset optimization |
-| **Usage sync** | Post-call update | Same | Consider background sync to reduce latency |
-| **Policy updates** | File config | Same | Centralized policy server (future) |
-| **Monitoring** | Logs | Usage dashboard (separate tool) | Metrics export (Prometheus, etc.) |
+| Concern            | At 1 project     | At 10 projects                     | At 100+ projects                           |
+| ------------------ | ---------------- | ---------------------------------- | ------------------------------------------ |
+| **State storage**  | SQLite file      | SQLite per project or shared Redis | Shared Redis cluster                       |
+| **Key selection**  | Round-robin      | Least-used to balance              | Policy-aware with reset optimization       |
+| **Usage sync**     | Post-call update | Same                               | Consider background sync to reduce latency |
+| **Policy updates** | File config      | Same                               | Centralized policy server (future)         |
+| **Monitoring**     | Logs             | Usage dashboard (separate tool)    | Metrics export (Prometheus, etc.)          |
 
 ## Security Considerations
 
 ### API Key Storage
 
 **Never store keys in State Storage.** User provides keys at runtime via:
+
 - Environment variables (recommended)
 - Config file (warn if not .gitignore'd)
 - Key management service (future)
@@ -662,11 +672,13 @@ await router.chat(request);
 ### Usage Data Sensitivity
 
 Usage records contain:
+
 - Key IDs (hashed, not actual keys)
 - Provider names
 - Token counts, timestamps
 
 **Not sensitive** but should be:
+
 - Excluded from version control (add `*.db` to `.gitignore`)
 - Backed up if monthly limits matter
 - Cleared periodically if disk space constrained
@@ -698,8 +710,8 @@ const router = new CostAvoidanceRouter({
       if (event.percentUsed > 80) {
         console.warn(`${event.provider} key ${event.keyId} at ${event.percentUsed}% usage`);
       }
-    }
-  }
+    },
+  },
 });
 ```
 
@@ -800,6 +812,7 @@ Based on dependency graph, start with:
 **Phase 1: Core Engine (no base router integration)**
 
 Build and test in isolation:
+
 1. State Storage (SQLite)
 2. Policy Engine
 3. Usage Tracker
@@ -812,6 +825,7 @@ Build and test in isolation:
 ---
 
 **Sources:**
+
 - Pattern descriptions based on established software architecture patterns (Gang of Four, Fowler's PoEAA)
 - Storage options based on common Node.js state management approaches
 - Routing algorithms based on load balancing and quota management systems

@@ -45,9 +45,9 @@
 ## Configuration
 
 ```typescript
-import { createRateLimit } from 'llm-router/policy';
+import { createRateLimit } from 'pennyllm/policy';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import type { CloudflareProviderConfig } from 'llm-router/types';
+import type { CloudflareProviderConfig } from 'pennyllm/types';
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID!;
 
@@ -77,7 +77,7 @@ const cloudflare: CloudflareProviderConfig = {
 
 - **Neurons are not tokens.** The neuron-to-token conversion ratio varies by model. Monitor your neuron usage in the Cloudflare dashboard.
 - **Two env vars required.** Unlike most providers, Cloudflare needs both an API token and an Account ID.
-- **REST API, not Workers binding.** For use with llm-router, use the REST API endpoint (not the Cloudflare Workers `AI` binding). The REST API works from any server.
+- **REST API, not Workers binding.** For use with pennyllm, use the REST API endpoint (not the Cloudflare Workers `AI` binding). The REST API works from any server.
 - **API token permissions matter.** Your token must have both `Workers AI - Read` and `Workers AI - Edit` permissions. A default "Edit Cloudflare Workers" token may not include AI permissions.
 - **The `workers-ai-provider` community package** is designed for Cloudflare Workers only and is not suitable for general server use. Use `@ai-sdk/openai-compatible` instead.
 - **Daily reset at 00:00 UTC.** Neuron allocation resets at midnight UTC.

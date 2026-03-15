@@ -1,12 +1,12 @@
 import type { Router } from '../config/index.js';
 
-const PREFIX = '[llm-router]';
+const PREFIX = '[pennyllm]';
 
 /**
  * Structured debug logger that subscribes to router observability hooks
  * and prints one-line summaries to stdout.
  *
- * Enabled via `debug: true` in config or `DEBUG=llm-router:*` env var.
+ * Enabled via `debug: true` in config or `DEBUG=pennyllm:*` env var.
  * Plain text output -- no colors, no dependencies.
  */
 export class DebugLogger {

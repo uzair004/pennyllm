@@ -15,7 +15,7 @@ import type { AttemptRecord } from './error-classifier.js';
 import { RouterEvent } from '../constants/index.js';
 import debugFactory from 'debug';
 
-const debug = debugFactory('llm-router:retry');
+const debug = debugFactory('pennyllm:retry');
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -101,7 +101,7 @@ function buildErrorPayload(
  * All params pass through unchanged to the underlying model, preserving
  * tool calling, structured output, and all AI SDK features.
  *
- * Only throws LLMRouterError subclasses (never APICallError) to prevent
+ * Only throws PennyLLMError subclasses (never APICallError) to prevent
  * AI SDK double-retry.
  */
 export function createRetryProxy(options: RetryProxyOptions): LanguageModelV3 {
@@ -123,7 +123,7 @@ export function createRetryProxy(options: RetryProxyOptions): LanguageModelV3 {
 
   const proxy: LanguageModelV3 = {
     specificationVersion: 'v3' as const,
-    provider: 'llm-router',
+    provider: 'pennyllm',
     modelId,
     supportedUrls: initialModel.supportedUrls,
 

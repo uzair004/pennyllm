@@ -171,7 +171,7 @@ describe('loadConfigFile', () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'llm-router-test-'));
+    tempDir = mkdtempSync(join(tmpdir(), 'pennyllm-test-'));
   });
 
   afterEach(() => {
@@ -294,7 +294,7 @@ describe('createRouter', () => {
   });
 
   it('loads config from file path', async () => {
-    const tempDir = mkdtempSync(join(tmpdir(), 'llm-router-test-'));
+    const tempDir = mkdtempSync(join(tmpdir(), 'pennyllm-test-'));
     const configPath = join(tempDir, 'config.json');
     const configContent = JSON.stringify({
       providers: {

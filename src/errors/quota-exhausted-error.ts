@@ -1,9 +1,9 @@
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 /**
  * Error thrown when all keys for a provider have exhausted their quotas
  */
-export class QuotaExhaustedError extends LLMRouterError {
+export class QuotaExhaustedError extends PennyLLMError {
   constructor(provider: string, keys: Array<{ keyIndex: number; nextReset?: string }>) {
     if (keys.length === 0) {
       throw new Error('QuotaExhaustedError requires at least one key');

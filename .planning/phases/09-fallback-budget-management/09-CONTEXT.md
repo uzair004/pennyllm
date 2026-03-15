@@ -109,7 +109,7 @@ Requirements: CORE-04 (hard-stop enforcement), CORE-05 (fallback config), CORE-0
 
 - EventEmitter for all router events (node:events). Budget events follow same pattern.
 - Fire-and-forget for non-critical operations (usage recording, event emission). Budget tracking should follow same pattern.
-- `debug` logger namespaced per module (e.g., `llm-router:fallback`, `llm-router:budget`).
+- `debug` logger namespaced per module (e.g., `pennyllm:fallback`, `pennyllm:budget`).
 - Zod schemas for config validation. Fallback config needs new Zod schema.
 - `exactOptionalPropertyTypes` enabled — conditional object field construction required.
 - StorageBackend for all persistent data. Budget spend tracked via same interface.

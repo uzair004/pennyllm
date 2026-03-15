@@ -57,8 +57,8 @@ This phase also updates the config schema to remove the storage Zod config (stor
 
 - Keep existing interface unchanged: `get`, `put`, `increment`, `getUsage`, `reset`, `close`
 - Export adapter classes directly — no factory pattern
-- `MemoryStorage` exported from main package (`import { MemoryStorage } from 'llm-router'`)
-- Future: `SqliteStorage` from `llm-router/sqlite`, `RedisStorage` from `llm-router/redis` (Phase 10)
+- `MemoryStorage` exported from main package (`import { MemoryStorage } from 'pennyllm'`)
+- Future: `SqliteStorage` from `pennyllm/sqlite`, `RedisStorage` from `pennyllm/redis` (Phase 10)
 
 ### Contract Testing
 
@@ -102,7 +102,7 @@ This phase also updates the config schema to remove the storage Zod config (stor
 - `StorageBackend` interface (src/types/interfaces.ts): already defines get, put, increment, getUsage, reset, close — no changes needed
 - `UsageRecord` type (src/types/domain.ts): id, provider, keyIndex, promptTokens, completionTokens, totalTokens, timestamp, window, estimated
 - `TimeWindow` type (src/types/domain.ts): type ('per-minute' | 'hourly' | 'daily' | 'monthly' | 'rolling-30d'), durationMs
-- `LLMRouterError` base class (src/errors/base.ts): for storage-specific errors
+- `PennyLLMError` base class (src/errors/base.ts): for storage-specific errors
 - `src/storage/index.ts`: currently just re-exports StorageBackend type — will house MemoryStorage
 
 ### Established Patterns
@@ -110,7 +110,7 @@ This phase also updates the config schema to remove the storage Zod config (stor
 - Const objects with `as const` for enums (src/constants/index.ts)
 - Zod validation with `.default()` for sensible defaults (src/config/schema.ts)
 - Subpath exports for modular imports (package.json)
-- `debug` package for component-based logging (llm-router:storage namespace)
+- `debug` package for component-based logging (pennyllm:storage namespace)
 
 ### Integration Points
 

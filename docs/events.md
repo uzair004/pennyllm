@@ -1,6 +1,6 @@
 # Events & Hooks Reference
 
-LLM Router emits typed events for every routing decision, usage change, limit breach, and error. Two ways to listen:
+PennyLLM emits typed events for every routing decision, usage change, limit breach, and error. Two ways to listen:
 
 1. **Typed hooks** (recommended) -- autocomplete, type-safe callbacks, returns unsubscribe function.
 2. **Raw `router.on()`** -- string-based event names, manual `.off()` to unsubscribe.
@@ -36,7 +36,7 @@ Each hook returns an unsubscribe function. Call it to remove the listener.
 For event names not covered by typed hooks (system events, error subtypes), use the raw API:
 
 ```typescript
-import { RouterEvent } from 'llm-router/constants';
+import { RouterEvent } from 'pennyllm/constants';
 
 router.on(RouterEvent.KEY_DISABLED, (event) => {
   console.log(`Key #${event.keyIndex} disabled: ${event.reason}`);
@@ -204,11 +204,11 @@ interface BudgetExceededEvent extends RouterEventPayload {
 
 #### `error`
 
-Fires on any routing error. Wraps the error in an `LLMRouterError` instance.
+Fires on any routing error. Wraps the error in an `PennyLLMError` instance.
 
 ```typescript
 interface ErrorEvent extends RouterEventPayload {
-  error: LLMRouterError;
+  error: PennyLLMError;
 }
 ```
 

@@ -1,10 +1,10 @@
 import type { ProviderAttempt } from '../fallback/types.js';
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 /**
  * Error thrown when all providers have been exhausted during fallback
  */
-export class AllProvidersExhaustedError extends LLMRouterError {
+export class AllProvidersExhaustedError extends PennyLLMError {
   public readonly attempts: ProviderAttempt[];
   public readonly earliestRecovery: string | null;
 

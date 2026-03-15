@@ -27,7 +27,7 @@ Accurately record token consumption and API call counts across multiple time win
 - **Concurrency:** Accept the race — concurrent requests may all estimate against the same snapshot. Provider's 429 handles contention. No in-flight request counting.
 - **Estimation feeds into selection, not vice versa** — usage tracker provides headroom numbers, selection strategy (Phase 5) uses them to pick the best key. Estimation doesn't pre-filter or rank keys.
 - **Estimator failures:** Catch errors from custom estimator functions, debug-log the error, skip estimation, and proceed. Never fatal.
-- **Estimation accuracy:** Debug-logged only (llm-router:usage namespace). No events for estimation accuracy. Actuals always overwrite — if estimate was wildly off, no special handling.
+- **Estimation accuracy:** Debug-logged only (pennyllm:usage namespace). No events for estimation accuracy. Actuals always overwrite — if estimate was wildly off, no special handling.
 
 ### Estimation Config Shape
 
@@ -135,7 +135,7 @@ Accurately record token consumption and API call counts across multiple time win
 
 - Const objects with `as const` for enums (src/constants/index.ts) — new constants for estimation config
 - Zod validation with `.default()` for config schema (src/config/schema.ts) — add estimation section
-- `debug` package with namespaces (llm-router:usage for tracker, llm-router:storage for storage)
+- `debug` package with namespaces (pennyllm:usage for tracker, pennyllm:storage for storage)
 - EventEmitter pattern with typed events (src/types/events.ts)
 - Async fire-and-forget for events (Phase 1 decision)
 - Eager validation at createRouter() (Phase 1 decision)

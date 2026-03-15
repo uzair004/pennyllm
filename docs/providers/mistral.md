@@ -41,9 +41,9 @@ The Experiment plan has global limits that apply across all models. Specific per
 ## Configuration
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { createRateLimit, createTokenLimit } from 'llm-router/policy';
-import type { MistralProviderConfig } from 'llm-router/types';
+import { createRouter } from 'pennyllm';
+import { createRateLimit, createTokenLimit } from 'pennyllm/policy';
+import type { MistralProviderConfig } from 'pennyllm/types';
 
 const mistral: MistralProviderConfig = {
   keys: [process.env.MISTRAL_API_KEY!],
@@ -66,7 +66,7 @@ const router = await createRouter({
 - **Phone verification required.** You cannot create an API key without completing phone verification during signup.
 - **Very low RPM (~2/min).** This is the primary bottleneck on the Experiment plan. The 1B monthly token allowance is generous, but you can only send about 2 requests per minute. Plan your usage accordingly.
 - **Per-model limits are not publicly documented.** The global limits above apply across all models, but individual models may have lower limits. Check the [admin dashboard](https://admin.mistral.ai/plateforme/limits) after creating your account.
-- **Enforcement:** Mistral returns HTTP 429 when limits are exceeded. The llm-router retry proxy handles this automatically.
+- **Enforcement:** Mistral returns HTTP 429 when limits are exceeded. The pennyllm retry proxy handles this automatically.
 - **Best use case:** Mistral works well as a low-frequency provider in a rotation -- send a request or two per minute while other providers handle burst traffic.
 
 ## Paid Tier

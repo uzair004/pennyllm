@@ -9,7 +9,7 @@ requires:
   - phase: 10-sqlite-redis-advanced-features (plans 01-02)
     provides: SqliteStorage and RedisStorage adapter implementations
 provides:
-  - Subpath exports for llm-router/sqlite and llm-router/redis
+  - Subpath exports for pennyllm/sqlite and pennyllm/redis
   - Optional peer dependencies for better-sqlite3 and ioredis
   - 8 typed observability hook helpers on Router interface
   - Dry-run mode via dryRun config option

@@ -3,7 +3,7 @@ import type { ModelMetadata } from '../types/domain.js';
 import { ModelStatus } from '../constants/index.js';
 import debugFactory from 'debug';
 
-const debug = debugFactory('llm-router:catalog');
+const debug = debugFactory('pennyllm:catalog');
 
 /**
  * Zod schema for models.dev API entry

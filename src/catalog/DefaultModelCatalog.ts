@@ -8,7 +8,7 @@ import type { ModelListFilter, CatalogRefreshedEvent } from './types.js';
 import { fetchModelsDev, fetchOpenRouter } from './fetchers.js';
 import { RouterEvent, ModelStatus } from '../constants/index.js';
 
-const debug = debugFactory('llm-router:catalog');
+const debug = debugFactory('pennyllm:catalog');
 
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -94,9 +94,7 @@ export class DefaultModelCatalog implements ModelCatalog {
   /**
    * Get capabilities for a specific model
    */
-  async getCapabilities(
-    modelId: string,
-  ): Promise<ModelMetadata['capabilities'] | null> {
+  async getCapabilities(modelId: string): Promise<ModelMetadata['capabilities'] | null> {
     await this.ensureLoaded();
     const model = this.cache?.get(modelId);
     return model?.capabilities ?? null;
@@ -118,6 +116,7 @@ export class DefaultModelCatalog implements ModelCatalog {
   /**
    * Close the catalog and cleanup resources
    */
+  // eslint-disable-next-line @typescript-eslint/require-await
   async close(): Promise<void> {
     this.closed = true;
 
@@ -285,6 +284,7 @@ export class DefaultModelCatalog implements ModelCatalog {
   /**
    * Load static snapshot as fallback
    */
+  // eslint-disable-next-line @typescript-eslint/require-await
   private async loadStaticSnapshot(): Promise<void> {
     try {
       const staticData = this.loadStaticData();
@@ -317,9 +317,7 @@ export class DefaultModelCatalog implements ModelCatalog {
    * Load static catalog data from bundled JSON
    */
   private loadStaticData(): ModelMetadata[] {
-    const staticPath = fileURLToPath(
-      new URL('./static-catalog.json', import.meta.url),
-    );
+    const staticPath = fileURLToPath(new URL('./static-catalog.json', import.meta.url));
     const content = readFileSync(staticPath, 'utf-8');
     return JSON.parse(content) as ModelMetadata[];
   }

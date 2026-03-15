@@ -64,7 +64,7 @@ completed: 2026-03-14
 - DebugLogger class subscribes to all 8 typed observability hooks and prints structured one-line summaries to stdout
 - Config validation transforms ZodError into actionable ConfigError with typo suggestions (e.g. 'googel' -> 'google')
 - defineConfig() provides IDE autocomplete for 12 known provider names while accepting custom strings
-- Debug mode activatable via `debug: true` config flag or `DEBUG=llm-router:*` env var
+- Debug mode activatable via `debug: true` config flag or `DEBUG=pennyllm:*` env var
 - Zero new runtime dependencies added
 
 ## Task Commits

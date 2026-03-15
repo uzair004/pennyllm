@@ -19,26 +19,26 @@ Requirements: USAGE-02 (SQLite + Redis persistence), DX-03 (observability hooks)
 
 - **Driver:** `ioredis` as optional peer dependency
 - **Connection config:** Accept either a connection URL string (`redis://...`) or an ioredis options object. Both are industry standard. The user provides their own Redis — local Docker, cloud-hosted (Upstash, Redis Cloud, ElastiCache), or any Redis-compatible server. The package is agnostic to where Redis runs.
-- **Key prefix:** All keys prefixed with `llm-router:` to avoid collisions in shared Redis instances. Configurable prefix for multi-tenant scenarios.
+- **Key prefix:** All keys prefixed with `pennyllm:` to avoid collisions in shared Redis instances. Configurable prefix for multi-tenant scenarios.
 - **Atomicity:** Use Redis INCRBY/HINCRBY for atomic counter increments. No Lua scripts needed for simple counter operations. Multi-process safe by design (Redis is the concurrency layer).
 - **Expiration:** Use Redis TTL on keys matching time window durations. Redis handles expiration natively — no manual cleanup needed.
 - **Connection failures:** Fail loudly with clear error. Never silently fall back to memory storage — that would give users false confidence their data persists.
 - **Reconnection:** Rely on ioredis built-in reconnection strategy (exponential backoff). No custom retry logic.
 - **Close:** Disconnect the ioredis client on `close()`.
-- **Export path:** `RedisStorage` from `llm-router/redis`
+- **Export path:** `RedisStorage` from `pennyllm/redis`
 - **Environment agnostic:** This is a library — Redis hosting is the user's concern. Works with local Docker, cloud Redis (Upstash, AWS ElastiCache, Redis Cloud), or any Redis-protocol-compatible server. Serverless-friendly since ioredis handles connection pooling.
 
 ### SQLite (Secondary)
 
 - **Driver:** `better-sqlite3` as optional peer dependency. No sql.js fallback — keeps it simple, avoids WASM complexity.
-- **DB file location:** XDG data directory by default (`~/.local/share/llm-router/usage.db` on Linux, `~/Library/Application Support/llm-router/usage.db` on macOS). User can override with explicit path.
+- **DB file location:** XDG data directory by default (`~/.local/share/pennyllm/usage.db` on Linux, `~/Library/Application Support/pennyllm/usage.db` on macOS). User can override with explicit path.
 - **Data sharing:** Single shared DB across all projects by default. If two apps use the same Google key, both see the same quota usage — accurate free-tier tracking.
 - **Schema:** Single key-value counter table with composite key (provider, keyIndex, windowType, periodKey). Columns: prompt_tokens, completion_tokens, call_count.
 - **WAL mode:** Enabled for concurrent read performance.
 - **Migrations:** Forward-only with schema_info table tracking version. Auto-migrate on open.
 - **Auto-cleanup:** Delete expired rows on write operations (same lazy cleanup pattern as MemoryStorage).
 - **Driver detection:** Silent. Log at debug level which driver was loaded. No stderr warnings.
-- **Export path:** `SqliteStorage` from `llm-router/sqlite`
+- **Export path:** `SqliteStorage` from `pennyllm/sqlite`
 - **Dependency is fully optional:** SQLite binary compilation issues in some environments must never block users who don't need it.
 
 ### Observability Hooks (DX-03)
@@ -90,13 +90,13 @@ Requirements: USAGE-02 (SQLite + Redis persistence), DX-03 (observability hooks)
 - `getPeriodKey()` (src/usage/periods.ts): Calendar-aware period key generation — reuse for storage key construction
 - `RouterEvent` constants (src/constants/index.ts): All event names already defined
 - Event interfaces (src/types/events.ts): Typed payloads for all events
-- `LLMRouterError` (src/errors/base.ts): Base error class for storage-specific errors
+- `PennyLLMError` (src/errors/base.ts): Base error class for storage-specific errors
 - Package exports (package.json): 8 subpath exports already configured — add `./sqlite` and `./redis`
 
 ### Established Patterns
 
 - Optional peer deps with clear error on missing driver (@ai-sdk/google pattern)
-- `debug` package for namespaced logging (llm-router:storage, llm-router:sqlite, llm-router:redis)
+- `debug` package for namespaced logging (pennyllm:storage, pennyllm:sqlite, pennyllm:redis)
 - Async interface methods with `eslint-disable-next-line @typescript-eslint/require-await` for sync implementations
 - `exactOptionalPropertyTypes` — conditional object construction required
 - Fire-and-forget pattern for non-critical operations

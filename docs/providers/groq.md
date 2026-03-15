@@ -41,9 +41,9 @@ Limits vary by model. Below are reference values for popular models. Always chec
 ## Configuration
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { createRateLimit, createTokenLimit } from 'llm-router/policy';
-import type { GroqProviderConfig } from 'llm-router/types';
+import { createRouter } from 'pennyllm';
+import { createRateLimit, createTokenLimit } from 'pennyllm/policy';
+import type { GroqProviderConfig } from 'pennyllm/types';
 
 const groq: GroqProviderConfig = {
   keys: [process.env.GROQ_API_KEY!],
@@ -68,7 +68,7 @@ const router = await createRouter({
 - **TPM limits are low** (6K-30K). A single large prompt can exhaust your per-minute token budget. Keep prompts concise or use smaller models (e.g., llama-3.1-8b-instant has only 6K TPM).
 - **Ultra-fast inference:** Groq's LPU hardware delivers ~1,000 tokens/sec, making it excellent for latency-sensitive workloads -- but the daily token caps limit volume.
 - **Model churn:** Groq frequently adds new models and retires old ones. Check the console for the latest model list.
-- **Enforcement:** Groq returns HTTP 429 with rate limit headers. The llm-router retry proxy handles this automatically.
+- **Enforcement:** Groq returns HTTP 429 with rate limit headers. The pennyllm retry proxy handles this automatically.
 
 ## Paid Tier
 

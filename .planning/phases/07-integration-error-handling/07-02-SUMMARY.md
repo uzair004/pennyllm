@@ -121,7 +121,7 @@ None - no external service configuration required.
 - Phase 7 complete: error classification (Plan 01) + retry proxy (Plan 02) deliver INTG-02, INTG-03, INTG-05
 - Retry proxy transparently rotates keys on 429/auth failures
 - doStream retries on setup errors only (no mid-stream retry per user decision)
-- All errors thrown are LLMRouterError subclasses (no AI SDK double-retry)
+- All errors thrown are PennyLLMError subclasses (no AI SDK double-retry)
 - Ready for Phase 8 (provider integration testing) or Phase 9 (fallback chains)
 
 ---

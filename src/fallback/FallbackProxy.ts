@@ -22,7 +22,7 @@ import type { BudgetTracker } from '../budget/BudgetTracker.js';
 import type { AffinityCache } from './AffinityCache.js';
 import type { FallbackBehavior, FallbackCandidate, ProviderAttempt } from './types.js';
 
-const debug = debugFactory('llm-router:fallback');
+const debug = debugFactory('pennyllm:fallback');
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -413,7 +413,7 @@ async function tryCandidateFull(
 export function createFallbackProxy(deps: FallbackProxyDeps): LanguageModelV3 {
   const proxy: LanguageModelV3 = {
     specificationVersion: 'v3' as const,
-    provider: 'llm-router',
+    provider: 'pennyllm',
     modelId: deps.primaryModelId,
     supportedUrls: deps.primaryRetryProxy.supportedUrls,
 
@@ -429,7 +429,7 @@ export function createFallbackProxy(deps: FallbackProxyDeps): LanguageModelV3 {
       if (candidate) {
         try {
           if (generateResult.providerMetadata) {
-            generateResult.providerMetadata['llm-router'] = {
+            generateResult.providerMetadata['pennyllm'] = {
               fallbackUsed: true,
               originalModel: deps.primaryModelId,
               actualModel: candidate.modelId,

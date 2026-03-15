@@ -1,6 +1,6 @@
-# Contributing to LLM Router
+# Contributing to PennyLLM
 
-Thank you for your interest in contributing to LLM Router!
+Thank you for your interest in contributing to PennyLLM!
 
 ## Prerequisites
 
@@ -12,8 +12,8 @@ Thank you for your interest in contributing to LLM Router!
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/muhammaduzair/llm-router.git
-   cd llm-router
+   git clone https://github.com/muhammaduzair/pennyllm.git
+   cd pennyllm
    ```
 
 2. Install dependencies:
@@ -43,7 +43,7 @@ src/
   fallback/     FallbackResolver, FallbackProxy, fallback chain logic
   budget/       BudgetTracker, cost estimation, spending limits
   debug/        DebugLogger (structured debug output via typed hooks)
-  errors/       Error hierarchy (LLMRouterError base + 7 specific classes)
+  errors/       Error hierarchy (PennyLLMError base + 7 specific classes)
   constants/    Strategy, Provider, RouterEvent, LimitType enums
   types/        TypeScript interfaces (config, domain, events)
   index.ts      Main entry point, createRouter, public API exports

@@ -6,7 +6,7 @@ import type { RouterConfig } from '../types/config.js';
 import type { QualityTierType } from '../constants/index.js';
 import type { FallbackCandidate } from './types.js';
 
-const debug = debugFactory('llm-router:fallback');
+const debug = debugFactory('pennyllm:fallback');
 
 const MAX_CANDIDATES = 20;
 

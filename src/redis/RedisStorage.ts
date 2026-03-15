@@ -3,10 +3,10 @@ import type { RedisOptions } from 'ioredis';
 import debugFactory from 'debug';
 import type { StorageBackend, StructuredUsage } from '../types/interfaces.js';
 import type { TimeWindow, UsageRecord } from '../types/domain.js';
-import { LLMRouterError } from '../errors/base.js';
+import { PennyLLMError } from '../errors/base.js';
 import { getPeriodKey } from '../usage/periods.js';
 
-const debug = debugFactory('llm-router:redis');
+const debug = debugFactory('pennyllm:redis');
 
 /**
  * Configuration options for RedisStorage
@@ -14,7 +14,7 @@ const debug = debugFactory('llm-router:redis');
 export interface RedisStorageOptions {
   /** Redis connection URL (redis://...) or ioredis options object */
   connection: string | Record<string, unknown>;
-  /** Key prefix for all Redis keys (default: 'llm-router:') */
+  /** Key prefix for all Redis keys (default: 'pennyllm:') */
   prefix?: string;
 }
 
@@ -53,13 +53,13 @@ export class RedisStorage implements StorageBackend {
       const mod = await import('ioredis');
       IoRedis = mod.default;
     } catch {
-      throw new LLMRouterError(
+      throw new PennyLLMError(
         'ioredis is required for RedisStorage. Install it: npm install ioredis',
         { code: 'MISSING_PEER_DEPENDENCY' },
       );
     }
 
-    const prefix = options.prefix ?? 'llm-router:';
+    const prefix = options.prefix ?? 'pennyllm:';
 
     const client =
       typeof options.connection === 'string'
@@ -74,7 +74,7 @@ export class RedisStorage implements StorageBackend {
         client.once('ready', () => resolve());
         client.once('error', (err: Error) =>
           reject(
-            new LLMRouterError('Redis connection failed: ' + err.message, {
+            new PennyLLMError('Redis connection failed: ' + err.message, {
               code: 'REDIS_CONNECTION_ERROR',
               cause: err,
             }),
@@ -116,7 +116,7 @@ export class RedisStorage implements StorageBackend {
         return 172800; // 2 days (per daily bucket)
       default: {
         const _exhaustive: never = window.type;
-        throw new LLMRouterError(`Unknown window type: ${String(_exhaustive)}`, {
+        throw new PennyLLMError(`Unknown window type: ${String(_exhaustive)}`, {
           code: 'INVALID_WINDOW_TYPE',
         });
       }
@@ -128,7 +128,7 @@ export class RedisStorage implements StorageBackend {
    */
   private ensureOpen(): void {
     if (this.closed) {
-      throw new LLMRouterError('Storage backend is closed', { code: 'STORAGE_CLOSED' });
+      throw new PennyLLMError('Storage backend is closed', { code: 'STORAGE_CLOSED' });
     }
   }
 
@@ -173,7 +173,7 @@ export class RedisStorage implements StorageBackend {
 
     const results = await pipeline.exec();
     if (!results) {
-      throw new LLMRouterError('Redis pipeline returned null', { code: 'REDIS_ERROR' });
+      throw new PennyLLMError('Redis pipeline returned null', { code: 'REDIS_ERROR' });
     }
 
     // Pipeline exec returns [[error, result], ...] for each command

@@ -1,5 +1,5 @@
 /**
- * Type definitions for LLM Router
+ * Type definitions for PennyLLM
  */
 
 // Configuration types

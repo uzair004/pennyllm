@@ -27,7 +27,7 @@ From Plan 01-01:
 | 3   | tsup build produces dist/ with .mjs, .cjs, and .d.ts files                                      | ✓ VERIFIED | All 8 entry points have ESM (.mjs), CJS (.cjs), and type declarations (.d.ts)            |
 | 4   | Three core interfaces are defined and exported: StorageBackend, ModelCatalog, SelectionStrategy | ✓ VERIFIED | All three interfaces present in src/types/interfaces.ts with correct method signatures   |
 | 5   | Domain types are defined and exported: ModelMetadata, Policy, UsageRecord, TimeWindow           | ✓ VERIFIED | All four types present in src/types/domain.ts with JSON-serializable fields              |
-| 6   | Error classes are defined with toJSON() serialization                                           | ✓ VERIFIED | LLMRouterError base class has toJSON() method returning proper shape                     |
+| 6   | Error classes are defined with toJSON() serialization                                           | ✓ VERIFIED | PennyLLMError base class has toJSON() method returning proper shape                      |
 | 7   | Constants use const objects with as const (not TypeScript enums)                                | ✓ VERIFIED | 6 const objects with `as const` in src/constants/index.ts, zero TypeScript enums in src/ |
 
 From Plan 01-02:
@@ -57,7 +57,7 @@ From Plan 01-01:
 | src/types/domain.ts     | ModelMetadata, Policy, UsageRecord, TimeWindow types              | ✓ VERIFIED | All 4 domain types exported, JSON-serializable fields (84 lines)                      |
 | src/types/events.ts     | Typed event map for router events                                 | ✓ VERIFIED | RouterEvents, RouterEventMap exported with 7 event payload types                      |
 | src/constants/index.ts  | Strategy, Provider, RouterEvent const objects                     | ✓ VERIFIED | 6 const objects with `as const` exported (82 lines)                                   |
-| src/errors/base.ts      | LLMRouterError base class with toJSON()                           | ✓ VERIFIED | toJSON() method returns {name, code, message, suggestion, metadata, stack} (52 lines) |
+| src/errors/base.ts      | PennyLLMError base class with toJSON()                            | ✓ VERIFIED | toJSON() method returns {name, code, message, suggestion, metadata, stack} (52 lines) |
 
 From Plan 01-02:
 
@@ -82,7 +82,7 @@ From Plan 01-01:
 | -------------------------- | ---------------------- | ------------------------------------------------------- | ------- | --------------------------------------------------------------------------------- |
 | src/types/interfaces.ts    | src/types/domain.ts    | import domain types used in interface method signatures | ✓ WIRED | `import type { ModelMetadata, TimeWindow, UsageRecord } from './domain.js'` found |
 | src/types/events.ts        | src/constants/index.ts | event names reference RouterEvent constants             | ✓ WIRED | RouterEventPayload and event types reference constant values                      |
-| src/errors/config-error.ts | src/errors/base.ts     | extends LLMRouterError                                  | ✓ WIRED | `export class ConfigError extends LLMRouterError` found                           |
+| src/errors/config-error.ts | src/errors/base.ts     | extends PennyLLMError                                   | ✓ WIRED | `export class ConfigError extends PennyLLMError` found                            |
 
 From Plan 01-02:
 
@@ -188,8 +188,8 @@ $ ls dist/
 
 **Error Classes:**
 
-- LLMRouterError base class with toJSON() method (returns {name, code, message, suggestion, metadata, stack})
-- ConfigError extends LLMRouterError (code: CONFIG_ERROR, suggestion: Check your configuration)
+- PennyLLMError base class with toJSON() method (returns {name, code, message, suggestion, metadata, stack})
+- ConfigError extends PennyLLMError (code: CONFIG_ERROR, suggestion: Check your configuration)
 
 ### Config Validation Verification
 
@@ -213,7 +213,7 @@ $ ls dist/
 - Accepts ConfigInput | string (object or file path)
 - Validates through configSchema.parse()
 - Returns Router interface with all expected methods (model, getUsage, health, getConfig, close, on, off)
-- Stub methods log via debug('llm-router:config')
+- Stub methods log via debug('pennyllm:config')
 - Full implementation deferred to Phase 6+ (documented in comments)
 
 ### Test Suite Verification
@@ -264,7 +264,7 @@ All critical connections verified:
 3. **Loader validates through schema:** src/config/loader.ts calls configSchema.parse()
 4. **Main entry re-exports:** src/index.ts exports all public types, constants, errors, functions
 5. **Tests import and verify:** tests/config.test.ts imports configSchema and runs 23 test cases
-6. **Error inheritance:** ConfigError extends LLMRouterError with proper inheritance chain
+6. **Error inheritance:** ConfigError extends PennyLLMError with proper inheritance chain
 
 No orphaned files, no unused exports, no broken imports.
 
@@ -296,7 +296,7 @@ No orphaned files, no unused exports, no broken imports.
 - ✅ All interfaces exported (StorageBackend, ModelCatalog, SelectionStrategy)
 - ✅ All event types exported (RouterEventMap, RouterEventPayload, KeySelectedEvent, UsageRecordedEvent, LimitWarningEvent, LimitExceededEvent, FallbackTriggeredEvent, ConfigLoadedEvent, ErrorEvent, RouterEvents)
 - ✅ All constants exported with type aliases (Strategy/StrategyType, Provider/ProviderType, RouterEvent/RouterEventType, LimitType/LimitTypeValue, EnforcementBehavior/EnforcementBehaviorType, QualityTier/QualityTierType)
-- ✅ All error classes exported (LLMRouterError, ConfigError)
+- ✅ All error classes exported (PennyLLMError, ConfigError)
 - ✅ Router interface exported
 - ✅ Main entry point (src/index.ts) exports all public symbols (41 total)
 

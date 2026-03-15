@@ -4,7 +4,7 @@ import type { StorageBackend } from '../types/interfaces.js';
 import type { EvaluationResult, LimitStatus, ResolvedPolicy } from './types.js';
 import { getResetAt } from '../usage/periods.js';
 
-const log = debug('llm-router:policy:engine');
+const log = debug('pennyllm:policy:engine');
 
 /**
  * PolicyEngine evaluates API keys against resolved policies

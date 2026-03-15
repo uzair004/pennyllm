@@ -40,8 +40,8 @@ DeepSeek does not enforce rate limits. Under heavy load, requests may experience
 ## Configuration
 
 ```typescript
-import { createTokenLimit } from 'llm-router/policy';
-import type { DeepSeekProviderConfig } from 'llm-router/types';
+import { createTokenLimit } from 'pennyllm/policy';
+import type { DeepSeekProviderConfig } from 'pennyllm/types';
 
 const deepseek: DeepSeekProviderConfig = {
   keys: [process.env.DEEPSEEK_API_KEY!],

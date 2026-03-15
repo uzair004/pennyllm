@@ -1,7 +1,7 @@
 /**
- * Base error class for all LLM Router errors
+ * Base error class for all PennyLLM errors
  */
-export class LLMRouterError extends Error {
+export class PennyLLMError extends Error {
   public readonly code: string;
   public readonly suggestion?: string;
   public readonly metadata?: Record<string, unknown>;
@@ -17,7 +17,7 @@ export class LLMRouterError extends Error {
     },
   ) {
     super(message);
-    this.name = 'LLMRouterError';
+    this.name = 'PennyLLMError';
     this.code = options?.code ?? 'UNKNOWN_ERROR';
     if (options?.suggestion !== undefined) {
       this.suggestion = options.suggestion;

@@ -102,7 +102,7 @@ Updated exports:
 
 - ✅ `npx tsc --noEmit` compiles cleanly
 - ✅ `npm test` passes all 74 tests (4 test files)
-- ✅ PolicyEngine can be imported from `llm-router/policy` subpath
+- ✅ PolicyEngine can be imported from `pennyllm/policy` subpath
 - ✅ createRouter returns Router with `.policy` field containing PolicyEngine
 - ✅ Router `.on('limit:warning', handler)` registers on real EventEmitter
 - ✅ PolicyEngine.evaluate() returns EvaluationResult with correct shape

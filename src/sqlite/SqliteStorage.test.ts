@@ -10,7 +10,7 @@ let tempDir: string;
 
 // Run all 10 contract tests
 createStorageContractTests('SqliteStorage', async () => {
-  tempDir = mkdtempSync(join(tmpdir(), 'llm-router-sqlite-test-'));
+  tempDir = mkdtempSync(join(tmpdir(), 'pennyllm-sqlite-test-'));
   const dbPath = join(tempDir, 'test.db');
   return SqliteStorage.create({ path: dbPath });
 });

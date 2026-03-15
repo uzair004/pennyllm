@@ -2,7 +2,7 @@ import type { LanguageModelV3Middleware, LanguageModelV3StreamPart } from '@ai-s
 import type { UsageTracker } from '../usage/UsageTracker.js';
 import debugFactory from 'debug';
 
-const debug = debugFactory('llm-router:middleware');
+const debug = debugFactory('pennyllm:middleware');
 
 /**
  * Create middleware that tracks usage for both generate and stream calls.

@@ -14,7 +14,7 @@ import { CooldownManager } from './cooldown.js';
 import { estimateTokens } from './estimation.js';
 import { getResetAt } from './periods.js';
 
-const log = debug('llm-router:usage');
+const log = debug('pennyllm:usage');
 
 /**
  * Core usage tracking class

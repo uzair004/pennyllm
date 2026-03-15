@@ -38,9 +38,9 @@ Feature passthrough (tool calling, structured output, multi-step agents) require
 **Error Classification & Error Classes:**
 
 - Centralized classifier function: classifyError(error) inspects HTTP status codes as primary signal. Status codes are universal across providers -- no per-provider error message parsing. Maps to: rate_limit (429), auth (401/403), server (500/502/503), network (ECONNREFUSED/ETIMEDOUT/DNS), unknown
-- New error classes: AuthError (401/403 bad key), ProviderError (500/503 provider down), NetworkError (connection failures). All extend LLMRouterError
+- New error classes: AuthError (401/403 bad key), ProviderError (500/503 provider down), NetworkError (connection failures). All extend PennyLLMError
 - Two error paths: (1) Selection-time (pre-request): RateLimitError / QuotaExhaustedError -- all keys known-bad before API call (fast fail from Phase 5), (2) Runtime (post-retry): ProviderError with type discriminator and attempts array -- tried keys, all failed
-- Always wrap in LLMRouterError: Every provider error goes through classifier. Classifiable errors get specific classes. Unclassifiable get generic ProviderError with original as cause
+- Always wrap in PennyLLMError: Every provider error goes through classifier. Classifiable errors get specific classes. Unclassifiable get generic ProviderError with original as cause
 - Error context includes: modelId, provider, keyIndex (never actual key), attempts array, original provider error message
 - Actionable suggestion field: AuthError: "Verify your API key is valid". RateLimitError: "Wait until {time} or add more keys". ProviderError: "Provider {name} is experiencing issues"
 - Attempts array per-attempt detail: { keyIndex, errorType, statusCode, providerMessage, retryAfter? }. Raw provider message included for debugging
@@ -110,7 +110,7 @@ Feature passthrough (tool calling, structured output, multi-step agents) require
 | ---------------- | ---------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | @ai-sdk/provider | ^3.0.0     | LanguageModelV3 types, APICallError, AISDKError | Already a dependency; provides the exact error types and model interfaces we need        |
 | ai               | ^6.0.0     | wrapLanguageModel, generateText, streamText     | Already a peer dependency; the middleware wrapping system is central to our architecture |
-| debug            | ^4.3.0     | Debug logging with namespaces                   | Already used throughout; add `llm-router:retry` namespace                                |
+| debug            | ^4.3.0     | Debug logging with namespaces                   | Already used throughout; add `pennyllm:retry` namespace                                  |
 | node:events      | (built-in) | EventEmitter for router events                  | Already used in createRouter(); proxy receives emitter reference                         |
 | node:crypto      | (built-in) | randomUUID for requestId                        | Already used in router-model.ts                                                          |
 
@@ -140,7 +140,7 @@ Feature passthrough (tool calling, structured output, multi-step agents) require
 ```
 src/
   errors/
-    base.ts                    # LLMRouterError (existing)
+    base.ts                    # PennyLLMError (existing)
     config-error.ts            # ConfigError (existing)
     rate-limit-error.ts        # RateLimitError (existing, selection-time)
     quota-exhausted-error.ts   # QuotaExhaustedError (existing, selection-time)
@@ -204,7 +204,7 @@ function createRetryProxy(options: RetryProxyOptions): LanguageModelV3 {
 
   return {
     specificationVersion: 'v3',
-    provider: 'llm-router',
+    provider: 'pennyllm',
     modelId: options.modelId,
     supportedUrls: currentModel.supportedUrls,
 
@@ -405,19 +405,19 @@ function handleKeyState(
 ### Anti-Patterns to Avoid
 
 - **Middleware-based retry:** The middleware `wrapGenerate`/`wrapStream` hooks receive a `doGenerate` function bound to the current model. You CANNOT swap the model from within middleware. Retry with a different key requires a proxy that creates new model instances.
-- **Double retry with AI SDK:** If our proxy throws an `APICallError` with `isRetryable: true`, the AI SDK's own retry mechanism will also retry. Our proxy must throw `LLMRouterError` subclasses (not `APICallError`) so the AI SDK does not double-retry.
+- **Double retry with AI SDK:** If our proxy throws an `APICallError` with `isRetryable: true`, the AI SDK's own retry mechanism will also retry. Our proxy must throw `PennyLLMError` subclasses (not `APICallError`) so the AI SDK does not double-retry.
 - **Catching errors after stream starts:** Once `doStream()` returns a `ReadableStream` and chunks start flowing, catching errors in the stream transform is too late for retry. The consumer already has partial data. Only retry if `doStream()` itself throws (before any chunks).
-- **Mutating provider or modelId on retry:** The proxy's `provider` and `modelId` properties are read by the AI SDK for telemetry. They should stay constant (`'llm-router'` and the original modelId) even after key switches. The underlying provider model changes, but the proxy identity does not.
+- **Mutating provider or modelId on retry:** The proxy's `provider` and `modelId` properties are read by the AI SDK for telemetry. They should stay constant (`'pennyllm'` and the original modelId) even after key switches. The underlying provider model changes, but the proxy identity does not.
 
 ## Don't Hand-Roll
 
-| Problem                      | Don't Build               | Use Instead                                                                                 | Why                                                                                     |
-| ---------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| HTTP status code extraction  | Custom HTTP error parsing | `APICallError.isInstance()` + `.statusCode` + `.responseHeaders`                            | AI SDK's error type is the standard; all providers throw `APICallError` for HTTP errors |
-| Retry-After header parsing   | Custom header parser      | `CooldownManager.setCooldown()` (already parses Retry-After)                                | Already built in Phase 4; supports both seconds and HTTP date formats                   |
-| Error wrapping/serialization | Custom error base class   | Extend `LLMRouterError` (already has `toJSON()`, `code`, `suggestion`, `metadata`, `cause`) | Phase 1 built a robust error hierarchy                                                  |
-| Event emission               | Custom pub/sub            | `EventEmitter` via `router.on()` (already wired)                                            | Phase 1 established the pattern; just emit new event names                              |
-| Key selection                | Custom selection in proxy | Reuse `KeySelector.selectKey()` or `router.model()`                                         | Phase 5 built the full selection pipeline with strategy/cooldown/policy integration     |
+| Problem                      | Don't Build               | Use Instead                                                                                | Why                                                                                     |
+| ---------------------------- | ------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| HTTP status code extraction  | Custom HTTP error parsing | `APICallError.isInstance()` + `.statusCode` + `.responseHeaders`                           | AI SDK's error type is the standard; all providers throw `APICallError` for HTTP errors |
+| Retry-After header parsing   | Custom header parser      | `CooldownManager.setCooldown()` (already parses Retry-After)                               | Already built in Phase 4; supports both seconds and HTTP date formats                   |
+| Error wrapping/serialization | Custom error base class   | Extend `PennyLLMError` (already has `toJSON()`, `code`, `suggestion`, `metadata`, `cause`) | Phase 1 built a robust error hierarchy                                                  |
+| Event emission               | Custom pub/sub            | `EventEmitter` via `router.on()` (already wired)                                           | Phase 1 established the pattern; just emit new event names                              |
+| Key selection                | Custom selection in proxy | Reuse `KeySelector.selectKey()` or `router.model()`                                        | Phase 5 built the full selection pipeline with strategy/cooldown/policy integration     |
 
 **Key insight:** Phase 7 is primarily a composition phase. The retry proxy composes existing components (CooldownManager, ProviderRegistry, KeySelector, EventEmitter) with new error classification logic. Minimal new infrastructure is needed.
 
@@ -427,7 +427,7 @@ function handleKeyState(
 
 **What goes wrong:** The proxy throws a retryable `APICallError`, then the AI SDK's `generateText`/`streamText` also retries the same call, causing up to `maxRetries * ourRetries` total attempts.
 **Why it happens:** The AI SDK checks `APICallError.isInstance(error) && error.isRetryable` to decide whether to retry.
-**How to avoid:** Always throw `LLMRouterError` subclasses (AuthError, ProviderError, NetworkError) from the proxy. These are NOT `APICallError` instances, so `APICallError.isInstance()` returns false and the AI SDK will not retry.
+**How to avoid:** Always throw `PennyLLMError` subclasses (AuthError, ProviderError, NetworkError) from the proxy. These are NOT `APICallError` instances, so `APICallError.isInstance()` returns false and the AI SDK will not retry.
 **Warning signs:** Seeing more API calls than expected in provider dashboards; retry events firing more than the number of configured keys.
 
 ### Pitfall 2: Stream Error vs Setup Error
@@ -524,7 +524,7 @@ try {
 
 ```typescript
 // Source: Pattern from src/errors/config-error.ts and rate-limit-error.ts
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 interface AttemptRecord {
   keyIndex: number;
@@ -534,7 +534,7 @@ interface AttemptRecord {
   retryAfter?: string;
 }
 
-export class ProviderError extends LLMRouterError {
+export class ProviderError extends PennyLLMError {
   public readonly errorType: 'rate_limit' | 'auth' | 'server' | 'network' | 'unknown';
   public readonly attempts: AttemptRecord[];
 
@@ -574,7 +574,7 @@ export class ProviderError extends LLMRouterError {
 
 const proxy: LanguageModelV3 = {
   specificationVersion: 'v3' as const,
-  provider: 'llm-router',
+  provider: 'pennyllm',
   modelId: 'google/gemini-2.0-flash',
   supportedUrls: initialModel.supportedUrls,
 
@@ -715,7 +715,7 @@ wrapModel: async (modelId, opts) => {
     model: retryProxy,   // <-- proxy, not raw baseModel
     middleware,
     modelId,
-    providerId: 'llm-router',
+    providerId: 'pennyllm',
   });
   return wrappedModel;
 },

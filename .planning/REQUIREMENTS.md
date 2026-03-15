@@ -1,4 +1,4 @@
-# Requirements: LLM Router
+# Requirements: PennyLLM
 
 **Defined:** 2026-03-11
 **Core Value:** Never get charged for LLM API calls — rotate through free tier keys intelligently so developers can experiment without burning cash.

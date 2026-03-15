@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "description": "Provider policy skeleton for llm-router. No limit values included — configure limits in your router config or refer to docs/providers/ for recommended values.",
+  "description": "Provider policy skeleton for pennyllm. No limit values included — configure limits in your router config or refer to docs/providers/ for recommended values.",
   "providers": {
     "google": {
       "name": "Google AI Studio (Gemini)",

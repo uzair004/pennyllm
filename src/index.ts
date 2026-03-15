@@ -1,5 +1,5 @@
 /**
- * LLM Router - Intelligent API key rotation and quota management
+ * PennyLLM - Intelligent API key rotation and quota management
  */
 
 // Config and Router
@@ -16,8 +16,8 @@ export type { ConfigInput, ConfigOutput, Router } from './config/index.js';
 export { MemoryStorage } from './storage/index.js';
 
 // Storage adapters (optional peer dependencies)
-// Users import directly: import { SqliteStorage } from 'llm-router/sqlite'
-// Users import directly: import { RedisStorage } from 'llm-router/redis'
+// Users import directly: import { SqliteStorage } from 'pennyllm/sqlite'
+// Users import directly: import { RedisStorage } from 'pennyllm/redis'
 // Type-only exports are safe (erased at compile time)
 export type { SqliteStorageOptions } from './sqlite/index.js';
 export type { RedisStorageOptions } from './redis/index.js';
@@ -145,7 +145,7 @@ export {
   AllProvidersExhaustedError,
   AuthError,
   ConfigError,
-  LLMRouterError,
+  PennyLLMError,
   NetworkError,
   ProviderError,
   RateLimitError,

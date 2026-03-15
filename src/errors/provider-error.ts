@@ -1,4 +1,4 @@
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 import type { AttemptRecord, ErrorType } from '../wrapper/error-classifier.js';
 
 function getSuggestion(errorType: ErrorType, provider: string): string {
@@ -21,7 +21,7 @@ function getSuggestion(errorType: ErrorType, provider: string): string {
  * Error thrown when all keys for a provider have been exhausted through retries.
  * Includes the error type discriminator and full attempt history.
  */
-export class ProviderError extends LLMRouterError {
+export class ProviderError extends PennyLLMError {
   public readonly errorType: ErrorType;
   public readonly attempts: AttemptRecord[];
   public readonly modelId: string;

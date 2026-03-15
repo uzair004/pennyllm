@@ -6,7 +6,7 @@
 
 ## Summary
 
-Phase 9 introduces cross-provider fallback routing and monthly budget enforcement into the existing LLM Router. The codebase already has all necessary building blocks: `QuotaExhaustedError` and `RateLimitError` thrown by `KeySelector`, `FallbackTriggeredEvent` type defined but never emitted, `BudgetConfig` with `monthlyLimit` and `alertThresholds` in the config schema, `DefaultModelCatalog.listModels()` with capability/quality/price filters, and `ModelMetadata` with `capabilities`, `qualityTier`, `contextWindow`, and `pricing` fields.
+Phase 9 introduces cross-provider fallback routing and monthly budget enforcement into the existing PennyLLM. The codebase already has all necessary building blocks: `QuotaExhaustedError` and `RateLimitError` thrown by `KeySelector`, `FallbackTriggeredEvent` type defined but never emitted, `BudgetConfig` with `monthlyLimit` and `alertThresholds` in the config schema, `DefaultModelCatalog.listModels()` with capability/quality/price filters, and `ModelMetadata` with `capabilities`, `qualityTier`, `contextWindow`, and `pricing` fields.
 
 The primary implementation challenge is architectural: the fallback layer must sit **above** the per-provider retry proxy but **below** the AI SDK middleware wrapper. Currently, `createRouter().wrapModel()` creates a single retry proxy for one provider. Phase 9 must intercept `QuotaExhaustedError`, `RateLimitError`, and server errors from the retry proxy, find alternative providers via catalog queries, create new retry proxies for fallback providers, and chain the attempts -- all while preserving the Vercel AI SDK response contract. Budget tracking is a simpler post-call accumulator using the existing `StorageBackend` with a dedicated monthly key pattern.
 
@@ -90,12 +90,12 @@ The primary implementation challenge is architectural: the fallback layer must s
 
 ### Core
 
-| Library                  | Version       | Purpose                                                         | Why Standard                                               |
-| ------------------------ | ------------- | --------------------------------------------------------------- | ---------------------------------------------------------- |
-| zod                      | ^3.23.0       | Config schema validation for fallback section                   | Already used throughout codebase for all config validation |
-| debug                    | ^4.3.0        | Namespaced logging (`llm-router:fallback`, `llm-router:budget`) | Already used in every module                               |
-| node:events EventEmitter | Node built-in | Budget and fallback event emission                              | Already the event system for the router                    |
-| node:crypto randomUUID   | Node built-in | Request ID generation for fallback chains                       | Already used in createRouter                               |
+| Library                  | Version       | Purpose                                                     | Why Standard                                               |
+| ------------------------ | ------------- | ----------------------------------------------------------- | ---------------------------------------------------------- |
+| zod                      | ^3.23.0       | Config schema validation for fallback section               | Already used throughout codebase for all config validation |
+| debug                    | ^4.3.0        | Namespaced logging (`pennyllm:fallback`, `pennyllm:budget`) | Already used in every module                               |
+| node:events EventEmitter | Node built-in | Budget and fallback event emission                          | Already the event system for the router                    |
+| node:crypto randomUUID   | Node built-in | Request ID generation for fallback chains                   | Already used in createRouter                               |
 
 ### Supporting
 
@@ -473,7 +473,7 @@ const config = {
 
 ```typescript
 // Source: Pattern derived from existing ProviderError in src/errors/provider-error.ts
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 interface ProviderAttempt {
   provider: string;
@@ -483,7 +483,7 @@ interface ProviderAttempt {
   earliestRecovery?: string;
 }
 
-export class AllProvidersExhaustedError extends LLMRouterError {
+export class AllProvidersExhaustedError extends PennyLLMError {
   public readonly attempts: ProviderAttempt[];
   public readonly earliestRecovery: string | null;
 
@@ -668,7 +668,7 @@ async doGenerate(params) {
 2. **Response Metadata for Fallback Info**
    - What we know: AI SDK LanguageModelV3 response includes `response.providerMetadata` as an optional field for provider-specific data.
    - What's unclear: The exact mechanism to inject custom metadata into the response without breaking the AI SDK contract.
-   - Recommendation: Use a combination of: (a) `providerMetadata` field in the proxy response for programmatic access, and (b) `fallback:triggered` event for observability. The proxy can wrap the response to add `providerMetadata['llm-router'] = { fallbackUsed: true, originalModel, actualModel }`.
+   - Recommendation: Use a combination of: (a) `providerMetadata` field in the proxy response for programmatic access, and (b) `fallback:triggered` event for observability. The proxy can wrap the response to add `providerMetadata['pennyllm'] = { fallbackUsed: true, originalModel, actualModel }`.
 
 3. **Free Model Detection**
    - What we know: Free models have `pricing: { promptPer1MTokens: 0, completionPer1MTokens: 0 }`. Models without pricing have `pricing: null`.

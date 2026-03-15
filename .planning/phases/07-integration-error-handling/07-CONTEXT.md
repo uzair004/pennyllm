@@ -31,11 +31,11 @@ Router handles streaming, errors, and preserves all Vercel AI SDK features (gene
 ### Error Classification & Error Classes
 
 - **Centralized classifier function:** classifyError(error) inspects HTTP status codes as primary signal. Status codes are universal across providers — no per-provider error message parsing. Maps to: rate_limit (429), auth (401/403), server (500/502/503), network (ECONNREFUSED/ETIMEDOUT/DNS), unknown
-- **New error classes:** AuthError (401/403 bad key), ProviderError (500/503 provider down), NetworkError (connection failures). All extend LLMRouterError
+- **New error classes:** AuthError (401/403 bad key), ProviderError (500/503 provider down), NetworkError (connection failures). All extend PennyLLMError
 - **Two error paths:**
   1. **Selection-time (pre-request):** RateLimitError / QuotaExhaustedError — all keys known-bad before API call (fast fail from Phase 5)
   2. **Runtime (post-retry):** ProviderError with `type` discriminator ('rate_limit' | 'auth' | 'server' | 'network' | 'unknown') and attempts array — tried keys, all failed
-- **Always wrap in LLMRouterError:** Every provider error goes through classifier. Classifiable errors get specific classes. Unclassifiable get generic ProviderError with original as `cause`
+- **Always wrap in PennyLLMError:** Every provider error goes through classifier. Classifiable errors get specific classes. Unclassifiable get generic ProviderError with original as `cause`
 - **Error context includes:** modelId, provider, keyIndex (never actual key), attempts array, original provider error message
 - **Actionable suggestion field:** AuthError: "Verify your API key is valid". RateLimitError: "Wait until {time} or add more keys". ProviderError: "Provider {name} is experiencing issues"
 - **Attempts array per-attempt detail:** { keyIndex, errorType, statusCode, providerMessage, retryAfter? }. Raw provider message included for debugging
@@ -99,7 +99,7 @@ Router handles streaming, errors, and preserves all Vercel AI SDK features (gene
 - `createRouterMiddleware` (src/wrapper/middleware.ts): Already handles generate + stream usage tracking via TransformStream. Stays simple — retry logic goes in proxy wrapper
 - `RateLimitError` (src/errors/rate-limit-error.ts): Existing selection-time error with cooldownUntil per key. Preserved for pre-request failures
 - `QuotaExhaustedError` (src/errors/quota-exhausted-error.ts): Existing selection-time error with nextReset per key. Preserved for pre-request failures
-- `LLMRouterError` (src/errors/base.ts): Base class with code, suggestion, metadata, cause, toJSON(). All new errors extend this
+- `PennyLLMError` (src/errors/base.ts): Base class with code, suggestion, metadata, cause, toJSON(). All new errors extend this
 - `ProviderRegistry` (src/wrapper/provider-registry.ts): Dynamic provider loading. Used by proxy wrapper to create new model instances on retry
 - `routerModel()` (src/wrapper/router-model.ts): Current entry point. Will be refactored to return proxy wrapper instead of pre-bound model
 - `CooldownManager` (src/usage/cooldown.ts): Manages 429-based cooldowns with exponential backoff. Proxy wrapper calls this on rate limit errors
@@ -107,7 +107,7 @@ Router handles streaming, errors, and preserves all Vercel AI SDK features (gene
 
 ### Established Patterns
 
-- `debug` package with namespaces (llm-router:middleware, llm-router:registry). Add llm-router:retry for retry logic
+- `debug` package with namespaces (pennyllm:middleware, pennyllm:registry). Add pennyllm:retry for retry logic
 - Fire-and-forget for events and recording (never throws to caller)
 - Const objects with `as const` for event name constants (src/constants/index.ts)
 - Typed event payloads in src/types/events.ts

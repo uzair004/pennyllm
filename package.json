@@ -1,5 +1,5 @@
 {
-  "name": "llm-router",
+  "name": "pennyllm",
   "version": "0.0.0",
   "description": "Intelligent LLM API key rotation and quota management for free-tier optimization",
   "type": "module",
@@ -150,10 +150,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/muhammaduzair/llm-router.git"
+    "url": "https://github.com/muhammaduzair/pennyllm.git"
   },
   "bugs": {
-    "url": "https://github.com/muhammaduzair/llm-router/issues"
+    "url": "https://github.com/muhammaduzair/pennyllm/issues"
   },
-  "homepage": "https://github.com/muhammaduzair/llm-router#readme"
+  "homepage": "https://github.com/muhammaduzair/pennyllm#readme"
 }

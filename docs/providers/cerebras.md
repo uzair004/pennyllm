@@ -39,9 +39,9 @@ Limits vary by model. Below are reference values for the main available models. 
 ## Configuration
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { createRateLimit, createTokenLimit } from 'llm-router/policy';
-import type { CerebrasProviderConfig } from 'llm-router/types';
+import { createRouter } from 'pennyllm';
+import { createRateLimit, createTokenLimit } from 'pennyllm/policy';
+import type { CerebrasProviderConfig } from 'pennyllm/types';
 
 const cerebras: CerebrasProviderConfig = {
   keys: [process.env.CEREBRAS_API_KEY!],
@@ -65,7 +65,7 @@ const router = await createRouter({
 - **Ultra-fast inference (~2,600 tokens/sec).** Cerebras uses custom Wafer-Scale Engine (WSE) hardware, delivering some of the fastest inference speeds available. Excellent for latency-sensitive applications.
 - **Token bucket algorithm.** Unlike providers that reset at fixed intervals (e.g., midnight), Cerebras uses continuous token replenishment. Capacity fills back up gradually rather than resetting all at once. This means you can sustain a steady request rate rather than bursting and waiting.
 - **1M TPD is generous.** Combined with 14,400 RPD, Cerebras provides substantial daily capacity for free -- the main constraint is the per-request context window.
-- **Enforcement:** Rate limiting uses a token bucket model. The llm-router retry proxy handles rate limit responses automatically.
+- **Enforcement:** Rate limiting uses a token bucket model. The pennyllm retry proxy handles rate limit responses automatically.
 
 ## Paid Tier
 

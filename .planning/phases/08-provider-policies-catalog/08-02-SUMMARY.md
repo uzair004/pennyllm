@@ -51,7 +51,7 @@ key-decisions:
 
 patterns-established:
   - 'Provider doc template: Quick Reference table, Getting Your API Key steps, Free Tier Summary, Configuration snippet, Gotchas & Tips, Paid Tier'
-  - 'All config snippets import from llm-router/policy and llm-router/types, using typed provider configs'
+  - 'All config snippets import from pennyllm/policy and pennyllm/types, using typed provider configs'
 
 requirements-completed: [PROV-01, PROV-02, PROV-03, PROV-04, PROV-05, PROV-06, DX-02]
 
@@ -62,7 +62,7 @@ completed: 2026-03-14
 
 # Phase 8 Plan 2: Provider Key Acquisition Documentation Summary
 
-**6 self-contained provider docs with sign-up instructions, per-model limit tables, llm-router config snippets using builder helpers, and provider-specific gotchas**
+**6 self-contained provider docs with sign-up instructions, per-model limit tables, pennyllm config snippets using builder helpers, and provider-specific gotchas**
 
 ## Performance
 
@@ -100,7 +100,7 @@ Each task was committed atomically:
 
 - Config snippets use illustrative values with comments like "Adjust these values based on your account's current limits" rather than asserting values ARE the current limits
 - HuggingFace config uses createCallLimit instead of createTokenLimit since billing is compute-time-based, not token-based
-- OpenRouter doc includes a separate AI SDK provider setup example showing createOpenAICompatible with base URL for direct usage outside llm-router
+- OpenRouter doc includes a separate AI SDK provider setup example showing createOpenAICompatible with base URL for direct usage outside pennyllm
 
 ## Deviations from Plan
 

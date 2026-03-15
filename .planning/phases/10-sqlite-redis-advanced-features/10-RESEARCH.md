@@ -20,13 +20,13 @@ Redis (via `ioredis` v5.x) is the primary focus. It provides atomic counter oper
 
 - **Redis driver:** `ioredis` as optional peer dependency
 - **Redis connection config:** Accept either a connection URL string (`redis://...`) or an ioredis options object
-- **Redis key prefix:** All keys prefixed with `llm-router:` (configurable for multi-tenant)
+- **Redis key prefix:** All keys prefixed with `pennyllm:` (configurable for multi-tenant)
 - **Redis atomicity:** Use Redis INCRBY/HINCRBY for atomic counter increments. No Lua scripts needed
 - **Redis expiration:** Use Redis TTL on keys matching time window durations
 - **Redis connection failures:** Fail loudly with clear error. Never silently fall back to memory storage
 - **Redis reconnection:** Rely on ioredis built-in reconnection strategy (exponential backoff)
 - **Redis close:** Disconnect the ioredis client on `close()`
-- **Redis export path:** `RedisStorage` from `llm-router/redis`
+- **Redis export path:** `RedisStorage` from `pennyllm/redis`
 - **SQLite driver:** `better-sqlite3` as optional peer dependency. No sql.js fallback
 - **SQLite DB location:** XDG data directory by default. User can override with explicit path
 - **SQLite data sharing:** Single shared DB across all projects by default
@@ -35,7 +35,7 @@ Redis (via `ioredis` v5.x) is the primary focus. It provides atomic counter oper
 - **SQLite migrations:** Forward-only with schema_info table tracking version. Auto-migrate on open
 - **SQLite auto-cleanup:** Delete expired rows on write operations (lazy cleanup)
 - **SQLite driver detection:** Silent. Log at debug level
-- **SQLite export path:** `SqliteStorage` from `llm-router/sqlite`
+- **SQLite export path:** `SqliteStorage` from `pennyllm/sqlite`
 - **Observability hooks:** Existing EventEmitter already covers all scenarios. Phase 10 adds typed hook registration with typed callbacks as convenience layer, not replacement
 - **Hook API:** `router.onKeySelected(cb)`, `router.onUsageRecorded(cb)`, etc. -- typed wrappers that return unsubscribe functions
 - **No separate hook system.** EventEmitter remains the backbone
@@ -87,9 +87,9 @@ Redis (via `ioredis` v5.x) is the primary focus. It provides atomic counter oper
 
 ### Supporting
 
-| Library | Version | Purpose            | When to Use                                                                   |
-| ------- | ------- | ------------------ | ----------------------------------------------------------------------------- |
-| debug   | ^4.3.0  | Namespaced logging | Already in project. Use `llm-router:redis` and `llm-router:sqlite` namespaces |
+| Library | Version | Purpose            | When to Use                                                               |
+| ------- | ------- | ------------------ | ------------------------------------------------------------------------- |
+| debug   | ^4.3.0  | Namespaced logging | Already in project. Use `pennyllm:redis` and `pennyllm:sqlite` namespaces |
 
 ### Alternatives Considered
 
@@ -145,14 +145,14 @@ src/
 **Design:**
 
 ```
-Key:    llm-router:{provider}:{keyIndex}:{windowType}:{periodKey}
+Key:    pennyllm:{provider}:{keyIndex}:{windowType}:{periodKey}
 Fields: prompt_tokens, completion_tokens, call_count
 ```
 
 **Example:**
 
 ```typescript
-// Key: "llm-router:google:0:per-minute:28761234"
+// Key: "pennyllm:google:0:per-minute:28761234"
 // Fields: { prompt_tokens: "1500", completion_tokens: "750", call_count: "5" }
 
 // Atomic increment of multiple fields:
@@ -228,11 +228,11 @@ DO UPDATE SET
 // src/redis/RedisStorage.ts
 import type { StorageBackend, StructuredUsage } from '../types/interfaces.js';
 import type { TimeWindow, UsageRecord } from '../types/domain.js';
-import { LLMRouterError } from '../errors/base.js';
+import { PennyLLMError } from '../errors/base.js';
 import { getPeriodKey } from '../usage/periods.js';
 import debugFactory from 'debug';
 
-const debug = debugFactory('llm-router:redis');
+const debug = debugFactory('pennyllm:redis');
 
 // ioredis is loaded at class construction, not at module level
 // This allows the module to be imported even if ioredis is not installed
@@ -242,7 +242,7 @@ import type Redis from 'ioredis';
 export interface RedisStorageOptions {
   /** Redis connection URL (redis://...) or ioredis options object */
   connection: string | Record<string, unknown>;
-  /** Key prefix for all Redis keys (default: 'llm-router:') */
+  /** Key prefix for all Redis keys (default: 'pennyllm:') */
   prefix?: string;
 }
 
@@ -262,13 +262,13 @@ export class RedisStorage implements StorageBackend {
       const mod = await import('ioredis');
       IoRedis = mod.default;
     } catch {
-      throw new LLMRouterError(
+      throw new PennyLLMError(
         'ioredis is required for RedisStorage. Install it: npm install ioredis',
         { code: 'MISSING_PEER_DEPENDENCY' },
       );
     }
 
-    const prefix = options.prefix ?? 'llm-router:';
+    const prefix = options.prefix ?? 'pennyllm:';
     const client =
       typeof options.connection === 'string'
         ? new IoRedis(options.connection)
@@ -295,7 +295,7 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 
 export function getDefaultDbPath(): string {
-  const appName = 'llm-router';
+  const appName = 'pennyllm';
 
   switch (process.platform) {
     case 'darwin':
@@ -449,7 +449,7 @@ async increment(
   pipeline.expire(key, ttlSeconds);
 
   const results = await pipeline.exec();
-  if (!results) throw new LLMRouterError('Redis pipeline returned null', { code: 'REDIS_ERROR' });
+  if (!results) throw new PennyLLMError('Redis pipeline returned null', { code: 'REDIS_ERROR' });
 
   // Extract new values from pipeline results
   // results[i] = [error, value]
@@ -549,13 +549,13 @@ static async create(options: RedisStorageOptions): Promise<RedisStorage> {
     const mod = await import('ioredis');
     IoRedis = mod.default;
   } catch {
-    throw new LLMRouterError(
+    throw new PennyLLMError(
       'ioredis is required for RedisStorage. Install it: npm install ioredis',
       { code: 'MISSING_PEER_DEPENDENCY' }
     );
   }
 
-  const prefix = options.prefix ?? 'llm-router:';
+  const prefix = options.prefix ?? 'pennyllm:';
   const client = typeof options.connection === 'string'
     ? new IoRedis(options.connection)
     : new IoRedis(options.connection as ConstructorParameters<typeof IoRedis>[0]);
@@ -564,7 +564,7 @@ static async create(options: RedisStorageOptions): Promise<RedisStorage> {
   await new Promise<void>((resolve, reject) => {
     client.once('ready', () => resolve());
     client.once('error', (err: Error) => reject(
-      new LLMRouterError(`Redis connection failed: ${err.message}`, {
+      new PennyLLMError(`Redis connection failed: ${err.message}`, {
         code: 'REDIS_CONNECTION_ERROR',
         cause: err,
       })

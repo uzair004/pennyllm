@@ -59,7 +59,7 @@ Phase 8 delivers key acquisition documentation for 12 providers, removes auto-ap
 - Each doc includes:
   - Sign-up URL and API key page URL
   - Free tier summary (limits, access requirements)
-  - Per-provider config snippet showing how to use with llm-router
+  - Per-provider config snippet showing how to use with pennyllm
   - Gotchas & Tips section (practical knowledge)
   - Env variable name matching Vercel AI SDK conventions (e.g., GOOGLE_GENERATIVE_AI_API_KEY)
   - Which @ai-sdk/\* package to use (e.g., @ai-sdk/google, @ai-sdk/openai-compatible)
@@ -264,7 +264,7 @@ Phase 8 delivers key acquisition documentation for 12 providers, removes auto-ap
 
 ### Phase 11 Items (DX Polish)
 
-- CLI validator command (`npx llm-router validate-config`)
+- CLI validator command (`npx pennyllm validate-config`)
 - Config wizard for guided setup
 
 </deferred>

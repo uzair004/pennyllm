@@ -1,9 +1,9 @@
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 /**
  * Error thrown when a provider returns 401 or 403 (authentication/authorization failure).
  */
-export class AuthError extends LLMRouterError {
+export class AuthError extends PennyLLMError {
   constructor(
     provider: string,
     keyIndex: number,

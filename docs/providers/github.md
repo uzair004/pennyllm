@@ -50,8 +50,8 @@
 Using the dedicated `@github/models` package:
 
 ```typescript
-import { createRateLimit } from 'llm-router/policy';
-import type { GitHubProviderConfig } from 'llm-router/types';
+import { createRateLimit } from 'pennyllm/policy';
+import type { GitHubProviderConfig } from 'pennyllm/types';
 
 const github: GitHubProviderConfig = {
   keys: [process.env.GITHUB_TOKEN!],

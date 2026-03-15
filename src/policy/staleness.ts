@@ -2,7 +2,7 @@ import debug from 'debug';
 import { EventEmitter } from 'node:events';
 import type { ResolvedPolicy } from './types.js';
 
-const log = debug('llm-router:policy:staleness');
+const log = debug('pennyllm:policy:staleness');
 
 /**
  * Check if shipped policies are stale (>30 days old)
@@ -31,8 +31,8 @@ export function checkStaleness(resolvedPolicies: ResolvedPolicy[], emitter: Even
     // Emit stale event if >30 days old
     if (daysOld > 30) {
       const suggestion = policy.metadata.sourceUrl
-        ? `Run 'npm update llm-router' or verify limits at ${policy.metadata.sourceUrl}`
-        : `Run 'npm update llm-router' to get latest policy updates`;
+        ? `Run 'npm update pennyllm' or verify limits at ${policy.metadata.sourceUrl}`
+        : `Run 'npm update pennyllm' to get latest policy updates`;
 
       log(
         'Stale policy detected: %s (researched %s, %d days old)',

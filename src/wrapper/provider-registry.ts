@@ -2,7 +2,7 @@ import type { LanguageModelV3 } from '@ai-sdk/provider';
 import debugFactory from 'debug';
 import { ConfigError } from '../errors/config-error.js';
 
-const debug = debugFactory('llm-router:registry');
+const debug = debugFactory('pennyllm:registry');
 
 /**
  * Provider factory function type

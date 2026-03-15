@@ -1,7 +1,7 @@
 import debug from 'debug';
 import type { EstimationConfig, EstimationResult } from './types.js';
 
-const log = debug('llm-router:usage');
+const log = debug('pennyllm:usage');
 
 /**
  * Default character-to-token ratio estimator (~4 chars per token)

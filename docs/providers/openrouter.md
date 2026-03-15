@@ -57,10 +57,10 @@ Below are reference picks based on capabilities and context window. The free mod
 ## Configuration
 
 ```typescript
-import { createRouter } from 'llm-router';
+import { createRouter } from 'pennyllm';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { createRateLimit } from 'llm-router/policy';
-import type { OpenRouterProviderConfig } from 'llm-router/types';
+import { createRateLimit } from 'pennyllm/policy';
+import type { OpenRouterProviderConfig } from 'pennyllm/types';
 
 const openrouter: OpenRouterProviderConfig = {
   keys: [process.env.OPENROUTER_API_KEY!],
@@ -99,7 +99,7 @@ const model = openrouter.chatModel('meta-llama/llama-3.3-70b-instruct:free');
 - **Negative credit balance blocks ALL requests** -- including free models. You will receive HTTP 402 errors until the balance is positive. Be careful with paid model usage.
 - **Provider-level rate limiting:** During peak times, the underlying provider (e.g., Google, Meta) may rate-limit requests even if your OpenRouter quota is available.
 - **The $10 RPD unlock is permanent.** Once you purchase $10 in credits, you keep 1,000 RPD for free models forever, even after spending the credits.
-- **Enforcement:** OpenRouter returns HTTP 429 for rate limits and HTTP 402 for negative balance. The llm-router retry proxy handles 429s automatically but cannot recover from 402 (payment required).
+- **Enforcement:** OpenRouter returns HTTP 429 for rate limits and HTTP 402 for negative balance. The pennyllm retry proxy handles 429s automatically but cannot recover from 402 (payment required).
 
 ## Paid Tier
 

@@ -5,7 +5,7 @@ import type { RouterConfig } from '../types/config.js';
 import { ConfigError } from '../errors/config-error.js';
 import { configSchema } from './schema.js';
 
-const debug = debugFactory('llm-router:config');
+const debug = debugFactory('pennyllm:config');
 
 /**
  * Interpolate environment variables in a string

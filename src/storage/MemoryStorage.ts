@@ -2,10 +2,10 @@ import debugFactory from 'debug';
 import { randomUUID } from 'node:crypto';
 import type { StorageBackend } from '../types/interfaces.js';
 import type { TimeWindow, UsageRecord } from '../types/domain.js';
-import { LLMRouterError } from '../errors/base.js';
+import { PennyLLMError } from '../errors/base.js';
 import { getPeriodKey } from '../usage/periods.js';
 
-const debug = debugFactory('llm-router:storage');
+const debug = debugFactory('pennyllm:storage');
 
 /**
  * In-memory storage backend implementation
@@ -64,7 +64,7 @@ export class MemoryStorage implements StorageBackend {
    */
   private ensureOpen(): void {
     if (this.closed) {
-      throw new LLMRouterError('Storage backend is closed', { code: 'STORAGE_CLOSED' });
+      throw new PennyLLMError('Storage backend is closed', { code: 'STORAGE_CLOSED' });
     }
   }
 

@@ -20,7 +20,7 @@ re_verification: false
 | #   | Truth                                                                               | Status     | Evidence                                                                                          |
 | --- | ----------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------- |
 | 1   | createRouter({ debug: true }) logs structured routing summaries to stdout           | ✓ VERIFIED | DebugLogger.ts implements 8 hook subscriptions with console.log, wired in config/index.ts:414-418 |
-| 2   | DEBUG=llm-router:\* env var enables debug mode without config flag                  | ✓ VERIFIED | config/index.ts:414 checks `process.env['DEBUG']` with /llm-router/ regex                         |
+| 2   | DEBUG=pennyllm:\* env var enables debug mode without config flag                    | ✓ VERIFIED | config/index.ts:414 checks `process.env['DEBUG']` with /pennyllm/ regex                           |
 | 3   | Misspelled provider names in config produce suggestions (e.g. 'googel' -> 'google') | ✓ VERIFIED | validation.ts:47-60 suggestProvider() with Levenshtein distance <= 2                              |
 | 4   | defineConfig() provides IDE autocomplete for known provider names                   | ✓ VERIFIED | define-config.ts:9 `ProviderType \| (string & {})` pattern preserves autocomplete                 |
 | 5   | Multiple keys per provider config works and is type-safe                            | ✓ VERIFIED | schema.ts:42-43 `keys: z.array(keyConfigSchema).min(1)`, README shows 3-key example               |
@@ -63,7 +63,7 @@ re_verification: false
 | src/config/index.ts         | src/config/validation.ts | import formatConfigErrors for ZodError transform | ✓ WIRED | Line 12 import, line 426 called in catch block with ZodError                              |
 | src/config/define-config.ts | src/constants/index.ts   | ProviderType union import                        | ✓ WIRED | Line 1 imports ProviderType, line 9 uses in ProviderName type                             |
 | README.md                   | docs/providers/          | markdown links to provider guides                | ✓ WIRED | 12 links to docs/providers/\*.md, all 14 provider guides verified to exist                |
-| README.md                   | src/index.ts             | import paths matching actual exports             | ✓ WIRED | 9 `from 'llm-router'` imports match index.ts exports (createRouter, defineConfig, etc.)   |
+| README.md                   | src/index.ts             | import paths matching actual exports             | ✓ WIRED | 9 `from 'pennyllm'` imports match index.ts exports (createRouter, defineConfig, etc.)     |
 | docs/configuration.md       | src/config/schema.ts     | documents all Zod schema fields                  | ✓ WIRED | 5+ matches for providers, strategy, budget, fallback, estimation, cooldown, dryRun, debug |
 | docs/events.md              | src/types/events.ts      | documents all event interfaces                   | ✓ WIRED | 6 matches for KeySelectedEvent, UsageRecordedEvent, FallbackTriggeredEvent, etc.          |
 | docs/troubleshooting.md     | src/errors/              | references error classes and common causes       | ✓ WIRED | 2 matches for ConfigError, AllProvidersExhaustedError, AuthError                          |

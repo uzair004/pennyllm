@@ -32,7 +32,7 @@ The existing infrastructure provides solid foundations: `StorageBackend.incremen
 - **Concurrency:** Accept the race — concurrent requests may all estimate against the same snapshot. Provider's 429 handles contention. No in-flight request counting.
 - **Estimation feeds into selection, not vice versa** — usage tracker provides headroom numbers, selection strategy (Phase 5) uses them to pick the best key. Estimation doesn't pre-filter or rank keys.
 - **Estimator failures:** Catch errors from custom estimator functions, debug-log the error, skip estimation, and proceed. Never fatal.
-- **Estimation accuracy:** Debug-logged only (llm-router:usage namespace). No events for estimation accuracy. Actuals always overwrite — if estimate was wildly off, no special handling.
+- **Estimation accuracy:** Debug-logged only (pennyllm:usage namespace). No events for estimation accuracy. Actuals always overwrite — if estimate was wildly off, no special handling.
 
 #### Estimation Config Shape
 
@@ -133,7 +133,7 @@ The existing infrastructure provides solid foundations: `StorageBackend.incremen
 | ----------- | ----------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------- |
 | node:crypto | Built-in                | UUID generation for requestId                | Crypto-secure UUIDs for deduplication. Standard Node.js API, no dependencies.         |
 | node:events | Built-in                | EventEmitter for usage:recorded events       | Already used in Phase 3 for PolicyEngine. Consistent event pattern.                   |
-| debug       | ^4.3.0                  | Logging for estimation and recording         | Project standard (llm-router:usage namespace). Already in dependencies.               |
+| debug       | ^4.3.0                  | Logging for estimation and recording         | Project standard (pennyllm:usage namespace). Already in dependencies.                 |
 | js-tiktoken | ^1.0.21 (optional peer) | Exact token counting for pluggable estimator | Pure JS port of OpenAI tiktoken. 2.8M weekly downloads. User opt-in for exact counts. |
 
 ### Supporting
@@ -268,7 +268,7 @@ export function estimateTokens(
     return { prompt: promptTokens, completion: completionTokens };
   } catch (error) {
     // Graceful fallback — log and skip estimation
-    debug('llm-router:usage')('Estimation failed: %O', error);
+    debug('pennyllm:usage')('Estimation failed: %O', error);
     return null;
   }
 }
@@ -317,7 +317,7 @@ export async function recordUsage(
     });
   } catch (error) {
     // Swallow storage errors — provider enforces real limits
-    debug('llm-router:usage')('Recording failed (non-fatal): %O', error);
+    debug('pennyllm:usage')('Recording failed (non-fatal): %O', error);
   }
 }
 ```

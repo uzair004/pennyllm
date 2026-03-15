@@ -44,9 +44,9 @@ HuggingFace uses a **credit-based billing system**, not token-based limits. Your
 Since HuggingFace billing is compute-time-based rather than token-based, use `createCallLimit` to cap the number of API calls rather than token limits.
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { createCallLimit } from 'llm-router/policy';
-import type { HuggingFaceProviderConfig } from 'llm-router/types';
+import { createRouter } from 'pennyllm';
+import { createCallLimit } from 'pennyllm/policy';
+import type { HuggingFaceProviderConfig } from 'pennyllm/types';
 
 const huggingface: HuggingFaceProviderConfig = {
   keys: [process.env.HUGGINGFACE_API_KEY!],

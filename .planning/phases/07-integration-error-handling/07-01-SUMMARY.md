@@ -6,7 +6,7 @@ tags: [error-classification, retry-logic, api-errors, events, ai-sdk]
 
 requires:
   - phase: 01-project-setup
-    provides: LLMRouterError base class, TypeScript scaffolding
+    provides: PennyLLMError base class, TypeScript scaffolding
   - phase: 06-ai-sdk-integration
     provides: Vercel AI SDK wrapper layer, provider registry
 provides:
@@ -47,7 +47,7 @@ key-decisions:
 patterns-established:
   - 'Error classification: classifyError() returns ClassifiedError with type discriminator'
   - 'Retry decisions: shouldRetry() is pure function of classified error and tried keys'
-  - 'Error wrapping: buildFinalError() always returns LLMRouterError subclass, never APICallError'
+  - 'Error wrapping: buildFinalError() always returns PennyLLMError subclass, never APICallError'
 
 requirements-completed: [INTG-03]
 
@@ -72,7 +72,7 @@ completed: 2026-03-13
 - Three new error classes (AuthError, ProviderError, NetworkError) with actionable suggestions and proper serialization
 - classifyError() correctly maps APICallError status codes (429, 401/403, 500+) and Node.js network errors (ECONNREFUSED, ETIMEDOUT, etc.) to typed classifications
 - shouldRetry() enforces user decisions: no server retry, single network retry, all-keys for rate_limit/auth
-- buildFinalError() wraps in LLMRouterError subclasses (not APICallError) to prevent AI SDK double-retry
+- buildFinalError() wraps in PennyLLMError subclasses (not APICallError) to prevent AI SDK double-retry
 - 7 new event payload interfaces and RouterEvent constants ready for the retry proxy (Plan 02)
 
 ## Task Commits

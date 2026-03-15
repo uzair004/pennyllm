@@ -6,7 +6,7 @@
 
 ## Summary
 
-Phase 6 integrates the llm-router with Vercel AI SDK using the `wrapLanguageModel()` middleware pattern to intercept LLM calls, inject selected API keys transparently, and track actual token usage from provider responses. The research confirms that the AI SDK's middleware system provides exactly the hooks needed for decorator-based key rotation without modifying user code.
+Phase 6 integrates the pennyllm with Vercel AI SDK using the `wrapLanguageModel()` middleware pattern to intercept LLM calls, inject selected API keys transparently, and track actual token usage from provider responses. The research confirms that the AI SDK's middleware system provides exactly the hooks needed for decorator-based key rotation without modifying user code.
 
 **Key findings:**
 

@@ -1,6 +1,6 @@
-# Roadmap: LLM Router
+# Roadmap: PennyLLM
 
-**Project:** LLM Router - Cost-avoidance layer for LLM API calls
+**Project:** PennyLLM - Cost-avoidance layer for LLM API calls
 **Core Value:** Never get charged for LLM API calls — rotate through free tier keys intelligently
 **Base Package:** Vercel AI SDK (decided after evaluating LiteLLM fork, LangChain.js, OpenAI SDK, and 7 others)
 **Granularity:** Fine (22 phases: 12 v1 + 10 v2)
@@ -346,7 +346,7 @@ Plans:
 1. E2E test suite passes with real API keys for 3+ providers
 2. Empirical testing validates at least 5 provider free tier limits (match documentation)
 3. Package published to npm registry with semantic version 1.0.0
-4. Installation from npm works: `npm install llm-router` succeeds in blank project
+4. Installation from npm works: `npm install pennyllm` succeeds in blank project
 5. Limit staleness warning triggers correctly for policies older than 30 days
 
 **Plans:** TBD
@@ -409,8 +409,8 @@ Plans:
 
 **Success Criteria** (what must be TRUE):
 
-1. `npx llm-router validate-config` with actionable error messages
-2. `npx llm-router init` interactive wizard generates starter config
+1. `npx pennyllm validate-config` with actionable error messages
+2. `npx pennyllm init` interactive wizard generates starter config
 3. CI-friendly exit codes (0 = valid, 1 = invalid, 2 = warnings)
 4. Lightweight entry point (no full router initialization)
 

@@ -102,7 +102,7 @@ None - no external service configuration required.
 
 - All 12 providers now have self-contained key acquisition documentation in docs/providers/
 - Comparison table enables quick provider evaluation
-- README recommends starter set and explains how limits work in llm-router
+- README recommends starter set and explains how limits work in pennyllm
 - DX-02 requirement fully satisfied (step-by-step guide for every provider)
 - Phase 8 documentation deliverables complete
 

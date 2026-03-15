@@ -1,13 +1,13 @@
 # Configuration Reference
 
-LLM Router uses a typed configuration object validated by Zod at startup. Pass it to `createRouter()` directly or load from a JSON/YAML file.
+PennyLLM uses a typed configuration object validated by Zod at startup. Pass it to `createRouter()` directly or load from a JSON/YAML file.
 
 For a minimal quickstart config, see the [README](../README.md).
 
 ## Full Config Shape
 
 ```typescript
-import { defineConfig } from 'llm-router';
+import { defineConfig } from 'pennyllm';
 
 export default defineConfig({
   version: '1.0', // Schema version (literal '1.0')
@@ -261,15 +261,15 @@ Two ways to enable:
 }
 
 // 2. Environment variable
-// DEBUG=llm-router:* node app.js
+// DEBUG=pennyllm:* node app.js
 ```
 
-Debug output uses the `debug` package with the `llm-router:*` namespace. Example output:
+Debug output uses the `debug` package with the `pennyllm:*` namespace. Example output:
 
 ```
-llm-router:router key:selected provider=google keyIndex=0 strategy=priority
-llm-router:router fallback:triggered from=google to=groq reason=all_keys_exhausted
-llm-router:config Config loaded successfully (keys redacted)
+pennyllm:router key:selected provider=google keyIndex=0 strategy=priority
+pennyllm:router fallback:triggered from=google to=groq reason=all_keys_exhausted
+pennyllm:config Config loaded successfully (keys redacted)
 ```
 
 ## applyRegistryDefaults
@@ -287,7 +287,7 @@ Reserved for future registry integration. When `true`, provider defaults from an
 Zero-cost identity function that provides IDE autocomplete for provider names:
 
 ```typescript
-import { defineConfig } from 'llm-router';
+import { defineConfig } from 'pennyllm';
 
 const config = defineConfig({
   providers: {
@@ -303,9 +303,9 @@ Known providers: `google`, `groq`, `openrouter`, `mistral`, `huggingface`, `cere
 Storage is a **runtime option**, not a config field. Pass it to `createRouter()`:
 
 ```typescript
-import { createRouter } from 'llm-router';
-import { SqliteStorage } from 'llm-router/sqlite';
-import { RedisStorage } from 'llm-router/redis';
+import { createRouter } from 'pennyllm';
+import { SqliteStorage } from 'pennyllm/sqlite';
+import { RedisStorage } from 'pennyllm/redis';
 
 // Default: in-memory (zero dependencies)
 const router = await createRouter(config);
@@ -321,18 +321,18 @@ const router = await createRouter(config, {
 });
 ```
 
-| Adapter         | Import Path          | Peer Dependency  |
-| --------------- | -------------------- | ---------------- |
-| `MemoryStorage` | `llm-router/storage` | None             |
-| `SqliteStorage` | `llm-router/sqlite`  | `better-sqlite3` |
-| `RedisStorage`  | `llm-router/redis`   | `ioredis`        |
+| Adapter         | Import Path        | Peer Dependency  |
+| --------------- | ------------------ | ---------------- |
+| `MemoryStorage` | `pennyllm/storage` | None             |
+| `SqliteStorage` | `pennyllm/sqlite`  | `better-sqlite3` |
+| `RedisStorage`  | `pennyllm/redis`   | `ioredis`        |
 
 ## Config File Loading
 
 Load configuration from JSON or YAML files with environment variable interpolation:
 
 ```typescript
-import { loadConfigFile } from 'llm-router';
+import { loadConfigFile } from 'pennyllm';
 
 // JSON
 const config = await loadConfigFile('./router-config.json');

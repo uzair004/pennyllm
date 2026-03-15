@@ -17,7 +17,7 @@ try {
       maxRetriesPerRequest: 0,
       lazyConnect: false,
     },
-    prefix: 'llm-router-test:',
+    prefix: 'pennyllm-test:',
   });
   redisAvailable = true;
   await testStorage.close();
@@ -29,7 +29,7 @@ try {
 // Conditionally run contract tests
 if (redisAvailable) {
   // Use unique prefix per test run to avoid contamination
-  const testPrefix = `llm-router-test-${Date.now()}:`;
+  const testPrefix = `pennyllm-test-${Date.now()}:`;
 
   createStorageContractTests('RedisStorage', async () => {
     const storage = await RedisStorage.create({

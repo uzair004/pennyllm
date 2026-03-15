@@ -10,7 +10,7 @@ human_verification:
     expected: 'Each URL opens the correct sign-up or API key page for the provider'
     why_human: 'Requires opening browser and checking live URLs'
   - test: 'Verify config snippets compile when used in a real project'
-    expected: 'Import paths (llm-router/policy, llm-router/types) resolve and typed configs work with IDE autocompletion'
+    expected: 'Import paths (pennyllm/policy, pennyllm/types) resolve and typed configs work with IDE autocompletion'
     why_human: 'Requires IDE integration test with actual npm package resolution'
 ---
 
@@ -111,7 +111,7 @@ No blocker or warning-level anti-patterns found in Phase 8 artifacts. All builde
 
 ### 2. Config Snippets Work in Real Project
 
-**Test:** Create a minimal TypeScript project, install llm-router, and use the config snippets from provider docs
+**Test:** Create a minimal TypeScript project, install pennyllm, and use the config snippets from provider docs
 **Expected:** Import paths resolve, typed configs provide IDE autocompletion, builder helpers produce valid PolicyLimit objects
 **Why human:** Requires actual npm package resolution and IDE integration testing
 

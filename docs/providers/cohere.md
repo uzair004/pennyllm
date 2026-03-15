@@ -43,8 +43,8 @@ The 1,000 calls/month limit is **shared across all endpoints**. Using 500 chat c
 ## Configuration
 
 ```typescript
-import { createRateLimit, createCallLimit } from 'llm-router/policy';
-import type { CohereProviderConfig } from 'llm-router/types';
+import { createRateLimit, createCallLimit } from 'pennyllm/policy';
+import type { CohereProviderConfig } from 'pennyllm/types';
 
 const cohere: CohereProviderConfig = {
   keys: [process.env.COHERE_API_KEY!],

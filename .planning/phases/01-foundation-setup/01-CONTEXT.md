@@ -14,17 +14,20 @@ Set up TypeScript npm package with build tooling, project structure, core interf
 ## Implementation Decisions
 
 ### Module Format & Build
+
 - Dual ESM+CJS output via tsup (format: ['esm', 'cjs'])
-- Subpath exports for modular imports (e.g., `llm-router/storage`, `llm-router/providers`)
+- Subpath exports for modular imports (e.g., `pennyllm/storage`, `pennyllm/providers`)
 - Minimum Node.js 18+
 - No path aliases — relative imports only (flat src/ keeps paths short)
 - Single package (not monorepo) — interface-based plugin extensibility without monorepo overhead
 
 ### Project Structure
+
 - Flat by domain: `src/storage/`, `src/policy/`, `src/selection/`, `src/catalog/`, `src/types/`, `src/config/`
 - Standard npm package conventions
 
 ### Tooling
+
 - Vitest for testing
 - ESLint + Prettier for linting/formatting
 - lint-staged + husky for pre-commit hooks (lint + format staged files)
@@ -34,6 +37,7 @@ Set up TypeScript npm package with build tooling, project structure, core interf
 - Basic CONTRIBUTING.md with setup/test/lint commands
 
 ### Config Ergonomics
+
 - Single config object validated by Zod (not builder pattern, not config file auto-detection)
 - File-based config loading: JSON + YAML with `${VAR}` environment variable interpolation
 - YAML parser as optional peer dependency (consumer installs only if using YAML)
@@ -49,23 +53,27 @@ Set up TypeScript npm package with build tooling, project structure, core interf
 - `defineConfig()` helper exported for type-safe config files (zero runtime cost)
 
 ### Constants & Enums
+
 - Const objects with string values (`as const`) for all config enums — not TypeScript enums, not raw strings
 - Examples: `Strategy.ROUND_ROBIN = 'round-robin'`, `Provider.GOOGLE = 'google'`
 - Provider IDs match Vercel AI SDK provider names (e.g., `'google'`, `'groq'`) for familiarity
 - All config values JSON-serializable (important: future Admin UI will read/write config)
 
 ### Provider Config Shape
+
 - Object with provider names as keys: `{ providers: { google: {...}, groq: {...} } }`
 - API keys in provider config: `{ keys: [process.env.KEY1, process.env.KEY2] }` — consumer manages key loading
 - Multiple router instances supported — each `createRouter()` returns independent instance
 
 ### Dependencies
+
 - Vercel AI SDK (`ai`) as peer dependency — standard for SDK wrappers, npm 7+ auto-installs
 - Zod as regular dependency (~13KB gzipped)
 - `debug` package as regular dependency
 - YAML parser as optional peer dependency
 
 ### Package API Surface
+
 - `createRouter(config)` factory function — async (returns Promise), initializes SQLite/validation during creation
 - `router.model('provider/model-name')` returns wrapped AI SDK model — combined 'provider/model' format
 - Per-request overrides: `router.model('google/gemini', { strategy: Strategy.ROUND_ROBIN })`
@@ -79,6 +87,7 @@ Set up TypeScript npm package with build tooling, project structure, core interf
 - Interface shapes defined for future features: `addKey()`, `removeKey()`, `models()` — implementation deferred
 
 ### Minimal Usage Example (3 lines)
+
 ```typescript
 const router = await createRouter({ providers: { google: { keys: [env.KEY] } } });
 const model = router.model('google/gemini-2.0-flash');
@@ -86,6 +95,7 @@ const { text } = await generateText({ model, prompt: 'Hello' });
 ```
 
 ### Events & Hooks
+
 - Node.js EventEmitter pattern: `router.on('key:selected', handler)`
 - Fully typed events — each event name maps to specific TypeScript event type
 - Namespaced event names with colon: `'key:selected'`, `'usage:recorded'`, `'limit:warning'`
@@ -95,28 +105,33 @@ const { text } = await generateText({ model, prompt: 'Hello' });
 - Fire-and-forget — async handlers are not awaited
 
 ### Error Handling
-- Base `LLMRouterError` class defined in Phase 1
+
+- Base `PennyLLMError` class defined in Phase 1
 - Typed error subclasses with metadata: `ConfigError`, `RateLimitError`, `QuotaExhaustedError`
 - Actionable suggestions: `error.suggestion` with human-readable advice + machine-readable data (e.g., `retryAfter`)
 - JSON serializable: `error.toJSON()` for logging pipelines and future Admin UI
 
 ### Logging
-- `debug` package with component-based namespaces: `llm-router:config`, `llm-router:selection`, `llm-router:usage`, `llm-router:storage`
-- Consumer enables: `DEBUG=llm-router:*` for all, `DEBUG=llm-router:selection` for specific
+
+- `debug` package with component-based namespaces: `pennyllm:config`, `pennyllm:selection`, `pennyllm:usage`, `pennyllm:storage`
+- Consumer enables: `DEBUG=pennyllm:*` for all, `DEBUG=pennyllm:selection` for specific
 - Human-readable messages with inline data
 - API keys always redacted in debug output
 
 ### Plugin DX
+
 - Minimal interfaces with few required methods
 - Abstract base classes / helper functions provided so consumers don't start from scratch
 - e.g., `AbstractStorageBackend` with common logic
 
 ### License & Naming
+
 - MIT license
 - Package name deferred — placeholder during development, branding decided post-implementation
 - README content deferred to Phase 11 (DX Polish)
 
 ### Claude's Discretion
+
 - Exact domain type field shapes (ModelMetadata, Policy, UsageRecord, TimeWindow)
 - Internal code organization within each domain folder
 - Test file organization and naming conventions
@@ -138,15 +153,19 @@ const { text } = await generateText({ model, prompt: 'Hello' });
 </specifics>
 
 <code_context>
+
 ## Existing Code Insights
 
 ### Reusable Assets
+
 - None — greenfield project (only README.md exists)
 
 ### Established Patterns
+
 - None — all patterns will be established in this phase
 
 ### Integration Points
+
 - None — this is the foundation phase
 
 </code_context>
@@ -167,5 +186,5 @@ const { text } = await generateText({ model, prompt: 'Hello' });
 
 ---
 
-*Phase: 01-foundation-setup*
-*Context gathered: 2026-03-12*
+_Phase: 01-foundation-setup_
+_Context gathered: 2026-03-12_

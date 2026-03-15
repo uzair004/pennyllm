@@ -34,7 +34,7 @@ TypeScript ecosystem provides established patterns for rules engines, but this p
 - Both provider-level AND model-level limits apply (AND logic) — key must satisfy all applicable limits
 - Custom providers without configured limits: allow (always "available") with debug warning — covers self-hosted/internal LLMs
 - Resolved/merged policies visible via `router.getConfig()` so users can inspect what's actually applied
-- Shipped default policies exported for inspection: `import { googlePolicy } from 'llm-router/policies'`
+- Shipped default policies exported for inspection: `import { googlePolicy } from 'pennyllm/policies'`
 - Duplicate key detection: error at startup (ConfigError) — fail-fast matches Phase 1 pattern
 - Validate contradictory limits at startup (e.g., daily > monthly throws ConfigError)
 
@@ -76,7 +76,7 @@ TypeScript ecosystem provides established patterns for rules engines, but this p
 **Staleness Detection (POLICY-06):**
 
 - Check at createRouter() startup — if any shipped policy's `researchedDate` is >30 days old, emit debug warning + fire `policy:stale` event
-- Actionable message: includes suggestion to `npm update llm-router` or verify at provider URL
+- Actionable message: includes suggestion to `npm update pennyllm` or verify at provider URL
 - Only applies to shipped defaults — user-configured limits have no staleness concept
 
 **Policy Versioning (POLICY-07):**
@@ -90,7 +90,7 @@ TypeScript ecosystem provides established patterns for rules engines, but this p
 - Eagerly resolved at createRouter() — all policies merged/validated during initialization
 - Immutable after initialization — to change policies, create a new router
 - PolicyEngine is a class holding resolved policies, storage reference, and event emitter
-- Created internally by createRouter(), but also exported from `llm-router/policy` for advanced users
+- Created internally by createRouter(), but also exported from `pennyllm/policy` for advanced users
 
 ### Claude's Discretion
 
@@ -104,7 +104,7 @@ TypeScript ecosystem provides established patterns for rules engines, but this p
 
 ### Deferred Ideas (OUT OF SCOPE)
 
-- CLI helper for discovering shipped defaults (`npx llm-router show-policy google`) — Phase 11 (DX Polish)
+- CLI helper for discovering shipped defaults (`npx pennyllm show-policy google`) — Phase 11 (DX Polish)
 - Key priority/ordering (free-first vs custom ordering) — Phase 5 (Selection)
 - Fallback behavior when all keys exhausted — Phase 9 (Fallback & Budget)
 - Full 12-provider researched default policies — Phase 8 (Provider Policies Catalog)
@@ -127,11 +127,11 @@ TypeScript ecosystem provides established patterns for rules engines, but this p
 
 ### Core
 
-| Library      | Version       | Purpose                                                | Why Standard                                                                                                  |
-| ------------ | ------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| Zod          | 3.23.0        | Schema validation for mixed keys, limit overrides      | Already project dependency, v3 required for AI SDK compatibility, discriminated unions for polymorphic config |
-| debug        | 4.3.0         | Component-scoped logging (llm-router:policy namespace) | Already project dependency, established pattern from Phase 1/2                                                |
-| EventEmitter | Node built-in | Event emission for limit warnings and exceeded events  | Native, zero-overhead, already used in Router stub                                                            |
+| Library      | Version       | Purpose                                               | Why Standard                                                                                                  |
+| ------------ | ------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Zod          | 3.23.0        | Schema validation for mixed keys, limit overrides     | Already project dependency, v3 required for AI SDK compatibility, discriminated unions for polymorphic config |
+| debug        | 4.3.0         | Component-scoped logging (pennyllm:policy namespace)  | Already project dependency, established pattern from Phase 1/2                                                |
+| EventEmitter | Node built-in | Event emission for limit warnings and exceeded events | Native, zero-overhead, already used in Router stub                                                            |
 
 ### Supporting
 
@@ -299,7 +299,7 @@ function checkStaleness(resolvedPolicies: ResolvedPolicy[], emitter: EventEmitte
         provider: policy.provider,
         researchedDate: policy.metadata.researchedDate,
         daysOld: Math.floor((now - researchedDate) / (24 * 60 * 60 * 1000)),
-        suggestion: `Run 'npm update llm-router' or verify limits at ${policy.metadata.sourceUrl}`,
+        suggestion: `Run 'npm update pennyllm' or verify limits at ${policy.metadata.sourceUrl}`,
       });
     }
   }
@@ -545,7 +545,7 @@ async function evaluateKey(
 import { EventEmitter } from 'node:events';
 import debugFactory from 'debug';
 
-const debug = debugFactory('llm-router:policy');
+const debug = debugFactory('pennyllm:policy');
 
 function checkAndEmitWarnings(
   limitStatus: LimitStatus,

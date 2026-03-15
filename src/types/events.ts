@@ -1,5 +1,5 @@
 import type { LimitTypeValue } from '../constants/index.js';
-import type { LLMRouterError } from '../errors/base.js';
+import type { PennyLLMError } from '../errors/base.js';
 import type { PolicyStaleEvent as PolicyStaleEventType } from '../policy/types.js';
 import type { CatalogRefreshedEvent as CatalogRefreshedEventType } from '../catalog/types.js';
 import type { BudgetAlertEvent, BudgetExceededEvent } from '../budget/types.js';
@@ -100,7 +100,7 @@ export interface ProviderExhaustedEvent extends RouterEventPayload {
  * Error event
  */
 export interface ErrorEvent extends RouterEventPayload {
-  error: LLMRouterError;
+  error: PennyLLMError;
 }
 
 /**

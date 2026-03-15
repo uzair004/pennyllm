@@ -212,7 +212,7 @@ npm install ioredis
 Redis is not running or the connection config is wrong.
 
 ```typescript
-import { RedisStorage } from 'llm-router/redis';
+import { RedisStorage } from 'pennyllm/redis';
 
 // Check host and port match your Redis instance
 const storage = new RedisStorage({
@@ -228,7 +228,7 @@ Verify Redis is running: `redis-cli ping` should return `PONG`.
 The directory for the database file must exist and be writable.
 
 ```typescript
-import { SqliteStorage } from 'llm-router/sqlite';
+import { SqliteStorage } from 'pennyllm/sqlite';
 
 // Ensure the directory exists
 const storage = new SqliteStorage('./data/usage.db');
@@ -249,7 +249,7 @@ Two ways:
 const router = await createRouter({ ...config, debug: true });
 
 // Environment variable
-// DEBUG=llm-router:* node app.js
+// DEBUG=pennyllm:* node app.js
 ```
 
 Debug mode subscribes to all 8 typed hooks and logs structured output to stdout.

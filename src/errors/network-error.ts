@@ -1,9 +1,9 @@
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 /**
  * Error thrown when a network-level failure occurs (DNS, connection refused, timeout).
  */
-export class NetworkError extends LLMRouterError {
+export class NetworkError extends PennyLLMError {
   constructor(message: string, options?: { cause?: Error; errorCode?: string }) {
     const metadata: Record<string, unknown> = {};
     if (options?.errorCode !== undefined) {

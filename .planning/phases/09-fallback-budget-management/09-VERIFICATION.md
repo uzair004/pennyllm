@@ -40,7 +40,7 @@ re_verification: false
 | 18  | Default behavior is try-alternatives, hard-stop is opt-in                                                               | ✓ VERIFIED | `fallbackConfigSchema` defaults `behavior` to 'auto' (line 60), hard-stop check in FallbackProxy line 150                                  |
 | 19  | Same-provider keys are exhausted first (via retry proxy) before cross-provider fallback                                 | ✓ VERIFIED | Primary call goes through `primaryRetryProxy` (line 157), cross-provider fallback only triggered on terminal errors                        |
 | 20  | Middleware records usage against the provider/key that actually succeeded (not original)                                | ✓ VERIFIED | Middleware uses `providerRef.current` (lines 36, 68) which is updated on fallback success (FallbackProxy line 273)                         |
-| 21  | Response metadata includes fallback info via providerMetadata without breaking AI SDK contract                          | ✓ VERIFIED | FallbackProxy augments `result.providerMetadata['llm-router']` with fallback info (lines 425-431 in full file)                             |
+| 21  | Response metadata includes fallback info via providerMetadata without breaking AI SDK contract                          | ✓ VERIFIED | FallbackProxy augments `result.providerMetadata['pennyllm']` with fallback info (lines 425-431 in full file)                               |
 | 22  | All providers exhausted throws AllProvidersExhaustedError with rich recovery info                                       | ✓ VERIFIED | `AllProvidersExhaustedError` thrown at FallbackProxy line 304 with `triedProviders` array                                                  |
 | 23  | Budget gate blocks paid fallback models when budget is exceeded                                                         | ✓ VERIFIED | Budget check in FallbackProxy lines 257-263: skips paid models when `budgetTracker.isExceeded()` returns true                              |
 | 24  | Short-term affinity cache avoids repeated resolution during burst traffic                                               | ✓ VERIFIED | `AffinityCache` class with 60s TTL, used in FallbackProxy (affinity key check line 200+, set on success line 277+)                         |
@@ -113,7 +113,7 @@ None detected. All modified files have:
 
 - Request succeeds using Groq provider
 - `fallback:triggered` event emitted with `fromProvider: 'google'`, `toProvider: 'groq'`, `fromModel`, `toModel` fields
-- Response metadata includes `llm-router.fallbackUsed: true`, `llm-router.originalModel`, `llm-router.actualModel`
+- Response metadata includes `pennyllm.fallbackUsed: true`, `pennyllm.originalModel`, `pennyllm.actualModel`
 
 **Why human:** Requires live API keys, actual quota exhaustion scenario, and verification of event emission timing
 

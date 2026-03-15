@@ -36,7 +36,7 @@ key_files:
     - src/types/config.ts: '4 config types (RouterConfig, ProviderConfig, etc.)'
     - src/types/interfaces.ts: '3 core interfaces (StorageBackend, ModelCatalog, SelectionStrategy)'
     - src/types/events.ts: 'Typed event map with 7 event types'
-    - src/errors/base.ts: 'LLMRouterError base class with toJSON()'
+    - src/errors/base.ts: 'PennyLLMError base class with toJSON()'
     - src/errors/config-error.ts: 'ConfigError subclass'
   modified: []
 decisions:
@@ -51,7 +51,7 @@ decisions:
   - decision: '8 separate entry points via subpath exports'
     rationale: 'Tree-shakeable exports per PLAN.md spec, allows selective imports'
     alternatives: ['Single entry point (larger bundles)', 'Peer imports (brittle)']
-    impact: "Users can import only what they need: 'llm-router/storage', 'llm-router/types'"
+    impact: "Users can import only what they need: 'pennyllm/storage', 'pennyllm/types'"
 metrics:
   duration: '9m 39s'
   completed_date: '2026-03-12T00:57:54Z'
@@ -67,7 +67,7 @@ metrics:
 
 ## Summary
 
-Successfully scaffolded the LLM Router TypeScript npm package with complete build tooling, development workflow automation, and all core type definitions. The project now has:
+Successfully scaffolded the PennyLLM TypeScript npm package with complete build tooling, development workflow automation, and all core type definitions. The project now has:
 
 - **Build System:** Dual ESM+CJS output via tsup with 8 subpath exports (main + storage + catalog + selection + policy + types + errors + constants)
 - **Type System:** 3 core interfaces, 9 domain types, 4 config types, 7 event types, 6 const objects
@@ -113,7 +113,7 @@ All verification criteria passed:
 - src/types/interfaces.ts (3 core interfaces)
 - src/types/events.ts (7 event types + typed event map)
 - src/types/index.ts (barrel file)
-- src/errors/base.ts (LLMRouterError with toJSON())
+- src/errors/base.ts (PennyLLMError with toJSON())
 - src/errors/config-error.ts (ConfigError subclass)
 - src/errors/index.ts (barrel file)
 - src/storage/index.ts, src/catalog/index.ts, src/selection/index.ts, src/policy/index.ts (domain barrel files)
@@ -162,14 +162,14 @@ All plan verification criteria passed:
 The package provides 8 subpath exports:
 
 ```javascript
-import {} from /* ... */ 'llm-router'; // Main entry point
-import { StorageBackend } from 'llm-router/storage'; // Storage interface
-import { ModelCatalog } from 'llm-router/catalog'; // Catalog interface
-import { SelectionStrategy } from 'llm-router/selection'; // Selection interface
-import { Policy } from 'llm-router/policy'; // Policy types
-import {} from /* ... */ 'llm-router/types'; // All types
-import { LLMRouterError } from 'llm-router/errors'; // Error classes
-import { Strategy, Provider } from 'llm-router/constants'; // Constants
+import {} from /* ... */ 'pennyllm'; // Main entry point
+import { StorageBackend } from 'pennyllm/storage'; // Storage interface
+import { ModelCatalog } from 'pennyllm/catalog'; // Catalog interface
+import { SelectionStrategy } from 'pennyllm/selection'; // Selection interface
+import { Policy } from 'pennyllm/policy'; // Policy types
+import {} from /* ... */ 'pennyllm/types'; // All types
+import { PennyLLMError } from 'pennyllm/errors'; // Error classes
+import { Strategy, Provider } from 'pennyllm/constants'; // Constants
 ```
 
 Each subpath export has:
@@ -195,34 +195,34 @@ Phase 2 will implement:
 
 **Files created (verified):**
 
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/package.json
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/tsconfig.json
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/tsup.config.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/vitest.config.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/eslint.config.js
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/.prettierrc
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/.lintstagedrc
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/commitlint.config.js
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/.changeset/config.json
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/.github/workflows/ci.yml
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/.husky/pre-commit
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/.husky/commit-msg
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/LICENSE
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/CONTRIBUTING.md
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/constants/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/types/domain.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/types/config.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/types/interfaces.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/types/events.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/types/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/errors/base.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/errors/config-error.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/errors/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/storage/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/catalog/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/selection/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/policy/index.ts
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/src/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/package.json
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/tsconfig.json
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/tsup.config.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/vitest.config.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/eslint.config.js
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/.prettierrc
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/.lintstagedrc
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/commitlint.config.js
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/.changeset/config.json
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/.github/workflows/ci.yml
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/.husky/pre-commit
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/.husky/commit-msg
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/LICENSE
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/CONTRIBUTING.md
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/constants/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/types/domain.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/types/config.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/types/interfaces.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/types/events.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/types/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/errors/base.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/errors/config-error.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/errors/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/storage/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/catalog/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/selection/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/policy/index.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/src/index.ts
 
 **Commits created (verified):**
 
@@ -231,6 +231,6 @@ Phase 2 will implement:
 
 **Build artifacts (verified):**
 
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/dist/index.mjs
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/dist/index.cjs
-- ✅ /Users/muhammaduzair/Documents/github/experiments/llm-router/llm-router/dist/index.d.ts
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/dist/index.mjs
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/dist/index.cjs
+- ✅ /Users/muhammaduzair/Documents/github/experiments/pennyllm/pennyllm/dist/index.d.ts

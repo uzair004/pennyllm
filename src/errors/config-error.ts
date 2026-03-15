@@ -1,9 +1,9 @@
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 /**
  * Error thrown when configuration is invalid
  */
-export class ConfigError extends LLMRouterError {
+export class ConfigError extends PennyLLMError {
   constructor(
     message: string,
     options?: {

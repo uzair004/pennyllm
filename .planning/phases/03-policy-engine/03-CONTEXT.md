@@ -31,7 +31,7 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 - Both provider-level AND model-level limits apply (AND logic) — key must satisfy all applicable limits
 - Custom providers without configured limits: allow (always "available") with debug warning — covers self-hosted/internal LLMs
 - Resolved/merged policies visible via `router.getConfig()` so users can inspect what's actually applied
-- Shipped default policies exported for import/inspection: `import { googlePolicy } from 'llm-router/policies'`
+- Shipped default policies exported for import/inspection: `import { googlePolicy } from 'pennyllm/policies'`
 - Duplicate key detection: error at startup (ConfigError) — fail-fast matches Phase 1 pattern
 - Validate contradictory limits at startup (e.g., daily > monthly throws ConfigError)
 
@@ -73,7 +73,7 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 ### Staleness Detection (POLICY-06)
 
 - Check at createRouter() startup — if any shipped policy's `researchedDate` is >30 days old, emit debug warning + fire `policy:stale` event
-- Actionable message: includes suggestion to `npm update llm-router` or verify at provider URL
+- Actionable message: includes suggestion to `npm update pennyllm` or verify at provider URL
 - Only applies to shipped defaults — user-configured limits have no staleness concept
 
 ### Policy Versioning (POLICY-07)
@@ -87,7 +87,7 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 - Eagerly resolved at createRouter() — all policies merged/validated during initialization
 - Immutable after initialization — to change policies, create a new router
 - PolicyEngine is a class holding resolved policies, storage reference, and event emitter
-- Created internally by createRouter(), but also exported from `llm-router/policy` for advanced users
+- Created internally by createRouter(), but also exported from `pennyllm/policy` for advanced users
 
 ### Claude's Discretion
 
@@ -107,7 +107,7 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 - "Should we rely on provider's cost protection or add our own?" — Resolved: our policies are a routing prediction layer, provider limits are the real guardrail. For silent-charge providers, recommend dashboard spend caps.
 - "Users will want to use paid keys but add free tier keys as add-ons to reduce cost" — Drove the per-key limits decision (mixed array config)
 - "It could bill the user seriously if not solid" — Drove the clear separation: policy engine marks exhausted, fallback (Phase 9) controls what happens next
-- CLI helper (`npx llm-router show-policy google`) for discovering shipped defaults — noted for Phase 11
+- CLI helper (`npx pennyllm show-policy google`) for discovering shipped defaults — noted for Phase 11
 
 </specifics>
 
@@ -124,7 +124,7 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 - `StorageBackend` interface (src/types/interfaces.ts): get, put, increment, getUsage, reset, close
 - `MemoryStorage` (src/storage/MemoryStorage.ts): working implementation for engine to query usage data
 - Event types (src/types/events.ts): LimitWarningEvent, LimitExceededEvent already defined
-- `LLMRouterError`, `ConfigError` (src/errors/): for validation errors
+- `PennyLLMError`, `ConfigError` (src/errors/): for validation errors
 - `configSchema` with `policyLimitSchema` (src/config/schema.ts): Zod validation for limit objects already exists
 - `providerConfigSchema` (src/config/schema.ts): has limits array and enabled boolean
 
@@ -133,7 +133,7 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 - Const objects with `as const` for enums (src/constants/index.ts)
 - Zod validation with `.default()` for sensible defaults (src/config/schema.ts)
 - Subpath exports for modular imports (package.json)
-- `debug` package with component namespaces (llm-router:policy namespace)
+- `debug` package with component namespaces (pennyllm:policy namespace)
 - Eager validation at createRouter() — fail-fast on invalid config
 - EventEmitter pattern with typed, namespaced events
 
@@ -143,14 +143,14 @@ Declarative policy definitions load from config + shipped defaults. A PolicyEngi
 - `src/policy/index.ts` — currently re-exports types, will house PolicyEngine class
 - `providerConfigSchema` — needs update for mixed array keys (string | object) and per-model limits
 - `router.getConfig()` — needs to include resolved policies in output
-- Package.json subpath exports — add `llm-router/policy` for PolicyEngine export
+- Package.json subpath exports — add `pennyllm/policy` for PolicyEngine export
 
 </code_context>
 
 <deferred>
 ## Deferred Ideas
 
-- CLI helper for discovering shipped defaults (`npx llm-router show-policy google`) — Phase 11 (DX Polish)
+- CLI helper for discovering shipped defaults (`npx pennyllm show-policy google`) — Phase 11 (DX Polish)
 - Key priority/ordering (free-first vs custom ordering) — Phase 5 (Selection)
 - Fallback behavior when all keys exhausted — Phase 9 (Fallback & Budget)
 - Full 12-provider researched default policies — Phase 8 (Provider Policies Catalog)

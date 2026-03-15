@@ -185,7 +185,7 @@ Router has access to model metadata (capabilities, pricing, quality tiers) from 
 - Const objects with `as const` for enums (src/constants/index.ts)
 - Zod validation with `.default()` for config defaults (src/config/schema.ts)
 - Runtime instance injection via createRouter() options (StorageBackend pattern)
-- `debug` package with component namespaces (llm-router:catalog, llm-router:selection)
+- `debug` package with component namespaces (pennyllm:catalog, pennyllm:selection)
 - EventEmitter with typed, namespaced events
 - Eager validation at createRouter()
 - Fire-and-forget for events and recording
@@ -199,7 +199,7 @@ Router has access to model metadata (capabilities, pricing, quality tiers) from 
 - `RouterEvent` in src/constants/index.ts — add PROVIDER_EXHAUSTED, CATALOG_REFRESHED
 - `src/types/events.ts` — add KeySelectedEvent, ProviderExhaustedEvent, CatalogRefreshedEvent types
 - `src/errors/` — add RateLimitError (all cooldown), QuotaExhaustedError (all exhausted)
-- Package.json subpath exports — ensure llm-router/catalog and llm-router/selection export correctly
+- Package.json subpath exports — ensure pennyllm/catalog and pennyllm/selection export correctly
 
 </code_context>
 

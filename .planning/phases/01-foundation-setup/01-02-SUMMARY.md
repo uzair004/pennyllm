@@ -61,7 +61,7 @@ metrics:
 
 ## What Was Built
 
-Added the complete configuration validation layer for the LLM Router package:
+Added the complete configuration validation layer for the PennyLLM package:
 
 1. **Zod Config Schema** — `configSchema` validates router configuration with sensible defaults (strategy: round-robin, storage: sqlite, budget: 0). Strict mode rejects unknown keys.
 

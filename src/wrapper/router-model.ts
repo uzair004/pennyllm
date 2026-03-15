@@ -57,7 +57,7 @@ export async function routerModel(
     model: baseModel,
     middleware,
     modelId,
-    providerId: 'llm-router',
+    providerId: 'pennyllm',
   });
   return wrappedModel;
 }

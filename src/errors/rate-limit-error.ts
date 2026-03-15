@@ -1,9 +1,9 @@
-import { LLMRouterError } from './base.js';
+import { PennyLLMError } from './base.js';
 
 /**
  * Error thrown when all keys for a provider are rate-limited
  */
-export class RateLimitError extends LLMRouterError {
+export class RateLimitError extends PennyLLMError {
   constructor(provider: string, keys: Array<{ keyIndex: number; cooldownUntil: string }>) {
     if (keys.length === 0) {
       throw new Error('RateLimitError requires at least one key');

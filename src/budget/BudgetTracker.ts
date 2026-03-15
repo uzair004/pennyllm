@@ -6,7 +6,7 @@ import type { BudgetConfig } from '../types/config.js';
 import { RouterEvent } from '../constants/index.js';
 import type { BudgetAlertEvent, BudgetExceededEvent } from './types.js';
 
-const debug = debugFactory('llm-router:budget');
+const debug = debugFactory('pennyllm:budget');
 
 /**
  * Monthly time window for budget storage

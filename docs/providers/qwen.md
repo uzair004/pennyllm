@@ -42,9 +42,9 @@
 ## Configuration
 
 ```typescript
-import { createTokenLimit, createRateLimit } from 'llm-router/policy';
+import { createTokenLimit, createRateLimit } from 'pennyllm/policy';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import type { QwenProviderConfig } from 'llm-router/types';
+import type { QwenProviderConfig } from 'pennyllm/types';
 
 // Set up the OpenAI-compatible provider for Qwen
 const qwenProvider = createOpenAICompatible({
