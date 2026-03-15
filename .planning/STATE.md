@@ -170,7 +170,19 @@ progress:
 
 ### Roadmap Evolution
 
-- Phase 12.1 inserted after Phase 12: Provider Nuance Gap Analysis (INSERTED) — audit PennyLLM abstractions against real provider behavior (per-model limits, org-level ceilings, credit systems, etc.)
+- Phase 12 rescoped: Provider Overhaul & Validation (was Testing & Validation)
+- Phase 12.1 inserted: Provider Nuance Gap Analysis
+- v2 trimmed from 10 to 4 phases: Credit Limits, Health Scoring, CLI Validator, Provider Data Registry
+- Removed: Advanced Routing, Extended Providers (Scaleway/Venice), Docs Site, Storage Opts, Admin UI, Enterprise
+
+### Key Design Decisions (2026-03-15)
+
+- **Target providers (7):** Cerebras, Google, Groq, GitHub Models, SambaNova, NVIDIA NIM, Mistral
+- **Dropped (8):** HuggingFace, Cohere, Cloudflare, Qwen, OpenRouter, Together AI, DeepSeek, Fireworks
+- **User-configured model priority chain:** replaces broken catalog-based FallbackResolver
+- **Reactive limit handling:** NO internal usage tracking for routing. Provider 429/402 drives cooldown and fallback. UsageTracker kept for observability only.
+- **Typed model IDs:** per-provider TypeScript union types for IDE autocomplete (free + paid models)
+- **Free + paid models:** user controls priority order, free first, paid as fallback with budget cap
 
 ### Known Blockers
 

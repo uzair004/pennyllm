@@ -345,21 +345,25 @@ Plans:
 
 1. **Provider wiring** — Install AI SDK packages, register all 7 in ProviderRegistry (`@ai-sdk/cerebras`, `@ai-sdk/groq`, `@ai-sdk/mistral`, OpenAI-compat adapters for GitHub/SambaNova/NVIDIA)
 2. **User-configured model priority chain** — Replace broken catalog-based FallbackResolver with explicit `models: [...]` config. User defines priority order, router tries in sequence. Free models first, paid as fallback.
-3. **Typed model IDs per provider** — TypeScript union types for each provider's available models (free + paid). IDE autocomplete for `'cerebras/llama-4-maverick'`, `'google/gemini-2.5-flash'`, etc. Models array validated at type level.
-4. **Runtime validation** — `createRouter()` validates models have matching configured providers, warns on mismatches/typos, optional live probe on first call or dry-run
-5. **Provider config refresh** — Update typed provider configs for new 7, add SambaNova (missing entirely), update user-facing docs from intelligence notes
-6. **E2E testing** — Real API calls through the router for each provider. Verify: key injection, usage tracking, retry on 429, model chain fallback across providers
-7. **Cleanup** — Mark dropped providers as unsupported, update README, comparison table, examples
+3. **Reactive limit handling** — NO internal usage tracking for routing decisions. Provider 429/402 responses drive cooldown and fallback. Classify 429s by cooldown duration: SHORT (<2min, retry soon), LONG (>2min, skip provider), PERMANENT (402, remove from chain). Parse retry-after and x-ratelimit-\* headers per provider. UsageTracker kept for observability (getUsage API) only, decoupled from routing.
+4. **Per-provider 429/402 error format research** — Must research exact response formats (headers, body, status codes) for all 7 providers to implement cooldown classifier correctly. This is a research prerequisite, not an assumption.
+5. **Typed model IDs per provider** — TypeScript union types for each provider's available models (free + paid). IDE autocomplete for `'cerebras/llama-4-maverick'`, `'google/gemini-2.5-flash'`, etc. Models array validated at type level. Requires research on full model catalogs (free AND paid) per provider.
+6. **Runtime validation** — `createRouter()` validates models have matching configured providers, warns on mismatches/typos, optional live probe on first call or dry-run
+7. **Provider config refresh** — Update typed provider configs for new 7, add SambaNova (missing entirely), update user-facing docs from intelligence notes
+8. **E2E testing** — Real API calls through the router for each provider. Verify: key injection, usage tracking, retry on 429, model chain fallback across providers
+9. **Cleanup** — Mark dropped providers as unsupported, update README, comparison table, examples
 
 **Success Criteria** (what must be TRUE):
 
 1. All 7 providers registered in ProviderRegistry and can make real API calls
-2. User-configured model chain works: router tries models in order, falls back when exhausted
-3. TypeScript autocomplete works for model IDs per provider (free + paid)
-4. `createRouter()` validates model-provider consistency and warns on errors
-5. E2E test passes with real API keys for 4+ providers
-6. Provider docs updated for all 7 target providers
-7. Dropped providers clearly marked as unsupported
+2. User-configured model chain works: router tries models in order, falls back on 429
+3. Reactive cooldown classifier correctly parses 429/402 responses from all 7 providers
+4. TypeScript autocomplete works for model IDs per provider (free + paid)
+5. `createRouter()` validates model-provider consistency and warns on errors
+6. E2E test passes with real API keys for 4+ providers
+7. Provider docs updated for all 7 target providers
+8. Dropped providers clearly marked as unsupported
+9. UsageTracker records usage for observability but does NOT gate routing decisions
 
 **Plans:** TBD
 
@@ -383,25 +387,25 @@ Plans:
 - Produce a prioritized gap report that feeds into Phase 13+ planning
 - Recommend which gaps to fix in a patch release vs defer to v2.0
 
-**Known gaps (categorized):**
+**Known gaps (categorized, updated for reactive approach):**
+
+_Note: With reactive limit handling (429-driven), many gaps around limit modeling become less critical. The 429 handles routing regardless of limit type. Remaining gaps are about DX and documentation._
 
 _(a) Works but suboptimal:_
 
-- Per-model limits (Groq, Google, SambaNova): PennyLLM tracks per-key not per-model — may under-utilize free tier
-- Google 0/0/0 models: no "model unavailable on tier" concept — would try and get 429
-- Mistral pool-based shared quotas across models
-- Mistral 5-minute sliding windows for large models — PennyLLM only supports 1-minute
+- Per-account limits where key rotation is useless (Mistral, Cerebras): multiple keys waste config space but reactive 429 handling still works correctly (both keys get same 429)
+- Google 0/0/0 models: no "model unavailable on tier" concept — would try, get 429, cooldown. Works but wastes a request.
 
-_(b) Incorrect behavior:_
+_(b) Documentation/DX gaps:_
 
-- Per-account limits where key rotation is useless (Mistral, Cerebras): PennyLLM would assume key 2 has fresh quota but it doesn't
+- SambaNova free vs developer tier (20 RPD vs 12,000 RPD): docs must strongly recommend linking a card
+- Per-request token caps (GitHub Models: 8K in / 4K out): user should know to keep prompts small for o3/GPT-4o
+- Mistral data privacy opt-out: docs must mention this
 
-_(c) Missing capability:_
+_(c) Deferred to v2 (Phase 13):_
 
-- Per-second rate limits (Mistral 1 RPS): PennyLLM has no per-second window
-- Credit-based billing (NVIDIA NIM): no concept of credit balance depletion
-- Per-request token caps (GitHub Models: 8K in / 4K out for high-tier): PennyLLM has no per-request token limit concept
-- SambaNova free vs developer tier distinction: need to document card-linking for 600x limit increase
+- Credit-based billing (NVIDIA NIM): credit depletion detection → Phase 13
+- Credit expiry modeling (SambaNova $5 / 30-day) → Phase 13
 
 **Plans:** TBD
 
