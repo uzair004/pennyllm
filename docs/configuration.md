@@ -13,29 +13,23 @@ export default defineConfig({
   version: '1.0', // Schema version (literal '1.0')
   providers: {
     // REQUIRED - at least one provider
-    google: {
+    cerebras: {
       keys: ['key1', 'key2'], // At least one key per provider
       strategy: 'priority', // Per-provider override (optional)
       limits: [], // Per-provider limits (optional)
       enabled: true, // Default: true
-      fallback: {
-        // Per-provider fallback override (optional)
-        behavior: 'auto',
-      },
+      priority: 1, // Provider priority for chain ordering
+      tier: 'free', // 'free' | 'trial' | 'paid'
+      credits: undefined, // One-time credit amount (for trial providers)
+      models: ['cerebras/llama-4-maverick'], // Allowlisted models (optional)
     },
   },
+  // Explicit model chain (optional -- auto-generated from provider priorities if omitted)
+  models: ['cerebras/llama-4-maverick', 'google/gemini-2.5-flash'],
   strategy: 'priority', // Global strategy. Default: 'priority'
   budget: {
     monthlyLimit: 0, // Dollars. 0 = never spend. Default: 0
     alertThresholds: [0.8, 0.95], // Fire budget:alert at these %. Default: [0.8, 0.95]
-  },
-  fallback: {
-    enabled: true, // Default: true
-    maxDepth: 3, // Max fallback chain depth. Default: 3
-    strictModel: false, // Only fallback to same model. Default: false
-    behavior: 'auto', // 'auto' | 'hard-stop'. Default: 'auto'
-    modelMappings: {}, // Explicit model-to-model map (optional)
-    reasoning: false, // Reasoning-aware fallback. Default: false
   },
   estimation: {
     defaultMaxTokens: 1024, // Pre-request token estimate. Default: 1024
@@ -62,7 +56,8 @@ Keys can be plain strings or objects with metadata:
 providers: {
   google: {
     // Simple string keys
-    keys: [process.env.GOOGLE_KEY_1!, process.env.GOOGLE_KEY_2!],
+    keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!],
+    priority: 1,
   },
   groq: {
     // Object keys with labels and per-key limits
@@ -80,11 +75,65 @@ providers: {
         label: 'team-account',
       },
     ],
+    priority: 2,
   },
 }
 ```
 
 Per-key limits override provider-level and global defaults. An empty `limits: []` is treated the same as omitting the field.
+
+### priority
+
+Determines the order in which providers are considered in the model chain. Lower numbers are tried first.
+
+```typescript
+providers: {
+  cerebras: { keys: ['key1'], priority: 1 },  // Tried first
+  google: { keys: ['key1'], priority: 2 },     // Tried second
+  groq: { keys: ['key1'], priority: 3 },       // Tried third
+}
+```
+
+### tier
+
+Classifies the provider's pricing model:
+
+| Tier      | Description                             |
+| --------- | --------------------------------------- |
+| `'free'`  | Perpetual free tier (default)           |
+| `'trial'` | One-time credits that deplete over time |
+| `'paid'`  | Pay-per-use (requires budget > 0)       |
+
+### credits
+
+For `trial` tier providers (e.g., NVIDIA NIM), specify the one-time credit amount:
+
+```typescript
+providers: {
+  nvidia: {
+    keys: [process.env.NVIDIA_API_KEY!],
+    priority: 5,
+    tier: 'trial',
+    credits: 1000, // 1000 one-time credits
+  },
+}
+```
+
+### models (per-provider allowlist)
+
+Restrict which models from a provider are included in the chain:
+
+```typescript
+providers: {
+  google: {
+    keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!],
+    priority: 1,
+    models: ['google/gemini-2.5-flash', 'google/gemini-2.5-pro'],
+  },
+}
+```
+
+If omitted, all models from the provider's module are included.
 
 ### Per-provider strategy
 
@@ -94,6 +143,7 @@ Override the global strategy for a specific provider:
 providers: {
   google: {
     keys: ['key1', 'key2', 'key3'],
+    priority: 1,
     strategy: 'round-robin', // Rotates keys evenly for this provider only
   },
 }
@@ -107,6 +157,7 @@ Set limits at the provider level (applies to all keys that don't override):
 providers: {
   mistral: {
     keys: ['key1'],
+    priority: 4,
     limits: [
       { type: 'calls', value: 1000, window: { type: 'daily', durationMs: 86_400_000 } },
     ],
@@ -114,31 +165,81 @@ providers: {
 }
 ```
 
-### Per-provider fallback override
-
-Override the global fallback behavior for a specific provider:
-
-```typescript
-providers: {
-  google: {
-    keys: ['key1'],
-    fallback: { behavior: 'hard-stop' }, // Never fall back away from Google
-  },
-}
-```
-
-Valid behaviors: `'auto'`, `'hard-stop'`, `'cheapest-paid'`.
-
 ### Disabling a provider
 
 ```typescript
 providers: {
   google: {
     keys: ['key1'],
+    priority: 1,
     enabled: false, // Excluded from routing, keys preserved
   },
 }
 ```
+
+## models (top-level)
+
+Explicit model priority chain. If provided, models are tried in this exact order. If omitted, the chain is auto-generated from provider priorities and their registered models.
+
+```typescript
+{
+  models: [
+    'cerebras/llama-4-maverick',    // Position 0 -- tried first
+    'google/gemini-2.5-flash',       // Position 1 -- fallback
+    'groq/meta-llama/llama-4-scout-17b-16e-instruct', // Position 2
+  ],
+}
+```
+
+**Auto-generated chain:** When `models` is omitted, the router builds a chain by sorting providers by `priority`, then including all models from each provider in their defined order.
+
+## router.chat()
+
+The primary API for making LLM calls through the model chain.
+
+```typescript
+// Basic -- routes through entire chain
+const model = router.chat();
+
+// Filter by capability
+const model = router.chat({ capabilities: ['reasoning'] });
+
+// Filter by provider
+const model = router.chat({ provider: 'google' });
+
+// Filter by quality tier
+const model = router.chat({ tier: 'frontier' });
+```
+
+Returns a Vercel AI SDK `LanguageModelV3` that can be passed to `generateText()`, `streamText()`, etc.
+
+**Behavior:** On each call, the chain executor walks the filtered chain from position 0. If a provider returns 429 or 402, the executor cooldowns that model and tries the next one. The `chain:resolved` event fires with details about which model was ultimately used.
+
+## router.getStatus()
+
+Returns the current state of the model chain:
+
+```typescript
+const status = router.getStatus();
+// {
+//   entries: [
+//     { provider: 'cerebras', modelId: 'cerebras/llama-4-maverick', status: 'available', ... },
+//     { provider: 'google', modelId: 'google/gemini-2.5-flash', status: 'cooling', cooldownUntil: '...', ... },
+//   ],
+//   totalModels: 6,
+//   availableModels: 4,
+//   depletedProviders: [],
+// }
+```
+
+Entry statuses:
+
+| Status      | Meaning                                      |
+| ----------- | -------------------------------------------- |
+| `available` | Ready to accept requests                     |
+| `cooling`   | In cooldown after 429, will recover          |
+| `depleted`  | Permanently exhausted (402) for this session |
+| `stale`     | Model returned 404, possibly removed         |
 
 ## strategy
 
@@ -149,12 +250,6 @@ Global key selection strategy. Each provider can override this.
 | `'priority'`    | Use keys in order. First available key wins. **(default)** |
 | `'round-robin'` | Rotate evenly across keys.                                 |
 | `'least-used'`  | Pick the key with the lowest usage.                        |
-
-```typescript
-{
-  strategy: 'least-used',
-}
-```
 
 ## budget
 
@@ -169,34 +264,8 @@ Monthly spending budget for paid fallback.
 }
 ```
 
-- `monthlyLimit: 0` (default) means "never spend money". All `cheapest-paid` fallback attempts will be blocked.
+- `monthlyLimit: 0` (default) means "never spend money". All paid model attempts will be blocked.
 - `alertThresholds` fire `budget:alert` events when cumulative spending crosses each threshold.
-
-## fallback
-
-Controls behavior when a provider's keys are exhausted.
-
-```typescript
-{
-  fallback: {
-    enabled: true,
-    maxDepth: 3,          // Try up to 3 fallback providers
-    strictModel: false,   // Allow model substitution
-    behavior: 'auto',     // 'auto' picks free providers first, then cheapest-paid
-    reasoning: false,     // When true, reasoning models only fall back to reasoning models
-    modelMappings: {
-      'google/gemini-2.0-flash': 'groq/llama-3.3-70b-versatile',
-    },
-  },
-}
-```
-
-| Behavior      | Description                                                                        |
-| ------------- | ---------------------------------------------------------------------------------- |
-| `'auto'`      | Try other free providers first, then cheapest paid if budget allows. **(default)** |
-| `'hard-stop'` | Fail immediately. No fallback.                                                     |
-
-`modelMappings` lets you define explicit model substitutions. When the source model is exhausted, the router will use the mapped model instead of auto-selecting.
 
 ## estimation
 
@@ -209,8 +278,6 @@ Pre-request token estimation for quota tracking.
   },
 }
 ```
-
-The router estimates request cost before sending it (prompt + estimated completion tokens). This enables proactive limit checking. A custom estimator can be passed to `createRouter()` options.
 
 ## cooldown
 
@@ -246,7 +313,7 @@ When `true`, the router performs key selection and fires all events but does **n
 }
 ```
 
-In dry-run mode, `router.wrapModel()` returns a model that returns empty responses. All events (`key:selected`, `usage:recorded`, etc.) still fire normally.
+In dry-run mode, `router.chat()` and `router.wrapModel()` return models that return empty responses. All events still fire normally.
 
 ## debug
 
@@ -262,14 +329,6 @@ Two ways to enable:
 
 // 2. Environment variable
 // DEBUG=pennyllm:* node app.js
-```
-
-Debug output uses the `debug` package with the `pennyllm:*` namespace. Example output:
-
-```
-pennyllm:router key:selected provider=google keyIndex=0 strategy=priority
-pennyllm:router fallback:triggered from=google to=groq reason=all_keys_exhausted
-pennyllm:config Config loaded successfully (keys redacted)
 ```
 
 ## applyRegistryDefaults
@@ -291,21 +350,25 @@ import { defineConfig } from 'pennyllm';
 
 const config = defineConfig({
   providers: {
-    google: { keys: ['...'] }, // Autocompletes: google, groq, openrouter, mistral, etc.
+    cerebras: { keys: ['...'], priority: 1 }, // Autocompletes: cerebras, google, groq, github, etc.
   },
 });
 ```
 
-Known providers: `google`, `groq`, `openrouter`, `mistral`, `huggingface`, `cerebras`, `deepseek`, `qwen`, `cloudflare`, `nvidia`, `cohere`, `github`. Custom provider strings are also accepted.
+Known providers: `cerebras`, `google`, `groq`, `github`, `sambanova`, `nvidia`, `mistral`. Custom provider strings are also accepted.
 
 ## Storage Adapters
 
 Storage is a **runtime option**, not a config field. Pass it to `createRouter()`:
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 import { SqliteStorage } from 'pennyllm/sqlite';
 import { RedisStorage } from 'pennyllm/redis';
+
+const config = defineConfig({
+  providers: { google: { keys: ['...'], priority: 1 } },
+});
 
 // Default: in-memory (zero dependencies)
 const router = await createRouter(config);
@@ -347,7 +410,8 @@ Environment variables are interpolated using `${VAR}` syntax:
 {
   "providers": {
     "google": {
-      "keys": ["${GOOGLE_API_KEY_1}", "${GOOGLE_API_KEY_2}"]
+      "keys": ["${GOOGLE_GENERATIVE_AI_API_KEY}"],
+      "priority": 1
     }
   }
 }

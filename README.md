@@ -9,15 +9,23 @@
 Zero runtime dependencies beyond peer deps. Works with [Vercel AI SDK](https://sdk.vercel.ai/).
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 import { generateText } from 'ai';
 
-const router = await createRouter({
-  providers: { google: { keys: [process.env.GOOGLE_API_KEY!] } },
-});
+const router = await createRouter(
+  defineConfig({
+    providers: {
+      cerebras: { keys: [process.env.CEREBRAS_API_KEY!], priority: 1 },
+      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 2 },
+    },
+  }),
+);
 
-const model = await router.wrapModel('google/gemini-2.0-flash');
-const { text } = await generateText({ model, prompt: 'Hello!' });
+// Automatic routing through model chain
+const { text } = await generateText({
+  model: router.chat(),
+  prompt: 'Explain quantum computing',
+});
 ```
 
 ---
@@ -46,7 +54,10 @@ npm install pennyllm ai @ai-sdk/google
 `ai` (Vercel AI SDK) is a peer dependency. Install provider SDKs for each provider you use:
 
 ```bash
-# Using Groq? Add its SDK:
+# Using Cerebras?
+npm install @ai-sdk/cerebras
+
+# Using Groq?
 npm install @ai-sdk/groq
 
 # Using Mistral?
@@ -64,17 +75,22 @@ Sign up at [Google AI Studio](https://aistudio.google.com/apikey) -- it takes 30
 ### 2. Create a router
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 import { generateText } from 'ai';
 
-const router = await createRouter({
-  providers: {
-    google: { keys: [process.env.GOOGLE_API_KEY!] },
-  },
-});
+const router = await createRouter(
+  defineConfig({
+    providers: {
+      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 },
+    },
+  }),
+);
 
-const model = await router.wrapModel('google/gemini-2.0-flash');
-const { text } = await generateText({ model, prompt: 'Explain quicksort in 3 sentences.' });
+// Automatic model chain routing
+const { text } = await generateText({
+  model: router.chat(),
+  prompt: 'Explain quicksort in 3 sentences.',
+});
 
 console.log(text);
 
@@ -82,26 +98,27 @@ console.log(text);
 await router.close();
 ```
 
-That's it. The router manages key selection, quota tracking, and rate limit handling transparently.
+That's it. The router manages key selection, model chain fallback, and rate limit handling transparently.
 
 ## How It Works
 
 ```
-Request ──> Router ──> Key Selection ──> [Fallback Chain] ──> Provider API
-               |            |                  |
-               |      Policy Engine       Budget Check
-               |      (quota check)       (cost guard)
-               |            |                  |
-               +── Usage Tracking ──+── Retry Proxy ──+
+Request --> router.chat() --> Chain Executor --> Provider API
+                 |                 |
+           Model Chain        Key Selection
+           (priority order)   (rotation + cooldown)
+                 |                 |
+           429/402 fallback   Usage Tracking
+           (next in chain)    (observability)
 ```
 
-pennyllm wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently manage API keys. It checks quotas, selects the best available key, handles rate limits with automatic retry and key rotation, and falls back to alternative providers when all keys are exhausted.
+pennyllm wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently manage API keys and model routing. When you call `router.chat()`, the chain executor walks through your model priority chain, trying each model in order. If a provider returns 429 (rate limit) or 402 (quota exhausted), it automatically falls back to the next model in the chain.
 
 **Key concepts:**
 
+- **Model chain** -- Define a priority-ordered list of models. The router tries each in order, falling back on errors.
 - **Key rotation** -- Distribute requests across multiple API keys per provider to stay within free tier limits.
-- **Policy engine** -- Track token usage, request counts, and rate limits per key with configurable thresholds.
-- **Fallback chains** -- When one provider's keys are exhausted, automatically fall back to another provider with equivalent model capabilities.
+- **Reactive rate limiting** -- No internal usage tracking for routing decisions. Provider 429/402 responses drive cooldown and fallback.
 - **Budget caps** -- Set a monthly spending limit. Free models are tried first; paid models only when budget allows.
 
 ## Configuration
@@ -109,39 +126,85 @@ pennyllm wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently manage
 ### Minimal (single provider)
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 
-const router = await createRouter({
-  providers: {
-    google: { keys: [process.env.GOOGLE_API_KEY!] },
-  },
-});
+const router = await createRouter(
+  defineConfig({
+    providers: {
+      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 },
+    },
+  }),
+);
 ```
 
-All configuration fields besides `providers` have sensible defaults. That's all you need to get started.
-
-### Multi-provider with budget
+### Multi-provider with model chain
 
 ```typescript
 import { createRouter, defineConfig } from 'pennyllm';
 
-const config = defineConfig({
-  providers: {
-    google: {
-      keys: [process.env.GOOGLE_KEY_1!, process.env.GOOGLE_KEY_2!, process.env.GOOGLE_KEY_3!],
+const router = await createRouter(
+  defineConfig({
+    providers: {
+      cerebras: { keys: [process.env.CEREBRAS_API_KEY!], priority: 1 },
+      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 2 },
+      groq: { keys: [process.env.GROQ_API_KEY!], priority: 3 },
     },
-    groq: { keys: [process.env.GROQ_KEY_1!, process.env.GROQ_KEY_2!] },
-    openrouter: { keys: [process.env.OPENROUTER_KEY!] },
-  },
-  budget: { monthlyLimit: 5.0 },
-  fallback: { behavior: 'auto' },
-  debug: true,
-});
-
-const router = await createRouter(config);
+    // Explicit model chain (optional -- auto-generated from provider priorities if omitted)
+    models: [
+      'cerebras/llama-4-maverick',
+      'google/gemini-2.5-flash',
+      'groq/meta-llama/llama-4-scout-17b-16e-instruct',
+    ],
+    budget: { monthlyLimit: 5.0 },
+    debug: true,
+  }),
+);
 ```
 
-`defineConfig()` provides IDE autocomplete for all 12 known provider names. Multiple keys per provider lets the router rotate through them when free tier limits are hit.
+`defineConfig()` provides IDE autocomplete for all 7 known provider names. Multiple keys per provider lets the router rotate through them when free tier limits are hit.
+
+### Using router.chat()
+
+`router.chat()` is the primary API. It returns a Vercel AI SDK model that automatically routes through the model chain:
+
+```typescript
+import { generateText } from 'ai';
+
+// Basic usage -- routes through model chain automatically
+const { text } = await generateText({
+  model: router.chat(),
+  prompt: 'Explain quantum computing',
+});
+
+// Filter by capability
+const { text: reasoning } = await generateText({
+  model: router.chat({ capabilities: ['reasoning'] }),
+  prompt: 'Solve this logic puzzle...',
+});
+
+// Filter by provider
+const { text: googleOnly } = await generateText({
+  model: router.chat({ provider: 'google' }),
+  prompt: 'Hello',
+});
+```
+
+### Direct model access
+
+Bypass the chain and use a specific model:
+
+```typescript
+const model = await router.wrapModel('google/gemini-2.5-flash');
+const { text } = await generateText({ model, prompt: 'Hello' });
+```
+
+### Check chain status
+
+```typescript
+const status = router.getStatus();
+console.log(`${status.availableModels}/${status.totalModels} models available`);
+console.log('Depleted:', status.depletedProviders);
+```
 
 ### Storage adapter (persistent tracking)
 
@@ -152,19 +215,16 @@ import { createRouter } from 'pennyllm';
 import { SqliteStorage } from 'pennyllm/sqlite';
 
 const router = await createRouter(
-  {
+  defineConfig({
     providers: {
-      google: { keys: [process.env.GOOGLE_API_KEY!] },
-      groq: { keys: [process.env.GROQ_API_KEY!] },
+      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 },
     },
-  },
+  }),
   {
     storage: new SqliteStorage({ path: './usage.db' }),
   },
 );
 ```
-
-Usage data persists in `usage.db` -- key rotation decisions survive process restarts, server deployments, and dev-server reloads.
 
 ### Config file (YAML/JSON)
 
@@ -176,24 +236,21 @@ const router = await createRouter('./router.config.yaml');
 
 ## Providers
 
-pennyllm supports 12 providers out of the box. Each provider has a detailed setup guide with free tier limits, key acquisition steps, and configuration examples.
+pennyllm supports 7 providers optimized for free-tier usage:
 
-| Provider              | Package               | Guide                                                          |
-| --------------------- | --------------------- | -------------------------------------------------------------- |
-| Google AI Studio      | `@ai-sdk/google`      | [docs/providers/google.md](docs/providers/google.md)           |
-| Groq                  | `@ai-sdk/groq`        | [docs/providers/groq.md](docs/providers/groq.md)               |
-| OpenRouter            | `@ai-sdk/openrouter`  | [docs/providers/openrouter.md](docs/providers/openrouter.md)   |
-| Mistral               | `@ai-sdk/mistral`     | [docs/providers/mistral.md](docs/providers/mistral.md)         |
-| HuggingFace           | `@ai-sdk/huggingface` | [docs/providers/huggingface.md](docs/providers/huggingface.md) |
-| Cerebras              | `@ai-sdk/cerebras`    | [docs/providers/cerebras.md](docs/providers/cerebras.md)       |
-| DeepSeek              | `@ai-sdk/deepseek`    | [docs/providers/deepseek.md](docs/providers/deepseek.md)       |
-| Qwen                  | `@ai-sdk/qwen`        | [docs/providers/qwen.md](docs/providers/qwen.md)               |
-| Cloudflare Workers AI | `@ai-sdk/cloudflare`  | [docs/providers/cloudflare.md](docs/providers/cloudflare.md)   |
-| NVIDIA NIM            | `@ai-sdk/nvidia`      | [docs/providers/nvidia.md](docs/providers/nvidia.md)           |
-| Cohere                | `@ai-sdk/cohere`      | [docs/providers/cohere.md](docs/providers/cohere.md)           |
-| GitHub Models         | `@ai-sdk/github`      | [docs/providers/github.md](docs/providers/github.md)           |
+| Provider         | Tier  | Package                     | Env Var                        | Sign Up                                                                |
+| ---------------- | ----- | --------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
+| Cerebras         | Free  | `@ai-sdk/cerebras`          | `CEREBRAS_API_KEY`             | [cloud.cerebras.ai](https://cloud.cerebras.ai)                         |
+| Google AI Studio | Free  | `@ai-sdk/google`            | `GOOGLE_GENERATIVE_AI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey)              |
+| Groq             | Free  | `@ai-sdk/groq`              | `GROQ_API_KEY`                 | [console.groq.com](https://console.groq.com)                           |
+| GitHub Models    | Free  | `@ai-sdk/openai-compatible` | `GITHUB_TOKEN`                 | [github.com/marketplace/models](https://github.com/marketplace/models) |
+| SambaNova        | Free  | `sambanova-ai-provider`     | `SAMBANOVA_API_KEY`            | [cloud.sambanova.ai](https://cloud.sambanova.ai)                       |
+| NVIDIA NIM       | Trial | `@ai-sdk/openai-compatible` | `NVIDIA_API_KEY`               | [build.nvidia.com](https://build.nvidia.com)                           |
+| Mistral          | Free  | `@ai-sdk/mistral`           | `MISTRAL_API_KEY`              | [console.mistral.ai](https://console.mistral.ai)                       |
 
-Start with **Google + Groq + OpenRouter** -- they're the easiest to set up and have the most generous free tiers.
+Start with **Cerebras + Google + Groq** -- they have the most generous perpetual free tiers and the fastest inference.
+
+> **Dropped providers:** HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek direct, and Fireworks are no longer supported. See the [Phase 12.1 gap analysis](.planning/phases/12-provider-overhaul-validation/12-CONTEXT.md) for rationale.
 
 ## Debug Mode
 
@@ -202,10 +259,12 @@ Debug mode shows every routing decision as a structured one-line summary.
 ### Enable via config
 
 ```typescript
-const router = await createRouter({
-  providers: { google: { keys: [process.env.GOOGLE_API_KEY!] } },
-  debug: true,
-});
+const router = await createRouter(
+  defineConfig({
+    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
+    debug: true,
+  }),
+);
 ```
 
 ### Enable via environment variable
@@ -217,13 +276,11 @@ DEBUG=pennyllm:* node app.js
 ### Example output
 
 ```
-[pennyllm:key-selected]     google/gemini-2.0-flash -> key#0 (priority)
-[pennyllm:usage-recorded]   google key#0: +1247 tokens (847/1500 RPM)
-[pennyllm:fallback]         google exhausted -> groq/llama-3.3-70b (quality-match)
+[pennyllm:key-selected]     cerebras/llama-4-maverick -> key#0 (priority)
+[pennyllm:usage-recorded]   cerebras key#0: +1247 tokens
+[pennyllm:chain-resolved]   cerebras/llama-4-maverick (position 0, no fallback, 312ms)
 [pennyllm:budget-alert]     $3.47 / $5.00 monthly (69%)
 ```
-
-Debug mode subscribes to the router's typed observability hooks and prints structured summaries to stdout. The `debug` npm package's low-level output (stderr) remains available separately.
 
 ## Storage Adapters
 
@@ -232,12 +289,14 @@ Debug mode subscribes to the router's typed observability hooks and prints struc
 In-memory storage. Usage data resets when the process exits. Good for development and short-lived scripts.
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 
 // MemoryStorage is the default -- no configuration needed
-const router = await createRouter({
-  providers: { google: { keys: [process.env.GOOGLE_API_KEY!] } },
-});
+const router = await createRouter(
+  defineConfig({
+    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
+  }),
+);
 ```
 
 ### SqliteStorage
@@ -249,12 +308,15 @@ npm install better-sqlite3
 ```
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 import { SqliteStorage } from 'pennyllm/sqlite';
 
-const router = await createRouter(config, {
-  storage: new SqliteStorage({ path: './usage.db' }),
-});
+const router = await createRouter(
+  defineConfig({
+    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
+  }),
+  { storage: new SqliteStorage({ path: './usage.db' }) },
+);
 ```
 
 ### RedisStorage
@@ -266,12 +328,15 @@ npm install ioredis
 ```
 
 ```typescript
-import { createRouter } from 'pennyllm';
+import { createRouter, defineConfig } from 'pennyllm';
 import { RedisStorage } from 'pennyllm/redis';
 
-const router = await createRouter(config, {
-  storage: new RedisStorage({ url: 'redis://localhost:6379' }),
-});
+const router = await createRouter(
+  defineConfig({
+    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
+  }),
+  { storage: new RedisStorage({ url: 'redis://localhost:6379' }) },
+);
 ```
 
 ## Events & Hooks
@@ -281,19 +346,26 @@ The router emits typed events for every routing decision. Use convenience hooks 
 ```typescript
 const router = await createRouter(config);
 
-// Subscribe to key selection events
-const unsubscribe = router.onKeySelected((event) => {
-  console.log(`${event.provider}/${event.model} -> key#${event.keyIndex} (${event.reason})`);
+// Subscribe to chain resolution events
+const unsubscribe = router.onChainResolved((event) => {
+  console.log(
+    `Resolved: ${event.resolvedModel} (position ${event.chainPosition}, ${event.latencyMs}ms)`,
+  );
 });
 
-// Subscribe to fallback events
-router.onFallbackTriggered((event) => {
-  console.log(`Fallback: ${event.fromProvider} -> ${event.toProvider} (${event.reason})`);
+// Subscribe to key selection events
+router.onKeySelected((event) => {
+  console.log(`${event.provider}/${event.model} -> key#${event.keyIndex} (${event.reason})`);
 });
 
 // Subscribe to budget alerts
 router.onBudgetAlert((event) => {
   console.log(`Budget: $${event.currentSpend} / $${event.limit} (${event.percentage}%)`);
+});
+
+// Subscribe to provider depletion
+router.onProviderDepleted((event) => {
+  console.log(`Provider ${event.provider} depleted: ${event.reason}`);
 });
 
 // Unsubscribe when done
@@ -302,16 +374,19 @@ unsubscribe();
 
 ### Available hooks
 
-| Hook                           | Fires when                               |
-| ------------------------------ | ---------------------------------------- |
-| `router.onKeySelected()`       | A key is selected for a request          |
-| `router.onUsageRecorded()`     | Token usage is recorded after a response |
-| `router.onLimitWarning()`      | Usage approaches a configured threshold  |
-| `router.onLimitExceeded()`     | A key's quota limit is exceeded          |
-| `router.onFallbackTriggered()` | Request falls back to another provider   |
-| `router.onBudgetAlert()`       | Spending approaches the monthly limit    |
-| `router.onBudgetExceeded()`    | Monthly budget limit is reached          |
-| `router.onError()`             | A provider returns an error              |
+| Hook                           | Fires when                                  |
+| ------------------------------ | ------------------------------------------- |
+| `router.onChainResolved()`     | Chain resolves a model for a request        |
+| `router.onKeySelected()`       | A key is selected for a request             |
+| `router.onUsageRecorded()`     | Token usage is recorded after a response    |
+| `router.onLimitWarning()`      | Usage approaches a configured threshold     |
+| `router.onLimitExceeded()`     | A key's quota limit is exceeded             |
+| `router.onFallbackTriggered()` | Request falls back to another provider      |
+| `router.onProviderDepleted()`  | A provider is permanently exhausted (402)   |
+| `router.onProviderStale()`     | Provider data hasn't been verified recently |
+| `router.onBudgetAlert()`       | Spending approaches the monthly limit       |
+| `router.onBudgetExceeded()`    | Monthly budget limit is reached             |
+| `router.onError()`             | A provider returns an error                 |
 
 You can also use the raw `router.on(event, handler)` / `router.off(event, handler)` API for untyped event access.
 
@@ -324,7 +399,7 @@ You can also use the raw `router.on(event, handler)` / `router.off(event, handle
 | Free tier tracking   | Built-in                         | Manual                | No                |
 | Key rotation         | Automatic                        | Manual                | Manual            |
 | Budget caps          | Yes                              | No                    | Yes               |
-| Fallback chains      | Automatic                        | Manual                | Manual            |
+| Model chain fallback | Automatic                        | Manual                | Manual            |
 | AI SDK integration   | Native                           | None                  | Proxy             |
 | Runtime dependencies | 3 (zod, debug, @ai-sdk/provider) | 0                     | 100+              |
 
@@ -345,12 +420,22 @@ You can also use the raw `router.on(event, handler)` / `router.off(event, handle
 
 | Method                                    | Description                                    |
 | ----------------------------------------- | ---------------------------------------------- |
-| `router.wrapModel(modelId, options?)`     | Wrap a model with routing, retry, and fallback |
+| `router.chat(filter?)`                    | Get a model that routes through the chain      |
+| `router.getStatus()`                      | Get chain status (available/depleted models)   |
+| `router.wrapModel(modelId, options?)`     | Wrap a specific model with routing and retry   |
 | `router.model(modelId, options?)`         | Select a key without wrapping (for manual use) |
 | `router.getUsage()`                       | Get usage snapshot across all providers        |
 | `router.getUsage(provider)`               | Get usage for a specific provider              |
 | `router.resetUsage(provider?, keyIndex?)` | Reset usage counters                           |
 | `router.close()`                          | Clean up resources (catalog, storage)          |
+
+### Chain Filter Options
+
+| Field          | Type       | Description                                                                                      |
+| -------------- | ---------- | ------------------------------------------------------------------------------------------------ |
+| `capabilities` | `string[]` | Filter to models with these capabilities (`reasoning`, `toolCall`, `vision`, `structuredOutput`) |
+| `provider`     | `string`   | Filter to a specific provider                                                                    |
+| `tier`         | `string`   | Filter by quality tier (`frontier`, `high`, `mid`)                                               |
 
 ### Storage Adapters
 
