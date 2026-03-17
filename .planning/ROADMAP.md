@@ -365,7 +365,16 @@ Plans:
 8. Dropped providers clearly marked as unsupported
 9. UsageTracker records usage for observability but does NOT gate routing decisions
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
+- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
+- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
+- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
+- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
+- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
 
 ---
 
@@ -407,7 +416,16 @@ _(c) Deferred to v2 (Phase 13):_
 - Credit-based billing (NVIDIA NIM): credit depletion detection → Phase 13
 - Credit expiry modeling (SambaNova $5 / 30-day) → Phase 13
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
+- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
+- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
+- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
+- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
+- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
 
 ### Phase 13: Credit-Based Limits
 
@@ -423,7 +441,16 @@ _(c) Deferred to v2 (Phase 13):_
 4. Router stops routing to a provider when credits are estimated exhausted
 5. `credit:low` and `credit:exhausted` events fire
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
+- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
+- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
+- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
+- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
+- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
 
 ---
 
@@ -443,7 +470,16 @@ _(c) Deferred to v2 (Phase 13):_
 4. `provider:recovered` event when exhausted/broken provider becomes available
 5. Health scores influence model chain ordering (skip unhealthy providers)
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
+- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
+- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
+- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
+- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
+- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
 
 ---
 
@@ -461,7 +497,16 @@ _(c) Deferred to v2 (Phase 13):_
 4. CI-friendly exit codes (0 = all pass, 1 = failures, 2 = warnings)
 5. Does NOT count against user's rate limits excessively (1 lightweight call per model)
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
+- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
+- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
+- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
+- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
+- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
 
 ---
 
@@ -484,7 +529,16 @@ _(c) Deferred to v2 (Phase 13):_
 3. Community-maintainable (PRs welcome format)
 4. PennyLLM docs link to it as authoritative provider reference
 
-**Plans:** TBD
+**Plans:** 6 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
+- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
+- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
+- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
+- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
+- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
 
 ---
 
@@ -503,7 +557,7 @@ _(c) Deferred to v2 (Phase 13):_
 | 9. Fallback & Budget Management    | 3/3            | Complete    | 2026-03-14 |
 | 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
 | 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
-| 12. Provider Overhaul & Validation | 0/?            | Not started | -          |
+| 12. Provider Overhaul & Validation | 0/6            | In progress | -          |
 | 12.1 Provider Nuance Gap Analysis  | 0/?            | Not started | -          |
 
 ## v2.0 Progress Table
