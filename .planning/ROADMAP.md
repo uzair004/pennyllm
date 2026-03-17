@@ -21,7 +21,7 @@
 - [x] **Phase 9: Fallback & Budget Management** - Capability-aware fallback chains, cheap paid model routing, budget caps, threshold alerts, persistence, user-configurable fallback behavior, other fallback strategies (e.g., round-robin fallback across providers, weighted random based on remaining quota), how to handle requests that exceed any single provider's limits (e.g., 10k tokens when max is 8k), how to handle different reset window types in fallback logic (e.g., if primary key is blocked due to per-minute limit, do we consider it exhausted for fallback purposes until the minute resets?), (completed 2026-03-14)
 - [x] **Phase 10: SQLite, Redis & Advanced Features** - SQLite + Redis adapters, observability hooks, dry-run mode, (completed 2026-03-14)
 - [x] **Phase 11: Developer Experience Polish** - Debug logging, TypeScript types, comprehensive docs, minimal config example, multiple keys per provider config, troubleshooting guide, how to test your config, how to monitor usage and costs, best practices for key management, etc. how it can fit with other tools in the ecosystem (e.g., LangChain.js, custom implementations) (completed 2026-03-14)
-- [ ] **Phase 12: Provider Overhaul & Validation** - Wire up 7 target providers, user-configured model priority chain, typed model IDs (free+paid), runtime validation, refresh docs, E2E testing with real APIs
+- [x] **Phase 12: Provider Overhaul & Validation** - Wire up 7 target providers, user-configured model priority chain, typed model IDs (free+paid), runtime validation, refresh docs, E2E testing with real APIs (completed 2026-03-17)
 - [ ] **Phase 12.1: Provider Nuance Gap Analysis** (INSERTED) - Audit PennyLLM abstractions against real provider behavior, categorize gaps (per-model limits, per-account limits, credit billing, per-second rates, per-request token caps), prioritize fixes vs deferrals
 
 ### v2.0 Milestone
@@ -365,7 +365,7 @@ Plans:
 8. Dropped providers clearly marked as unsupported
 9. UsageTracker records usage for observability but does NOT gate routing decisions
 
-**Plans:** 5/6 plans executed
+**Plans:** 6/6 plans complete
 
 Plans:
 
@@ -557,7 +557,7 @@ Plans:
 | 9. Fallback & Budget Management    | 3/3            | Complete    | 2026-03-14 |
 | 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
 | 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
-| 12. Provider Overhaul & Validation | 5/6            | In Progress |            |
+| 12. Provider Overhaul & Validation | 6/6            | Complete    | 2026-03-17 |
 | 12.1 Provider Nuance Gap Analysis  | 0/?            | Not started | -          |
 
 ## v2.0 Progress Table
