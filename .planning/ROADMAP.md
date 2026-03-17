@@ -365,7 +365,7 @@ Plans:
 8. Dropped providers clearly marked as unsupported
 9. UsageTracker records usage for observability but does NOT gate routing decisions
 
-**Plans:** 6 plans
+**Plans:** 1/6 plans executed
 
 Plans:
 
@@ -557,7 +557,7 @@ Plans:
 | 9. Fallback & Budget Management    | 3/3            | Complete    | 2026-03-14 |
 | 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
 | 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
-| 12. Provider Overhaul & Validation | 0/6            | In progress | -          |
+| 12. Provider Overhaul & Validation | 1/6 | In Progress|  |
 | 12.1 Provider Nuance Gap Analysis  | 0/?            | Not started | -          |
 
 ## v2.0 Progress Table

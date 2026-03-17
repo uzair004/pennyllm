@@ -11,7 +11,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **CORE-01**: Package initializes with API keys and provider configuration via TypeScript config object or JSON/YAML file
 - [x] **CORE-02**: User can configure multiple API keys per provider (e.g., 3 Google keys, 2 Groq keys)
-- [ ] **CORE-03**: Router automatically selects the best available key for each request based on usage and limits
+- [x] **CORE-03**: Router automatically selects the best available key for each request based on usage and limits
 - [x] **CORE-04**: Router enforces hard-stop when all keys for a provider are exhausted (no request made, error thrown)
 - [x] **CORE-05**: User can configure fallback behavior per provider (hard stop, cheapest paid model, or alternative free provider)
 - [x] **CORE-06**: User can set monthly budget cap including $0 (never spend money)
@@ -142,7 +142,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ----------- | -------------------------------------------------------------------------- | -------- |
 | CORE-01     | Phase 1                                                                    | Complete |
 | CORE-02     | Phase 11                                                                   | Complete |
-| CORE-03     | Phase 12                                                                   | Pending  |
+| CORE-03     | Phase 12                                                                   | Complete |
 | CORE-04     | Phase 9                                                                    | Complete |
 | CORE-05     | Phase 9                                                                    | Complete |
 | CORE-06     | Phase 9                                                                    | Complete |
