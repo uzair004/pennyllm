@@ -5,6 +5,8 @@ import { ProviderError } from '../errors/index.js';
 
 export type ErrorType = 'rate_limit' | 'auth' | 'server' | 'network' | 'unknown';
 
+export type CooldownClass = 'short' | 'long' | 'permanent';
+
 export interface ClassifiedError {
   type: ErrorType;
   statusCode?: number;
@@ -12,6 +14,8 @@ export interface ClassifiedError {
   message: string;
   original: unknown;
   retryable: boolean;
+  cooldownMs?: number;
+  cooldownClass?: CooldownClass;
 }
 
 export interface AttemptRecord {
@@ -31,6 +35,51 @@ const NETWORK_ERROR_CODES = new Set([
   'ECONNRESET',
   'EAI_AGAIN',
 ]);
+
+// ── Cooldown parsing helpers ────────────────────────────────────────
+
+/**
+ * Parse a Retry-After header value into milliseconds.
+ * Handles both delta-seconds ("60") and HTTP-date ("Thu, 01 Dec 2025 16:00:00 GMT") formats.
+ */
+function parseRetryAfter(header: string | undefined): number | undefined {
+  if (!header) return undefined;
+  const seconds = Number(header);
+  if (!isNaN(seconds) && seconds >= 0) return seconds * 1000;
+  const date = new Date(header);
+  if (!isNaN(date.getTime())) return Math.max(0, date.getTime() - Date.now());
+  return undefined;
+}
+
+/**
+ * Parse x-ratelimit-reset-* headers as fallback for cooldown duration.
+ * Tries x-ratelimit-reset-requests first (Groq, SambaNova), then x-ratelimit-reset (Google).
+ * Values may be epoch seconds or ISO date strings.
+ */
+function parseRateLimitReset(headers: Record<string, string> | undefined): number | undefined {
+  if (!headers) return undefined;
+  const resetValue = headers['x-ratelimit-reset-requests'] ?? headers['x-ratelimit-reset'];
+  if (!resetValue) return undefined;
+  const asNumber = Number(resetValue);
+  if (!isNaN(asNumber)) {
+    // If looks like epoch (> year 2000 in seconds), treat as absolute
+    if (asNumber > 1_000_000_000) return Math.max(0, asNumber * 1000 - Date.now());
+    // Otherwise treat as relative seconds
+    return asNumber * 1000;
+  }
+  const date = new Date(resetValue);
+  if (!isNaN(date.getTime())) return Math.max(0, date.getTime() - Date.now());
+  return undefined;
+}
+
+/**
+ * Classify cooldown duration into short/long/permanent.
+ * Short: < 2 minutes. Long: >= 2 minutes. Permanent: Infinity (402 credit exhaustion).
+ */
+function classifyCooldown(cooldownMs: number): CooldownClass {
+  if (cooldownMs === Infinity) return 'permanent';
+  return cooldownMs < 120_000 ? 'short' : 'long';
+}
 
 // ── classifyError ──────────────────────────────────────────────────
 
@@ -58,7 +107,26 @@ export function classifyError(error: unknown): ClassifiedError {
       if (retryAfter !== undefined) {
         result.retryAfter = retryAfter;
       }
+      // Compute cooldownMs from retry-after header, falling back to x-ratelimit-reset-* headers
+      const cooldownMs =
+        parseRetryAfter(retryAfter) ?? parseRateLimitReset(error.responseHeaders ?? undefined);
+      if (cooldownMs !== undefined) {
+        result.cooldownMs = cooldownMs;
+        result.cooldownClass = classifyCooldown(cooldownMs);
+      }
       return result;
+    }
+
+    if (statusCode === 402) {
+      return {
+        type: 'rate_limit',
+        statusCode: 402,
+        message: `${error.message} (credits exhausted)`,
+        original: error,
+        retryable: false,
+        cooldownMs: Infinity,
+        cooldownClass: 'permanent',
+      };
     }
 
     if (statusCode === 401 || statusCode === 403) {
