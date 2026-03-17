@@ -416,16 +416,12 @@ _(c) Deferred to v2 (Phase 13):_
 - Credit-based billing (NVIDIA NIM): credit depletion detection → Phase 13
 - Credit expiry modeling (SambaNova $5 / 30-day) → Phase 13
 
-**Plans:** 6 plans
+**Plans:** 2 plans
 
 Plans:
 
-- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
-- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
-- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
-- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
-- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
-- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
+- [ ] 12.1-01-PLAN.md — Gap report with provider-by-provider analysis, cross-cutting gaps, priority matrix
+- [ ] 12.1-02-PLAN.md — Update provider notes with gap analysis sections and DX recommendations
 
 ### Phase 13: Credit-Based Limits
 
@@ -544,21 +540,21 @@ Plans:
 
 ## v1.0 Progress Table
 
-| Phase                              | Plans Complete | Status      | Completed  |
-| ---------------------------------- | -------------- | ----------- | ---------- |
-| 1. Foundation Setup                | 2/2            | Complete    | ✅         |
-| 2. State Storage & Persistence     | 1/1            | Complete    | ✅         |
-| 3. Policy Engine                   | 2/2            | Complete    | ✅         |
-| 4. Usage Tracking Core             | 2/2            | Complete    | ✅         |
-| 5. Model Catalog & Selection       | 5/5            | Complete    | ✅         |
-| 6. Base Router Integration         | 3/3            | Complete    | 2026-03-13 |
-| 7. Integration & Error Handling    | 2/2            | Complete    | 2026-03-13 |
-| 8. Provider Policies Catalog       | 3/3            | Complete    | 2026-03-14 |
-| 9. Fallback & Budget Management    | 3/3            | Complete    | 2026-03-14 |
-| 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
-| 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
-| 12. Provider Overhaul & Validation | 6/6            | Complete    | 2026-03-17 |
-| 12.1 Provider Nuance Gap Analysis  | 0/?            | Not started | -          |
+| Phase                              | Plans Complete | Status   | Completed  |
+| ---------------------------------- | -------------- | -------- | ---------- |
+| 1. Foundation Setup                | 2/2            | Complete | ✅         |
+| 2. State Storage & Persistence     | 1/1            | Complete | ✅         |
+| 3. Policy Engine                   | 2/2            | Complete | ✅         |
+| 4. Usage Tracking Core             | 2/2            | Complete | ✅         |
+| 5. Model Catalog & Selection       | 5/5            | Complete | ✅         |
+| 6. Base Router Integration         | 3/3            | Complete | 2026-03-13 |
+| 7. Integration & Error Handling    | 2/2            | Complete | 2026-03-13 |
+| 8. Provider Policies Catalog       | 3/3            | Complete | 2026-03-14 |
+| 9. Fallback & Budget Management    | 3/3            | Complete | 2026-03-14 |
+| 10. SQLite, Redis & Advanced       | 3/3            | Complete | 2026-03-14 |
+| 11. Developer Experience Polish    | 3/3            | Complete | 2026-03-14 |
+| 12. Provider Overhaul & Validation | 6/6            | Complete | 2026-03-17 |
+| 12.1 Provider Nuance Gap Analysis  | 0/2            | Planned  | -          |
 
 ## v2.0 Progress Table
 
@@ -655,3 +651,4 @@ _Phase 10 planned: 3 plans in 2 waves (SQLite adapter + Redis adapter parallel, 
 _Phase 11 planned: 3 plans in 2 waves (code changes, then README + reference docs parallel)_
 _Phase 11 complete: 3 plans in 2 waves (debug mode + config validation, then README + reference docs parallel)_
 _v2.0 milestone added: 10 phases (13-22) with dependency graph, 20 requirements mapped_
+_Phase 12.1 planned: 2 plans in 1 wave (gap report + provider note updates, parallel)_
