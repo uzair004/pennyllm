@@ -28,15 +28,6 @@ export const keyConfigSchema = z.union([
 ]);
 
 /**
- * Per-provider fallback override schema
- */
-export const providerFallbackOverrideSchema = z
-  .object({
-    behavior: z.enum(['auto', 'hard-stop', 'cheapest-paid']).optional(),
-  })
-  .optional();
-
-/**
  * Provider configuration schema
  */
 export const providerConfigSchema = z.object({
@@ -46,22 +37,11 @@ export const providerConfigSchema = z.object({
     .optional(),
   limits: z.array(policyLimitSchema).optional(),
   enabled: z.boolean().default(true),
-  fallback: providerFallbackOverrideSchema,
+  priority: z.number().int().min(0).default(100),
+  tier: z.enum(['free', 'trial', 'paid']).default('free'),
+  credits: z.number().positive().optional(),
+  models: z.array(z.string()).optional(),
 });
-
-/**
- * Fallback configuration schema
- */
-export const fallbackConfigSchema = z
-  .object({
-    enabled: z.boolean().default(true),
-    maxDepth: z.number().int().min(1).max(10).default(3),
-    strictModel: z.boolean().default(false),
-    behavior: z.enum(['auto', 'hard-stop']).default('auto'),
-    modelMappings: z.record(z.string(), z.string()).optional(),
-    reasoning: z.boolean().default(false),
-  })
-  .default({});
 
 /**
  * Budget configuration schema
@@ -108,7 +88,7 @@ export const configSchema = z
       monthlyLimit: 0,
       alertThresholds: [0.8, 0.95],
     }),
-    fallback: fallbackConfigSchema,
+    models: z.array(z.string()).optional(),
     estimation: estimationSchema,
     cooldown: cooldownSchema,
     warningThreshold: z.number().min(0).max(1).optional(),
@@ -119,17 +99,15 @@ export const configSchema = z
   .strict()
   .refine(
     (config) => {
-      const hasCheapestPaid = Object.values(config.providers).some(
-        (p) => p.fallback?.behavior === 'cheapest-paid',
-      );
-      if (hasCheapestPaid && config.budget.monthlyLimit === 0) {
-        return false;
+      for (const [, prov] of Object.entries(config.providers)) {
+        if (prov.tier === 'trial' && prov.credits === undefined) {
+          return false;
+        }
       }
       return true;
     },
     {
-      message:
-        "Cannot use 'cheapest-paid' fallback behavior with $0 budget. Set budget.monthlyLimit > 0 or change fallback behavior.",
+      message: "Providers with tier 'trial' must specify a 'credits' value.",
     },
   );
 
