@@ -75,3 +75,10 @@
 - Confidence: HIGH (well-documented)
 - Unique value: ONLY free path to o3, o4-mini, GPT-4o
 - Registry should flag these as "closed frontier" models unavailable elsewhere for free
+
+## Gap Analysis (Phase 12.1)
+
+**Status:** DROPPED from PennyLLM registry during Phase 12 execution.
+**Reason:** Does not offer meaningful free-tier value compared to other providers.
+**Reference:** See `DROPPED.md` for full list of dropped providers.
+**No gap analysis performed** -- provider is not active in PennyLLM.
