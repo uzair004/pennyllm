@@ -38,7 +38,7 @@ export class UsageTracker {
     this.storage = storage;
     this.emitter = emitter;
     this.estimationConfig = estimationConfig;
-    this.cooldown = new CooldownManager();
+    this.cooldown = new CooldownManager(storage);
     this.recordedRequests = new Set();
     this.estimatedRecords = new Map();
 
@@ -405,6 +405,14 @@ export class UsageTracker {
     }
 
     log('Usage reset: provider=%s, keyIndex=%s', provider ?? 'all', keyIndex ?? 'all');
+  }
+
+  /**
+   * Load persisted cooldowns from storage.
+   * Should be called once at startup (e.g., from createRouter).
+   */
+  async loadPersistedCooldowns(): Promise<void> {
+    await this.cooldown.loadPersistedCooldowns();
   }
 
   /**
