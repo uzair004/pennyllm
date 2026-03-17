@@ -42,8 +42,19 @@ export { DebugLogger } from './debug/index.js';
 // Budget
 export { BudgetTracker } from './budget/index.js';
 
-// Fallback
-export { FallbackResolver, AffinityCache, createFallbackProxy } from './fallback/index.js';
+// Chain (new in Phase 12)
+export type {
+  ChainEntry,
+  ChainResult,
+  ChainStatus,
+  ChainFilter,
+  ChainAttempt,
+  ChainEntryStatus,
+} from './chain/index.js';
+
+// Providers (new in Phase 12)
+export type { ProviderModule, ProviderModelDef } from './providers/types.js';
+export { getAllProviders, getProviderModule } from './providers/registry.js';
 
 // Selection
 export {
@@ -137,6 +148,9 @@ export type {
   UsageRecord,
   UsageRecordedEvent,
   UsageSnapshot,
+  ChainResolvedEvent,
+  ProviderDepletedEvent,
+  ProviderStaleEvent,
 } from './types/index.js';
 
 // Errors

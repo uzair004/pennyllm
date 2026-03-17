@@ -61,6 +61,16 @@
       "types": "./dist/redis/index.d.ts",
       "import": "./dist/redis/index.mjs",
       "require": "./dist/redis/index.cjs"
+    },
+    "./chain": {
+      "types": "./dist/chain/index.d.ts",
+      "import": "./dist/chain/index.mjs",
+      "require": "./dist/chain/index.cjs"
+    },
+    "./providers": {
+      "types": "./dist/providers/index.d.ts",
+      "import": "./dist/providers/index.mjs",
+      "require": "./dist/providers/index.cjs"
     }
   },
   "files": [

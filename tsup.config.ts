@@ -13,6 +13,8 @@ export default defineConfig({
     'src/wrapper/index.ts',
     'src/sqlite/index.ts',
     'src/redis/index.ts',
+    'src/chain/index.ts',
+    'src/providers/index.ts',
   ],
   format: ['esm', 'cjs'],
   dts: true,

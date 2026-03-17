@@ -11,8 +11,8 @@ export type {
   RouterConfig,
 } from './config.js';
 
-// Fallback types (kept for fallback module, will be cleaned up in Plan 06)
-export type { FallbackCandidate, ProviderAttempt } from '../fallback/types.js';
+// Legacy fallback types (moved from fallback module)
+export type { FallbackCandidate, ProviderAttempt } from './domain.js';
 
 // Domain types
 export type {
@@ -48,6 +48,9 @@ export type {
   RouterEventPayload,
   RouterEvents,
   UsageRecordedEvent,
+  ChainResolvedEvent,
+  ProviderDepletedEvent,
+  ProviderStaleEvent,
 } from './events.js';
 
 // Interface types

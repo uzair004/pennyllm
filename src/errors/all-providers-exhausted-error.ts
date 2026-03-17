@@ -1,4 +1,4 @@
-import type { ProviderAttempt } from '../fallback/types.js';
+import type { ProviderAttempt } from '../types/domain.js';
 import { PennyLLMError } from './base.js';
 
 /**

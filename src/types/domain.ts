@@ -85,3 +85,34 @@ export interface UsageRecord {
   window: TimeWindow;
   estimated: boolean;
 }
+
+/**
+ * Result of fallback resolution - a candidate provider/model
+ */
+export interface FallbackCandidate {
+  provider: string;
+  modelId: string;
+  modelName: string;
+  qualityTier: QualityTierType;
+  capabilities: ModelMetadata['capabilities'];
+  pricing: ModelMetadata['pricing'];
+  contextWindow: number;
+  isFree: boolean;
+}
+
+/**
+ * Record of a single provider attempt during fallback
+ */
+export interface ProviderAttempt {
+  provider: string;
+  modelId: string;
+  reason:
+    | 'quota_exhausted'
+    | 'rate_limited'
+    | 'server_error'
+    | 'budget_exceeded'
+    | 'no_match'
+    | 'auth_failed';
+  error?: Error;
+  earliestRecovery?: string;
+}
