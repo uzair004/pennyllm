@@ -89,14 +89,31 @@
     "update-catalog": "tsx scripts/generate-catalog.ts"
   },
   "peerDependencies": {
+    "@ai-sdk/cerebras": "^2.0.0",
     "@ai-sdk/google": "^3.0.0",
+    "@ai-sdk/groq": "^3.0.0",
+    "@ai-sdk/mistral": "^3.0.0",
+    "@ai-sdk/openai-compatible": "^2.0.0",
     "ai": "^6.0.0",
-    "js-yaml": "^4.0.0",
     "better-sqlite3": "^11.0.0 || ^12.0.0",
-    "ioredis": "^5.0.0"
+    "ioredis": "^5.0.0",
+    "js-yaml": "^4.0.0",
+    "sambanova-ai-provider": "^1.0.0"
   },
   "peerDependenciesMeta": {
+    "@ai-sdk/cerebras": {
+      "optional": true
+    },
     "@ai-sdk/google": {
+      "optional": true
+    },
+    "@ai-sdk/groq": {
+      "optional": true
+    },
+    "@ai-sdk/mistral": {
+      "optional": true
+    },
+    "@ai-sdk/openai-compatible": {
       "optional": true
     },
     "js-yaml": {
@@ -107,6 +124,9 @@
     },
     "ioredis": {
       "optional": true
+    },
+    "sambanova-ai-provider": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -115,7 +135,11 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@ai-sdk/cerebras": "^2.0.39",
     "@ai-sdk/google": "^3.0.43",
+    "@ai-sdk/groq": "^3.0.29",
+    "@ai-sdk/mistral": "^3.0.24",
+    "@ai-sdk/openai-compatible": "^2.0.35",
     "@changesets/cli": "^2.27.10",
     "@commitlint/cli": "^19.6.2",
     "@commitlint/config-conventional": "^19.6.0",
@@ -133,6 +157,7 @@
     "js-yaml": "^4.1.0",
     "lint-staged": "^15.2.11",
     "prettier": "^3.4.2",
+    "sambanova-ai-provider": "^1.2.2",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.2",

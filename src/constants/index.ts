@@ -13,18 +13,20 @@ export type StrategyType = (typeof Strategy)[keyof typeof Strategy];
  * LLM Provider identifiers
  */
 export const Provider = {
+  CEREBRAS: 'cerebras',
   GOOGLE: 'google',
   GROQ: 'groq',
-  OPENROUTER: 'openrouter',
+  GITHUB: 'github',
+  SAMBANOVA: 'sambanova',
+  NVIDIA: 'nvidia',
   MISTRAL: 'mistral',
+  // Legacy — unsupported in v1.0, kept for backward compatibility
+  OPENROUTER: 'openrouter',
   HUGGINGFACE: 'huggingface',
-  CEREBRAS: 'cerebras',
   DEEPSEEK: 'deepseek',
   QWEN: 'qwen',
   CLOUDFLARE: 'cloudflare',
-  NVIDIA: 'nvidia',
   COHERE: 'cohere',
-  GITHUB: 'github',
 } as const;
 
 export type ProviderType = (typeof Provider)[keyof typeof Provider];
@@ -51,6 +53,9 @@ export const RouterEvent = {
   KEY_RETRIED: 'key:retried',
   KEY_DISABLED: 'key:disabled',
   REQUEST_COMPLETE: 'request:complete',
+  CHAIN_RESOLVED: 'chain:resolved',
+  PROVIDER_DEPLETED: 'provider:depleted',
+  PROVIDER_STALE: 'provider:stale',
 } as const;
 
 export type RouterEventType = (typeof RouterEvent)[keyof typeof RouterEvent];
