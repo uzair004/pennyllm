@@ -74,6 +74,29 @@ export class DebugLogger {
         console.log(`${PREFIX} error: ${e.error.message}`);
       }),
     );
+
+    this.unsubscribers.push(
+      router.onChainResolved((e) => {
+        const fb = e.fallbackUsed ? ` (fallback from pos 0)` : '';
+        console.log(
+          `${PREFIX} chain: ${e.resolvedProvider}/${e.resolvedModel} at pos ${e.chainPosition}${fb} (${e.latencyMs}ms)`,
+        );
+      }),
+    );
+
+    this.unsubscribers.push(
+      router.onProviderDepleted((e) => {
+        console.log(`${PREFIX} depleted: ${e.provider} (${e.reason})`);
+      }),
+    );
+
+    this.unsubscribers.push(
+      router.onProviderStale((e) => {
+        console.log(
+          `${PREFIX} stale: ${e.provider} (last verified ${e.daysSinceVerified} days ago)`,
+        );
+      }),
+    );
   }
 
   /**

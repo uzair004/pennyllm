@@ -25,6 +25,10 @@ import { createRouterMiddleware } from '../wrapper/middleware.js';
 import { createRetryProxy } from '../wrapper/retry-proxy.js';
 import { BudgetTracker } from '../budget/BudgetTracker.js';
 import { DebugLogger } from '../debug/index.js';
+import { buildChain } from '../chain/chain-builder.js';
+import { createChainProxy, getChainStatus } from '../chain/ChainExecutor.js';
+import type { ChainEntry, ChainFilter, ChainStatus } from '../chain/types.js';
+import { checkProviderStaleness, getProviderModule } from '../providers/registry.js';
 import type {
   KeySelectedEvent,
   UsageRecordedEvent,
@@ -32,6 +36,9 @@ import type {
   LimitExceededEvent,
   FallbackTriggeredEvent,
   ErrorEvent,
+  ChainResolvedEvent,
+  ProviderDepletedEvent,
+  ProviderStaleEvent,
 } from '../types/events.js';
 import type { BudgetAlertEvent, BudgetExceededEvent } from '../budget/types.js';
 import { RouterEvent } from '../constants/index.js';
@@ -39,7 +46,7 @@ import { RouterEvent } from '../constants/index.js';
 const debug = debugFactory('pennyllm:config');
 
 /**
- * Router instance interface with full Phase 5 integration
+ * Router instance interface with chain-based routing
  */
 export interface Router {
   model: (
@@ -54,6 +61,8 @@ export interface Router {
       requestId?: string;
     },
   ) => Promise<LanguageModelV3>;
+  chat: (filter?: ChainFilter) => LanguageModelV3;
+  getStatus: () => ChainStatus;
   getUsage: {
     (): Promise<UsageSnapshot>;
     (provider: string): Promise<ProviderUsage>;
@@ -79,10 +88,13 @@ export interface Router {
   onBudgetAlert: (cb: (event: BudgetAlertEvent) => void) => () => void;
   onBudgetExceeded: (cb: (event: BudgetExceededEvent) => void) => () => void;
   onError: (cb: (event: ErrorEvent) => void) => () => void;
+  onChainResolved: (cb: (event: ChainResolvedEvent) => void) => () => void;
+  onProviderDepleted: (cb: (event: ProviderDepletedEvent) => void) => () => void;
+  onProviderStale: (cb: (event: ProviderStaleEvent) => void) => () => void;
 }
 
 /**
- * Create a router instance from configuration with full catalog and selection integration
+ * Create a router instance from configuration with chain-based routing
  * @param configOrPath - Configuration object or path to config file
  * @param options - Optional configuration options
  * @param options.storage - Custom storage backend (defaults to MemoryStorage)
@@ -121,8 +133,6 @@ export async function createRouter(
     const emitter = new EventEmitter();
 
     // Resolve policies with empty defaults (shipped defaults removed in Phase 8)
-    // When applyRegistryDefaults toggle is implemented in registry phase,
-    // this will conditionally use registry data instead of empty map
     const emptyDefaults = new Map<string, Policy>();
     const resolvedPolicies = resolvePolicies(config, emptyDefaults);
 
@@ -150,7 +160,7 @@ export async function createRouter(
     // Initialize catalog
     const catalog = options?.catalog ?? new DefaultModelCatalog(emitter);
 
-    // Eager init: fetch catalog at startup (non-blocking — falls back to static)
+    // Eager init: fetch catalog at startup (non-blocking -- falls back to static)
     try {
       await catalog.refresh();
     } catch (err) {
@@ -174,20 +184,40 @@ export async function createRouter(
     const budgetTracker = new BudgetTracker(storage, config.budget, emitter);
 
     // Shared disabled keys set across all wrapModel calls for this router instance
-    // Keys that fail auth (401/403) are disabled for the session lifetime
     const disabledKeys = new Set<string>();
 
-    // Lazy-init provider registry (defer dynamic import until first wrapModel call)
-    let providerRegistry: ProviderRegistry | null = null;
+    // Build model priority chain at startup
+    const chain: ChainEntry[] = buildChain(config);
 
-    async function getProviderRegistry(): Promise<ProviderRegistry> {
-      if (providerRegistry === null) {
-        providerRegistry = await ProviderRegistry.createDefault();
+    // Check provider staleness at startup
+    const configuredProviderIds = Object.keys(config.providers).filter(
+      (p) => config.providers[p]?.enabled !== false,
+    );
+    checkProviderStaleness(configuredProviderIds, emitter);
+
+    // Load persisted cooldowns at startup
+    await usageTracker.loadPersistedCooldowns();
+
+    // Register async provider factories from provider modules
+    const providerRegistry = new ProviderRegistry();
+    for (const providerId of configuredProviderIds) {
+      const mod = getProviderModule(providerId);
+      if (mod) {
+        providerRegistry.registerAsync(providerId, mod.createFactory.bind(mod));
       }
-      return providerRegistry;
     }
 
-    debug('Router created with config (keys redacted)');
+    // Lazy-init default registry for wrapModel (legacy path, loads @ai-sdk/* directly)
+    let defaultRegistry: ProviderRegistry | null = null;
+
+    async function getDefaultRegistry(): Promise<ProviderRegistry> {
+      if (defaultRegistry === null) {
+        defaultRegistry = await ProviderRegistry.createDefault();
+      }
+      return defaultRegistry;
+    }
+
+    debug('Router created with config (keys redacted), chain has %d models', chain.length);
 
     // Typed hook helper factory -- wraps emitter.on and returns unsubscribe function
     function createHook<T>(eventName: string): (cb: (event: T) => void) => () => void {
@@ -200,8 +230,7 @@ export async function createRouter(
       };
     }
 
-    // Return implementation with full Phase 5 integration
-    // Using self-reference pattern for wrapModel to call router.model()
+    // Return implementation with chain-based routing
     const routerImpl: Router = {} as Router;
 
     // Assign router methods
@@ -262,6 +291,7 @@ export async function createRouter(
           reason: result.reason,
         };
       },
+
       wrapModel: async (
         modelId: string,
         opts?: {
@@ -281,7 +311,7 @@ export async function createRouter(
         const requestId = opts?.requestId ?? randomUUID();
 
         // Create base model with selected API key (lazy-init registry on first call)
-        const registry = await getProviderRegistry();
+        const registry = await getDefaultRegistry();
         const baseModel = createProviderInstance(registry, provider, modelName, selection.key);
 
         // Mutable refs shared between retry proxy and middleware
@@ -317,7 +347,7 @@ export async function createRouter(
           dryRun: config.dryRun,
         });
 
-        // Wrap retry proxy with middleware (ChainExecutor will be wired in Plan 05)
+        // Wrap retry proxy with middleware
         const wrappedModel = wrapLanguageModel({
           model: retryProxy,
           middleware,
@@ -326,6 +356,50 @@ export async function createRouter(
         });
         return wrappedModel;
       },
+
+      chat: (filter?: ChainFilter) => {
+        const providerRef = { current: '' };
+        const keyIndexRef = { current: 0 };
+        const modelIdRef = { current: 'pennyllm/chain' };
+
+        const chainProxy = createChainProxy(
+          {
+            chain,
+            config,
+            cooldownManager,
+            budgetTracker,
+            keySelector,
+            disabledKeys,
+            emitter,
+            usageTracker,
+            providerRef,
+            keyIndexRef,
+            modelIdRef,
+          },
+          filter,
+        );
+
+        const middleware = createRouterMiddleware({
+          providerRef,
+          keyIndexRef,
+          modelIdRef,
+          tracker: usageTracker,
+          requestId: randomUUID(),
+          dryRun: config.dryRun,
+        });
+
+        return wrapLanguageModel({
+          model: chainProxy,
+          middleware,
+          modelId: 'pennyllm/chain',
+          providerId: 'pennyllm',
+        });
+      },
+
+      getStatus: () => {
+        return getChainStatus(chain, cooldownManager);
+      },
+
       getUsage: (async (provider?: string) => {
         if (provider !== undefined) {
           return usageTracker.getUsage(provider);
@@ -371,6 +445,9 @@ export async function createRouter(
       onBudgetAlert: createHook<BudgetAlertEvent>(RouterEvent.BUDGET_ALERT),
       onBudgetExceeded: createHook<BudgetExceededEvent>(RouterEvent.BUDGET_EXCEEDED),
       onError: createHook<ErrorEvent>(RouterEvent.ERROR),
+      onChainResolved: createHook<ChainResolvedEvent>(RouterEvent.CHAIN_RESOLVED),
+      onProviderDepleted: createHook<ProviderDepletedEvent>(RouterEvent.PROVIDER_DEPLETED),
+      onProviderStale: createHook<ProviderStaleEvent>(RouterEvent.PROVIDER_STALE),
     });
 
     // Enable debug mode from config flag or DEBUG env var

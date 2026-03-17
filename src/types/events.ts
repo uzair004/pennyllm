@@ -183,6 +183,37 @@ export interface RequestCompleteEvent extends RouterEventPayload {
 }
 
 /**
+ * Chain resolved event - emitted when chain successfully resolves a model
+ */
+export interface ChainResolvedEvent extends RouterEventPayload {
+  resolvedModel: string;
+  resolvedProvider: string;
+  chainPosition: number;
+  fallbackUsed: boolean;
+  attempts: Array<{ provider: string; modelId: string; errorType: string }>;
+  latencyMs: number;
+}
+
+/**
+ * Provider depleted event - emitted when a provider is permanently exhausted (402)
+ */
+export interface ProviderDepletedEvent extends RouterEventPayload {
+  provider: string;
+  reason: string;
+  cooldownClass: 'permanent';
+}
+
+/**
+ * Provider stale event - emitted when a provider's data hasn't been verified recently
+ */
+export interface ProviderStaleEvent extends RouterEventPayload {
+  provider: string;
+  lastVerified: string;
+  daysSinceVerified: number;
+  updateUrl: string;
+}
+
+/**
  * Type-safe event map
  */
 export interface RouterEventMap {
@@ -205,6 +236,9 @@ export interface RouterEventMap {
   'key:retried': KeyRetriedEvent;
   'key:disabled': KeyDisabledEvent;
   'request:complete': RequestCompleteEvent;
+  'chain:resolved': ChainResolvedEvent;
+  'provider:depleted': ProviderDepletedEvent;
+  'provider:stale': ProviderStaleEvent;
 }
 
 /**
@@ -229,4 +263,7 @@ export type RouterEvents =
   | ErrorNetworkEvent
   | KeyRetriedEvent
   | KeyDisabledEvent
-  | RequestCompleteEvent;
+  | RequestCompleteEvent
+  | ChainResolvedEvent
+  | ProviderDepletedEvent
+  | ProviderStaleEvent;
