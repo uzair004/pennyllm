@@ -191,3 +191,36 @@ Priority chain for routing (quality-first):
 6. `qwen/qwen3.5-122b-a10b` — general purpose MoE
 7. `mistralai/mistral-nemotron` — 128K context, tool calling
 8. `nvidia/llama-3.3-nemotron-super-49b-v1.5` — efficient 49B
+
+## Gap Analysis (Phase 12.1)
+
+**Date:** 2026-03-17
+
+### PennyLLM Abstraction Match
+
+| Aspect             | Provider Reality                                   | PennyLLM Model       | Match?  |
+| ------------------ | -------------------------------------------------- | -------------------- | ------- |
+| Limit scope        | Unknown, unpublished                               | Per-key              | N/A     |
+| Key rotation value | UNKNOWN — likely per-account                       | Assumes beneficial   | N/A     |
+| Error format       | 429, headers undocumented                          | 429 + header parsing | PARTIAL |
+| Per-model limits   | Unpublished (exist but NVIDIA refuses to document) | Per-key only         | N/A     |
+
+### Key Rotation Value
+
+**UNKNOWN.** NVIDIA does not publish rate limit details. Limits are likely per-account, making key rotation ineffective. PennyLLM must rely entirely on reactive 429 detection for this provider.
+
+### DX Recommendations
+
+- Rate limits are unpublished — PennyLLM adapts via reactive 429 detection only
+- The default cooldown period may be conservative (60s) since there is no `Retry-After` header to guide retry timing
+- ~40 RPM is the only community-reported limit — actual limits vary by model and concurrent load
+- NVIDIA NIM may be geo-restricted in some regions (confirmed 403 errors from certain countries)
+- Trial tier is for "experimentation, development, testing and research" only — not for production use
+- Model catalog changes frequently — free endpoints may be added or removed without notice
+
+### Gap Severity
+
+| Gap                                        | Category | Priority |
+| ------------------------------------------ | -------- | -------- |
+| Potentially conservative default cooldown  | (a)      | P1       |
+| Reactive-only approach needs documentation | (b)      | P0       |

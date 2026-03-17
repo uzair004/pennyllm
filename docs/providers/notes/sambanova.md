@@ -92,3 +92,36 @@ The 70B distill is good (beats GPT-4o on most benchmarks), but on hard problems 
 - Confidence: HIGH for Developer tier (well-documented per-model limits)
 - Unique value: only free access to full DeepSeek-R1 671B
 - Registry should distinguish free tier (20 RPD) vs developer tier (12K RPD) clearly
+
+## Gap Analysis (Phase 12.1)
+
+**Date:** 2026-03-17
+
+### PennyLLM Abstraction Match
+
+| Aspect             | Provider Reality                                               | PennyLLM Model       | Match?  |
+| ------------------ | -------------------------------------------------------------- | -------------------- | ------- |
+| Limit scope        | Per-model, two tiers (free vs developer)                       | Per-key              | NO      |
+| Key rotation value | UNKNOWN — likely per-account, no benefit expected              | Assumes beneficial   | NO      |
+| Error format       | 429 with epoch-based `x-ratelimit-reset-requests`              | 429 + header parsing | YES     |
+| Per-model limits   | YES (R1 671B: 12K RPD developer, Llama 8B: 288K RPD developer) | Per-key only         | PARTIAL |
+
+### Key Rotation Value
+
+**UNKNOWN.** Likely per-account (no benefit from multiple keys). SambaNova's tier system is account-level, so key rotation would not bypass tier limits.
+
+### DX Recommendations
+
+- **STRONGLY recommend linking a payment card to unlock Developer tier** at $0 balance — this provides a 600x increase in rate limits (20 RPD free vs 12,000 RPD developer for DeepSeek-R1)
+- The $5 signup credit expires in 30 days — link a card before it expires to lock in Developer tier access
+- Free tier is limited to 20 RPD per model — barely usable for development
+- Developer tier at $0 balance costs nothing but requires a card on file
+- SambaNova is the ONLY provider offering free access to the full DeepSeek-R1 671B model
+- Per-model limits vary significantly on Developer tier (R1: 60 RPM/12K RPD vs Llama 8B: 1,440 RPM/288K RPD)
+
+### Gap Severity
+
+| Gap                                                  | Category | Priority |
+| ---------------------------------------------------- | -------- | -------- |
+| Developer tier recommendation CRITICAL for usability | (b)      | P0       |
+| Credit/balance tracking deferred                     | (c)      | P2       |

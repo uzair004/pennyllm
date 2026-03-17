@@ -64,3 +64,34 @@ This is the fastest inference available anywhere.
 - Volatility: LOW (stable provider, consistent free tier)
 - Confidence: HIGH (well-documented limits)
 - Unique value: fastest inference + most generous perpetual free tier
+
+## Gap Analysis (Phase 12.1)
+
+**Date:** 2026-03-17
+
+### PennyLLM Abstraction Match
+
+| Aspect             | Provider Reality                             | PennyLLM Model       | Match? |
+| ------------------ | -------------------------------------------- | -------------------- | ------ |
+| Limit scope        | Account-level (30 RPM, 60K TPM, 1M TPD)      | Per-key              | NO     |
+| Key rotation value | NONE — all keys share account quota          | Assumes beneficial   | NO     |
+| Error format       | Standard 429 with seconds-based headers      | 429 + header parsing | YES    |
+| Per-model limits   | NO — all models share the same account quota | Per-key only         | N/A    |
+
+### Key Rotation Value
+
+**NONE.** All API keys under the same Cerebras account share the same rate limit quota. Creating multiple keys provides no additional capacity.
+
+### DX Recommendations
+
+- Only one API key is needed per Cerebras account — multiple keys provide no additional quota
+- Do not configure multiple Cerebras keys expecting increased throughput; it will not help
+- Cerebras is best used as a high-speed, single-key provider in the priority chain
+- The 1M TPD daily token budget is the most generous perpetual free tier available
+
+### Gap Severity
+
+| Gap                                    | Category | Priority |
+| -------------------------------------- | -------- | -------- |
+| Multi-key config wasteful (no benefit) | (a)      | P1       |
+| Docs gap for key rotation guidance     | (b)      | P0       |

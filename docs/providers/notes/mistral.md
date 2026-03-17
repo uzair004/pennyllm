@@ -136,3 +136,37 @@ const model = provider('mistral-small-latest');
 - Source URL: https://admin.mistral.ai/plateforme/limits (requires auth)
 - Registry should flag Mistral's limits as "unverified" / low confidence
 - Pool system needs empirical validation before modeling
+
+## Gap Analysis (Phase 12.1)
+
+**Date:** 2026-03-17
+
+### PennyLLM Abstraction Match
+
+| Aspect             | Provider Reality                                     | PennyLLM Model       | Match? |
+| ------------------ | ---------------------------------------------------- | -------------------- | ------ |
+| Limit scope        | Per-organization (1 RPS, 50K TPM, 1B tok/month)      | Per-key              | NO     |
+| Key rotation value | NONE — up to 10 keys share same org limits           | Assumes beneficial   | NO     |
+| Error format       | Standard 429 with `Retry-After`                      | 429 + header parsing | YES    |
+| Per-model limits   | Pool system (unverified) — models share token quotas | Per-key only         | NO     |
+
+### Key Rotation Value
+
+**NONE.** All API keys (up to 10) within a Mistral organization share the same rate limits. Key rotation provides zero additional capacity.
+
+### DX Recommendations
+
+- **CRITICAL: Free tier (Experiment plan) may use your data for training by default** — opt out in Admin Console > Privacy Settings > toggle off "Anonymized Improvement Data"
+- Only one API key is needed per Mistral account — additional keys share the same organization-level limits
+- The 1 RPS (request per second) limit is handled reactively by PennyLLM's 429 detection
+- The 1B tokens/month cap is very generous and unlikely to be the binding constraint
+- TPM (50K) is the practical binding constraint for burst usage
+- Codestral has a separate free dedicated endpoint (`codestral.mistral.ai`) with its own key and limits — useful as an independent quota pool for coding tasks
+
+### Gap Severity
+
+| Gap                                        | Category | Priority |
+| ------------------------------------------ | -------- | -------- |
+| Data privacy CRITICAL documentation gap    | (b)      | P0       |
+| Per-second rate limit window not supported | (c)      | P2       |
+| Pool system (shared quotas) not modeled    | (c)      | P2       |

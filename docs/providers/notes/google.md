@@ -109,3 +109,36 @@
 - Source URL: https://ai.google.dev/gemini-api/docs/rate-limits (redirects to dashboard, no static page)
 - Per-project enforcement is unique — registry should note this for key rotation guidance
 - Model deprecation dates should be tracked for proactive warnings
+
+## Gap Analysis (Phase 12.1)
+
+**Date:** 2026-03-17
+
+### PennyLLM Abstraction Match
+
+| Aspect             | Provider Reality                                               | PennyLLM Model       | Match?  |
+| ------------------ | -------------------------------------------------------------- | -------------------- | ------- |
+| Limit scope        | Per-project (not per-key)                                      | Per-key              | PARTIAL |
+| Key rotation value | HIGH — but only with keys from different Google Cloud projects | Assumes beneficial   | YES     |
+| Error format       | 429 with `x-ratelimit-reset`                                   | 429 + header parsing | YES     |
+| Per-model limits   | YES (e.g., Gemini 2.5 Flash = 10 RPM vs Flash Lite = 15 RPM)   | Per-key only         | PARTIAL |
+
+### Key Rotation Value
+
+**HIGH** (with conditions). Key rotation is highly effective only when keys come from different Google Cloud projects. Each project gets independent quota, so 10 projects = 10x effective limits. Keys from the same project share quota and rotation provides no benefit.
+
+### DX Recommendations
+
+- Use API keys from DIFFERENT Google Cloud projects to get independent quota pools
+- Same-project keys share quota — rotating them provides zero benefit
+- You can create up to 10 projects per Google account, each with its own rate limits
+- Be aware that some models (e.g., Gemini 3.1 Pro) have 0/0/0 allocation and are not available on the free tier
+- Gemini 2.5 Flash has only 10 RPM and 250 RPD — plan for tight per-model limits
+- Gemma models (3 1B through 3 27B) have much higher RPD (14,400) but lower TPM (15K) — good for many small requests
+
+### Gap Severity
+
+| Gap                                      | Category | Priority |
+| ---------------------------------------- | -------- | -------- |
+| Per-model limits not captured by per-key | (a)      | P2       |
+| Multi-project setup docs needed          | (b)      | P0       |

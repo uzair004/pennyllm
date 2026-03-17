@@ -95,3 +95,36 @@
 - Volatility: HIGH (frequent model additions/removals, preview status changes)
 - Confidence: HIGH for production models, LOW for preview models
 - Source URL: https://console.groq.com/docs/rate-limits
+
+## Gap Analysis (Phase 12.1)
+
+**Date:** 2026-03-17
+
+### PennyLLM Abstraction Match
+
+| Aspect             | Provider Reality                                                           | PennyLLM Model       | Match?  |
+| ------------------ | -------------------------------------------------------------------------- | -------------------- | ------- |
+| Limit scope        | Per-organization, per-model                                                | Per-key              | NO      |
+| Key rotation value | NONE — all keys in same org share quota                                    | Assumes beneficial   | NO      |
+| Error format       | 429 with `x-ratelimit-reset-requests` (epoch seconds)                      | 429 + header parsing | YES     |
+| Per-model limits   | YES (wildly different: llama-3.1-8b 14,400 RPD vs llama-3.3-70b 1,000 RPD) | Per-key only         | PARTIAL |
+
+### Key Rotation Value
+
+**NONE.** Limits are per-organization, not per-key. Multiple keys within the same Groq organization share the same quota. Creating additional keys or projects provides no additional capacity.
+
+### DX Recommendations
+
+- Only one API key is needed per Groq organization — additional keys do not increase quota
+- Keep prompts small — TPM limits are very tight (6K-30K depending on model), a single large prompt can exhaust the per-minute budget
+- Smaller models have much higher quotas (llama-3.1-8b: 14,400 RPD vs llama-3.3-70b: 1,000 RPD) — use smaller models for high-volume workloads
+- The `groq/compound` models have no TPD limit but very low RPD (250/day) — best for occasional complex queries
+- Preview models (llama-4-scout, kimi-k2, qwen3-32b) can disappear without notice
+
+### Gap Severity
+
+| Gap                                      | Category | Priority |
+| ---------------------------------------- | -------- | -------- |
+| Per-model limits not captured by per-key | (a)      | P2       |
+| TPM constraint documentation needed      | (b)      | P0       |
+| Single-key guidance needed in docs       | (b)      | P0       |
