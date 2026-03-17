@@ -20,9 +20,25 @@ import { RouterEvent } from '../constants/index.js';
 import type { FallbackResolver } from './FallbackResolver.js';
 import type { BudgetTracker } from '../budget/BudgetTracker.js';
 import type { AffinityCache } from './AffinityCache.js';
-import type { FallbackBehavior, FallbackCandidate, ProviderAttempt } from './types.js';
+import type {
+  FallbackBehavior,
+  FallbackCandidate,
+  FallbackConfig,
+  ProviderFallbackOverride,
+  ProviderAttempt,
+} from './types.js';
 
 const debug = debugFactory('pennyllm:fallback');
+
+/**
+ * Legacy config shape used by FallbackProxy (will be removed in Plan 06 cleanup).
+ */
+interface LegacyRouterConfig extends RouterConfig {
+  fallback: FallbackConfig;
+}
+interface LegacyProviderConfig {
+  fallback?: ProviderFallbackOverride;
+}
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -74,9 +90,11 @@ function isFallbackTrigger(error: unknown): boolean {
  * Get per-provider fallback behavior, falling back to global config.
  */
 function getProviderBehavior(provider: string, config: RouterConfig): FallbackBehavior {
-  const override = config.providers[provider]?.fallback?.behavior;
+  const legacyConfig = config as unknown as LegacyRouterConfig;
+  const providerConfig = config.providers[provider] as unknown as LegacyProviderConfig | undefined;
+  const override = providerConfig?.fallback?.behavior;
   if (override) return override;
-  return config.fallback.behavior;
+  return legacyConfig.fallback?.behavior ?? 'auto';
 }
 
 /**
@@ -154,7 +172,8 @@ async function attemptWithFallback(
   }
 
   // 3. Check if fallback is globally enabled
-  if (!deps.config.fallback.enabled) {
+  const legacyConfig = deps.config as unknown as LegacyRouterConfig;
+  if (legacyConfig.fallback && !legacyConfig.fallback.enabled) {
     debug('Fallback globally disabled');
     const result = await callFn(deps.primaryRetryProxy);
     return { result };
@@ -251,7 +270,8 @@ async function attemptWithFallback(
   );
 
   // 10. Try each candidate up to maxDepth - 1 (primary was attempt 1)
-  for (const candidate of candidates.slice(0, deps.config.fallback.maxDepth - 1)) {
+  const maxDepth = legacyConfig.fallback?.maxDepth ?? 3;
+  for (const candidate of candidates.slice(0, maxDepth - 1)) {
     // Budget gate: if model is not free and budget is exceeded, skip
     if (!candidate.isFree) {
       const budgetExceeded = await deps.budgetTracker.isExceeded();

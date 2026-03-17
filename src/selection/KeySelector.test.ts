@@ -34,17 +34,10 @@ const mockCooldownManager = (inCooldown = false): CooldownManager => {
 const mockConfig = (keys: string[]): RouterConfig => ({
   version: '1.0',
   providers: {
-    test: { keys, enabled: true },
+    test: { keys, enabled: true, priority: 100, tier: 'free' },
   },
   strategy: 'priority',
   budget: { monthlyLimit: 0, alertThresholds: [0.8, 0.95] },
-  fallback: {
-    enabled: true,
-    maxDepth: 3,
-    strictModel: false,
-    behavior: 'auto',
-    reasoning: false,
-  },
   estimation: { defaultMaxTokens: 1024 },
   cooldown: { defaultDurationMs: 60000 },
   applyRegistryDefaults: false,

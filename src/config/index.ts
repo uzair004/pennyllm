@@ -23,9 +23,6 @@ import type { SelectionContext, SelectionResult } from '../selection/types.js';
 import { ProviderRegistry, createProviderInstance } from '../wrapper/provider-registry.js';
 import { createRouterMiddleware } from '../wrapper/middleware.js';
 import { createRetryProxy } from '../wrapper/retry-proxy.js';
-import { FallbackResolver } from '../fallback/FallbackResolver.js';
-import { AffinityCache } from '../fallback/AffinityCache.js';
-import { createFallbackProxy } from '../fallback/FallbackProxy.js';
 import { BudgetTracker } from '../budget/BudgetTracker.js';
 import { DebugLogger } from '../debug/index.js';
 import type {
@@ -55,7 +52,6 @@ export interface Router {
       strategy?: string;
       estimatedTokens?: number;
       requestId?: string;
-      reasoning?: boolean;
     },
   ) => Promise<LanguageModelV3>;
   getUsage: {
@@ -174,10 +170,8 @@ export async function createRouter(
       options?.strategy,
     );
 
-    // Create FallbackResolver, BudgetTracker, and AffinityCache
-    const fallbackResolver = new FallbackResolver(catalog, config, emitter);
+    // Create BudgetTracker
     const budgetTracker = new BudgetTracker(storage, config.budget, emitter);
-    const affinityCache = new AffinityCache(60_000); // 60 second TTL
 
     // Shared disabled keys set across all wrapModel calls for this router instance
     // Keys that fail auth (401/403) are disabled for the session lifetime
@@ -274,7 +268,6 @@ export async function createRouter(
           strategy?: string;
           estimatedTokens?: number;
           requestId?: string;
-          reasoning?: boolean;
         },
       ) => {
         // Reuse existing router.model() logic for selection + key resolution
@@ -291,7 +284,7 @@ export async function createRouter(
         const registry = await getProviderRegistry();
         const baseModel = createProviderInstance(registry, provider, modelName, selection.key);
 
-        // Mutable refs shared between retry proxy, fallback proxy, and middleware
+        // Mutable refs shared between retry proxy and middleware
         const keyIndexRef = { current: selection.keyIndex };
         const providerRef = { current: provider };
         const modelIdRef = { current: modelId };
@@ -314,37 +307,7 @@ export async function createRouter(
           keySelector,
         });
 
-        // Determine per-request reasoning flag (from wrapModel options or global config)
-        const reasoning = opts?.reasoning ?? config.fallback.reasoning;
-
-        // Create fallback proxy wrapping retry proxy with cross-provider fallback
-        const fallbackDeps: Parameters<typeof createFallbackProxy>[0] = {
-          primaryProvider: provider,
-          primaryModelName: modelName,
-          primaryModelId: modelId,
-          primaryRetryProxy: retryProxy,
-          config,
-          catalog,
-          keySelector,
-          registry,
-          cooldownManager,
-          disabledKeys,
-          emitter,
-          requestId,
-          providerRef,
-          modelIdRef,
-          keyIndexRef,
-          budgetTracker,
-          fallbackResolver,
-          affinityCache,
-          reasoning,
-        };
-        if (opts?.estimatedTokens !== undefined) {
-          fallbackDeps.estimatedTokens = opts.estimatedTokens;
-        }
-        const fallbackProxy = createFallbackProxy(fallbackDeps);
-
-        // Create middleware for usage tracking (uses refs for correct key after fallback)
+        // Create middleware for usage tracking (uses refs for correct key after retry)
         const middleware = createRouterMiddleware({
           providerRef,
           keyIndexRef,
@@ -354,9 +317,9 @@ export async function createRouter(
           dryRun: config.dryRun,
         });
 
-        // Wrap fallback proxy (not retry proxy) with middleware
+        // Wrap retry proxy with middleware (ChainExecutor will be wired in Plan 05)
         const wrappedModel = wrapLanguageModel({
-          model: fallbackProxy,
+          model: retryProxy,
           middleware,
           modelId,
           providerId: 'pennyllm',

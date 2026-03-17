@@ -4,9 +4,16 @@ import type { ModelCatalog } from '../types/interfaces.js';
 import type { ModelMetadata } from '../types/domain.js';
 import type { RouterConfig } from '../types/config.js';
 import type { QualityTierType } from '../constants/index.js';
-import type { FallbackCandidate } from './types.js';
+import type { FallbackCandidate, FallbackConfig } from './types.js';
 
 const debug = debugFactory('pennyllm:fallback');
+
+/**
+ * Legacy config shape used by FallbackResolver (will be removed in Plan 06 cleanup).
+ */
+interface LegacyRouterConfig extends RouterConfig {
+  fallback: FallbackConfig;
+}
 
 const MAX_CANDIDATES = 20;
 
@@ -105,7 +112,8 @@ export class FallbackResolver {
     requiredCaps: Partial<ModelMetadata['capabilities']>,
     options: ResolveOptions,
   ): Promise<FallbackCandidate[]> {
-    const { fallback } = this.config;
+    const legacyConfig = this.config as unknown as LegacyRouterConfig;
+    const fallback = legacyConfig.fallback;
 
     // Step 1: Check if fallback is enabled
     if (!fallback.enabled) {

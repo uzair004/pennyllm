@@ -1,5 +1,4 @@
 import type { StrategyType } from '../constants/index.js';
-import type { FallbackConfig, ProviderFallbackOverride } from '../fallback/types.js';
 import type { KeyConfig } from '../policy/types.js';
 import type { PolicyLimit } from './domain.js';
 
@@ -26,6 +25,11 @@ export interface CooldownConfig {
 }
 
 /**
+ * Provider tier classification
+ */
+export type ProviderTier = 'free' | 'trial' | 'paid';
+
+/**
  * Provider-specific configuration
  */
 export interface ProviderConfig {
@@ -33,7 +37,10 @@ export interface ProviderConfig {
   strategy?: StrategyType;
   limits?: PolicyLimit[];
   enabled?: boolean;
-  fallback?: ProviderFallbackOverride;
+  priority: number;
+  tier: ProviderTier;
+  credits?: number;
+  models?: string[];
 }
 
 /**
@@ -46,7 +53,7 @@ export interface RouterConfig {
   budget: BudgetConfig;
   estimation: EstimationConfig;
   cooldown: CooldownConfig;
-  fallback: FallbackConfig;
+  models?: string[];
   warningThreshold?: number;
   applyRegistryDefaults: boolean;
   dryRun: boolean;

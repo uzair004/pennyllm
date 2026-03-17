@@ -3,15 +3,16 @@
  */
 
 // Configuration types
-export type { BudgetConfig, CooldownConfig, ProviderConfig, RouterConfig } from './config.js';
-
-// Fallback types
 export type {
-  FallbackCandidate,
-  FallbackConfig,
-  ProviderAttempt,
-  ProviderFallbackOverride,
-} from '../fallback/types.js';
+  BudgetConfig,
+  CooldownConfig,
+  ProviderConfig,
+  ProviderTier,
+  RouterConfig,
+} from './config.js';
+
+// Fallback types (kept for fallback module, will be cleaned up in Plan 06)
+export type { FallbackCandidate, ProviderAttempt } from '../fallback/types.js';
 
 // Domain types
 export type {
