@@ -9,6 +9,7 @@ import type {
   ProviderUsage,
   KeyUsage,
   KeyUsageWindow,
+  RateLimitStats,
 } from './types.js';
 import { CooldownManager } from './cooldown.js';
 import { estimateTokens } from './estimation.js';
@@ -28,6 +29,10 @@ export class UsageTracker {
   private recordedRequests: Set<string>;
   private estimatedRecords: Map<string, number>;
   private policyMap: Map<string, ResolvedPolicy>;
+  /** Per-key rate limit stats: Map<"provider:keyIndex", RateLimitStats> */
+  private rateLimitStats: Map<string, RateLimitStats>;
+  /** Per-provider rate limit stats: Map<provider, RateLimitStats> */
+  private providerRateLimitStats: Map<string, RateLimitStats>;
 
   constructor(
     storage: StorageBackend,
@@ -41,6 +46,8 @@ export class UsageTracker {
     this.cooldown = new CooldownManager(storage);
     this.recordedRequests = new Set();
     this.estimatedRecords = new Map();
+    this.rateLimitStats = new Map();
+    this.providerRateLimitStats = new Map();
 
     // Build policy map for O(1) lookup
     this.policyMap = new Map();
@@ -198,6 +205,62 @@ export class UsageTracker {
   }
 
   /**
+   * Record a 429/402 rate limit event for observability.
+   * Called by ChainExecutor when a provider/key returns 429 or 402.
+   * Fire-and-forget pattern -- never throws.
+   */
+  recordRateLimitEvent(
+    provider: string,
+    keyIndex: number,
+    cooldownMs: number,
+    cooldownTriggered: boolean,
+  ): void {
+    try {
+      const now = new Date().toISOString();
+
+      // Update per-key stats
+      const keyKey = `${provider}:${keyIndex}`;
+      const keyStats = this.rateLimitStats.get(keyKey) ?? {
+        rateLimitHits: 0,
+        lastRateLimited: null,
+        cooldownsTriggered: 0,
+        totalCooldownMs: 0,
+      };
+      keyStats.rateLimitHits++;
+      keyStats.lastRateLimited = now;
+      if (cooldownTriggered) keyStats.cooldownsTriggered++;
+      if (cooldownMs !== Infinity) keyStats.totalCooldownMs += cooldownMs;
+      this.rateLimitStats.set(keyKey, keyStats);
+
+      // Update per-provider stats
+      const provStats = this.providerRateLimitStats.get(provider) ?? {
+        rateLimitHits: 0,
+        lastRateLimited: null,
+        cooldownsTriggered: 0,
+        totalCooldownMs: 0,
+      };
+      provStats.rateLimitHits++;
+      provStats.lastRateLimited = now;
+      if (cooldownTriggered) provStats.cooldownsTriggered++;
+      if (cooldownMs !== Infinity) provStats.totalCooldownMs += cooldownMs;
+      this.providerRateLimitStats.set(provider, provStats);
+
+      log(
+        'Rate limit event recorded for %s:%d (cooldown: %dms, triggered: %s)',
+        provider,
+        keyIndex,
+        cooldownMs,
+        cooldownTriggered,
+      );
+    } catch (error) {
+      log(
+        'Failed to record rate limit event: %s',
+        error instanceof Error ? error.message : String(error),
+      );
+    }
+  }
+
+  /**
    * Get usage snapshot for all providers or a specific provider
    */
   async getUsage(): Promise<UsageSnapshot>;
@@ -321,6 +384,15 @@ export class UsageTracker {
         // Get estimated records
         const estimatedCount = this.estimatedRecords.get(`${providerName}:${policy.keyIndex}`) ?? 0;
 
+        // Get per-key rate limit stats
+        const keyRateLimitKey = `${providerName}:${policy.keyIndex}`;
+        const keyRateLimitStats = this.rateLimitStats.get(keyRateLimitKey) ?? {
+          rateLimitHits: 0,
+          lastRateLimited: null,
+          cooldownsTriggered: 0,
+          totalCooldownMs: 0,
+        };
+
         keys.push({
           keyIndex: policy.keyIndex,
           windows,
@@ -330,8 +402,17 @@ export class UsageTracker {
             reason: cooldownStatus?.reason ?? null,
           },
           estimatedRecords: estimatedCount,
+          rateLimitStats: keyRateLimitStats,
         });
       }
+
+      // Get per-provider rate limit stats
+      const provRateLimitStats = this.providerRateLimitStats.get(providerName) ?? {
+        rateLimitHits: 0,
+        lastRateLimited: null,
+        cooldownsTriggered: 0,
+        totalCooldownMs: 0,
+      };
 
       providers.push({
         provider: providerName,
@@ -342,6 +423,7 @@ export class UsageTracker {
           totalTokens: totalPromptTokens + totalCompletionTokens,
           callCount: totalCallCount,
         },
+        rateLimitStats: provRateLimitStats,
       });
     }
 
@@ -358,6 +440,12 @@ export class UsageTracker {
             completionTokens: 0,
             totalTokens: 0,
             callCount: 0,
+          },
+          rateLimitStats: {
+            rateLimitHits: 0,
+            lastRateLimited: null,
+            cooldownsTriggered: 0,
+            totalCooldownMs: 0,
           },
         };
       }
@@ -383,6 +471,8 @@ export class UsageTracker {
       this.cooldown.clearAll();
       this.recordedRequests.clear();
       this.estimatedRecords.clear();
+      this.rateLimitStats.clear();
+      this.providerRateLimitStats.clear();
     } else if (keyIndex === undefined && provider !== undefined) {
       // Provider reset - clear all keys for that provider
       const providerPrefix = `${provider}:`;
@@ -398,10 +488,18 @@ export class UsageTracker {
           }
         }
       }
+      // Clear rate limit stats for this provider
+      for (const [key] of this.rateLimitStats) {
+        if (key.startsWith(providerPrefix)) {
+          this.rateLimitStats.delete(key);
+        }
+      }
+      this.providerRateLimitStats.delete(provider);
     } else if (provider !== undefined && keyIndex !== undefined) {
       // Specific key reset
       this.cooldown.clear(provider, keyIndex);
       this.estimatedRecords.delete(`${provider}:${keyIndex}`);
+      this.rateLimitStats.delete(`${provider}:${keyIndex}`);
     }
 
     log('Usage reset: provider=%s, keyIndex=%s', provider ?? 'all', keyIndex ?? 'all');

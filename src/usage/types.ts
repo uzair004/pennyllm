@@ -32,6 +32,21 @@ export interface KeyUsageWindow {
 }
 
 /**
+ * Rate limit observability stats per provider/key.
+ * Populated by ChainExecutor on 429/402 errors.
+ */
+export interface RateLimitStats {
+  /** Total number of 429/402 responses received */
+  rateLimitHits: number;
+  /** ISO timestamp of the most recent rate limit event, or null if none */
+  lastRateLimited: string | null;
+  /** Number of times a cooldown was triggered (provider-level or key-level) */
+  cooldownsTriggered: number;
+  /** Total milliseconds spent in cooldown (sum of all cooldown durations) */
+  totalCooldownMs: number;
+}
+
+/**
  * Usage data for a specific API key
  */
 export interface KeyUsage {
@@ -43,6 +58,7 @@ export interface KeyUsage {
     reason: string | null;
   };
   estimatedRecords: number;
+  rateLimitStats: RateLimitStats;
 }
 
 /**
@@ -57,6 +73,7 @@ export interface ProviderUsage {
     totalTokens: number;
     callCount: number;
   };
+  rateLimitStats: RateLimitStats;
 }
 
 /**

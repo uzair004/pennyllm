@@ -281,25 +281,15 @@ async function executeChain(
         classified.statusCode ?? 'none',
       );
 
-      // Record rate limit event for observability (recordRateLimitEvent added in Task 3)
+      // Record rate limit event for observability
       if (classified.type === 'rate_limit' && deps.usageTracker) {
         const cooldownMs = classified.cooldownMs ?? deps.config.cooldown.defaultDurationMs;
-        const tracker = deps.usageTracker as {
-          recordRateLimitEvent?: (
-            provider: string,
-            keyIndex: number,
-            cooldownMs: number,
-            cooldownTriggered: boolean,
-          ) => void;
-        };
-        if (typeof tracker.recordRateLimitEvent === 'function') {
-          tracker.recordRateLimitEvent(
-            entry.provider,
-            0, // keyIndex not easily available after retry proxy exhaustion
-            cooldownMs,
-            true,
-          );
-        }
+        deps.usageTracker.recordRateLimitEvent(
+          entry.provider,
+          0, // keyIndex not easily available after retry proxy exhaustion
+          cooldownMs,
+          true,
+        );
       }
 
       // Set provider-level cooldown when all keys exhausted
