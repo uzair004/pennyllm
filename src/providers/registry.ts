@@ -3,16 +3,15 @@ import type { ProviderModule } from './types.js';
 import { cerebrasProvider } from './cerebras.js';
 import { googleProvider } from './google.js';
 import { groqProvider } from './groq.js';
-import { githubModelsProvider } from './github-models.js';
 import { sambanovaProvider } from './sambanova.js';
 import { nvidiaNimProvider } from './nvidia-nim.js';
 import { mistralProvider } from './mistral.js';
 
+// GitHub Models dropped — doesn't offer meaningful free-tier value
 const ALL_PROVIDERS: readonly ProviderModule[] = [
   cerebrasProvider,
   googleProvider,
   groqProvider,
-  githubModelsProvider,
   sambanovaProvider,
   nvidiaNimProvider,
   mistralProvider,

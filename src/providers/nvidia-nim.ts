@@ -3,38 +3,26 @@ import type { ProviderModelDef, ProviderModule } from './types.js';
 
 const models = [
   {
-    id: 'nvidia/meta/llama-4-maverick-17b-128e-instruct',
-    apiId: 'meta/llama-4-maverick-17b-128e-instruct',
+    id: 'nvidia/deepseek-ai/deepseek-v3.2',
+    apiId: 'deepseek-ai/deepseek-v3.2',
     qualityTier: 'frontier',
     free: true,
     capabilities: {
       toolCall: true,
-      reasoning: false,
-      vision: true,
+      reasoning: true,
+      vision: false,
       structuredOutput: true,
     },
   },
   {
-    id: 'nvidia/deepseek-ai/deepseek-r1',
-    apiId: 'deepseek-ai/deepseek-r1',
+    id: 'nvidia/moonshotai/kimi-k2.5',
+    apiId: 'moonshotai/kimi-k2.5',
     qualityTier: 'frontier',
     free: true,
     capabilities: {
-      toolCall: false,
+      toolCall: true,
       reasoning: true,
       vision: false,
-      structuredOutput: false,
-    },
-  },
-  {
-    id: 'nvidia/google/gemma-3-27b-it',
-    apiId: 'google/gemma-3-27b-it',
-    qualityTier: 'mid',
-    free: true,
-    capabilities: {
-      toolCall: true,
-      reasoning: false,
-      vision: true,
       structuredOutput: true,
     },
   },
@@ -50,6 +38,30 @@ const models = [
       structuredOutput: true,
     },
   },
+  {
+    id: 'nvidia/meta/llama-4-maverick-17b-128e-instruct',
+    apiId: 'meta/llama-4-maverick-17b-128e-instruct',
+    qualityTier: 'high',
+    free: true,
+    capabilities: {
+      toolCall: true,
+      reasoning: false,
+      vision: true,
+      structuredOutput: true,
+    },
+  },
+  {
+    id: 'nvidia/qwen/qwen3-coder-480b-a35b-instruct',
+    apiId: 'qwen/qwen3-coder-480b-a35b-instruct',
+    qualityTier: 'frontier',
+    free: true,
+    capabilities: {
+      toolCall: true,
+      reasoning: false,
+      vision: false,
+      structuredOutput: true,
+    },
+  },
 ] as const satisfies readonly ProviderModelDef[];
 
 export const nvidiaNimProvider: ProviderModule = {
@@ -57,10 +69,9 @@ export const nvidiaNimProvider: ProviderModule = {
   name: 'NVIDIA NIM',
   sdkPackage: '@ai-sdk/openai-compatible',
   envVar: 'NVIDIA_API_KEY',
-  lastVerified: '2026-03-15',
+  lastVerified: '2026-03-17',
   updateUrl: 'https://build.nvidia.com',
-  tier: 'trial',
-  credits: 1000,
+  tier: 'free',
   models,
   async createFactory(apiKey: string) {
     try {

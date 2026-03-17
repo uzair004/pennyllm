@@ -1,7 +1,7 @@
 /**
  * PennyLLM E2E Test Script
  *
- * Tests real API calls against all 7 target providers.
+ * Tests real API calls against all 6 target providers.
  * Run: npx tsx scripts/e2e-test.ts
  * Requires: .env file with API keys for target providers
  */

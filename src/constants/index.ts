@@ -16,11 +16,11 @@ export const Provider = {
   CEREBRAS: 'cerebras',
   GOOGLE: 'google',
   GROQ: 'groq',
-  GITHUB: 'github',
   SAMBANOVA: 'sambanova',
   NVIDIA: 'nvidia',
   MISTRAL: 'mistral',
-  // Legacy — unsupported in v1.0, kept for backward compatibility
+  // Legacy — unsupported, kept for backward compatibility
+  GITHUB: 'github',
   OPENROUTER: 'openrouter',
   HUGGINGFACE: 'huggingface',
   DEEPSEEK: 'deepseek',

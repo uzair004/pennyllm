@@ -151,7 +151,7 @@ const router = await createRouter(
     },
     // Explicit model chain (optional -- auto-generated from provider priorities if omitted)
     models: [
-      'cerebras/llama-4-maverick',
+      'cerebras/gpt-oss-120b',
       'google/gemini-2.5-flash',
       'groq/meta-llama/llama-4-scout-17b-16e-instruct',
     ],
@@ -161,7 +161,7 @@ const router = await createRouter(
 );
 ```
 
-`defineConfig()` provides IDE autocomplete for all 7 known provider names. Multiple keys per provider lets the router rotate through them when free tier limits are hit.
+`defineConfig()` provides IDE autocomplete for all 6 known provider names. Multiple keys per provider lets the router rotate through them when free tier limits are hit.
 
 ### Using router.chat()
 
@@ -236,21 +236,20 @@ const router = await createRouter('./router.config.yaml');
 
 ## Providers
 
-pennyllm supports 7 providers optimized for free-tier usage:
+pennyllm supports 6 providers optimized for free-tier usage:
 
-| Provider         | Tier  | Package                     | Env Var                        | Sign Up                                                                |
-| ---------------- | ----- | --------------------------- | ------------------------------ | ---------------------------------------------------------------------- |
-| Cerebras         | Free  | `@ai-sdk/cerebras`          | `CEREBRAS_API_KEY`             | [cloud.cerebras.ai](https://cloud.cerebras.ai)                         |
-| Google AI Studio | Free  | `@ai-sdk/google`            | `GOOGLE_GENERATIVE_AI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey)              |
-| Groq             | Free  | `@ai-sdk/groq`              | `GROQ_API_KEY`                 | [console.groq.com](https://console.groq.com)                           |
-| GitHub Models    | Free  | `@ai-sdk/openai-compatible` | `GITHUB_TOKEN`                 | [github.com/marketplace/models](https://github.com/marketplace/models) |
-| SambaNova        | Free  | `sambanova-ai-provider`     | `SAMBANOVA_API_KEY`            | [cloud.sambanova.ai](https://cloud.sambanova.ai)                       |
-| NVIDIA NIM       | Trial | `@ai-sdk/openai-compatible` | `NVIDIA_API_KEY`               | [build.nvidia.com](https://build.nvidia.com)                           |
-| Mistral          | Free  | `@ai-sdk/mistral`           | `MISTRAL_API_KEY`              | [console.mistral.ai](https://console.mistral.ai)                       |
+| Provider         | Tier | Package                     | Env Var                        | Sign Up                                                   |
+| ---------------- | ---- | --------------------------- | ------------------------------ | --------------------------------------------------------- |
+| Cerebras         | Free | `@ai-sdk/cerebras`          | `CEREBRAS_API_KEY`             | [cloud.cerebras.ai](https://cloud.cerebras.ai)            |
+| Google AI Studio | Free | `@ai-sdk/google`            | `GOOGLE_GENERATIVE_AI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey) |
+| Groq             | Free | `@ai-sdk/groq`              | `GROQ_API_KEY`                 | [console.groq.com](https://console.groq.com)              |
+| SambaNova        | Free | `sambanova-ai-provider`     | `SAMBANOVA_API_KEY`            | [cloud.sambanova.ai](https://cloud.sambanova.ai)          |
+| NVIDIA NIM       | Free | `@ai-sdk/openai-compatible` | `NVIDIA_API_KEY`               | [build.nvidia.com](https://build.nvidia.com)              |
+| Mistral          | Free | `@ai-sdk/mistral`           | `MISTRAL_API_KEY`              | [console.mistral.ai](https://console.mistral.ai)          |
 
 Start with **Cerebras + Google + Groq** -- they have the most generous perpetual free tiers and the fastest inference.
 
-> **Dropped providers:** HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek direct, and Fireworks are no longer supported. See the [Phase 12.1 gap analysis](.planning/phases/12-provider-overhaul-validation/12-CONTEXT.md) for rationale.
+> **Dropped providers:** GitHub Models, HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek direct, and Fireworks are no longer supported.
 
 ## Debug Mode
 
@@ -276,9 +275,9 @@ DEBUG=pennyllm:* node app.js
 ### Example output
 
 ```
-[pennyllm:key-selected]     cerebras/llama-4-maverick -> key#0 (priority)
+[pennyllm:key-selected]     cerebras/gpt-oss-120b -> key#0 (priority)
 [pennyllm:usage-recorded]   cerebras key#0: +1247 tokens
-[pennyllm:chain-resolved]   cerebras/llama-4-maverick (position 0, no fallback, 312ms)
+[pennyllm:chain-resolved]   cerebras/gpt-oss-120b (position 0, no fallback, 312ms)
 [pennyllm:budget-alert]     $3.47 / $5.00 monthly (69%)
 ```
 

@@ -21,11 +21,11 @@ export default defineConfig({
       priority: 1, // Provider priority for chain ordering
       tier: 'free', // 'free' | 'trial' | 'paid'
       credits: undefined, // One-time credit amount (for trial providers)
-      models: ['cerebras/llama-4-maverick'], // Allowlisted models (optional)
+      models: ['cerebras/gpt-oss-120b'], // Allowlisted models (optional)
     },
   },
   // Explicit model chain (optional -- auto-generated from provider priorities if omitted)
-  models: ['cerebras/llama-4-maverick', 'google/gemini-2.5-flash'],
+  models: ['cerebras/gpt-oss-120b', 'google/gemini-2.5-flash'],
   strategy: 'priority', // Global strategy. Default: 'priority'
   budget: {
     monthlyLimit: 0, // Dollars. 0 = never spend. Default: 0

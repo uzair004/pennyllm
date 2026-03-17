@@ -15,9 +15,9 @@ const models = [
     },
   },
   {
-    id: 'sambanova/Meta-Llama-3.3-70B-Instruct',
-    apiId: 'Meta-Llama-3.3-70B-Instruct',
-    qualityTier: 'high',
+    id: 'sambanova/Deepseek-V3.1',
+    apiId: 'Deepseek-V3.1',
+    qualityTier: 'frontier',
     free: true,
     capabilities: {
       toolCall: true,
@@ -39,6 +39,18 @@ const models = [
     },
   },
   {
+    id: 'sambanova/Meta-Llama-3.3-70B-Instruct',
+    apiId: 'Meta-Llama-3.3-70B-Instruct',
+    qualityTier: 'high',
+    free: true,
+    capabilities: {
+      toolCall: true,
+      reasoning: false,
+      vision: false,
+      structuredOutput: true,
+    },
+  },
+  {
     id: 'sambanova/Qwen3-235B-A22B-Instruct-2507',
     apiId: 'Qwen3-235B-A22B-Instruct-2507',
     qualityTier: 'high',
@@ -50,6 +62,18 @@ const models = [
       structuredOutput: true,
     },
   },
+  {
+    id: 'sambanova/Llama-4-Maverick-17B-128E-Instruct',
+    apiId: 'Llama-4-Maverick-17B-128E-Instruct',
+    qualityTier: 'high',
+    free: true,
+    capabilities: {
+      toolCall: true,
+      reasoning: false,
+      vision: true,
+      structuredOutput: true,
+    },
+  },
 ] as const satisfies readonly ProviderModelDef[];
 
 export const sambanovaProvider: ProviderModule = {
@@ -57,8 +81,8 @@ export const sambanovaProvider: ProviderModule = {
   name: 'SambaNova',
   sdkPackage: 'sambanova-ai-provider',
   envVar: 'SAMBANOVA_API_KEY',
-  lastVerified: '2026-03-15',
-  updateUrl: 'https://cloud.sambanova.ai',
+  lastVerified: '2026-03-17',
+  updateUrl: 'https://docs.sambanova.ai/docs/en/models/sambacloud-models',
   tier: 'free',
   models,
   async createFactory(apiKey: string) {
