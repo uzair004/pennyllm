@@ -416,7 +416,7 @@ _(c) Deferred to v2 (Phase 13):_
 - Credit-based billing (NVIDIA NIM): credit depletion detection → Phase 13
 - Credit expiry modeling (SambaNova $5 / 30-day) → Phase 13
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
@@ -540,21 +540,21 @@ Plans:
 
 ## v1.0 Progress Table
 
-| Phase                              | Plans Complete | Status   | Completed  |
-| ---------------------------------- | -------------- | -------- | ---------- |
-| 1. Foundation Setup                | 2/2            | Complete | ✅         |
-| 2. State Storage & Persistence     | 1/1            | Complete | ✅         |
-| 3. Policy Engine                   | 2/2            | Complete | ✅         |
-| 4. Usage Tracking Core             | 2/2            | Complete | ✅         |
-| 5. Model Catalog & Selection       | 5/5            | Complete | ✅         |
-| 6. Base Router Integration         | 3/3            | Complete | 2026-03-13 |
-| 7. Integration & Error Handling    | 2/2            | Complete | 2026-03-13 |
-| 8. Provider Policies Catalog       | 3/3            | Complete | 2026-03-14 |
-| 9. Fallback & Budget Management    | 3/3            | Complete | 2026-03-14 |
-| 10. SQLite, Redis & Advanced       | 3/3            | Complete | 2026-03-14 |
-| 11. Developer Experience Polish    | 3/3            | Complete | 2026-03-14 |
-| 12. Provider Overhaul & Validation | 6/6            | Complete | 2026-03-17 |
-| 12.1 Provider Nuance Gap Analysis  | 0/2            | Planned  | -          |
+| Phase                              | Plans Complete | Status      | Completed  |
+| ---------------------------------- | -------------- | ----------- | ---------- |
+| 1. Foundation Setup                | 2/2            | Complete    | ✅         |
+| 2. State Storage & Persistence     | 1/1            | Complete    | ✅         |
+| 3. Policy Engine                   | 2/2            | Complete    | ✅         |
+| 4. Usage Tracking Core             | 2/2            | Complete    | ✅         |
+| 5. Model Catalog & Selection       | 5/5            | Complete    | ✅         |
+| 6. Base Router Integration         | 3/3            | Complete    | 2026-03-13 |
+| 7. Integration & Error Handling    | 2/2            | Complete    | 2026-03-13 |
+| 8. Provider Policies Catalog       | 3/3            | Complete    | 2026-03-14 |
+| 9. Fallback & Budget Management    | 3/3            | Complete    | 2026-03-14 |
+| 10. SQLite, Redis & Advanced       | 3/3            | Complete    | 2026-03-14 |
+| 11. Developer Experience Polish    | 3/3            | Complete    | 2026-03-14 |
+| 12. Provider Overhaul & Validation | 6/6            | Complete    | 2026-03-17 |
+| 12.1 Provider Nuance Gap Analysis  | 1/2            | In Progress |            |
 
 ## v2.0 Progress Table
 
