@@ -462,16 +462,12 @@ Plans:
 4. `provider:recovered` event when exhausted/broken provider becomes available
 5. Health scores influence model chain ordering (skip unhealthy providers)
 
-**Plans:** 6 plans
+**Plans:** 2 plans
 
 Plans:
 
-- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
-- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
-- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
-- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
-- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
-- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
+- [ ] 14-01-PLAN.md — Health types, ProviderRecoveredEvent, RouterEvent constant, HealthScorer class (rolling window + circuit breaker FSM)
+- [ ] 14-02-PLAN.md — ChainExecutor integration (skip check, outcome recording, getChainStatus), createRouter wiring, typed hook
 
 ---
 
@@ -557,7 +553,7 @@ Plans:
 | Phase                                 | Plans Complete | Status      | Completed  |
 | ------------------------------------- | -------------- | ----------- | ---------- |
 | 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
-| 14. Health Scoring & Circuit Breakers | 0/?            | Not started | -          |
+| 14. Health Scoring & Circuit Breakers | 0/2            | Planning    | -          |
 | 15. CLI Validator                     | 0/?            | Not started | -          |
 | 16. Provider Data Registry            | 0/?            | Not started | -          |
 
