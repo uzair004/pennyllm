@@ -26,7 +26,7 @@
 
 ### v2.0 Milestone
 
-- [ ] **Phase 13: Credit-Based Limits** - Handle providers with finite credits (NVIDIA NIM 1K credits, SambaNova $5 signup credit). Track credit depletion, createCreditLimit builder, detect exhaustion and stop routing.
+- [x] **Phase 13: Credit-Based Limits** - Handle providers with finite credits (NVIDIA NIM 1K credits, SambaNova $5 signup credit). Track credit depletion, createCreditLimit builder, detect exhaustion and stop routing. (completed 2026-03-18)
 - [ ] **Phase 14: Health Scoring & Circuit Breakers** - Live health checks before routing, per-provider health scores (success rate, latency, availability), circuit breakers with escalating cooldowns, provider recovery detection. Reference: free-coding-models P2C algorithm.
 - [ ] **Phase 15: CLI Validator** - `npx pennyllm validate` makes a test call to each configured provider+model, confirms API key works, model exists, reports limits. Prevents user assumptions. CI-friendly exit codes.
 - [ ] **Phase 16: Provider Data Registry** - Separate published resource (e.g., `awesome-free-llm-keys` or standalone JSON/repo) documenting free tier limits, models, signup URLs for all providers. NOT part of PennyLLM code — a community reference that PennyLLM docs link to. May be imported later.
@@ -437,7 +437,7 @@ Plans:
 4. Router stops routing to a provider when credits are estimated exhausted
 5. `credit:low` and `credit:exhausted` events fire
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -554,12 +554,12 @@ Plans:
 
 ## v2.0 Progress Table
 
-| Phase                                 | Plans Complete | Status      | Completed |
-| ------------------------------------- | -------------- | ----------- | --------- |
-| 13. Credit-Based Limits               | 1/2            | In Progress |           |
-| 14. Health Scoring & Circuit Breakers | 0/?            | Not started | -         |
-| 15. CLI Validator                     | 0/?            | Not started | -         |
-| 16. Provider Data Registry            | 0/?            | Not started | -         |
+| Phase                                 | Plans Complete | Status      | Completed  |
+| ------------------------------------- | -------------- | ----------- | ---------- |
+| 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
+| 14. Health Scoring & Circuit Breakers | 0/?            | Not started | -          |
+| 15. CLI Validator                     | 0/?            | Not started | -          |
+| 16. Provider Data Registry            | 0/?            | Not started | -          |
 
 ## v2.0 Dependency Graph
 
