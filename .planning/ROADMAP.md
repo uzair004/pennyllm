@@ -437,7 +437,7 @@ Plans:
 4. Router stops routing to a provider when credits are estimated exhausted
 5. `credit:low` and `credit:exhausted` events fire
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
@@ -556,7 +556,7 @@ Plans:
 
 | Phase                                 | Plans Complete | Status      | Completed |
 | ------------------------------------- | -------------- | ----------- | --------- |
-| 13. Credit-Based Limits               | 0/?            | Not started | -         |
+| 13. Credit-Based Limits               | 1/2            | In Progress |           |
 | 14. Health Scoring & Circuit Breakers | 0/?            | Not started | -         |
 | 15. CLI Validator                     | 0/?            | Not started | -         |
 | 16. Provider Data Registry            | 0/?            | Not started | -         |
