@@ -23,6 +23,13 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', 'scripts/', '*.config.js', '*.config.ts'],
+    ignores: [
+      'dist/',
+      'node_modules/',
+      'scripts/',
+      'awesome-free-llm-apis/',
+      '*.config.js',
+      '*.config.ts',
+    ],
   },
 );
