@@ -456,11 +456,11 @@ Plans:
 
 **Success Criteria** (what must be TRUE):
 
-1. Per-provider health score (success rate, latency, availability)
-2. Circuit breaker: open after N consecutive failures, half-open probe for recovery
-3. Escalating cooldowns (15m → 30m → 60m, capped)
+1. Per-provider health score (success rate over 10-request rolling window)
+2. Circuit breaker: open when health drops below 30%, half-open probe for recovery
+3. Escalating cooldowns (30s → 1m → 2m → 5m → 15m cap)
 4. `provider:recovered` event when exhausted/broken provider becomes available
-5. Health scores influence model chain ordering (skip unhealthy providers)
+5. Health scores gate chain traversal (skip providers with open circuits)
 
 **Plans:** 2/2 plans complete
 
