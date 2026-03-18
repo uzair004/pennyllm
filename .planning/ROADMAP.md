@@ -29,7 +29,7 @@
 - [x] **Phase 13: Credit-Based Limits** - Handle providers with finite credits (NVIDIA NIM 1K credits, SambaNova $5 signup credit). Track credit depletion, createCreditLimit builder, detect exhaustion and stop routing. (completed 2026-03-18)
 - [x] **Phase 14: Health Scoring & Circuit Breakers** - Live health checks before routing, per-provider health scores (success rate, latency, availability), circuit breakers with escalating cooldowns, provider recovery detection. Reference: free-coding-models P2C algorithm. (completed 2026-03-18)
 - [x] **Phase 15: CLI Validator** - `npx pennyllm validate` makes a test call to each configured provider+model, confirms API key works, model exists, reports limits. Prevents user assumptions. CI-friendly exit codes. (completed 2026-03-18)
-- [ ] **Phase 16: Provider Data Registry** - Separate published resource (e.g., `awesome-free-llm-keys` or standalone JSON/repo) documenting free tier limits, models, signup URLs for all providers. NOT part of PennyLLM code — a community reference that PennyLLM docs link to. May be imported later.
+- [x] **Phase 16: Provider Data Registry** - Separate published resource (e.g., `awesome-free-llm-keys` or standalone JSON/repo) documenting free tier limits, models, signup URLs for all providers. NOT part of PennyLLM code — a community reference that PennyLLM docs link to. May be imported later. (completed 2026-03-18)
 
 ## Phase Details
 
@@ -514,7 +514,7 @@ Plans:
 3. Community-maintainable (PRs welcome format)
 4. PennyLLM docs link to it as authoritative provider reference
 
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 - [ ] 16-01-PLAN.md — Schema, validation script, generation script, template, repo scaffolding
 - [ ] 16-02-PLAN.md — Populate all 7 provider JSON files from PennyLLM data sources
@@ -542,12 +542,12 @@ Plans:
 
 ## v2.0 Progress Table
 
-| Phase                                 | Plans Complete | Status      | Completed  |
-| ------------------------------------- | -------------- | ----------- | ---------- |
-| 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
-| 14. Health Scoring & Circuit Breakers | 2/2            | Complete    | 2026-03-18 |
-| 15. CLI Validator                     | 3/3            | Complete    | 2026-03-18 |
-| 16. Provider Data Registry            | 2/3            | In Progress |            |
+| Phase                                 | Plans Complete | Status   | Completed  |
+| ------------------------------------- | -------------- | -------- | ---------- |
+| 13. Credit-Based Limits               | 2/2            | Complete | 2026-03-18 |
+| 14. Health Scoring & Circuit Breakers | 2/2            | Complete | 2026-03-18 |
+| 15. CLI Validator                     | 3/3            | Complete | 2026-03-18 |
+| 16. Provider Data Registry            | 3/3            | Complete | 2026-03-18 |
 
 ## v2.0 Dependency Graph
 
