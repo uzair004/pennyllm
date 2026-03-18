@@ -32,6 +32,8 @@ import type {
   CreditExpiringEvent,
 } from '../credit/types.js';
 import type { RequestCompleteEvent } from '../types/events.js';
+import { HealthScorer } from '../health/HealthScorer.js';
+import type { ProviderRecoveredEvent } from '../health/types.js';
 import { DebugLogger } from '../debug/index.js';
 import { buildChain } from '../chain/chain-builder.js';
 import { createChainProxy, getChainStatus } from '../chain/ChainExecutor.js';
@@ -103,6 +105,7 @@ export interface Router {
   onCreditLow: (cb: (event: CreditLowEvent) => void) => () => void;
   onCreditExhausted: (cb: (event: CreditExhaustedEvent) => void) => () => void;
   onCreditExpiring: (cb: (event: CreditExpiringEvent) => void) => () => void;
+  onProviderRecovered: (cb: (event: ProviderRecoveredEvent) => void) => () => void;
 }
 
 /**
@@ -223,6 +226,9 @@ export async function createRouter(
           });
       });
     }
+
+    // Create HealthScorer (always-on, no config needed)
+    const healthScorer = new HealthScorer(emitter);
 
     // Shared disabled keys set across all wrapModel calls for this router instance
     const disabledKeys = new Set<string>();
@@ -412,6 +418,7 @@ export async function createRouter(
           disabledKeys,
           emitter,
           usageTracker,
+          healthScorer,
           providerRef,
           keyIndexRef,
           modelIdRef,
@@ -440,7 +447,7 @@ export async function createRouter(
       },
 
       getStatus: () => {
-        return getChainStatus(chain, cooldownManager, creditTracker);
+        return getChainStatus(chain, cooldownManager, creditTracker, healthScorer);
       },
 
       getUsage: (async (provider?: string) => {
@@ -494,6 +501,7 @@ export async function createRouter(
       onCreditLow: createHook<CreditLowEvent>(RouterEvent.CREDIT_LOW),
       onCreditExhausted: createHook<CreditExhaustedEvent>(RouterEvent.CREDIT_EXHAUSTED),
       onCreditExpiring: createHook<CreditExpiringEvent>(RouterEvent.CREDIT_EXPIRING),
+      onProviderRecovered: createHook<ProviderRecoveredEvent>(RouterEvent.PROVIDER_RECOVERED),
     });
 
     // Conditionally assign credit tracker (respecting exactOptionalPropertyTypes)
