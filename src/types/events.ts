@@ -3,6 +3,11 @@ import type { PennyLLMError } from '../errors/base.js';
 import type { PolicyStaleEvent as PolicyStaleEventType } from '../policy/types.js';
 import type { CatalogRefreshedEvent as CatalogRefreshedEventType } from '../catalog/types.js';
 import type { BudgetAlertEvent, BudgetExceededEvent } from '../budget/types.js';
+import type {
+  CreditLowEvent as CreditLowEventType,
+  CreditExhaustedEvent as CreditExhaustedEventType,
+  CreditExpiringEvent as CreditExpiringEventType,
+} from '../credit/types.js';
 
 // Re-export PolicyStaleEvent so it can be exported from types/index.ts
 export type { PolicyStaleEventType as PolicyStaleEvent };
@@ -10,6 +15,13 @@ export type { CatalogRefreshedEventType as CatalogRefreshedEvent };
 
 // Re-export budget event types
 export type { BudgetAlertEvent, BudgetExceededEvent };
+
+// Re-export credit event types
+export type {
+  CreditLowEventType as CreditLowEvent,
+  CreditExhaustedEventType as CreditExhaustedEvent,
+  CreditExpiringEventType as CreditExpiringEvent,
+};
 
 /**
  * Base event payload
@@ -239,6 +251,9 @@ export interface RouterEventMap {
   'chain:resolved': ChainResolvedEvent;
   'provider:depleted': ProviderDepletedEvent;
   'provider:stale': ProviderStaleEvent;
+  'credit:low': CreditLowEventType;
+  'credit:exhausted': CreditExhaustedEventType;
+  'credit:expiring': CreditExpiringEventType;
 }
 
 /**
@@ -266,4 +281,7 @@ export type RouterEvents =
   | RequestCompleteEvent
   | ChainResolvedEvent
   | ProviderDepletedEvent
-  | ProviderStaleEvent;
+  | ProviderStaleEvent
+  | CreditLowEventType
+  | CreditExhaustedEventType
+  | CreditExpiringEventType;

@@ -56,6 +56,9 @@ export const RouterEvent = {
   CHAIN_RESOLVED: 'chain:resolved',
   PROVIDER_DEPLETED: 'provider:depleted',
   PROVIDER_STALE: 'provider:stale',
+  CREDIT_LOW: 'credit:low',
+  CREDIT_EXHAUSTED: 'credit:exhausted',
+  CREDIT_EXPIRING: 'credit:expiring',
 } as const;
 
 export type RouterEventType = (typeof RouterEvent)[keyof typeof RouterEvent];

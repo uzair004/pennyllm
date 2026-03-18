@@ -51,6 +51,9 @@ export type {
   ChainResolvedEvent,
   ProviderDepletedEvent,
   ProviderStaleEvent,
+  CreditLowEvent,
+  CreditExhaustedEvent,
+  CreditExpiringEvent,
 } from './events.js';
 
 // Interface types
@@ -71,6 +74,9 @@ export type { ModelListFilter } from '../catalog/types.js';
 
 // Selection types
 export type { CandidateKey, SelectionContext, SelectionResult } from '../selection/types.js';
+
+// Credit types
+export type { CreditConfig, CreditStatus } from '../credit/types.js';
 
 // Provider config types
 export type {
