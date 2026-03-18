@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/awesome-free-llm-apis/schema.json",
+  "title": "Free LLM API Provider",
+  "description": "Schema for provider data files in the awesome-free-llm-apis registry",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "status",
+    "signupUrl",
+    "docsUrl",
+    "auth",
+    "freeTier",
+    "sdk",
+    "models",
+    "lastVerified",
+    "verifiedBy"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Slug identifier matching the filename (e.g., 'cerebras')"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name (e.g., 'Cerebras')"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "degraded", "discontinued"],
+      "description": "Current operational status"
+    },
+    "signupUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to create an account"
+    },
+    "docsUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "API documentation URL"
+    },
+    "auth": {
+      "type": "object",
+      "required": ["envVar"],
+      "properties": {
+        "envVar": {
+          "type": "string",
+          "description": "Environment variable name for the API key"
+        },
+        "keyPrefix": {
+          "type": "string",
+          "description": "Key format pattern (e.g., 'csk-')"
+        },
+        "header": {
+          "type": "string",
+          "description": "Auth header format (e.g., 'Authorization: Bearer')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "freeTier": {
+      "type": "object",
+      "required": ["type", "limits"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["perpetual", "trial", "rate-limited"],
+          "description": "Type of free tier offering"
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "rpm": { "type": "number", "description": "Requests per minute" },
+            "rpd": { "type": "number", "description": "Requests per day" },
+            "tpd": { "type": "number", "description": "Tokens per day" },
+            "tpm": { "type": "number", "description": "Tokens per minute" },
+            "rps": { "type": "number", "description": "Requests per second" },
+            "tokenMonthly": { "type": "number", "description": "Tokens per month" }
+          },
+          "additionalProperties": false
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-text clarification of free tier details"
+        },
+        "credits": {
+          "type": "string",
+          "description": "Trial credit amount (e.g., '$5'). Relevant when type is 'trial'."
+        },
+        "expiresAfterDays": {
+          "type": "number",
+          "description": "Trial expiration in days. Relevant when type is 'trial'."
+        }
+      },
+      "additionalProperties": false
+    },
+    "sdk": {
+      "type": "object",
+      "required": ["package", "type"],
+      "properties": {
+        "package": {
+          "type": "string",
+          "description": "npm package name (e.g., '@ai-sdk/cerebras')"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["official", "openai-compat", "community"],
+          "description": "SDK integration type"
+        },
+        "baseUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Base URL for openai-compat providers"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rateLimitHeaders": {
+      "type": "object",
+      "properties": {
+        "remaining": {
+          "type": "string",
+          "description": "Header name for remaining requests"
+        },
+        "reset": {
+          "type": "string",
+          "description": "Header name for reset time"
+        },
+        "limit": {
+          "type": "string",
+          "description": "Header name for rate limit cap"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["seconds", "epoch", "iso"],
+          "description": "Reset time format"
+        }
+      },
+      "additionalProperties": false
+    },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "free", "capabilities", "tier", "contextWindow", "maxOutputTokens"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "API model identifier"
+          },
+          "free": {
+            "type": "boolean",
+            "description": "Whether the model is available on the free tier"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["reasoning", "vision", "tools", "structuredOutput"]
+            },
+            "description": "Model capabilities"
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["frontier", "high", "mid", "small"],
+            "description": "Quality tier"
+          },
+          "contextWindow": {
+            "type": "number",
+            "description": "Maximum input tokens"
+          },
+          "maxOutputTokens": {
+            "type": "number",
+            "description": "Maximum output tokens"
+          },
+          "limits": {
+            "type": "object",
+            "properties": {
+              "rpm": { "type": "number" },
+              "rpd": { "type": "number" },
+              "tpd": { "type": "number" },
+              "tpm": { "type": "number" },
+              "rps": { "type": "number" },
+              "tokenMonthly": { "type": "number" }
+            },
+            "additionalProperties": false,
+            "description": "Per-model limit overrides"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Free-text notes about provider quirks"
+    },
+    "lastVerified": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO date of last verification (YYYY-MM-DD)"
+    },
+    "verifiedBy": {
+      "type": "string",
+      "enum": ["manual", "automated"],
+      "description": "How the provider data was verified"
+    }
+  },
+  "additionalProperties": false
+}

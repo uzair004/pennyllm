@@ -1,0 +1,32 @@
+{
+  "id": "PROVIDER_SLUG",
+  "name": "Provider Name",
+  "status": "active",
+  "signupUrl": "https://REPLACE_ME",
+  "docsUrl": "https://REPLACE_ME",
+  "auth": {
+    "envVar": "PROVIDER_API_KEY"
+  },
+  "freeTier": {
+    "type": "perpetual",
+    "limits": {},
+    "notes": "Describe free tier details here"
+  },
+  "sdk": {
+    "package": "@ai-sdk/REPLACE_ME",
+    "type": "official"
+  },
+  "models": [
+    {
+      "id": "model-name",
+      "free": true,
+      "capabilities": [],
+      "tier": "mid",
+      "contextWindow": 0,
+      "maxOutputTokens": 0
+    }
+  ],
+  "notes": [],
+  "lastVerified": "YYYY-MM-DD",
+  "verifiedBy": "manual"
+}
