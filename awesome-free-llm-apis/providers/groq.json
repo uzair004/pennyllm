@@ -1,0 +1,92 @@
+{
+  "id": "groq",
+  "name": "Groq",
+  "status": "active",
+  "signupUrl": "https://console.groq.com",
+  "docsUrl": "https://console.groq.com/docs/rate-limits",
+  "auth": {
+    "envVar": "GROQ_API_KEY",
+    "keyPrefix": "gsk_",
+    "header": "Authorization: Bearer"
+  },
+  "freeTier": {
+    "type": "perpetual",
+    "limits": {},
+    "notes": "Per-model limits vary widely. No single provider-level limit. Per-organization enforcement -- key rotation provides no benefit."
+  },
+  "sdk": {
+    "package": "@ai-sdk/groq",
+    "type": "official"
+  },
+  "rateLimitHeaders": {
+    "remaining": "x-ratelimit-remaining-requests",
+    "reset": "x-ratelimit-reset-requests",
+    "limit": "x-ratelimit-limit-requests",
+    "format": "seconds"
+  },
+  "models": [
+    {
+      "id": "meta-llama/llama-4-scout-17b-16e-instruct",
+      "free": true,
+      "capabilities": ["tools", "vision", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192,
+      "limits": {
+        "rpm": 30,
+        "rpd": 1000,
+        "tpm": 30000,
+        "tpd": 500000
+      }
+    },
+    {
+      "id": "llama-3.3-70b-versatile",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 32768,
+      "limits": {
+        "rpm": 30,
+        "rpd": 1000,
+        "tpm": 12000,
+        "tpd": 100000
+      }
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "mid",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192,
+      "limits": {
+        "rpm": 60,
+        "rpd": 1000,
+        "tpm": 6000,
+        "tpd": 500000
+      }
+    },
+    {
+      "id": "moonshotai/kimi-k2-instruct",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192,
+      "limits": {
+        "rpm": 60,
+        "rpd": 1000,
+        "tpm": 10000,
+        "tpd": 300000
+      }
+    }
+  ],
+  "notes": [
+    "Per-organization limits -- key rotation provides no benefit",
+    "LPU inference engine provides ultra-fast token generation",
+    "Per-model limits vary significantly (check individual model entries)"
+  ],
+  "lastVerified": "2026-03-15",
+  "verifiedBy": "manual"
+}

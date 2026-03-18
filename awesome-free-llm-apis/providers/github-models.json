@@ -1,0 +1,78 @@
+{
+  "id": "github-models",
+  "name": "GitHub Models",
+  "status": "active",
+  "signupUrl": "https://github.com/marketplace/models",
+  "docsUrl": "https://docs.github.com/en/github-models",
+  "auth": {
+    "envVar": "GITHUB_TOKEN",
+    "header": "Authorization: Bearer"
+  },
+  "freeTier": {
+    "type": "perpetual",
+    "limits": {},
+    "notes": "Tier-based limits: High tier (10 RPM, 50 RPD), Low tier (15 RPM, 150 RPD). Uses existing GitHub account -- no separate signup needed."
+  },
+  "sdk": {
+    "package": "@ai-sdk/openai",
+    "type": "openai-compat",
+    "baseUrl": "https://models.inference.ai.azure.com"
+  },
+  "models": [
+    {
+      "id": "gpt-4o",
+      "free": true,
+      "capabilities": ["tools", "vision", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "limits": {
+        "rpm": 10,
+        "rpd": 50
+      }
+    },
+    {
+      "id": "gpt-4o-mini",
+      "free": true,
+      "capabilities": ["tools", "vision", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "limits": {
+        "rpm": 15,
+        "rpd": 150
+      }
+    },
+    {
+      "id": "o3-mini",
+      "free": true,
+      "capabilities": ["reasoning", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "limits": {
+        "rpm": 10,
+        "rpd": 50
+      }
+    },
+    {
+      "id": "o4-mini",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "vision", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "limits": {
+        "rpm": 10,
+        "rpd": 50
+      }
+    }
+  ],
+  "notes": [
+    "Per-request token limits: 8K input / 4K output for high-tier models",
+    "Uses GitHub personal access token -- no separate API key needed",
+    "Model availability may change without notice"
+  ],
+  "lastVerified": "2026-03-15",
+  "verifiedBy": "manual"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "cerebras",
+  "name": "Cerebras",
+  "status": "active",
+  "signupUrl": "https://cloud.cerebras.ai",
+  "docsUrl": "https://inference-docs.cerebras.ai/api-reference/chat-completions",
+  "auth": {
+    "envVar": "CEREBRAS_API_KEY",
+    "keyPrefix": "csk-",
+    "header": "Authorization: Bearer"
+  },
+  "freeTier": {
+    "type": "perpetual",
+    "limits": {
+      "rpm": 30,
+      "tpm": 60000,
+      "tpd": 1000000
+    },
+    "notes": "Account-level limits. Key rotation provides no benefit. Daily token reset."
+  },
+  "sdk": {
+    "package": "@ai-sdk/cerebras",
+    "type": "official"
+  },
+  "rateLimitHeaders": {
+    "remaining": "x-ratelimit-remaining-requests",
+    "reset": "x-ratelimit-reset-requests",
+    "limit": "x-ratelimit-limit-requests",
+    "format": "seconds"
+  },
+  "models": [
+    {
+      "id": "gpt-oss-120b",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "qwen-3-235b-a22b-instruct-2507",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "llama3.1-8b",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "mid",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "zai-glm-4.7",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    }
+  ],
+  "notes": [
+    "Account-level limits -- all API keys share the same quota",
+    "Fastest inference available (2000-3000 tok/s on WSE hardware)",
+    "No credit card required"
+  ],
+  "lastVerified": "2026-03-17",
+  "verifiedBy": "manual"
+}
