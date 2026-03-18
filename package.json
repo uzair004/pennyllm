@@ -192,5 +192,8 @@
   "bugs": {
     "url": "https://github.com/muhammaduzair/pennyllm/issues"
   },
-  "homepage": "https://github.com/muhammaduzair/pennyllm#readme"
+  "homepage": "https://github.com/muhammaduzair/pennyllm#readme",
+  "bin": {
+    "pennyllm": "./dist/cli.mjs"
+  }
 }
