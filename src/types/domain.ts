@@ -116,4 +116,5 @@ export interface ProviderAttempt {
     | 'circuit_open';
   error?: Error;
   earliestRecovery?: string;
+  estimatedRecoveryMs?: number;
 }

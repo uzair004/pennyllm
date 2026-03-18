@@ -7,6 +7,7 @@ import type { BudgetTracker } from '../budget/BudgetTracker.js';
 import type { KeySelector } from '../selection/KeySelector.js';
 import type { UsageTracker } from '../usage/UsageTracker.js';
 import type { CreditTracker } from '../credit/CreditTracker.js';
+import type { HealthScorer } from '../health/HealthScorer.js';
 import type {
   ChainEntry,
   ChainAttempt,
@@ -38,6 +39,7 @@ export interface ChainExecutorDeps {
   emitter: EventEmitter;
   usageTracker?: UsageTracker;
   creditTracker?: CreditTracker;
+  healthScorer?: HealthScorer;
   /** Mutable refs updated by ChainExecutor on resolution for middleware */
   providerRef?: { current: string };
   keyIndexRef?: { current: number };
@@ -157,7 +159,34 @@ async function executeChain(
       continue;
     }
 
-    // b. Check provider-level cooldown BEFORE attempting API call
+    // b0. Check provider depletion (permanent -- before circuit breaker)
+    if (deps.cooldownManager.isProviderDepleted(entry.provider)) {
+      debug('Skipping provider %s (depleted) at position %d', entry.provider, position);
+      continue;
+    }
+
+    // b1. Check circuit breaker
+    if (deps.healthScorer) {
+      const skipResult = deps.healthScorer.shouldSkip(entry.provider);
+      if (skipResult.skip) {
+        debug(
+          'Skipping provider %s (circuit: %s) at position %d',
+          entry.provider,
+          skipResult.reason,
+          position,
+        );
+        attempts.push({
+          provider: entry.provider,
+          modelId: entry.modelId,
+          chainPosition: position,
+          errorType: 'circuit_open',
+          message: `Circuit breaker: ${skipResult.reason ?? 'open'}`,
+        });
+        continue;
+      }
+    }
+
+    // b2. Check provider-level cooldown BEFORE attempting API call
     if (deps.cooldownManager.isProviderInCooldown(entry.provider)) {
       debug('Skipping provider %s (in cooldown) at position %d', entry.provider, position);
       continue;
@@ -232,6 +261,9 @@ async function executeChain(
 
       // f. Success!
       deps.cooldownManager.onProviderSuccess(entry.provider);
+      if (deps.healthScorer) {
+        deps.healthScorer.recordSuccess(entry.provider);
+      }
 
       // Update mutable refs for middleware
       if (deps.providerRef) deps.providerRef.current = entry.provider;
@@ -266,6 +298,10 @@ async function executeChain(
     } catch (error) {
       // g. Error: classify and record
       const classified = classifyError(error);
+
+      if (deps.healthScorer) {
+        deps.healthScorer.recordFailure(entry.provider);
+      }
 
       const attempt: ChainAttempt = {
         provider: entry.provider,
@@ -331,14 +367,30 @@ async function executeChain(
     }
   }
 
-  // 4. Entire chain exhausted
+  // 4. Try "all circuits open" fallback: force nearest circuit to half-open
+  if (deps.healthScorer) {
+    const chainProviders = filteredChain
+      .filter((e) => !e.stale && !deps.cooldownManager.isProviderDepleted(e.provider))
+      .map((e) => e.provider);
+    const forcedProvider = deps.healthScorer.forceNearestHalfOpen(chainProviders);
+    if (forcedProvider) {
+      debug('All circuits open: forced %s to half-open, retrying chain', forcedProvider);
+      return executeChain(callFn, chain, filter, deps, requestId);
+    }
+  }
+
+  // 5. Entire chain exhausted
   throw new AllProvidersExhaustedError(
     'pennyllm/chain',
     attempts.map((a) => ({
       provider: a.provider,
       modelId: a.modelId,
       reason:
-        a.errorType === 'rate_limit' ? ('rate_limited' as const) : ('quota_exhausted' as const),
+        a.errorType === 'rate_limit'
+          ? ('rate_limited' as const)
+          : a.errorType === 'circuit_open'
+            ? ('circuit_open' as const)
+            : ('quota_exhausted' as const),
     })),
   );
 }
@@ -453,6 +505,7 @@ export function getChainStatus(
   chain: ChainEntry[],
   cooldownManager: CooldownManager,
   creditTracker?: CreditTracker,
+  healthScorer?: HealthScorer,
 ): ChainStatus {
   const entries: ChainEntryStatus[] = chain.map((entry) => {
     let status: ChainEntryStatus['status'] = 'available';
@@ -486,6 +539,24 @@ export function getChainStatus(
       const cs = creditTracker.getStatus(entry.provider);
       if (cs !== undefined) {
         entryStatus.creditStatus = cs;
+      }
+    }
+    // Health scoring and circuit state
+    if (healthScorer) {
+      const score = healthScorer.getHealthScore(entry.provider);
+      if (score !== undefined) {
+        entryStatus.healthScore = score;
+      }
+      const circuitState = healthScorer.getCircuitState(entry.provider);
+      if (circuitState !== undefined) {
+        entryStatus.circuitState = circuitState;
+      }
+      // Override status if circuit is open/half-open and entry appears available
+      if (
+        (circuitState === 'open' || circuitState === 'half-open') &&
+        entryStatus.status === 'available'
+      ) {
+        entryStatus.status = 'circuit_open';
       }
     }
     return entryStatus;
