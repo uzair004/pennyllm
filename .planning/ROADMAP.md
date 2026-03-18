@@ -485,16 +485,13 @@ Plans:
 4. CI-friendly exit codes (0 = all pass, 1 = failures, 2 = warnings)
 5. Does NOT count against user's rate limits excessively (1 lightweight call per model)
 
-**Plans:** 6 plans
+**Plans:** 3 plans
 
 Plans:
 
-- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
-- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
-- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
-- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
-- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
-- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
+- [ ] 15-01-PLAN.md — CLI types, config discovery (jiti TS loading), entry point with parseArgs, build infrastructure (tsup + bin)
+- [ ] 15-02-PLAN.md — Validation orchestration (generateText + streamText test calls, error classification, parallel providers)
+- [ ] 15-03-PLAN.md — Output formatters (colored table, JSON, spinners), entry point wiring, human verification
 
 ---
 
@@ -554,7 +551,7 @@ Plans:
 | ------------------------------------- | -------------- | ----------- | ---------- |
 | 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
 | 14. Health Scoring & Circuit Breakers | 2/2            | Complete    | 2026-03-18 |
-| 15. CLI Validator                     | 0/?            | Not started | -          |
+| 15. CLI Validator                     | 0/3            | Planning    | -          |
 | 16. Provider Data Registry            | 0/?            | Not started | -          |
 
 ## v2.0 Dependency Graph
