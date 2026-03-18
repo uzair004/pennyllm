@@ -514,7 +514,7 @@ Plans:
 3. Community-maintainable (PRs welcome format)
 4. PennyLLM docs link to it as authoritative provider reference
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 - [ ] 16-01-PLAN.md — Schema, validation script, generation script, template, repo scaffolding
 - [ ] 16-02-PLAN.md — Populate all 7 provider JSON files from PennyLLM data sources
@@ -542,12 +542,12 @@ Plans:
 
 ## v2.0 Progress Table
 
-| Phase                                 | Plans Complete | Status   | Completed  |
-| ------------------------------------- | -------------- | -------- | ---------- |
-| 13. Credit-Based Limits               | 2/2            | Complete | 2026-03-18 |
-| 14. Health Scoring & Circuit Breakers | 2/2            | Complete | 2026-03-18 |
-| 15. CLI Validator                     | 3/3            | Complete | 2026-03-18 |
-| 16. Provider Data Registry            | 0/3            | Planned  | -          |
+| Phase                                 | Plans Complete | Status      | Completed  |
+| ------------------------------------- | -------------- | ----------- | ---------- |
+| 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
+| 14. Health Scoring & Circuit Breakers | 2/2            | Complete    | 2026-03-18 |
+| 15. CLI Validator                     | 3/3            | Complete    | 2026-03-18 |
+| 16. Provider Data Registry            | 1/3            | In Progress |            |
 
 ## v2.0 Dependency Graph
 
