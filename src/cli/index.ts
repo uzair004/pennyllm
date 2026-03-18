@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ValidateOptions } from './types.js';
+import { runValidate, getExitCode } from './validate.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgPath = resolve(__dirname, '..', 'package.json');
@@ -42,13 +43,6 @@ Exit Codes:
   0  All tests passed
   1  At least one failure
   2  No failures but has warnings`;
-
-async function runValidate(opts: ValidateOptions): Promise<void> {
-  // Plan 02 implements this — for now just confirm arg parsing works
-  await Promise.resolve();
-  console.log('validate called with:', JSON.stringify(opts, null, 2));
-  process.exitCode = 0;
-}
 
 void (async () => {
   try {
@@ -104,7 +98,19 @@ void (async () => {
       if (values.config !== undefined) opts.config = values.config;
       if (values.provider !== undefined) opts.provider = values.provider;
 
-      await runValidate(opts);
+      try {
+        const result = await runValidate(opts);
+        // Plan 03 adds pretty formatting -- for now output JSON unconditionally
+        console.log(JSON.stringify(result, null, 2));
+        process.exitCode = getExitCode(result);
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error(`Error: ${err.message}`);
+        } else {
+          console.error(`Error: ${String(err)}`);
+        }
+        process.exitCode = 1;
+      }
       return;
     }
 
