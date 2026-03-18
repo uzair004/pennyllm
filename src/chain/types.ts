@@ -1,6 +1,7 @@
 import type { QualityTierType } from '../constants/index.js';
 import type { CooldownClass } from '../wrapper/error-classifier.js';
 import type { ProviderModelDef } from '../providers/types.js';
+import type { CreditStatus } from '../credit/types.js';
 
 /**
  * A single entry in the model priority chain.
@@ -68,6 +69,7 @@ export interface ChainEntryStatus {
   status: 'available' | 'cooling' | 'depleted' | 'stale';
   cooldownUntil?: string;
   cooldownClass?: CooldownClass;
+  creditStatus?: CreditStatus;
 }
 
 /**

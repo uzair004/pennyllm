@@ -24,6 +24,14 @@ import { ProviderRegistry, createProviderInstance } from '../wrapper/provider-re
 import { createRouterMiddleware } from '../wrapper/middleware.js';
 import { createRetryProxy } from '../wrapper/retry-proxy.js';
 import { BudgetTracker } from '../budget/BudgetTracker.js';
+import { CreditTracker } from '../credit/CreditTracker.js';
+import type {
+  CreditConfig,
+  CreditLowEvent,
+  CreditExhaustedEvent,
+  CreditExpiringEvent,
+} from '../credit/types.js';
+import type { RequestCompleteEvent } from '../types/events.js';
 import { DebugLogger } from '../debug/index.js';
 import { buildChain } from '../chain/chain-builder.js';
 import { createChainProxy, getChainStatus } from '../chain/ChainExecutor.js';
@@ -76,6 +84,7 @@ export interface Router {
   catalog: ModelCatalog;
   selection: KeySelector;
   budget: BudgetTracker;
+  credit?: CreditTracker;
   close: () => Promise<void>;
   on: (event: string, handler: (...args: unknown[]) => void) => void;
   off: (event: string, handler: (...args: unknown[]) => void) => void;
@@ -91,6 +100,9 @@ export interface Router {
   onChainResolved: (cb: (event: ChainResolvedEvent) => void) => () => void;
   onProviderDepleted: (cb: (event: ProviderDepletedEvent) => void) => () => void;
   onProviderStale: (cb: (event: ProviderStaleEvent) => void) => () => void;
+  onCreditLow: (cb: (event: CreditLowEvent) => void) => () => void;
+  onCreditExhausted: (cb: (event: CreditExhaustedEvent) => void) => () => void;
+  onCreditExpiring: (cb: (event: CreditExpiringEvent) => void) => () => void;
 }
 
 /**
@@ -182,6 +194,35 @@ export async function createRouter(
 
     // Create BudgetTracker
     const budgetTracker = new BudgetTracker(storage, config.budget, emitter);
+
+    // Build credit configs for trial-tier providers
+    const creditConfigs = new Map<string, CreditConfig>();
+    for (const [providerId, providerConfig] of Object.entries(config.providers)) {
+      if (providerConfig.credits !== undefined) {
+        creditConfigs.set(providerId, providerConfig.credits);
+      }
+    }
+
+    // Create CreditTracker (only if any provider has credits configured)
+    let creditTracker: CreditTracker | undefined;
+    if (creditConfigs.size > 0) {
+      creditTracker = new CreditTracker(storage, cooldownManager, emitter, creditConfigs);
+      await creditTracker.loadPersistedCredits();
+    }
+
+    // Wire credit consumption recording from request:complete events
+    if (creditTracker) {
+      emitter.on(RouterEvent.REQUEST_COMPLETE, (event: RequestCompleteEvent) => {
+        void creditTracker
+          .recordConsumption(event.provider, {
+            promptTokens: event.promptTokens,
+            completionTokens: event.completionTokens,
+          })
+          .catch(() => {
+            /* fire-and-forget */
+          });
+      });
+    }
 
     // Shared disabled keys set across all wrapModel calls for this router instance
     const disabledKeys = new Set<string>();
@@ -362,22 +403,24 @@ export async function createRouter(
         const keyIndexRef = { current: 0 };
         const modelIdRef = { current: 'pennyllm/chain' };
 
-        const chainProxy = createChainProxy(
-          {
-            chain,
-            config,
-            cooldownManager,
-            budgetTracker,
-            keySelector,
-            disabledKeys,
-            emitter,
-            usageTracker,
-            providerRef,
-            keyIndexRef,
-            modelIdRef,
-          },
-          filter,
-        );
+        const chainDeps: import('../chain/ChainExecutor.js').ChainExecutorDeps = {
+          chain,
+          config,
+          cooldownManager,
+          budgetTracker,
+          keySelector,
+          disabledKeys,
+          emitter,
+          usageTracker,
+          providerRef,
+          keyIndexRef,
+          modelIdRef,
+        };
+        if (creditTracker !== undefined) {
+          chainDeps.creditTracker = creditTracker;
+        }
+
+        const chainProxy = createChainProxy(chainDeps, filter);
 
         const middleware = createRouterMiddleware({
           providerRef,
@@ -397,7 +440,7 @@ export async function createRouter(
       },
 
       getStatus: () => {
-        return getChainStatus(chain, cooldownManager);
+        return getChainStatus(chain, cooldownManager, creditTracker);
       },
 
       getUsage: (async (provider?: string) => {
@@ -448,7 +491,15 @@ export async function createRouter(
       onChainResolved: createHook<ChainResolvedEvent>(RouterEvent.CHAIN_RESOLVED),
       onProviderDepleted: createHook<ProviderDepletedEvent>(RouterEvent.PROVIDER_DEPLETED),
       onProviderStale: createHook<ProviderStaleEvent>(RouterEvent.PROVIDER_STALE),
+      onCreditLow: createHook<CreditLowEvent>(RouterEvent.CREDIT_LOW),
+      onCreditExhausted: createHook<CreditExhaustedEvent>(RouterEvent.CREDIT_EXHAUSTED),
+      onCreditExpiring: createHook<CreditExpiringEvent>(RouterEvent.CREDIT_EXPIRING),
     });
+
+    // Conditionally assign credit tracker (respecting exactOptionalPropertyTypes)
+    if (creditTracker !== undefined) {
+      routerImpl.credit = creditTracker;
+    }
 
     // Enable debug mode from config flag or DEBUG env var
     const shouldDebug = config.debug || /pennyllm/.test(process.env['DEBUG'] ?? '');

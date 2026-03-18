@@ -43,7 +43,7 @@ export { DebugLogger } from './debug/index.js';
 export { BudgetTracker } from './budget/index.js';
 
 // Credit (new in Phase 13)
-export { createCreditLimit } from './credit/index.js';
+export { createCreditLimit, CreditTracker } from './credit/index.js';
 export type {
   CreditConfig,
   CreditStatus,

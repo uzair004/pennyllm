@@ -6,6 +6,7 @@ import type { CooldownManager } from '../usage/cooldown.js';
 import type { BudgetTracker } from '../budget/BudgetTracker.js';
 import type { KeySelector } from '../selection/KeySelector.js';
 import type { UsageTracker } from '../usage/UsageTracker.js';
+import type { CreditTracker } from '../credit/CreditTracker.js';
 import type {
   ChainEntry,
   ChainAttempt,
@@ -36,6 +37,7 @@ export interface ChainExecutorDeps {
   disabledKeys: Set<string>;
   emitter: EventEmitter;
   usageTracker?: UsageTracker;
+  creditTracker?: CreditTracker;
   /** Mutable refs updated by ChainExecutor on resolution for middleware */
   providerRef?: { current: string };
   keyIndexRef?: { current: number };
@@ -158,6 +160,16 @@ async function executeChain(
     // b. Check provider-level cooldown BEFORE attempting API call
     if (deps.cooldownManager.isProviderInCooldown(entry.provider)) {
       debug('Skipping provider %s (in cooldown) at position %d', entry.provider, position);
+      continue;
+    }
+
+    // b2. Check credit depletion for providers with credit config
+    if (deps.creditTracker && deps.creditTracker.shouldSkip(entry.provider)) {
+      debug(
+        'Skipping provider %s (credits exhausted/expired) at position %d',
+        entry.provider,
+        position,
+      );
       continue;
     }
 
@@ -304,6 +316,11 @@ async function executeChain(
         );
       }
 
+      // Confirm credit exhaustion on 402 for credit providers
+      if (classified.statusCode === 402 && deps.creditTracker) {
+        deps.creditTracker.confirmExhaustion(entry.provider);
+      }
+
       // Mark model stale on 404
       if (classified.statusCode === 404) {
         entry.stale = true;
@@ -432,7 +449,11 @@ export function createChainProxy(deps: ChainExecutorDeps, filter?: ChainFilter):
  * Get current status of all chain entries.
  * Reports which models are available, cooling down, depleted, or stale.
  */
-export function getChainStatus(chain: ChainEntry[], cooldownManager: CooldownManager): ChainStatus {
+export function getChainStatus(
+  chain: ChainEntry[],
+  cooldownManager: CooldownManager,
+  creditTracker?: CreditTracker,
+): ChainStatus {
   const entries: ChainEntryStatus[] = chain.map((entry) => {
     let status: ChainEntryStatus['status'] = 'available';
     let cooldownUntil: string | undefined;
@@ -461,6 +482,12 @@ export function getChainStatus(chain: ChainEntry[], cooldownManager: CooldownMan
     };
     if (cooldownUntil !== undefined) entryStatus.cooldownUntil = cooldownUntil;
     if (cooldownClass !== undefined) entryStatus.cooldownClass = cooldownClass;
+    if (creditTracker) {
+      const cs = creditTracker.getStatus(entry.provider);
+      if (cs !== undefined) {
+        entryStatus.creditStatus = cs;
+      }
+    }
     return entryStatus;
   });
 
