@@ -1,0 +1,66 @@
+{
+  "id": "mistral",
+  "name": "Mistral",
+  "status": "active",
+  "signupUrl": "https://console.mistral.ai",
+  "docsUrl": "https://docs.mistral.ai",
+  "auth": {
+    "envVar": "MISTRAL_API_KEY",
+    "header": "Authorization: Bearer"
+  },
+  "freeTier": {
+    "type": "perpetual",
+    "limits": {
+      "rps": 1,
+      "tpm": 50000,
+      "tokenMonthly": 1000000000
+    },
+    "notes": "1 request per second rate limit. 1 billion tokens per month. Per-organization limits -- key rotation provides no benefit. Models share token pool."
+  },
+  "sdk": {
+    "package": "@ai-sdk/mistral",
+    "type": "official"
+  },
+  "models": [
+    {
+      "id": "mistral-large-latest",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "mistral-small-latest",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "mid",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "codestral-latest",
+      "free": true,
+      "capabilities": [],
+      "tier": "high",
+      "contextWindow": 262144,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "pixtral-large-latest",
+      "free": true,
+      "capabilities": ["tools", "vision", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    }
+  ],
+  "notes": [
+    "Per-organization limits -- key rotation provides no benefit",
+    "Free tier may use data for training -- opt-out required via settings",
+    "1 request per second (not per minute) -- unique among providers",
+    "Models share a monthly token pool of 1B tokens"
+  ],
+  "lastVerified": "2026-03-15",
+  "verifiedBy": "manual"
+}

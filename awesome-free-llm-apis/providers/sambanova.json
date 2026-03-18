@@ -1,0 +1,106 @@
+{
+  "id": "sambanova",
+  "name": "SambaNova",
+  "status": "active",
+  "signupUrl": "https://cloud.sambanova.ai",
+  "docsUrl": "https://docs.sambanova.ai",
+  "auth": {
+    "envVar": "SAMBANOVA_API_KEY",
+    "header": "Authorization: Bearer"
+  },
+  "freeTier": {
+    "type": "perpetual",
+    "limits": {
+      "rpm": 20,
+      "rpd": 20,
+      "tpd": 200000
+    },
+    "credits": "$5",
+    "expiresAfterDays": 30,
+    "notes": "Free tier (no card): 20 RPD. Developer tier (card linked, $0 balance): up to 12,000 RPD per model. 600x difference. Linking a card is strongly recommended -- you pay nothing."
+  },
+  "sdk": {
+    "package": "sambanova-ai-provider",
+    "type": "community"
+  },
+  "rateLimitHeaders": {
+    "remaining": "x-ratelimit-remaining-requests",
+    "reset": "x-ratelimit-reset-requests",
+    "limit": "x-ratelimit-limit-requests",
+    "format": "epoch"
+  },
+  "models": [
+    {
+      "id": "DeepSeek-R1-0528",
+      "free": true,
+      "capabilities": ["reasoning"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 16384,
+      "limits": {
+        "rpm": 60,
+        "rpd": 12000
+      }
+    },
+    {
+      "id": "Deepseek-V3.1",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 16384,
+      "limits": {
+        "rpm": 60,
+        "rpd": 12000
+      }
+    },
+    {
+      "id": "DeepSeek-V3-0324",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 16384,
+      "limits": {
+        "rpm": 60,
+        "rpd": 12000
+      }
+    },
+    {
+      "id": "Meta-Llama-3.3-70B-Instruct",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192,
+      "limits": {
+        "rpm": 240,
+        "rpd": 48000
+      }
+    },
+    {
+      "id": "Qwen3-235B-A22B-Instruct-2507",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "Llama-4-Maverick-17B-128E-Instruct",
+      "free": true,
+      "capabilities": ["tools", "vision", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    }
+  ],
+  "notes": [
+    "Two-tier system: Free (no card, 20 RPD) vs Developer (card linked, up to 12K RPD) -- 600x difference",
+    "$5 signup credit with 30-day expiry",
+    "ONLY provider offering free access to full DeepSeek-R1 671B model",
+    "Developer tier is free -- linking a card unlocks higher limits at $0 balance"
+  ],
+  "lastVerified": "2026-03-17",
+  "verifiedBy": "manual"
+}

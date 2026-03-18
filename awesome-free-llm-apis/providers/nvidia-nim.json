@@ -1,0 +1,74 @@
+{
+  "id": "nvidia-nim",
+  "name": "NVIDIA NIM",
+  "status": "active",
+  "signupUrl": "https://build.nvidia.com",
+  "docsUrl": "https://docs.api.nvidia.com",
+  "auth": {
+    "envVar": "NVIDIA_API_KEY",
+    "keyPrefix": "nvapi-",
+    "header": "Authorization: Bearer"
+  },
+  "freeTier": {
+    "type": "rate-limited",
+    "limits": {
+      "rpm": 40
+    },
+    "notes": "NVIDIA does not publish per-model limits. ~40 RPM is community-reported. Originally credit-based (1000 credits), now perpetual rate-limited access."
+  },
+  "sdk": {
+    "package": "@ai-sdk/openai",
+    "type": "openai-compat",
+    "baseUrl": "https://integrate.api.nvidia.com/v1"
+  },
+  "models": [
+    {
+      "id": "deepseek-ai/deepseek-v3.2",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 16384
+    },
+    {
+      "id": "moonshotai/kimi-k2.5",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 32768
+    },
+    {
+      "id": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      "free": true,
+      "capabilities": ["tools", "reasoning", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 131072,
+      "maxOutputTokens": 16384
+    },
+    {
+      "id": "meta/llama-4-maverick-17b-128e-instruct",
+      "free": true,
+      "capabilities": ["tools", "vision", "structuredOutput"],
+      "tier": "high",
+      "contextWindow": 131072,
+      "maxOutputTokens": 8192
+    },
+    {
+      "id": "qwen/qwen3-coder-480b-a35b-instruct",
+      "free": true,
+      "capabilities": ["tools", "structuredOutput"],
+      "tier": "frontier",
+      "contextWindow": 262144,
+      "maxOutputTokens": 16384
+    }
+  ],
+  "notes": [
+    "NVIDIA does not publish official rate limits -- values are community-reported",
+    "May be geo-restricted in some regions (403 errors)",
+    "Model IDs use org/model format (e.g., deepseek-ai/deepseek-v3.2)",
+    "Originally credit-based; transitioned to rate-limited perpetual free tier"
+  ],
+  "lastVerified": "2026-03-17",
+  "verifiedBy": "manual"
+}
