@@ -1,0 +1,43 @@
+name: Add Provider
+description: Request a new free tier LLM API provider to be added
+title: '[Add] '
+labels: ['new-provider']
+body:
+  - type: input
+    id: provider-name
+    attributes:
+      label: Provider Name
+      description: Official name of the provider
+      placeholder: e.g., Together AI
+    validations:
+      required: true
+  - type: input
+    id: signup-url
+    attributes:
+      label: Signup URL
+      description: Where to create an account
+      placeholder: https://...
+    validations:
+      required: true
+  - type: textarea
+    id: free-tier-details
+    attributes:
+      label: Free Tier Details
+      description: Describe the free tier (type, limits, any trial credits)
+      placeholder: 'Perpetual free tier with 60 RPM, 100K tokens/day...'
+    validations:
+      required: true
+  - type: textarea
+    id: models
+    attributes:
+      label: Available Models
+      description: List free models with their capabilities
+    validations:
+      required: false
+  - type: textarea
+    id: sdk-info
+    attributes:
+      label: SDK / API Info
+      description: AI SDK package name, API compatibility, base URL if needed
+    validations:
+      required: false

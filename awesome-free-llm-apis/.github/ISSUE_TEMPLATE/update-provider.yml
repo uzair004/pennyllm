@@ -1,0 +1,35 @@
+name: Update Provider
+description: Report outdated or incorrect provider data
+title: '[Update] '
+labels: ['data-update']
+body:
+  - type: input
+    id: provider-name
+    attributes:
+      label: Provider
+      description: Which provider needs updating
+      placeholder: e.g., Cerebras
+    validations:
+      required: true
+  - type: textarea
+    id: what-changed
+    attributes:
+      label: What Changed
+      description: Describe what data is outdated or incorrect
+    validations:
+      required: true
+  - type: textarea
+    id: correct-data
+    attributes:
+      label: Correct Data
+      description: Provide the updated values with source links
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Link to official docs or evidence
+      placeholder: https://...
+    validations:
+      required: true
