@@ -42,6 +42,16 @@ export { DebugLogger } from './debug/index.js';
 // Budget
 export { BudgetTracker } from './budget/index.js';
 
+// Credit (new in Phase 13)
+export { createCreditLimit } from './credit/index.js';
+export type {
+  CreditConfig,
+  CreditStatus,
+  CreditLowEvent,
+  CreditExhaustedEvent,
+  CreditExpiringEvent,
+} from './credit/index.js';
+
 // Chain (new in Phase 12)
 export type {
   ChainEntry,

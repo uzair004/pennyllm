@@ -1,6 +1,7 @@
 import type { StrategyType } from '../constants/index.js';
 import type { KeyConfig } from '../policy/types.js';
 import type { PolicyLimit } from './domain.js';
+import type { CreditConfig } from '../credit/types.js';
 
 /**
  * Budget configuration
@@ -39,7 +40,7 @@ export interface ProviderConfig {
   enabled?: boolean;
   priority: number;
   tier: ProviderTier;
-  credits?: number;
+  credits?: CreditConfig;
   models?: string[];
 }
 

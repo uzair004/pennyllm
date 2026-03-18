@@ -28,6 +28,25 @@ export const keyConfigSchema = z.union([
 ]);
 
 /**
+ * Cost rates schema for credit-based providers
+ */
+const costRatesSchema = z.object({
+  inputPer1MTokens: z.number().nonnegative(),
+  outputPer1MTokens: z.number().nonnegative(),
+});
+
+/**
+ * Credits configuration schema (expanded from simple number)
+ */
+export const creditsConfigSchema = z.object({
+  balance: z.number().positive(),
+  expiresAt: z.string().datetime().optional(),
+  costRates: costRatesSchema,
+  alertThresholds: z.array(z.number().min(0).max(1)).default([0.2, 0.05]),
+  expiryWarningDays: z.number().int().positive().default(7),
+});
+
+/**
  * Provider configuration schema
  */
 export const providerConfigSchema = z.object({
@@ -39,7 +58,7 @@ export const providerConfigSchema = z.object({
   enabled: z.boolean().default(true),
   priority: z.number().int().min(0).default(100),
   tier: z.enum(['free', 'trial', 'paid']).default('free'),
-  credits: z.number().positive().optional(),
+  credits: creditsConfigSchema.optional(),
   models: z.array(z.string()).optional(),
 });
 
@@ -107,7 +126,8 @@ export const configSchema = z
       return true;
     },
     {
-      message: "Providers with tier 'trial' must specify a 'credits' value.",
+      message:
+        "Providers with tier 'trial' must specify a 'credits' configuration with balance and costRates.",
     },
   );
 

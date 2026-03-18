@@ -5,3 +5,5 @@ export type {
   CreditExhaustedEvent,
   CreditExpiringEvent,
 } from './types.js';
+
+export { createCreditLimit } from './builders.js';
