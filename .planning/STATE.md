@@ -27,10 +27,10 @@ progress:
 
 ## Current Position
 
-**Phase:** 13 - Credit-Based Limits
+**Phase:** 14 - Health Scoring & Circuit Breakers
 **Plan:** 1/2 plans complete
 **Status:** In Progress
-**Progress:** [██████████] 100%
+**Progress:** [█████░░░░░] 50%
 
 ## Performance Metrics
 

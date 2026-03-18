@@ -462,7 +462,7 @@ Plans:
 4. `provider:recovered` event when exhausted/broken provider becomes available
 5. Health scores influence model chain ordering (skip unhealthy providers)
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
@@ -553,7 +553,7 @@ Plans:
 | Phase                                 | Plans Complete | Status      | Completed  |
 | ------------------------------------- | -------------- | ----------- | ---------- |
 | 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
-| 14. Health Scoring & Circuit Breakers | 0/2            | Planning    | -          |
+| 14. Health Scoring & Circuit Breakers | 1/2            | In Progress |            |
 | 15. CLI Validator                     | 0/?            | Not started | -          |
 | 16. Provider Data Registry            | 0/?            | Not started | -          |
 
