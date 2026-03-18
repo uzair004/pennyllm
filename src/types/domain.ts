@@ -112,7 +112,8 @@ export interface ProviderAttempt {
     | 'server_error'
     | 'budget_exceeded'
     | 'no_match'
-    | 'auth_failed';
+    | 'auth_failed'
+    | 'circuit_open';
   error?: Error;
   earliestRecovery?: string;
 }

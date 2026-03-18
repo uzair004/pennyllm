@@ -8,6 +8,7 @@ import type {
   CreditExhaustedEvent as CreditExhaustedEventType,
   CreditExpiringEvent as CreditExpiringEventType,
 } from '../credit/types.js';
+import type { ProviderRecoveredEvent as ProviderRecoveredEventType } from '../health/types.js';
 
 // Re-export PolicyStaleEvent so it can be exported from types/index.ts
 export type { PolicyStaleEventType as PolicyStaleEvent };
@@ -22,6 +23,9 @@ export type {
   CreditExhaustedEventType as CreditExhaustedEvent,
   CreditExpiringEventType as CreditExpiringEvent,
 };
+
+// Re-export health event types
+export type { ProviderRecoveredEventType as ProviderRecoveredEvent };
 
 /**
  * Base event payload
@@ -254,6 +258,7 @@ export interface RouterEventMap {
   'credit:low': CreditLowEventType;
   'credit:exhausted': CreditExhaustedEventType;
   'credit:expiring': CreditExpiringEventType;
+  'provider:recovered': ProviderRecoveredEventType;
 }
 
 /**
@@ -284,4 +289,5 @@ export type RouterEvents =
   | ProviderStaleEvent
   | CreditLowEventType
   | CreditExhaustedEventType
-  | CreditExpiringEventType;
+  | CreditExpiringEventType
+  | ProviderRecoveredEventType;

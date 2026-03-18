@@ -59,6 +59,7 @@ export const RouterEvent = {
   CREDIT_LOW: 'credit:low',
   CREDIT_EXHAUSTED: 'credit:exhausted',
   CREDIT_EXPIRING: 'credit:expiring',
+  PROVIDER_RECOVERED: 'provider:recovered',
 } as const;
 
 export type RouterEventType = (typeof RouterEvent)[keyof typeof RouterEvent];
