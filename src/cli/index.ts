@@ -4,6 +4,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ValidateOptions } from './types.js';
 import { runValidate, getExitCode } from './validate.js';
+import { formatTable, formatSummary, formatJson, createSpinnerManager } from './format.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgPath = resolve(__dirname, '..', 'package.json');
@@ -98,12 +99,34 @@ void (async () => {
       if (values.config !== undefined) opts.config = values.config;
       if (values.provider !== undefined) opts.provider = values.provider;
 
+      // Create spinner manager (disabled for --json or non-TTY)
+      const spinners = createSpinnerManager(!opts.json && process.stdout.isTTY === true);
+
       try {
-        const result = await runValidate(opts);
-        // Plan 03 adds pretty formatting -- for now output JSON unconditionally
-        console.log(JSON.stringify(result, null, 2));
+        const result = await runValidate(opts, {
+          onProviderStart: (id, name) => spinners.start(id, name),
+          onProviderDone: (id, status, msg) => {
+            if (status === 'pass') spinners.success(id, msg);
+            else if (status === 'warning') spinners.warn(id, msg);
+            else spinners.error(id, msg);
+          },
+        });
+
+        // Clear any remaining spinners
+        spinners.clear();
+
+        // Output results
+        if (opts.json) {
+          console.log(formatJson(result));
+        } else {
+          console.log(formatTable(result, opts.verbose));
+          console.log();
+          console.log(formatSummary(result));
+        }
+
         process.exitCode = getExitCode(result);
       } catch (err) {
+        spinners.clear();
         if (err instanceof Error) {
           console.error(`Error: ${err.message}`);
         } else {

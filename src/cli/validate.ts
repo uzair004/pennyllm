@@ -251,7 +251,15 @@ export function getExitCode(result: ValidationResult): number {
 
 // ── Main orchestration ─────────────────────────────────────────────
 
-export async function runValidate(options: ValidateOptions): Promise<ValidationResult> {
+export interface ProgressCallbacks {
+  onProviderStart?: (providerId: string, providerName: string) => void;
+  onProviderDone?: (providerId: string, status: TestStatus, message: string) => void;
+}
+
+export async function runValidate(
+  options: ValidateOptions,
+  onProgress?: ProgressCallbacks,
+): Promise<ValidationResult> {
   // Step 1: Load config
   const resolveOpts: { config?: string } = {};
   if (options.config !== undefined) {
@@ -352,11 +360,33 @@ export async function runValidate(options: ValidateOptions): Promise<ValidationR
   // Step 6: Real API calls -- parallel providers, sequential keys
   const providerResults = await Promise.allSettled(
     providerIds.map(async (providerId) => {
+      const mod = getProviderModule(providerId);
+      const providerName = mod?.name ?? providerId;
+      onProgress?.onProviderStart?.(providerId, providerName);
+
       const testedEntry = testedEntries.get(providerId);
       if (!testedEntry) {
+        onProgress?.onProviderDone?.(providerId, 'skipped', `${providerName}: no models to test`);
         return { providerId, keyResults: [] as KeyTestResult[] };
       }
+
       const keyResults = await testProvider(providerId, config, testedEntry, options.timeout);
+
+      // Compute status for progress callback
+      const statuses: TestStatus[] = [];
+      for (const kr of keyResults) {
+        statuses.push(kr.generateText.status, kr.streamText.status);
+      }
+      const status = statuses.length > 0 ? worstStatus(statuses) : ('skipped' as TestStatus);
+      const passedKeys = keyResults.filter(
+        (k) => k.generateText.status === 'pass' && k.streamText.status === 'pass',
+      ).length;
+      const summaryMsg =
+        status === 'pass'
+          ? `${providerName}: ${passedKeys}/${keyResults.length} keys ok`
+          : `${providerName}: ${status}`;
+      onProgress?.onProviderDone?.(providerId, status, summaryMsg);
+
       return { providerId, keyResults };
     }),
   );
