@@ -437,16 +437,12 @@ Plans:
 4. Router stops routing to a provider when credits are estimated exhausted
 5. `credit:low` and `credit:exhausted` events fire
 
-**Plans:** 6 plans
+**Plans:** 2 plans
 
 Plans:
 
-- [ ] 12-01-PLAN.md — Provider modules (7 providers), types, registry, constants, peer deps
-- [ ] 12-02-PLAN.md — Error classifier cooldown extension, CooldownManager provider-level tracking
-- [ ] 12-03-PLAN.md — Config schema overhaul (chain fields, remove fallback section)
-- [ ] 12-04-PLAN.md — Chain types and chain builder (auto + explicit modes)
-- [ ] 12-05-PLAN.md — ChainExecutor, router.chat(), router.getStatus(), createRouter refactor
-- [ ] 12-06-PLAN.md — Delete old fallback code, E2E test script, docs refresh
+- [ ] 13-01-PLAN.md — Credit types, config schema expansion (credits:number to credits:object), createCreditLimit builder, event constants
+- [ ] 13-02-PLAN.md — CreditTracker class, ChainExecutor credit gate, createRouter wiring, getStatus extension
 
 ---
 
