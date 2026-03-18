@@ -485,7 +485,7 @@ Plans:
 4. CI-friendly exit codes (0 = all pass, 1 = failures, 2 = warnings)
 5. Does NOT count against user's rate limits excessively (1 lightweight call per model)
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 
@@ -551,7 +551,7 @@ Plans:
 | ------------------------------------- | -------------- | ----------- | ---------- |
 | 13. Credit-Based Limits               | 2/2            | Complete    | 2026-03-18 |
 | 14. Health Scoring & Circuit Breakers | 2/2            | Complete    | 2026-03-18 |
-| 15. CLI Validator                     | 0/3            | Planning    | -          |
+| 15. CLI Validator                     | 1/3            | In Progress |            |
 | 16. Provider Data Registry            | 0/?            | Not started | -          |
 
 ## v2.0 Dependency Graph
