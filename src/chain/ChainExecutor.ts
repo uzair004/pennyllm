@@ -26,6 +26,7 @@ import { ConfigError } from '../errors/config-error.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('pennyllm:chain');
+const MAX_FORCE_HALFOPEN_DEPTH = 1;
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -134,6 +135,7 @@ async function executeChain(
   filter: ChainFilter | undefined,
   deps: ChainExecutorDeps,
   requestId: string,
+  depth: number = 0,
 ): Promise<ChainResult> {
   const startTime = Date.now();
   const filteredChain = applyFilter(chain, filter);
@@ -368,14 +370,18 @@ async function executeChain(
   }
 
   // 4. Try "all circuits open" fallback: force nearest circuit to half-open
-  if (deps.healthScorer) {
+  if (deps.healthScorer && depth < MAX_FORCE_HALFOPEN_DEPTH) {
     const chainProviders = filteredChain
       .filter((e) => !e.stale && !deps.cooldownManager.isProviderDepleted(e.provider))
       .map((e) => e.provider);
     const forcedProvider = deps.healthScorer.forceNearestHalfOpen(chainProviders);
     if (forcedProvider) {
-      debug('All circuits open: forced %s to half-open, retrying chain', forcedProvider);
-      return executeChain(callFn, chain, filter, deps, requestId);
+      debug(
+        'All circuits open: forced %s to half-open, retrying chain (depth %d)',
+        forcedProvider,
+        depth,
+      );
+      return executeChain(callFn, chain, filter, deps, requestId, depth + 1);
     }
   }
 
