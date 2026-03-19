@@ -157,11 +157,16 @@ Plans:
 **Depends on**: Phase 21 (build must be clean before further changes)
 **Requirements**: WRAP-01, WRAP-02
 **Gap Closure**: Closes integration gap from v2.1 audit (PROV-05 partial)
+**Plans:** 1 plan
+
+Plans:
+
+- [ ] 22-01-PLAN.md — Replace sync createProviderInstance with async createProviderInstanceAsync at both call sites
+
 **Success Criteria** (what must be TRUE):
 
 1. `router.wrapModel("google/gemini-2.0-flash")` resolves a valid LanguageModelV1 (no ConfigError thrown)
 2. `routerModel("google/gemini-2.0-flash")` resolves a valid LanguageModelV1 (no ConfigError thrown)
-   **Plans**: TBD
 
 ## Progress
 
@@ -177,7 +182,7 @@ Plans:
 | 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
 | 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19  | -          |
 | 21. Build & Docs           | 2/2       | Complete       | 2026-03-19  | -          |
-| 22. Async Model Wrapping   | v2.1      | 0/?            | Not started | -          |
+| 22. Async Model Wrapping   | v2.1      | 0/1            | Not started | -          |
 
 ## Archives
 
