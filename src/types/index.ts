@@ -82,14 +82,7 @@ export type { CreditConfig, CreditStatus } from '../credit/types.js';
 export type {
   GoogleProviderConfig,
   GroqProviderConfig,
-  OpenRouterProviderConfig,
   MistralProviderConfig,
-  HuggingFaceProviderConfig,
   CerebrasProviderConfig,
-  DeepSeekProviderConfig,
-  QwenProviderConfig,
-  CloudflareProviderConfig,
   NvidiaProviderConfig,
-  CohereProviderConfig,
-  GitHubProviderConfig,
 } from './providers.js';
