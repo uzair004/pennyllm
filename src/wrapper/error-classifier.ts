@@ -204,7 +204,7 @@ export function shouldRetry(classified: ClassifiedError, triedKeys: Set<number>)
     case 'network':
       return triedKeys.size <= 1;
     case 'rate_limit':
-      return true;
+      return classified.retryable;
     case 'auth':
       return true;
     default:
