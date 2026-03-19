@@ -60,8 +60,8 @@ re_verification: false
 | `scripts/validate.js`   | `providers/*.json`           | reads PROVIDERS_DIR, validates each file              | WIRED  | `const PROVIDERS_DIR = path.join(__dirname, '..', 'providers')` — 7 files validated, 0 errors, exit 0 |
 | `scripts/generate.js`   | `providers/*.json`           | reads all providers, writes README.md + registry.json | WIRED  | `--check` mode exits 0 confirming generated files match on-disk state                                 |
 | `providers/*.json`      | `schema.json`                | all files conform, checked by validate.js             | WIRED  | All 7 pass validation; schema defines contract that validate.js enforces                              |
-| `README.md` (PennyLLM)  | `awesome-free-llm-apis` repo | provider reference link                               | WIRED  | `https://github.com/YOUR_USERNAME/awesome-free-llm-apis` present                                      |
-| `docs/configuration.md` | `awesome-free-llm-apis` repo | registry link                                         | WIRED  | `https://github.com/YOUR_USERNAME/awesome-free-llm-apis` present                                      |
+| `README.md` (PennyLLM)  | `awesome-free-llm-apis` repo | provider reference link                               | WIRED  | `https://github.com/uzair004/awesome-free-llm-apis` present                                           |
+| `docs/configuration.md` | `awesome-free-llm-apis` repo | registry link                                         | WIRED  | `https://github.com/uzair004/awesome-free-llm-apis` present                                           |
 
 ---
 
@@ -96,9 +96,9 @@ No anti-patterns detected:
 
 #### 1. Registry publication to GitHub
 
-**Test:** Navigate to the actual GitHub repository URL (replace `YOUR_USERNAME` in the links)
+**Test:** Navigate to the actual GitHub repository URL (replace `uzair004` in the links)
 **Expected:** Repository is publicly accessible; README renders with comparison table; registry.json accessible via raw URL
-**Why human:** This is an external publish step — the code exists locally but the repo must be created and pushed by the user. The `YOUR_USERNAME` placeholder in links is by design.
+**Why human:** This is an external publish step — the code exists locally but the repo must be created and pushed by the user. The `uzair004` placeholder in links is by design.
 
 #### 2. Community workflow end-to-end
 

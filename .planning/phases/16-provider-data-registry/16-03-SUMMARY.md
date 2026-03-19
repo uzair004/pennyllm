@@ -30,7 +30,7 @@ key-files:
     - docs/configuration.md
 
 key-decisions:
-  - 'Placeholder URL pattern (YOUR_USERNAME) for registry links until repo is published'
+  - 'Placeholder URL pattern (uzair004) for registry links until repo is published'
 
 patterns-established:
   - 'CONTRIBUTING.md freshness thresholds: green <=30d, yellow >30d, red >90d'
@@ -77,7 +77,7 @@ Each task was committed atomically:
 
 ## Decisions Made
 
-- Used `YOUR_USERNAME` placeholder in registry URLs -- user replaces when publishing the repo
+- Used `uzair004` placeholder in registry URLs -- user replaces when publishing the repo
 
 ## Deviations from Plan
 

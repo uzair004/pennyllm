@@ -249,7 +249,7 @@ pennyllm supports 6 providers optimized for free-tier usage:
 
 Start with **Cerebras + Google + Groq** -- they have the most generous perpetual free tiers and the fastest inference.
 
-> **Provider Reference:** See [awesome-free-llm-apis](https://github.com/YOUR_USERNAME/awesome-free-llm-apis) for detailed free tier limits, models, signup URLs, and SDK info for all supported providers.
+> **Provider Reference:** See [awesome-free-llm-apis](https://github.com/uzair004/awesome-free-llm-apis) for detailed free tier limits, models, signup URLs, and SDK info for all supported providers.
 
 > **Dropped providers:** GitHub Models, HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek direct, and Fireworks are no longer supported.
 

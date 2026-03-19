@@ -4,7 +4,7 @@ PennyLLM uses a typed configuration object validated by Zod at startup. Pass it 
 
 For a minimal quickstart config, see the [README](../README.md).
 
-> For detailed provider data (free tier limits, available models, rate limit headers), see the [awesome-free-llm-apis registry](https://github.com/YOUR_USERNAME/awesome-free-llm-apis).
+> For detailed provider data (free tier limits, available models, rate limit headers), see the [awesome-free-llm-apis registry](https://github.com/uzair004/awesome-free-llm-apis).
 
 ## Full Config Shape
 
