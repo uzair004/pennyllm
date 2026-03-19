@@ -47,7 +47,7 @@
 - [x] **Phase 17: Core Routing Fixes** - Fix broken key rotation, infinite recursion, singleton pollution, and retry logic (completed 2026-03-19)
 - [x] **Phase 18: Usage & Tracking Fixes** - Fix data accuracy in usage reporting, credit tracking, cooldowns, and dedup (completed 2026-03-19)
 - [x] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup (completed 2026-03-19)
-- [ ] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface
+- [x] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface (completed 2026-03-19)
 - [ ] **Phase 21: Build & Docs** - Fix compilation, cleanup, README accuracy, and crash safety
 
 ## Phase Details
@@ -117,7 +117,7 @@ Plans:
 **Goal**: Public API surface exports every type and hook documented in README and provider guides
 **Depends on**: Phase 19 (provider types must be cleaned up before export alignment)
 **Requirements**: TYPE-01, TYPE-02, TYPE-03, TYPE-04, TYPE-05
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -156,7 +156,7 @@ Plans:
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
 | 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
 | 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
-| 20. Export & Type Hygiene  | 1/2       | In Progress    |             | -          |
+| 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19  | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
 
 ## Archives

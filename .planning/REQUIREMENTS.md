@@ -34,10 +34,10 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 ### Export & Type Hygiene
 
-- [ ] **TYPE-01**: `StructuredUsage` exported from `pennyllm` and `pennyllm/types`
-- [ ] **TYPE-02**: All event types (`ProviderRecoveredEvent`, credit events, error sub-events) exported from root
-- [ ] **TYPE-03**: Duplicate `StructuredUsage` definition consolidated to single source
-- [ ] **TYPE-04**: `SambaNovaProviderConfig` type alias added for consistency
+- [x] **TYPE-01**: `StructuredUsage` exported from `pennyllm` and `pennyllm/types`
+- [x] **TYPE-02**: All event types (`ProviderRecoveredEvent`, credit events, error sub-events) exported from root
+- [x] **TYPE-03**: Duplicate `StructuredUsage` definition consolidated to single source
+- [x] **TYPE-04**: `SambaNovaProviderConfig` type alias added for consistency
 - [x] **TYPE-05**: `onFallbackTriggered` hook either emits events or is removed from docs
 
 ### Build & Docs
@@ -76,10 +76,10 @@ Requirements for production hardening. Each maps to roadmap phases.
 | PROV-03     | 19    | Pending  |
 | PROV-04     | 19    | Complete |
 | PROV-05     | 19    | Complete |
-| TYPE-01     | 20    | Pending  |
-| TYPE-02     | 20    | Pending  |
-| TYPE-03     | 20    | Pending  |
-| TYPE-04     | 20    | Pending  |
+| TYPE-01     | 20    | Complete |
+| TYPE-02     | 20    | Complete |
+| TYPE-03     | 20    | Complete |
+| TYPE-04     | 20    | Complete |
 | TYPE-05     | 20    | Complete |
 | BUILD-01    | 21    | Pending  |
 | BUILD-02    | 21    | Pending  |
