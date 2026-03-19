@@ -10,9 +10,9 @@ Requirements for production hardening. Each maps to roadmap phases.
 ### Core Routing
 
 - [ ] **ROUTE-01**: Key rotation uses distinct API keys per retry attempt (not silently reusing first key)
-- [ ] **ROUTE-02**: All-circuits-open produces `AllProvidersExhaustedError` (not stack overflow from infinite recursion)
+- [x] **ROUTE-02**: All-circuits-open produces `AllProvidersExhaustedError` (not stack overflow from infinite recursion)
 - [ ] **ROUTE-03**: Multiple router instances maintain independent state (no module-level singleton pollution)
-- [ ] **ROUTE-04**: 402 credit exhaustion errors are not retried (respects `retryable: false`)
+- [x] **ROUTE-04**: 402 credit exhaustion errors are not retried (respects `retryable: false`)
 - [ ] **ROUTE-05**: `getNextKey` works for async-registered providers (uses async factory path)
 
 ### Usage & Tracking
@@ -58,33 +58,33 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 ## Traceability
 
-| Requirement | Phase | Status  |
-| ----------- | ----- | ------- |
-| ROUTE-01    | 17    | Pending |
-| ROUTE-02    | 17    | Pending |
-| ROUTE-03    | 17    | Pending |
-| ROUTE-04    | 17    | Pending |
-| ROUTE-05    | 17    | Pending |
-| USAGE-01    | 18    | Pending |
-| USAGE-02    | 18    | Pending |
-| USAGE-03    | 18    | Pending |
-| USAGE-04    | 18    | Pending |
-| USAGE-05    | 18    | Pending |
-| USAGE-06    | 18    | Pending |
-| PROV-01     | 19    | Pending |
-| PROV-02     | 19    | Pending |
-| PROV-03     | 19    | Pending |
-| PROV-04     | 19    | Pending |
-| PROV-05     | 19    | Pending |
-| TYPE-01     | 20    | Pending |
-| TYPE-02     | 20    | Pending |
-| TYPE-03     | 20    | Pending |
-| TYPE-04     | 20    | Pending |
-| TYPE-05     | 20    | Pending |
-| BUILD-01    | 21    | Pending |
-| BUILD-02    | 21    | Pending |
-| BUILD-03    | 21    | Pending |
-| BUILD-04    | 21    | Pending |
+| Requirement | Phase | Status   |
+| ----------- | ----- | -------- |
+| ROUTE-01    | 17    | Pending  |
+| ROUTE-02    | 17    | Complete |
+| ROUTE-03    | 17    | Pending  |
+| ROUTE-04    | 17    | Complete |
+| ROUTE-05    | 17    | Pending  |
+| USAGE-01    | 18    | Pending  |
+| USAGE-02    | 18    | Pending  |
+| USAGE-03    | 18    | Pending  |
+| USAGE-04    | 18    | Pending  |
+| USAGE-05    | 18    | Pending  |
+| USAGE-06    | 18    | Pending  |
+| PROV-01     | 19    | Pending  |
+| PROV-02     | 19    | Pending  |
+| PROV-03     | 19    | Pending  |
+| PROV-04     | 19    | Pending  |
+| PROV-05     | 19    | Pending  |
+| TYPE-01     | 20    | Pending  |
+| TYPE-02     | 20    | Pending  |
+| TYPE-03     | 20    | Pending  |
+| TYPE-04     | 20    | Pending  |
+| TYPE-05     | 20    | Pending  |
+| BUILD-01    | 21    | Pending  |
+| BUILD-02    | 21    | Pending  |
+| BUILD-03    | 21    | Pending  |
+| BUILD-04    | 21    | Pending  |
 
 **Coverage:**
 

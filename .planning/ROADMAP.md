@@ -57,7 +57,7 @@
 **Goal**: Routing engine correctly rotates keys, handles exhaustion gracefully, and isolates router instances
 **Depends on**: Nothing (highest priority — these are crash and correctness bugs)
 **Requirements**: ROUTE-01, ROUTE-02, ROUTE-03, ROUTE-04, ROUTE-05
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
@@ -135,7 +135,7 @@ Plans:
 | 14. Health Scoring         | v2.0      | 2/2            | Complete    | 2026-03-18 |
 | 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
-| 17. Core Routing Fixes     | v2.1      | 0/2            | In progress | -          |
+| 17. Core Routing Fixes     | 1/2       | In Progress    |             | -          |
 | 18. Usage & Tracking Fixes | v2.1      | 0/?            | Not started | -          |
 | 19. Provider Cleanup       | v2.1      | 0/?            | Not started | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
