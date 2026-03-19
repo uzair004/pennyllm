@@ -97,7 +97,7 @@ export class PolicyEngine {
       }
 
       const remaining = Math.max(0, limit.value - effectiveCurrent);
-      const percentUsed = (effectiveCurrent / limit.value) * 100;
+      const percentUsed = limit.value > 0 ? (effectiveCurrent / limit.value) * 100 : 100;
 
       const status: LimitStatus = {
         type: limit.type,
