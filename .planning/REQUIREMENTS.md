@@ -49,8 +49,8 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 ### Async Model Wrapping (Gap Closure)
 
-- [ ] **WRAP-01**: `router.wrapModel()` resolves models via async provider registry (no ConfigError)
-- [ ] **WRAP-02**: `routerModel()` standalone function resolves models via async provider registry (no ConfigError)
+- [x] **WRAP-01**: `router.wrapModel()` resolves models via async provider registry (no ConfigError)
+- [x] **WRAP-02**: `routerModel()` standalone function resolves models via async provider registry (no ConfigError)
 
 ## Out of Scope
 
@@ -90,8 +90,8 @@ Requirements for production hardening. Each maps to roadmap phases.
 | BUILD-02    | 21    | Complete |
 | BUILD-03    | 21    | Complete |
 | BUILD-04    | 21    | Complete |
-| WRAP-01     | 22    | Pending  |
-| WRAP-02     | 22    | Pending  |
+| WRAP-01     | 22    | Complete |
+| WRAP-02     | 22    | Complete |
 
 **Coverage:**
 

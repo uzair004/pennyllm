@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Production Hardening
-status: completed
-stopped_at: Completed 21-02-PLAN.md
-last_updated: '2026-03-19T12:04:24.609Z'
-last_activity: 2026-03-19 — Completed 21-02 (README dep fix + migration transaction safety)
+status: in-progress
+stopped_at: Completed 22-01-PLAN.md
+last_updated: '2026-03-19T14:12:00.000Z'
+last_activity: 2026-03-19 — Completed 22-01 (async model wrapping fix)
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 10
-  completed_plans: 10
+  total_phases: 6
+  completed_phases: 6
+  total_plans: 11
+  completed_plans: 11
   percent: 100
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-19)
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently
-**Current focus:** Phase 21 - Build & Docs
+**Current focus:** Phase 22 - Async Model Wrapping
 
 ## Current Position
 
-Phase: 21 of 21 (Build & Docs)
-Plan: 2 of 2 in current phase (completed)
+Phase: 22 of 22 (Async Model Wrapping)
+Plan: 1 of 1 in current phase (completed)
 Status: Complete
-Last activity: 2026-03-19 — Completed 21-02 (README dep fix + migration transaction safety)
+Last activity: 2026-03-19 — Completed 22-01 (async model wrapping fix)
 
 Progress: [██████████] 100%
 
@@ -71,8 +71,8 @@ _Updated after each plan completion_
 
 ## Session Continuity
 
-Last session: 2026-03-19T12:00:24.733Z
-Stopped at: Completed 21-02-PLAN.md
+Last session: 2026-03-19T14:12:00.000Z
+Stopped at: Completed 22-01-PLAN.md
 Resume file: None
 
 ---
