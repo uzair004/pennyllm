@@ -28,7 +28,7 @@ const { text } = await generateText({
 });
 ```
 
-Works with [Vercel AI SDK](https://sdk.vercel.ai/). Zero runtime dependencies beyond peer deps.
+Works with [Vercel AI SDK](https://sdk.vercel.ai/). 5 runtime dependencies — `@ai-sdk/provider`, `debug`, `jiti`, `nanospinner`, `zod`.
 
 ---
 
@@ -383,18 +383,18 @@ All types exported from `pennyllm` and `pennyllm/types`.
 
 ## Comparison
 
-| Feature            | pennyllm                         | Manual Key Management | LiteLLM           |
-| ------------------ | -------------------------------- | --------------------- | ----------------- |
-| Language           | TypeScript                       | Any                   | Python            |
-| Setup              | `npm install`                    | DIY                   | Docker + Postgres |
-| Free tier tracking | Built-in                         | Manual                | No                |
-| Key rotation       | Automatic                        | Manual                | Manual            |
-| Budget caps        | Yes                              | No                    | Yes               |
-| Health scoring     | Circuit breakers                 | No                    | Basic             |
-| Credit tracking    | Trial providers                  | No                    | No                |
-| CLI validator      | `npx pennyllm validate`          | No                    | No                |
-| AI SDK integration | Native middleware                | None                  | Proxy             |
-| Runtime deps       | 3 (zod, debug, @ai-sdk/provider) | 0                     | 100+              |
+| Feature            | pennyllm                                            | Manual Key Management | LiteLLM           |
+| ------------------ | --------------------------------------------------- | --------------------- | ----------------- |
+| Language           | TypeScript                                          | Any                   | Python            |
+| Setup              | `npm install`                                       | DIY                   | Docker + Postgres |
+| Free tier tracking | Built-in                                            | Manual                | No                |
+| Key rotation       | Automatic                                           | Manual                | Manual            |
+| Budget caps        | Yes                                                 | No                    | Yes               |
+| Health scoring     | Circuit breakers                                    | No                    | Basic             |
+| Credit tracking    | Trial providers                                     | No                    | No                |
+| CLI validator      | `npx pennyllm validate`                             | No                    | No                |
+| AI SDK integration | Native middleware                                   | None                  | Proxy             |
+| Runtime deps       | 5 (zod, debug, jiti, nanospinner, @ai-sdk/provider) | 0                     | 100+              |
 
 ---
 
