@@ -136,13 +136,19 @@ Plans:
 **Goal**: Package compiles cleanly, shuts down without leaks, documents reality
 **Depends on**: Phase 20 (exports must be finalized before build verification)
 **Requirements**: BUILD-01, BUILD-02, BUILD-03, BUILD-04
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 21-01-PLAN.md — Fix tsc compilation (tsconfig.build.json) and router.close() resource cleanup
+- [ ] 21-02-PLAN.md — Correct README dependency claim and wrap SQLite migrations in transactions
+
 **Success Criteria** (what must be TRUE):
 
 1. `tsc --noEmit` exits with code 0 (no rootDir violations from test file imports)
 2. Calling `router.close()` removes all EventEmitter listeners and stops DebugLogger intervals (no leaked timers)
 3. README states the correct dependency count (5 production dependencies)
 4. SQLite schema migrations are wrapped in transactions (a crash mid-migration does not leave the database in a partial state)
-   **Plans**: TBD
 
 ## Progress
 
@@ -157,7 +163,7 @@ Plans:
 | 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
 | 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
 | 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19  | -          |
-| 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
+| 21. Build & Docs           | v2.1      | 0/2            | Not started | -          |
 
 ## Archives
 
