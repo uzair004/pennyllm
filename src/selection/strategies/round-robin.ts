@@ -3,28 +3,29 @@ import type { SelectionContext, SelectionResult } from '../types.js';
 
 /**
  * RoundRobinStrategy distributes requests evenly across eligible keys
- * Maintains per-provider cycling state
+ * Maintains per-provider cycling state against the full candidate list
+ * so that index is stable when keys enter/exit cooldown
  */
 export class RoundRobinStrategy implements SelectionStrategy {
   readonly name = 'round-robin';
   private indices = new Map<string, number>();
 
   selectKey(context: SelectionContext): Promise<SelectionResult> {
-    const available = context.candidates.filter((c) => c.eligible && !c.cooldown);
+    const all = context.candidates;
+    const startIndex = this.indices.get(context.provider) ?? 0;
 
-    if (available.length === 0) {
-      throw new Error('No eligible keys');
+    for (let i = 0; i < all.length; i++) {
+      const idx = (startIndex + i) % all.length;
+      const candidate = all[idx]!;
+      if (candidate.eligible && !candidate.cooldown) {
+        this.indices.set(context.provider, (idx + 1) % all.length);
+        return Promise.resolve({
+          keyIndex: candidate.keyIndex,
+          reason: `round-robin position ${idx}`,
+        });
+      }
     }
 
-    const currentIndex = this.indices.get(context.provider) ?? 0;
-    const selected = available[currentIndex % available.length]!;
-
-    // Advance for next call
-    this.indices.set(context.provider, (currentIndex + 1) % available.length);
-
-    return Promise.resolve({
-      keyIndex: selected.keyIndex,
-      reason: `round-robin position ${currentIndex % available.length}`,
-    });
+    throw new Error('No eligible keys');
   }
 }

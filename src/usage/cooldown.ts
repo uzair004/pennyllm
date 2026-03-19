@@ -67,9 +67,14 @@ export class CooldownManager {
       reason: '429 rate limit',
     });
 
-    // Increment consecutive failure count
-    const currentFailures = this.consecutiveFailures.get(key) ?? 0;
-    this.consecutiveFailures.set(key, currentFailures + 1);
+    if (retryAfterHeader) {
+      // Provider gave authoritative timing -- hold counter at 1
+      this.consecutiveFailures.set(key, 1);
+    } else {
+      // No header -- escalate backoff
+      const currentFailures = this.consecutiveFailures.get(key) ?? 0;
+      this.consecutiveFailures.set(key, currentFailures + 1);
+    }
   }
 
   /**
