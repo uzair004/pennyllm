@@ -367,6 +367,21 @@ async function executeChain(
         debug('Marked %s as stale (404)', entry.modelId);
       }
 
+      // Emit fallback:triggered when advancing to next chain entry
+      const nextPosition = position + 1;
+      if (nextPosition < filteredChain.length) {
+        const nextEntry = filteredChain[nextPosition]!;
+        safeEmit(deps.emitter, RouterEvent.FALLBACK_TRIGGERED, {
+          fromProvider: entry.provider,
+          toProvider: nextEntry.provider,
+          fromModel: entry.modelId,
+          toModel: nextEntry.modelId,
+          reason: classified.message,
+          timestamp: Date.now(),
+          requestId,
+        });
+      }
+
       // Continue to next entry
     }
   }
