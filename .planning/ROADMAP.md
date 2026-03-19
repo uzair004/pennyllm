@@ -48,7 +48,7 @@
 - [x] **Phase 18: Usage & Tracking Fixes** - Fix data accuracy in usage reporting, credit tracking, cooldowns, and dedup (completed 2026-03-19)
 - [x] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup (completed 2026-03-19)
 - [x] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface (completed 2026-03-19)
-- [ ] **Phase 21: Build & Docs** - Fix compilation, cleanup, README accuracy, and crash safety
+- [x] **Phase 21: Build & Docs** - Fix compilation, cleanup, README accuracy, and crash safety (completed 2026-03-19)
 
 ## Phase Details
 
@@ -136,7 +136,7 @@ Plans:
 **Goal**: Package compiles cleanly, shuts down without leaks, documents reality
 **Depends on**: Phase 20 (exports must be finalized before build verification)
 **Requirements**: BUILD-01, BUILD-02, BUILD-03, BUILD-04
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -152,18 +152,18 @@ Plans:
 
 ## Progress
 
-| Phase                      | Milestone | Plans Complete | Status      | Completed  |
-| -------------------------- | --------- | -------------- | ----------- | ---------- |
-| 1-12.1                     | v1.0      | 37/37          | Complete    | 2026-03-17 |
-| 13. Credit-Based Limits    | v2.0      | 2/2            | Complete    | 2026-03-18 |
-| 14. Health Scoring         | v2.0      | 2/2            | Complete    | 2026-03-18 |
-| 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
-| 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
-| 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
-| 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
-| 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
-| 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19  | -          |
-| 21. Build & Docs           | v2.1      | 0/2            | Not started | -          |
+| Phase                      | Milestone | Plans Complete | Status     | Completed  |
+| -------------------------- | --------- | -------------- | ---------- | ---------- |
+| 1-12.1                     | v1.0      | 37/37          | Complete   | 2026-03-17 |
+| 13. Credit-Based Limits    | v2.0      | 2/2            | Complete   | 2026-03-18 |
+| 14. Health Scoring         | v2.0      | 2/2            | Complete   | 2026-03-18 |
+| 15. CLI Validator          | v2.0      | 3/3            | Complete   | 2026-03-18 |
+| 16. Provider Data Registry | v2.0      | 3/3            | Complete   | 2026-03-18 |
+| 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19 | -          |
+| 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19 | -          |
+| 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19 | -          |
+| 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19 | -          |
+| 21. Build & Docs           | 2/2       | Complete       | 2026-03-19 | -          |
 
 ## Archives
 

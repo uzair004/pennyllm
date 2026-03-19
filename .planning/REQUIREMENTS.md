@@ -42,10 +42,10 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 ### Build & Docs
 
-- [ ] **BUILD-01**: `tsc --noEmit` passes (fix rootDir import from test files)
-- [ ] **BUILD-02**: `router.close()` cleans up EventEmitter listeners and DebugLogger
-- [ ] **BUILD-03**: README dependency count corrected (5 deps, not 3)
-- [ ] **BUILD-04**: SQLite migrations wrapped in transactions for crash safety
+- [x] **BUILD-01**: `tsc --noEmit` passes (fix rootDir import from test files)
+- [x] **BUILD-02**: `router.close()` cleans up EventEmitter listeners and DebugLogger
+- [x] **BUILD-03**: README dependency count corrected (5 deps, not 3)
+- [x] **BUILD-04**: SQLite migrations wrapped in transactions for crash safety
 
 ## Out of Scope
 
@@ -81,10 +81,10 @@ Requirements for production hardening. Each maps to roadmap phases.
 | TYPE-03     | 20    | Complete |
 | TYPE-04     | 20    | Complete |
 | TYPE-05     | 20    | Complete |
-| BUILD-01    | 21    | Pending  |
-| BUILD-02    | 21    | Pending  |
-| BUILD-03    | 21    | Pending  |
-| BUILD-04    | 21    | Pending  |
+| BUILD-01    | 21    | Complete |
+| BUILD-02    | 21    | Complete |
+| BUILD-03    | 21    | Complete |
+| BUILD-04    | 21    | Complete |
 
 **Coverage:**
 

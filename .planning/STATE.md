@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Production Hardening
-status: executing
-stopped_at: Completed 20-01-PLAN.md
-last_updated: '2026-03-19T11:44:55.065Z'
-last_activity: 2026-03-19 — Completed 20-02 (wire FALLBACK_TRIGGERED event)
+status: complete
+stopped_at: Completed 21-02-PLAN.md
+last_updated: '2026-03-19T12:00:24.735Z'
+last_activity: 2026-03-19 — Completed 21-02 (README dep fix + migration transaction safety)
 progress:
   total_phases: 5
-  completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
-  percent: 88
+  completed_phases: 5
+  total_plans: 10
+  completed_plans: 10
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-19)
 
 **Core value:** Never get charged for LLM API calls — rotate through free tier keys intelligently
-**Current focus:** Phase 20 - Export & Type Hygiene
+**Current focus:** Phase 21 - Build & Docs
 
 ## Current Position
 
-Phase: 20 of 21 (Export & Type Hygiene)
-Plan: 2 of 2 in current phase (in progress)
+Phase: 21 of 21 (Build & Docs)
+Plan: 1 of 2 in current phase (completed)
 Status: Executing
-Last activity: 2026-03-19 — Completed 20-02 (wire FALLBACK_TRIGGERED event)
+Last activity: 2026-03-19 — Completed 21-01 (build fix & close cleanup)
 
-Progress: [█████████░] 88%
+Progress: [█████████░] 90%
 
 ## Performance Metrics
 
@@ -71,8 +71,8 @@ _Updated after each plan completion_
 
 ## Session Continuity
 
-Last session: 2026-03-19T11:40:56.565Z
-Stopped at: Completed 20-01-PLAN.md
+Last session: 2026-03-19T12:00:24.733Z
+Stopped at: Completed 21-01-PLAN.md
 Resume file: None
 
 ---
