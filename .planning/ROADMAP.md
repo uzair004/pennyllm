@@ -97,6 +97,13 @@ Plans:
 **Goal**: Provider module contains only the 6 active providers with consistent configuration
 **Depends on**: Phase 17 (routing fixes may touch provider registration paths)
 **Requirements**: PROV-01, PROV-02, PROV-03, PROV-04, PROV-05
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 19-01-PLAN.md — Delete github-models, remove 7 legacy enum values and 7 dead provider types
+- [ ] 19-02-PLAN.md — Fix NVIDIA env var doc, rewrite createDefault() for all 6 providers
+
 **Success Criteria** (what must be TRUE):
 
 1. `src/providers/github-models.ts` does not exist and no import references it
@@ -104,7 +111,6 @@ Plans:
 3. `ProviderType` union contains exactly 6 values matching the active providers
 4. NVIDIA provider module and its config type both reference `NVIDIA_API_KEY` (no `NVIDIA_NIM_API_KEY` mismatch)
 5. `ProviderRegistry.createDefault()` returns a registry with all 6 active providers loaded and ready
-   **Plans**: TBD
 
 ### Phase 20: Export & Type Hygiene
 
@@ -143,7 +149,7 @@ Plans:
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
 | 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
-| 19. Provider Cleanup       | v2.1      | 0/?            | Not started | -          |
+| 19. Provider Cleanup       | v2.1      | 0/2            | Not started | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
 
