@@ -2,42 +2,29 @@
 
 ## What This Is
 
-A TypeScript npm package that acts as a cost-avoidance layer for LLM API calls. Manages multiple API keys across 7 providers (Cerebras, Google AI Studio, Groq, GitHub Models, SambaNova, NVIDIA NIM, Mistral), tracks free tier usage, and intelligently routes requests through user-configured model priority chains to avoid charges. Built on Vercel AI SDK with reactive 429/402-driven cooldowns, health scoring with circuit breakers, credit tracking for trial providers, and a CLI validator.
+A TypeScript npm package that acts as a cost-avoidance layer for LLM API calls. Manages multiple API keys across 6 providers (Cerebras, Google AI Studio, Groq, SambaNova, NVIDIA NIM, Mistral), tracks free tier usage, and intelligently routes requests through user-configured model priority chains to avoid charges. Built on Vercel AI SDK with reactive 429/402-driven cooldowns, health scoring with circuit breakers, credit tracking for trial providers, and a CLI validator.
 
 ## Core Value
 
 Never get charged for LLM API calls during side project experimentation — rotate through free tier keys intelligently so developers can build and iterate without burning cash.
 
-## Current Milestone: v2.1 Production Hardening
-
-**Goal:** Fix all bugs found in the 6-agent production readiness audit — correct broken core features, eliminate dead code, align public API with documentation.
-
-**Target features:**
-
-- Fix broken key rotation (factory ignores apiKey parameter)
-- Fix infinite recursion when all circuits open
-- Fix module-level singleton pollution across router instances
-- Fix 30x inflated rolling-30d usage reporting
-- Fix credit tracking monthly reset on process restart
-- Clean up dead provider code (GitHub Models, 7 dropped provider types)
-- Align exports with documented API (missing event types, StructuredUsage)
-- Fix README inaccuracies (dep count, dead hook)
-
 ## Current State
 
-**Shipped:** v1.0 (core engine, 12 phases) + v2.0 (advanced features, 4 phases)
-**Codebase:** ~13,000 lines TypeScript, 47 plans executed across 17 phases
+**Shipped:** v1.0 (core engine, 12 phases) + v2.0 (advanced features, 4 phases) + v2.1 (production hardening, 6 phases)
+**Codebase:** ~13,000 lines TypeScript, 58 plans executed across 22 phases
 **npm package:** `pennyllm`
 
 ### What's Built
 
 - User-configured model priority chains with reactive 429/402 cooldowns
-- 7 provider modules with curated model registries and typed model IDs
+- 6 provider modules with curated model registries and typed model IDs
 - Credit-based limit tracking for trial providers (SambaNova, NVIDIA NIM)
 - Health scoring with 3-state circuit breakers (closed/open/half-open)
 - CLI validator (`npx pennyllm validate`) with config auto-discovery
 - SQLite + Redis storage adapters, observability hooks, debug mode
 - Standalone provider data registry (`awesome-free-llm-apis` repo)
+- Clean build: `tsc --noEmit` passes, router.close() cleans up all resources
+- All public API types and hooks properly exported and documented
 
 ## Requirements
 
@@ -49,7 +36,7 @@ Never get charged for LLM API calls during side project experimentation — rota
 - ✓ Configurable fallback behavior (hard stop vs cheapest paid vs alternative) — v1.0
 - ✓ Monthly budget cap (including $0) — v1.0
 - ✓ Built on Vercel AI SDK with wrapLanguageModel middleware — v1.0
-- ✓ 7 provider support (Cerebras, Google, Groq, GitHub Models, SambaNova, NVIDIA NIM, Mistral) — v1.0
+- ✓ 6 provider support (Cerebras, Google, Groq, SambaNova, NVIDIA NIM, Mistral) — v1.0/v2.1
 - ✓ Text LLM models only — v1.0
 - ✓ Persistent usage tracking via SQLite/Redis — v1.0
 - ✓ Ships with default provider policies, user can override — v1.0
@@ -58,17 +45,21 @@ Never get charged for LLM API calls during side project experimentation — rota
 - ✓ Health scoring with circuit breakers — v2.0
 - ✓ CLI validator with config auto-discovery — v2.0
 - ✓ Provider data registry as community resource — v2.0
+- ✓ Key rotation actually rotates keys per retry attempt — v2.1
+- ✓ All-providers-exhausted produces clean error (not stack overflow) — v2.1
+- ✓ Multiple router instances maintain independent state — v2.1
+- ✓ Rolling-30d usage reports accurate data — v2.1
+- ✓ Credit tracking survives month-boundary restarts — v2.1
+- ✓ Public API exports all documented types — v2.1
+- ✓ Dead provider code removed (github-models, 7 legacy types) — v2.1
+- ✓ README matches reality (dep count, hooks) — v2.1
+- ✓ wrapModel/routerModel work with async provider registry — v2.1
+- ✓ SQLite migrations wrapped in transactions for crash safety — v2.1
+- ✓ router.close() cleans up all resources (listeners, timers) — v2.1
 
 ### Active
 
-- [ ] Key rotation actually rotates keys (not silently reusing first key)
-- [ ] All-providers-exhausted produces clean error (not stack overflow)
-- [ ] Multiple router instances don't share state
-- [ ] Rolling-30d usage reports accurate data
-- [ ] Credit tracking survives month-boundary restarts
-- [ ] Public API exports all documented types
-- [ ] Dead provider code removed
-- [ ] README matches reality
+(No active requirements — awaiting next milestone definition)
 
 ### Out of Scope
 
@@ -89,8 +80,9 @@ Never get charged for LLM API calls during side project experimentation — rota
 - Vercel AI SDK handles model abstraction; PennyLLM handles key rotation, usage tracking, cost optimization
 - User-configured model priority chains replaced catalog-based fallback in v1.0 Phase 12
 - Reactive limit handling: provider 429/402 drives cooldown and fallback, not internal usage estimation
-- 7 target providers verified with real API calls; 8 providers dropped during Phase 12 overhaul
+- 6 target providers verified with real API calls; 8 providers dropped during Phase 12 overhaul
 - Provider data registry (`awesome-free-llm-apis`) is standalone, not part of PennyLLM runtime
+- v2.1 production hardening fixed 27 bugs found by 6-agent audit — all core flows verified end-to-end
 
 ## Constraints
 
@@ -103,20 +95,23 @@ Never get charged for LLM API calls during side project experimentation — rota
 
 ## Key Decisions
 
-| Decision                                 | Rationale                                                                   | Outcome |
-| ---------------------------------------- | --------------------------------------------------------------------------- | ------- |
-| Library/SDK (not proxy service)          | Simpler integration, runs in-process                                        | ✓ Good  |
-| Vercel AI SDK as base                    | Only TS SDK with native middleware, 36M/wk downloads                        | ✓ Good  |
-| Three core abstractions only             | StorageBackend, ModelCatalog, SelectionStrategy. No over-abstraction        | ✓ Good  |
-| User-configured model chains             | Replaced broken catalog-based fallback. Users control priority order        | ✓ Good  |
-| Reactive 429/402 cooldowns               | No internal usage estimation for routing. Provider response drives fallback | ✓ Good  |
-| Per-key cooldowns (independent accounts) | Each key = independent pool. Escalating backoff with 15min cap              | ✓ Good  |
-| Credit tracking via usage estimation     | Config has ceiling, storage tracks consumed, 402 confirms exhaustion        | ✓ Good  |
-| Health scoring always-on                 | HealthScorer with rolling window, circuit breaker FSM. No opt-out needed    | ✓ Good  |
-| CLI via Node.js parseArgs                | Zero dependencies. One subcommand doesn't need commander/yargs              | ✓ Good  |
-| Provider data as standalone repo         | Community resource, not runtime dependency. CC0 license                     | ✓ Good  |
-| 7 providers (dropped 8)                  | Focus on verified, actively maintained free tiers                           | ✓ Good  |
-| Post-call usage tracking                 | Accurate (actual tokens from provider)                                      | ✓ Good  |
+| Decision                                 | Rationale                                                                                             | Outcome |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------- |
+| Library/SDK (not proxy service)          | Simpler integration, runs in-process                                                                  | ✓ Good  |
+| Vercel AI SDK as base                    | Only TS SDK with native middleware, 36M/wk downloads                                                  | ✓ Good  |
+| Three core abstractions only             | StorageBackend, ModelCatalog, SelectionStrategy. No over-abstraction                                  | ✓ Good  |
+| User-configured model chains             | Replaced broken catalog-based fallback. Users control priority order                                  | ✓ Good  |
+| Reactive 429/402 cooldowns               | No internal usage estimation for routing. Provider response drives fallback                           | ✓ Good  |
+| Per-key cooldowns (independent accounts) | Each key = independent pool. Escalating backoff with 15min cap                                        | ✓ Good  |
+| Credit tracking via usage estimation     | Config has ceiling, storage tracks consumed, 402 confirms exhaustion                                  | ✓ Good  |
+| Health scoring always-on                 | HealthScorer with rolling window, circuit breaker FSM. No opt-out needed                              | ✓ Good  |
+| CLI via Node.js parseArgs                | Zero dependencies. One subcommand doesn't need commander/yargs                                        | ✓ Good  |
+| Provider data as standalone repo         | Community resource, not runtime dependency. CC0 license                                               | ✓ Good  |
+| 6 providers (dropped 8 + github-models)  | Focus on verified, actively maintained free tiers                                                     | ✓ Good  |
+| Post-call usage tracking                 | Accurate (actual tokens from provider)                                                                | ✓ Good  |
+| Async-only provider registry             | createDefault() uses registerAsync for all providers; sync createProviderInstance kept for manual use | ✓ Good  |
+| tsconfig.build.json for production       | Excludes test files from compilation; original tsconfig.json kept for IDE                             | ✓ Good  |
+| Lifetime window for credit tracking      | Fixed bucket key survives month boundaries; no period rotation for credits                            | ✓ Good  |
 
 ## Architecture Notes
 
@@ -135,6 +130,13 @@ Never get charged for LLM API calls during side project experimentation — rota
 - HealthScorer — rolling window with circuit breaker FSM (closed/open/half-open)
 - CLI entry point — `src/cli/` with validate subcommand, config auto-discovery via jiti
 
+**v2.1 fixes:**
+
+- All provider factories registered via async path (registerAsync)
+- Bounded recursion (MAX_FORCE_HALFOPEN_DEPTH=1) prevents stack overflow
+- Instance-scoped factory caches and registries on ChainExecutorDeps
+- FALLBACK_TRIGGERED event emitted on provider failover in ChainExecutor
+
 ---
 
-_Last updated: 2026-03-19 after v2.1 milestone start (production hardening audit)_
+_Last updated: 2026-03-20 after v2.1 milestone completion_
