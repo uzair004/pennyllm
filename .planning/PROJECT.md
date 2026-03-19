@@ -8,10 +8,25 @@ A TypeScript npm package that acts as a cost-avoidance layer for LLM API calls. 
 
 Never get charged for LLM API calls during side project experimentation — rotate through free tier keys intelligently so developers can build and iterate without burning cash.
 
+## Current Milestone: v2.1 Production Hardening
+
+**Goal:** Fix all bugs found in the 6-agent production readiness audit — correct broken core features, eliminate dead code, align public API with documentation.
+
+**Target features:**
+
+- Fix broken key rotation (factory ignores apiKey parameter)
+- Fix infinite recursion when all circuits open
+- Fix module-level singleton pollution across router instances
+- Fix 30x inflated rolling-30d usage reporting
+- Fix credit tracking monthly reset on process restart
+- Clean up dead provider code (GitHub Models, 7 dropped provider types)
+- Align exports with documented API (missing event types, StructuredUsage)
+- Fix README inaccuracies (dep count, dead hook)
+
 ## Current State
 
 **Shipped:** v1.0 (core engine, 12 phases) + v2.0 (advanced features, 4 phases)
-**Codebase:** 11,617 lines TypeScript, 47 plans executed across 17 phases
+**Codebase:** ~13,000 lines TypeScript, 47 plans executed across 17 phases
 **npm package:** `pennyllm`
 
 ### What's Built
@@ -46,7 +61,14 @@ Never get charged for LLM API calls during side project experimentation — rota
 
 ### Active
 
-(None — next milestone requirements TBD)
+- [ ] Key rotation actually rotates keys (not silently reusing first key)
+- [ ] All-providers-exhausted produces clean error (not stack overflow)
+- [ ] Multiple router instances don't share state
+- [ ] Rolling-30d usage reports accurate data
+- [ ] Credit tracking survives month-boundary restarts
+- [ ] Public API exports all documented types
+- [ ] Dead provider code removed
+- [ ] README matches reality
 
 ### Out of Scope
 
@@ -115,4 +137,4 @@ Never get charged for LLM API calls during side project experimentation — rota
 
 ---
 
-_Last updated: 2026-03-19 after v2.0 milestone_
+_Last updated: 2026-03-19 after v2.1 milestone start (production hardening audit)_
