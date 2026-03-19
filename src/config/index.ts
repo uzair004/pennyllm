@@ -20,7 +20,7 @@ import type { UsageSnapshot, ProviderUsage, EstimationConfig } from '../usage/ty
 import { DefaultModelCatalog } from '../catalog/DefaultModelCatalog.js';
 import { KeySelector } from '../selection/KeySelector.js';
 import type { SelectionContext, SelectionResult } from '../selection/types.js';
-import { ProviderRegistry, createProviderInstance } from '../wrapper/provider-registry.js';
+import { ProviderRegistry, createProviderInstanceAsync } from '../wrapper/provider-registry.js';
 import { createRouterMiddleware } from '../wrapper/middleware.js';
 import { createRetryProxy } from '../wrapper/retry-proxy.js';
 import { BudgetTracker } from '../budget/BudgetTracker.js';
@@ -362,7 +362,12 @@ export async function createRouter(
 
         // Create base model with selected API key (lazy-init registry on first call)
         const registry = await getDefaultRegistry();
-        const baseModel = createProviderInstance(registry, provider, modelName, selection.key);
+        const baseModel = await createProviderInstanceAsync(
+          registry,
+          provider,
+          modelName,
+          selection.key,
+        );
 
         // Mutable refs shared between retry proxy and middleware
         const keyIndexRef = { current: selection.keyIndex };
