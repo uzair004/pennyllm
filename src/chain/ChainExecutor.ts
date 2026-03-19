@@ -45,22 +45,24 @@ export interface ChainExecutorDeps {
   providerRef?: { current: string };
   keyIndexRef?: { current: number };
   modelIdRef?: { current: string };
+  /** Per-instance factory cache. Keyed by "provider:apiKeyPrefix". */
+  _factoryCache?: Map<string, (modelId: string) => LanguageModelV3>;
+  /** Per-instance provider registry for retry proxy. */
+  _registry?: import('../wrapper/provider-registry.js').ProviderRegistry;
 }
 
 // ── Provider factory cache ─────────────────────────────────────────
 
-/**
- * Cache for provider model factories to avoid repeated dynamic imports.
- * Keyed by provider ID, value is the factory function.
- */
-const factoryCache = new Map<string, (modelId: string) => LanguageModelV3>();
-
 async function getOrCreateFactory(
   provider: string,
   apiKey: string,
+  deps: ChainExecutorDeps,
 ): Promise<(modelId: string) => LanguageModelV3> {
+  if (!deps._factoryCache) {
+    deps._factoryCache = new Map();
+  }
   const cacheKey = `${provider}:${apiKey.slice(0, 8)}`;
-  const cached = factoryCache.get(cacheKey);
+  const cached = deps._factoryCache.get(cacheKey);
   if (cached) return cached;
 
   const mod = getProviderModule(provider);
@@ -72,7 +74,7 @@ async function getOrCreateFactory(
 
   try {
     const factory = await mod.createFactory(apiKey);
-    factoryCache.set(cacheKey, factory);
+    deps._factoryCache.set(cacheKey, factory);
     return factory;
   } catch (error) {
     const opts: { field: string; cause?: Error } = { field: 'providers' };
@@ -235,7 +237,7 @@ async function executeChain(
       const apiKey = typeof keyConfig === 'string' ? keyConfig : keyConfig.key;
 
       // Get factory and create initial model
-      const factory = await getOrCreateFactory(entry.provider, apiKey);
+      const factory = await getOrCreateFactory(entry.provider, apiKey, deps);
       const initialModel = factory(entry.apiModelId);
 
       // Mutable ref for retry proxy to update
@@ -405,19 +407,17 @@ async function executeChain(
 
 /**
  * Lazy-init ProviderRegistry from deps. The retry proxy needs it for key rotation.
- * We use a module-level cache to avoid repeated imports.
+ * Instance-scoped via deps._registry to avoid cross-instance pollution.
  */
-let cachedRegistry: import('../wrapper/provider-registry.js').ProviderRegistry | null = null;
-
 async function getProviderRegistry(
   deps: ChainExecutorDeps,
 ): Promise<import('../wrapper/provider-registry.js').ProviderRegistry> {
-  if (cachedRegistry) return cachedRegistry;
+  if (deps._registry) return deps._registry;
 
   const { ProviderRegistry } = await import('../wrapper/provider-registry.js');
   const registry = new ProviderRegistry();
 
-  // Register all configured providers using their modules
+  // Register all configured providers using async factories
   const configuredProviders = Object.keys(deps.config.providers).filter(
     (p) => deps.config.providers[p]?.enabled !== false,
   );
@@ -426,33 +426,16 @@ async function getProviderRegistry(
     const mod = getProviderModule(providerId);
     if (!mod) continue;
 
-    // Register a sync factory that wraps the async createFactory
-    // Pre-cache the factory for the first key
     const providerConfig = deps.config.providers[providerId];
     if (!providerConfig || providerConfig.keys.length === 0) continue;
 
-    const firstKeyConfig = providerConfig.keys[0]!;
-    const firstApiKey = typeof firstKeyConfig === 'string' ? firstKeyConfig : firstKeyConfig.key;
-
-    try {
-      const factory = await mod.createFactory(firstApiKey);
-      // Register sync wrapper -- createFactory returns same shape for any key for most providers
-      registry.register(providerId, () => {
-        // For key rotation, the retry proxy recreates via createProviderInstance
-        // which calls this factory. The factory is SDK-specific and typically
-        // returns a function that accepts modelId.
-        return factory;
-      });
-    } catch (err) {
-      debug(
-        'Failed to pre-init provider %s: %s',
-        providerId,
-        err instanceof Error ? err.message : String(err),
-      );
-    }
+    // Register the async factory -- each call to createProviderInstanceAsync
+    // will invoke mod.createFactory(apiKey) with the ACTUAL apiKey, creating
+    // a fresh provider instance bound to that specific key.
+    registry.registerAsync(providerId, (apiKey: string) => mod.createFactory(apiKey));
   }
 
-  cachedRegistry = registry;
+  deps._registry = registry;
   return registry;
 }
 
