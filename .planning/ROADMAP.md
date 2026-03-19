@@ -46,7 +46,7 @@
 
 - [x] **Phase 17: Core Routing Fixes** - Fix broken key rotation, infinite recursion, singleton pollution, and retry logic (completed 2026-03-19)
 - [x] **Phase 18: Usage & Tracking Fixes** - Fix data accuracy in usage reporting, credit tracking, cooldowns, and dedup (completed 2026-03-19)
-- [ ] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup
+- [x] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup (completed 2026-03-19)
 - [ ] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface
 - [ ] **Phase 21: Build & Docs** - Fix compilation, cleanup, README accuracy, and crash safety
 
@@ -97,7 +97,7 @@ Plans:
 **Goal**: Provider module contains only the 6 active providers with consistent configuration
 **Depends on**: Phase 17 (routing fixes may touch provider registration paths)
 **Requirements**: PROV-01, PROV-02, PROV-03, PROV-04, PROV-05
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -149,7 +149,7 @@ Plans:
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
 | 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
-| 19. Provider Cleanup       | v2.1      | 0/2            | Not started | -          |
+| 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
 

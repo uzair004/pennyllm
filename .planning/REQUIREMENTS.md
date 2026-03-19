@@ -29,8 +29,8 @@ Requirements for production hardening. Each maps to roadmap phases.
 - [ ] **PROV-01**: `github-models.ts` deleted, export removed from `src/providers/index.ts`
 - [ ] **PROV-02**: 7 dropped provider config types removed from public exports
 - [ ] **PROV-03**: 7 legacy Provider enum values removed from `ProviderType` union
-- [ ] **PROV-04**: NVIDIA env var consistent (`NVIDIA_API_KEY`) across module and type docs
-- [ ] **PROV-05**: `ProviderRegistry.createDefault()` loads all 6 active providers (not just Google)
+- [x] **PROV-04**: NVIDIA env var consistent (`NVIDIA_API_KEY`) across module and type docs
+- [x] **PROV-05**: `ProviderRegistry.createDefault()` loads all 6 active providers (not just Google)
 
 ### Export & Type Hygiene
 
@@ -74,8 +74,8 @@ Requirements for production hardening. Each maps to roadmap phases.
 | PROV-01     | 19    | Pending  |
 | PROV-02     | 19    | Pending  |
 | PROV-03     | 19    | Pending  |
-| PROV-04     | 19    | Pending  |
-| PROV-05     | 19    | Pending  |
+| PROV-04     | 19    | Complete |
+| PROV-05     | 19    | Complete |
 | TYPE-01     | 20    | Pending  |
 | TYPE-02     | 20    | Pending  |
 | TYPE-03     | 20    | Pending  |
