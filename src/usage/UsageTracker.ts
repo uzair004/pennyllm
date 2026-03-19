@@ -26,7 +26,7 @@ export class UsageTracker {
   private emitter: EventEmitter;
   private estimationConfig: EstimationConfig;
   private cooldown: CooldownManager;
-  private recordedRequests: Set<string>;
+  private recordedRequests: Map<string, true>;
   private estimatedRecords: Map<string, number>;
   private policyMap: Map<string, ResolvedPolicy>;
   /** Per-key rate limit stats: Map<"provider:keyIndex", RateLimitStats> */
@@ -44,7 +44,7 @@ export class UsageTracker {
     this.emitter = emitter;
     this.estimationConfig = estimationConfig;
     this.cooldown = new CooldownManager(storage);
-    this.recordedRequests = new Set();
+    this.recordedRequests = new Map();
     this.estimatedRecords = new Map();
     this.rateLimitStats = new Map();
     this.providerRateLimitStats = new Map();
@@ -88,12 +88,17 @@ export class UsageTracker {
         return;
       }
 
-      // Add to deduplication set (with lazy cleanup)
-      this.recordedRequests.add(requestId);
+      // Add to deduplication map (with LRU eviction)
+      this.recordedRequests.set(requestId, true);
       if (this.recordedRequests.size > 10000) {
-        log('Clearing deduplication set (size limit exceeded)');
-        this.recordedRequests.clear();
-        this.recordedRequests.add(requestId); // Re-add current
+        // Evict oldest 1000 entries (Map preserves insertion order per ES2015+)
+        const evictCount = 1000;
+        const iter = this.recordedRequests.keys();
+        for (let i = 0; i < evictCount; i++) {
+          const key = iter.next().value;
+          if (key !== undefined) this.recordedRequests.delete(key);
+        }
+        log('Evicted %d oldest dedup entries (size: %d)', evictCount, this.recordedRequests.size);
       }
 
       // Determine tokens
@@ -298,41 +303,7 @@ export class UsageTracker {
 
         // Query each window in the policy
         for (const limit of policy.limits) {
-          let usage: {
-            promptTokens: number;
-            completionTokens: number;
-            totalTokens: number;
-            callCount: number;
-          };
-
-          if (limit.window.type === 'rolling-30d') {
-            // Rolling 30-day: sum last 30 daily buckets
-            let promptSum = 0;
-            let completionSum = 0;
-            let callSum = 0;
-
-            // TODO: Query last 30 daily buckets individually when storage supports historical queries
-            // For now, query current daily bucket only (limitation until Phase 10)
-            for (let i = 0; i < 30; i++) {
-              const dailyUsage = await this.storage.getUsage(providerName, policy.keyIndex, {
-                type: 'daily',
-                durationMs: 24 * 60 * 60 * 1000,
-              });
-              promptSum += dailyUsage.promptTokens;
-              completionSum += dailyUsage.completionTokens;
-              callSum += dailyUsage.callCount;
-            }
-
-            usage = {
-              promptTokens: promptSum,
-              completionTokens: completionSum,
-              totalTokens: promptSum + completionSum,
-              callCount: callSum,
-            };
-          } else {
-            // Single query for other window types
-            usage = await this.storage.getUsage(providerName, policy.keyIndex, limit.window);
-          }
+          const usage = await this.storage.getUsage(providerName, policy.keyIndex, limit.window);
 
           // Calculate remaining
           let remaining: number;
