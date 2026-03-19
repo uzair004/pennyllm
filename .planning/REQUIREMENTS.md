@@ -60,39 +60,39 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 | Requirement | Phase | Status  |
 | ----------- | ----- | ------- |
-| ROUTE-01    | TBD   | Pending |
-| ROUTE-02    | TBD   | Pending |
-| ROUTE-03    | TBD   | Pending |
-| ROUTE-04    | TBD   | Pending |
-| ROUTE-05    | TBD   | Pending |
-| USAGE-01    | TBD   | Pending |
-| USAGE-02    | TBD   | Pending |
-| USAGE-03    | TBD   | Pending |
-| USAGE-04    | TBD   | Pending |
-| USAGE-05    | TBD   | Pending |
-| USAGE-06    | TBD   | Pending |
-| PROV-01     | TBD   | Pending |
-| PROV-02     | TBD   | Pending |
-| PROV-03     | TBD   | Pending |
-| PROV-04     | TBD   | Pending |
-| PROV-05     | TBD   | Pending |
-| TYPE-01     | TBD   | Pending |
-| TYPE-02     | TBD   | Pending |
-| TYPE-03     | TBD   | Pending |
-| TYPE-04     | TBD   | Pending |
-| TYPE-05     | TBD   | Pending |
-| BUILD-01    | TBD   | Pending |
-| BUILD-02    | TBD   | Pending |
-| BUILD-03    | TBD   | Pending |
-| BUILD-04    | TBD   | Pending |
+| ROUTE-01    | 17    | Pending |
+| ROUTE-02    | 17    | Pending |
+| ROUTE-03    | 17    | Pending |
+| ROUTE-04    | 17    | Pending |
+| ROUTE-05    | 17    | Pending |
+| USAGE-01    | 18    | Pending |
+| USAGE-02    | 18    | Pending |
+| USAGE-03    | 18    | Pending |
+| USAGE-04    | 18    | Pending |
+| USAGE-05    | 18    | Pending |
+| USAGE-06    | 18    | Pending |
+| PROV-01     | 19    | Pending |
+| PROV-02     | 19    | Pending |
+| PROV-03     | 19    | Pending |
+| PROV-04     | 19    | Pending |
+| PROV-05     | 19    | Pending |
+| TYPE-01     | 20    | Pending |
+| TYPE-02     | 20    | Pending |
+| TYPE-03     | 20    | Pending |
+| TYPE-04     | 20    | Pending |
+| TYPE-05     | 20    | Pending |
+| BUILD-01    | 21    | Pending |
+| BUILD-02    | 21    | Pending |
+| BUILD-03    | 21    | Pending |
+| BUILD-04    | 21    | Pending |
 
 **Coverage:**
 
 - v2.1 requirements: 25 total
-- Mapped to phases: 0
-- Unmapped: 25 (pending roadmap)
+- Mapped to phases: 25
+- Unmapped: 0
 
 ---
 
 _Requirements defined: 2026-03-19_
-_Last updated: 2026-03-19 after initial definition_
+_Last updated: 2026-03-19 after roadmap creation_
