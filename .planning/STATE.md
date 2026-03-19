@@ -4,7 +4,7 @@ milestone: v2.1
 milestone_name: Production Hardening
 status: executing
 stopped_at: Completed 20-01-PLAN.md
-last_updated: '2026-03-19T11:40:56.567Z'
+last_updated: '2026-03-19T11:44:55.065Z'
 last_activity: 2026-03-19 — Completed 20-02 (wire FALLBACK_TRIGGERED event)
 progress:
   total_phases: 5
