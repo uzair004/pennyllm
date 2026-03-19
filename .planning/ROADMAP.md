@@ -77,6 +77,13 @@ Plans:
 **Goal**: Usage reporting and tracking subsystems produce accurate data across all time windows and edge cases
 **Depends on**: Phase 17 (routing must work correctly before usage data can be trusted)
 **Requirements**: USAGE-01, USAGE-02, USAGE-03, USAGE-04, USAGE-05, USAGE-06
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 18-01-PLAN.md — Fix rolling-30d inflation, PolicyEngine div-by-zero, and dedup bulk-clear
+- [ ] 18-02-PLAN.md — Fix credit window month-boundary, cooldown backoff, and round-robin drift
+
 **Success Criteria** (what must be TRUE):
 
 1. `getUsage()` for a rolling-30d window returns token/request counts that match actual provider calls (not inflated by window multiplication)
@@ -84,7 +91,6 @@ Plans:
 3. PolicyEngine evaluates `limit.value === 0` as "fully consumed" (returns 100% utilization, not `Infinity`)
 4. Cooldown backoff counter stays at 1 when the provider sends a `Retry-After` header (only escalates on consecutive failures without the header)
 5. Dedup set evicts oldest entries individually when full (LRU-style), preserving recent history instead of bulk-clearing all entries
-   **Plans**: TBD
 
 ### Phase 19: Provider Cleanup
 
@@ -136,7 +142,7 @@ Plans:
 | 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
-| 18. Usage & Tracking Fixes | v2.1      | 0/?            | Not started | -          |
+| 18. Usage & Tracking Fixes | v2.1      | 0/2            | Planning    | -          |
 | 19. Provider Cleanup       | v2.1      | 0/?            | Not started | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
