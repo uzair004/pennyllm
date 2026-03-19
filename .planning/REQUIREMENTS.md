@@ -18,10 +18,10 @@ Requirements for production hardening. Each maps to roadmap phases.
 ### Usage & Tracking
 
 - [x] **USAGE-01**: Rolling-30d `getUsage()` reports accurate data (not 30x inflated)
-- [ ] **USAGE-02**: Credit tracking survives month-boundary process restarts (fix CREDIT_WINDOW bucketing)
+- [x] **USAGE-02**: Credit tracking survives month-boundary process restarts (fix CREDIT_WINDOW bucketing)
 - [x] **USAGE-03**: PolicyEngine handles `limit.value === 0` without producing `Infinity`
-- [ ] **USAGE-04**: Cooldown backoff counter only increments when no Retry-After header provided
-- [ ] **USAGE-05**: Round-robin strategy distributes evenly when keys enter/exit cooldown
+- [x] **USAGE-04**: Cooldown backoff counter only increments when no Retry-After header provided
+- [x] **USAGE-05**: Round-robin strategy distributes evenly when keys enter/exit cooldown
 - [x] **USAGE-06**: Dedup set uses LRU-style eviction (not bulk clear losing all history)
 
 ### Provider Cleanup
@@ -66,10 +66,10 @@ Requirements for production hardening. Each maps to roadmap phases.
 | ROUTE-04    | 17    | Complete |
 | ROUTE-05    | 17    | Complete |
 | USAGE-01    | 18    | Complete |
-| USAGE-02    | 18    | Pending  |
+| USAGE-02    | 18    | Complete |
 | USAGE-03    | 18    | Complete |
-| USAGE-04    | 18    | Pending  |
-| USAGE-05    | 18    | Pending  |
+| USAGE-04    | 18    | Complete |
+| USAGE-05    | 18    | Complete |
 | USAGE-06    | 18    | Complete |
 | PROV-01     | 19    | Pending  |
 | PROV-02     | 19    | Pending  |

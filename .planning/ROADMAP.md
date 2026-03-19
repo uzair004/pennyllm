@@ -45,7 +45,7 @@
 **Milestone Goal:** Fix all bugs found in the 6-agent production readiness audit — correct broken core features, eliminate dead code, align public API with documentation.
 
 - [x] **Phase 17: Core Routing Fixes** - Fix broken key rotation, infinite recursion, singleton pollution, and retry logic (completed 2026-03-19)
-- [ ] **Phase 18: Usage & Tracking Fixes** - Fix data accuracy in usage reporting, credit tracking, cooldowns, and dedup
+- [x] **Phase 18: Usage & Tracking Fixes** - Fix data accuracy in usage reporting, credit tracking, cooldowns, and dedup (completed 2026-03-19)
 - [ ] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup
 - [ ] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface
 - [ ] **Phase 21: Build & Docs** - Fix compilation, cleanup, README accuracy, and crash safety
@@ -77,7 +77,7 @@ Plans:
 **Goal**: Usage reporting and tracking subsystems produce accurate data across all time windows and edge cases
 **Depends on**: Phase 17 (routing must work correctly before usage data can be trusted)
 **Requirements**: USAGE-01, USAGE-02, USAGE-03, USAGE-04, USAGE-05, USAGE-06
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -142,7 +142,7 @@ Plans:
 | 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
-| 18. Usage & Tracking Fixes | 1/2       | In Progress    |             | -          |
+| 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
 | 19. Provider Cleanup       | v2.1      | 0/?            | Not started | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
