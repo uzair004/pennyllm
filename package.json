@@ -90,7 +90,7 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.build.json",
     "prepare": "husky",
     "catalog:update": "tsx scripts/generate-catalog.ts",
     "changeset": "changeset",
