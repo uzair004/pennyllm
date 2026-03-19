@@ -61,7 +61,7 @@ export type CerebrasProviderConfig = ProviderConfig;
  * Credit-to-token conversion rate varies by model and is not publicly documented.
  * Sign up: https://build.nvidia.com
  * API keys: NVIDIA Developer dashboard
- * Env var: NIM_API_KEY
+ * Env var: NVIDIA_API_KEY
  * AI SDK package: @ai-sdk/openai-compatible (base URL: https://integrate.api.nvidia.com/v1)
  *
  * @see docs/providers/nvidia.md for full setup guide

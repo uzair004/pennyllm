@@ -69,13 +69,10 @@ export class ProviderRegistry {
   static async createDefault(): Promise<ProviderRegistry> {
     const registry = new ProviderRegistry();
 
-    // Try to load @ai-sdk/google
-    try {
-      const googleModule = await import('@ai-sdk/google');
-      registry.register('google', googleModule.createGoogleGenerativeAI);
-      debug('Loaded @ai-sdk/google');
-    } catch (err) {
-      debug('Failed to load @ai-sdk/google: %s', err instanceof Error ? err.message : String(err));
+    // Register all active provider modules (handles missing SDKs gracefully via createFactory)
+    const { getAllProviders } = await import('../providers/registry.js');
+    for (const mod of getAllProviders()) {
+      registry.registerAsync(mod.id, mod.createFactory.bind(mod));
     }
 
     return registry;
