@@ -7,7 +7,7 @@
 
 - ✅ **v1.0 MVP** — Phases 1-12.1 (shipped 2026-03-17)
 - ✅ **v2.0 Advanced Features** — Phases 13-16 (shipped 2026-03-19)
-- **v2.1 Production Hardening** — Phases 17-21 (in progress)
+- **v2.1 Production Hardening** — Phases 17-22 (in progress)
 
 ## Phases
 
@@ -40,7 +40,7 @@
 
 </details>
 
-### v2.1 Production Hardening (Phases 17-21)
+### v2.1 Production Hardening (Phases 17-22)
 
 **Milestone Goal:** Fix all bugs found in the 6-agent production readiness audit — correct broken core features, eliminate dead code, align public API with documentation.
 
@@ -49,6 +49,7 @@
 - [x] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup (completed 2026-03-19)
 - [x] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface (completed 2026-03-19)
 - [x] **Phase 21: Build & Docs** - Fix compilation, cleanup, README accuracy, and crash safety (completed 2026-03-19)
+- [ ] **Phase 22: Async Model Wrapping** - Fix wrapModel/routerModel to use async provider registry (gap closure)
 
 ## Phase Details
 
@@ -150,20 +151,33 @@ Plans:
 3. README states the correct dependency count (5 production dependencies)
 4. SQLite schema migrations are wrapped in transactions (a crash mid-migration does not leave the database in a partial state)
 
+### Phase 22: Async Model Wrapping
+
+**Goal**: `router.wrapModel()` and `routerModel()` work with async-only provider registry
+**Depends on**: Phase 21 (build must be clean before further changes)
+**Requirements**: WRAP-01, WRAP-02
+**Gap Closure**: Closes integration gap from v2.1 audit (PROV-05 partial)
+**Success Criteria** (what must be TRUE):
+
+1. `router.wrapModel("google/gemini-2.0-flash")` resolves a valid LanguageModelV1 (no ConfigError thrown)
+2. `routerModel("google/gemini-2.0-flash")` resolves a valid LanguageModelV1 (no ConfigError thrown)
+   **Plans**: TBD
+
 ## Progress
 
-| Phase                      | Milestone | Plans Complete | Status     | Completed  |
-| -------------------------- | --------- | -------------- | ---------- | ---------- |
-| 1-12.1                     | v1.0      | 37/37          | Complete   | 2026-03-17 |
-| 13. Credit-Based Limits    | v2.0      | 2/2            | Complete   | 2026-03-18 |
-| 14. Health Scoring         | v2.0      | 2/2            | Complete   | 2026-03-18 |
-| 15. CLI Validator          | v2.0      | 3/3            | Complete   | 2026-03-18 |
-| 16. Provider Data Registry | v2.0      | 3/3            | Complete   | 2026-03-18 |
-| 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19 | -          |
-| 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19 | -          |
-| 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19 | -          |
-| 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19 | -          |
-| 21. Build & Docs           | 2/2       | Complete       | 2026-03-19 | -          |
+| Phase                      | Milestone | Plans Complete | Status      | Completed  |
+| -------------------------- | --------- | -------------- | ----------- | ---------- |
+| 1-12.1                     | v1.0      | 37/37          | Complete    | 2026-03-17 |
+| 13. Credit-Based Limits    | v2.0      | 2/2            | Complete    | 2026-03-18 |
+| 14. Health Scoring         | v2.0      | 2/2            | Complete    | 2026-03-18 |
+| 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
+| 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
+| 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
+| 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
+| 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
+| 20. Export & Type Hygiene  | 2/2       | Complete       | 2026-03-19  | -          |
+| 21. Build & Docs           | 2/2       | Complete       | 2026-03-19  | -          |
+| 22. Async Model Wrapping   | v2.1      | 0/?            | Not started | -          |
 
 ## Archives
 
