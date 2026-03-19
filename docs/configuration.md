@@ -108,18 +108,28 @@ Classifies the provider's pricing model:
 
 ### credits
 
-For `trial` tier providers (e.g., NVIDIA NIM), specify the one-time credit amount:
+For `trial` tier providers (e.g., SambaNova, NVIDIA NIM), configure credit tracking:
 
 ```typescript
 providers: {
-  nvidia: {
-    keys: [process.env.NVIDIA_API_KEY!],
-    priority: 5,
+  sambanova: {
+    keys: [process.env.SAMBANOVA_API_KEY!],
+    priority: 4,
     tier: 'trial',
-    credits: 1000, // 1000 one-time credits
+    credits: {
+      balance: 5.00,                // Initial $ from provider
+      expiresAt: '2026-04-15',      // Optional ISO date (omit for perpetual)
+      costRates: {
+        inputPer1MTokens: 0.20,     // Cost per 1M input tokens
+        outputPer1MTokens: 0.60,    // Cost per 1M output tokens
+      },
+      alertThresholds: [0.2, 0.05], // Alert at 20% and 5% remaining
+    },
   },
 }
 ```
+
+The router tracks credit consumption per call and stops routing to depleted providers. Events: `credit:low`, `credit:exhausted`, `credit:expiring`. Use `router.getStatus()` to see remaining credits per provider.
 
 ### models (per-provider allowlist)
 
@@ -352,12 +362,12 @@ import { defineConfig } from 'pennyllm';
 
 const config = defineConfig({
   providers: {
-    cerebras: { keys: ['...'], priority: 1 }, // Autocompletes: cerebras, google, groq, github, etc.
+    cerebras: { keys: ['...'], priority: 1 }, // Autocompletes: cerebras, google, groq, sambanova, etc.
   },
 });
 ```
 
-Known providers: `cerebras`, `google`, `groq`, `github`, `sambanova`, `nvidia`, `mistral`. Custom provider strings are also accepted.
+Known providers: `cerebras`, `google`, `groq`, `sambanova`, `nvidia`, `mistral`. Custom provider strings are also accepted.
 
 ## Storage Adapters
 

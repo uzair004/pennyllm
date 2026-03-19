@@ -6,141 +6,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Zero runtime dependencies beyond peer deps. Works with [Vercel AI SDK](https://sdk.vercel.ai/).
+pennyllm is a TypeScript package that sits between your code and LLM providers. It rotates API keys, tracks free tier usage, and automatically falls back to the next provider when one hits its limit — so you never get an unexpected bill.
 
 ```typescript
 import { createRouter, defineConfig } from 'pennyllm';
 import { generateText } from 'ai';
-
-const router = await createRouter(
-  defineConfig({
-    providers: {
-      cerebras: { keys: [process.env.CEREBRAS_API_KEY!], priority: 1 },
-      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 2 },
-    },
-  }),
-);
-
-// Automatic routing through model chain
-const { text } = await generateText({
-  model: router.chat(),
-  prompt: 'Explain quantum computing',
-});
-```
-
----
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [How It Works](#how-it-works)
-- [Configuration](#configuration)
-- [Providers](#providers)
-- [Debug Mode](#debug-mode)
-- [Storage Adapters](#storage-adapters)
-- [Events & Hooks](#events--hooks)
-- [Comparison](#comparison)
-- [API Reference](#api-reference)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Installation
-
-```bash
-npm install pennyllm ai @ai-sdk/google
-```
-
-`ai` (Vercel AI SDK) is a peer dependency. Install provider SDKs for each provider you use:
-
-```bash
-# Using Cerebras?
-npm install @ai-sdk/cerebras
-
-# Using Groq?
-npm install @ai-sdk/groq
-
-# Using Mistral?
-npm install @ai-sdk/mistral
-```
-
-> **Node.js >= 18.0.0 required.**
-
-## Quick Start
-
-### 1. Get a free API key
-
-Sign up at [Google AI Studio](https://aistudio.google.com/apikey) -- it takes 30 seconds.
-
-### 2. Create a router
-
-```typescript
-import { createRouter, defineConfig } from 'pennyllm';
-import { generateText } from 'ai';
-
-const router = await createRouter(
-  defineConfig({
-    providers: {
-      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 },
-    },
-  }),
-);
-
-// Automatic model chain routing
-const { text } = await generateText({
-  model: router.chat(),
-  prompt: 'Explain quicksort in 3 sentences.',
-});
-
-console.log(text);
-
-// Clean up when done
-await router.close();
-```
-
-That's it. The router manages key selection, model chain fallback, and rate limit handling transparently.
-
-## How It Works
-
-```
-Request --> router.chat() --> Chain Executor --> Provider API
-                 |                 |
-           Model Chain        Key Selection
-           (priority order)   (rotation + cooldown)
-                 |                 |
-           429/402 fallback   Usage Tracking
-           (next in chain)    (observability)
-```
-
-pennyllm wraps the Vercel AI SDK's `wrapLanguageModel()` to transparently manage API keys and model routing. When you call `router.chat()`, the chain executor walks through your model priority chain, trying each model in order. If a provider returns 429 (rate limit) or 402 (quota exhausted), it automatically falls back to the next model in the chain.
-
-**Key concepts:**
-
-- **Model chain** -- Define a priority-ordered list of models. The router tries each in order, falling back on errors.
-- **Key rotation** -- Distribute requests across multiple API keys per provider to stay within free tier limits.
-- **Reactive rate limiting** -- No internal usage tracking for routing decisions. Provider 429/402 responses drive cooldown and fallback.
-- **Budget caps** -- Set a monthly spending limit. Free models are tried first; paid models only when budget allows.
-
-## Configuration
-
-### Minimal (single provider)
-
-```typescript
-import { createRouter, defineConfig } from 'pennyllm';
-
-const router = await createRouter(
-  defineConfig({
-    providers: {
-      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 },
-    },
-  }),
-);
-```
-
-### Multi-provider with model chain
-
-```typescript
-import { createRouter, defineConfig } from 'pennyllm';
 
 const router = await createRouter(
   defineConfig({
@@ -149,70 +19,51 @@ const router = await createRouter(
       google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 2 },
       groq: { keys: [process.env.GROQ_API_KEY!], priority: 3 },
     },
-    // Explicit model chain (optional -- auto-generated from provider priorities if omitted)
-    models: [
-      'cerebras/gpt-oss-120b',
-      'google/gemini-2.5-flash',
-      'groq/meta-llama/llama-4-scout-17b-16e-instruct',
-    ],
-    budget: { monthlyLimit: 5.0 },
-    debug: true,
   }),
 );
-```
 
-`defineConfig()` provides IDE autocomplete for all 6 known provider names. Multiple keys per provider lets the router rotate through them when free tier limits are hit.
-
-### Using router.chat()
-
-`router.chat()` is the primary API. It returns a Vercel AI SDK model that automatically routes through the model chain:
-
-```typescript
-import { generateText } from 'ai';
-
-// Basic usage -- routes through model chain automatically
 const { text } = await generateText({
   model: router.chat(),
   prompt: 'Explain quantum computing',
 });
-
-// Filter by capability
-const { text: reasoning } = await generateText({
-  model: router.chat({ capabilities: ['reasoning'] }),
-  prompt: 'Solve this logic puzzle...',
-});
-
-// Filter by provider
-const { text: googleOnly } = await generateText({
-  model: router.chat({ provider: 'google' }),
-  prompt: 'Hello',
-});
 ```
 
-### Direct model access
+Works with [Vercel AI SDK](https://sdk.vercel.ai/). Zero runtime dependencies beyond peer deps.
 
-Bypass the chain and use a specific model:
+---
 
-```typescript
-const model = await router.wrapModel('google/gemini-2.5-flash');
-const { text } = await generateText({ model, prompt: 'Hello' });
+## Why pennyllm?
+
+Most free LLM tiers give you 30-1000 requests per day. That's plenty for development — until you burn through a single provider in an afternoon. pennyllm spreads your requests across multiple providers automatically:
+
+```
+Your code  →  pennyllm  →  Cerebras (fastest, tried first)
+                       →  Google (generous limits, fallback)
+                       →  Groq (fast inference, fallback)
+                       →  SambaNova (DeepSeek models, fallback)
 ```
 
-### Check chain status
+When Cerebras hits its rate limit, the next request goes to Google. When Google is exhausted, it tries Groq. All automatic, no code changes needed.
 
-```typescript
-const status = router.getStatus();
-console.log(`${status.availableModels}/${status.totalModels} models available`);
-console.log('Depleted:', status.depletedProviders);
+---
+
+## Quick Start
+
+### 1. Install
+
+```bash
+npm install pennyllm ai @ai-sdk/google
 ```
 
-### Storage adapter (persistent tracking)
+### 2. Get a free API key
 
-By default, usage data lives in memory and resets when your process restarts. For persistence across restarts, use a storage adapter:
+[Google AI Studio](https://aistudio.google.com/apikey) — takes 30 seconds, no credit card.
+
+### 3. Create a router
 
 ```typescript
-import { createRouter } from 'pennyllm';
-import { SqliteStorage } from 'pennyllm/sqlite';
+import { createRouter, defineConfig } from 'pennyllm';
+import { generateText } from 'ai';
 
 const router = await createRouter(
   defineConfig({
@@ -220,241 +71,332 @@ const router = await createRouter(
       google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 },
     },
   }),
-  {
-    storage: new SqliteStorage({ path: './usage.db' }),
-  },
 );
+
+const { text } = await generateText({
+  model: router.chat(),
+  prompt: 'Explain quicksort in 3 sentences.',
+});
+
+console.log(text);
+await router.close();
 ```
 
-### Config file (YAML/JSON)
+That's it. The router manages key selection, model chain fallback, and rate limit handling.
 
-```typescript
-import { createRouter } from 'pennyllm';
+---
 
-const router = await createRouter('./router.config.yaml');
+## How It Works
+
 ```
+Request  →  router.chat()  →  Chain Executor  →  Provider API
+                |                    |
+          Model Chain          Key Selection
+          (priority order)     (rotation + cooldown)
+                |                    |
+          429/402 fallback     Health Scoring
+          (next in chain)      (circuit breakers)
+```
+
+**Model chain** — You define a priority-ordered list of models. The router tries each in order, falling back on errors.
+
+**Key rotation** — Multiple API keys per provider. When one hits its limit, the router tries the next key before moving to the next provider.
+
+**Reactive rate limiting** — No guessing or estimation. Provider 429/402 responses trigger cooldowns and fallback automatically.
+
+**Health scoring** — Circuit breakers track provider reliability. Unhealthy providers are temporarily bypassed, then probed for recovery.
+
+**Budget caps** — Set `monthlyLimit: 0` to never spend money. Free models are always tried first.
+
+---
 
 ## Providers
 
 pennyllm supports 6 providers optimized for free-tier usage:
 
-| Provider         | Tier | Package                     | Env Var                        | Sign Up                                                   |
-| ---------------- | ---- | --------------------------- | ------------------------------ | --------------------------------------------------------- |
-| Cerebras         | Free | `@ai-sdk/cerebras`          | `CEREBRAS_API_KEY`             | [cloud.cerebras.ai](https://cloud.cerebras.ai)            |
-| Google AI Studio | Free | `@ai-sdk/google`            | `GOOGLE_GENERATIVE_AI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey) |
-| Groq             | Free | `@ai-sdk/groq`              | `GROQ_API_KEY`                 | [console.groq.com](https://console.groq.com)              |
-| SambaNova        | Free | `sambanova-ai-provider`     | `SAMBANOVA_API_KEY`            | [cloud.sambanova.ai](https://cloud.sambanova.ai)          |
-| NVIDIA NIM       | Free | `@ai-sdk/openai-compatible` | `NVIDIA_API_KEY`               | [build.nvidia.com](https://build.nvidia.com)              |
-| Mistral          | Free | `@ai-sdk/mistral`           | `MISTRAL_API_KEY`              | [console.mistral.ai](https://console.mistral.ai)          |
+| Provider             | Free Tier                 | Package                     | Env Var                        | Sign Up                                                   |
+| -------------------- | ------------------------- | --------------------------- | ------------------------------ | --------------------------------------------------------- |
+| **Cerebras**         | 30 RPM, 14.4K RPD, 1M TPD | `@ai-sdk/cerebras`          | `CEREBRAS_API_KEY`             | [cloud.cerebras.ai](https://cloud.cerebras.ai)            |
+| **Google AI Studio** | 5-15 RPM, 100-1K RPD      | `@ai-sdk/google`            | `GOOGLE_GENERATIVE_AI_API_KEY` | [aistudio.google.com](https://aistudio.google.com/apikey) |
+| **Groq**             | 30-60 RPM, 1K-14.4K RPD   | `@ai-sdk/groq`              | `GROQ_API_KEY`                 | [console.groq.com](https://console.groq.com)              |
+| **SambaNova**        | 20 RPM, 200K TPD/model    | `sambanova-ai-provider`     | `SAMBANOVA_API_KEY`            | [cloud.sambanova.ai](https://cloud.sambanova.ai)          |
+| **NVIDIA NIM**       | ~40 RPM                   | `@ai-sdk/openai-compatible` | `NVIDIA_API_KEY`               | [build.nvidia.com](https://build.nvidia.com)              |
+| **Mistral**          | 1 RPS, 1B tok/month       | `@ai-sdk/mistral`           | `MISTRAL_API_KEY`              | [console.mistral.ai](https://console.mistral.ai)          |
 
-Start with **Cerebras + Google + Groq** -- they have the most generous perpetual free tiers and the fastest inference.
+**Start with Cerebras + Google + Groq** — they have the most generous perpetual free tiers and the fastest inference.
 
-> **Provider Reference:** See [awesome-free-llm-apis](https://github.com/uzair004/awesome-free-llm-apis) for detailed free tier limits, models, signup URLs, and SDK info for all supported providers.
+Install only the SDKs you need:
 
-> **Dropped providers:** GitHub Models, HuggingFace, Cohere, Cloudflare, Qwen/DashScope, OpenRouter, Together AI, DeepSeek direct, and Fireworks are no longer supported.
+```bash
+npm install @ai-sdk/cerebras @ai-sdk/google @ai-sdk/groq
+```
 
-## Debug Mode
+> **Full provider data:** See [awesome-free-llm-apis](https://github.com/uzair004/awesome-free-llm-apis) for detailed limits, models, rate limit headers, and SDK info.
 
-Debug mode shows every routing decision as a structured one-line summary.
+---
 
-### Enable via config
+## Configuration
+
+### Multi-provider with explicit model chain
 
 ```typescript
 const router = await createRouter(
   defineConfig({
-    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
+    providers: {
+      cerebras: { keys: [process.env.CEREBRAS_API_KEY!], priority: 1 },
+      google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 2 },
+      groq: { keys: [process.env.GROQ_API_KEY!], priority: 3 },
+    },
+    models: [
+      'cerebras/llama-4-maverick',
+      'google/gemini-2.5-flash',
+      'groq/meta-llama/llama-4-scout-17b-16e-instruct',
+    ],
+    budget: { monthlyLimit: 0 }, // Never spend money
     debug: true,
   }),
 );
 ```
 
-### Enable via environment variable
+If you omit `models`, the router auto-generates a chain from provider priorities and their registered models.
+
+### Multiple keys per provider
+
+```typescript
+providers: {
+  google: {
+    keys: [
+      process.env.GOOGLE_KEY_1!,  // Personal account
+      process.env.GOOGLE_KEY_2!,  // Team project
+    ],
+    priority: 1,
+  },
+}
+```
+
+Each key is treated as an independent quota pool. When key #1 hits its limit, key #2 is used before falling back to the next provider.
+
+### Trial providers with credit tracking
+
+```typescript
+providers: {
+  sambanova: {
+    keys: [process.env.SAMBANOVA_API_KEY!],
+    priority: 4,
+    tier: 'trial',
+    credits: {
+      balance: 5.00,
+      expiresAt: '2026-04-15',
+      costRates: { inputPer1MTokens: 0.20, outputPer1MTokens: 0.60 },
+    },
+  },
+}
+```
+
+The router tracks credit consumption and stops routing to depleted providers. Use `creditTracker.topUp(provider, amount)` when you add more credits.
+
+### Budget cap
+
+```typescript
+budget: {
+  monthlyLimit: 5.00,              // $5/month cap
+  alertThresholds: [0.8, 0.95],    // Alert at 80% and 95%
+}
+```
+
+`monthlyLimit: 0` (default) means "never spend money" — all paid model attempts are blocked.
+
+### Config file (JSON/YAML)
+
+```typescript
+const router = await createRouter('./pennyllm.config.yaml');
+```
+
+### Storage (persistent tracking)
+
+By default, usage data lives in memory. For persistence across restarts:
+
+```typescript
+import { SqliteStorage } from 'pennyllm/sqlite';
+
+const router = await createRouter(config, {
+  storage: new SqliteStorage({ path: './usage.db' }),
+});
+```
+
+| Adapter         | Import            | Peer Dependency  |
+| --------------- | ----------------- | ---------------- |
+| `MemoryStorage` | `pennyllm`        | None             |
+| `SqliteStorage` | `pennyllm/sqlite` | `better-sqlite3` |
+| `RedisStorage`  | `pennyllm/redis`  | `ioredis`        |
+
+---
+
+## CLI Validator
+
+Validate your config and test provider connectivity before deploying:
+
+```bash
+npx pennyllm validate
+```
+
+The validator makes real API calls to each configured provider and reports results:
+
+```
+Provider         Keys    Model                    Tier   Status   Latency
+Cerebras         2/2 ok  llama-4-maverick         free   PASS     142ms
+Google AI Studio 1/1 ok  gemini-2.5-flash         free   PASS     387ms
+Groq             1/1 ok  llama-4-scout-17b        free   PASS     201ms
+
+3 providers (4 keys), 3 passed, 0 failed
+```
+
+### Flags
+
+| Flag                | Description                                                      |
+| ------------------- | ---------------------------------------------------------------- |
+| `--config <path>`   | Config file path (auto-discovers `pennyllm.config.*` by default) |
+| `--provider <name>` | Test specific provider(s) only                                   |
+| `--json`            | JSON output for CI pipelines                                     |
+| `--verbose`         | Per-key detail, response info, rate limit headers                |
+| `--dry-run`         | Validate config without making API calls                         |
+| `--timeout <ms>`    | Per-provider timeout (default: 10000)                            |
+
+**Exit codes:** 0 = all pass, 1 = failure, 2 = warnings only (e.g., rate limited but key valid)
+
+---
+
+## Events & Hooks
+
+Subscribe to routing decisions with typed hooks:
+
+```typescript
+router.onChainResolved((event) => {
+  console.log(`${event.resolvedModel} (position ${event.chainPosition}, ${event.latencyMs}ms)`);
+});
+
+router.onProviderDepleted((event) => {
+  console.log(`${event.provider} depleted: ${event.reason}`);
+});
+
+router.onBudgetAlert((event) => {
+  console.log(`Budget: $${event.currentSpend} / $${event.limit} (${event.percentage}%)`);
+});
+
+router.onCreditLow((event) => {
+  console.log(`${event.provider} credits low: ${event.remaining} remaining`);
+});
+
+router.onProviderRecovered((event) => {
+  console.log(`${event.provider} recovered (circuit closed)`);
+});
+```
+
+### All hooks
+
+| Hook                    | Fires when                                     |
+| ----------------------- | ---------------------------------------------- |
+| `onChainResolved()`     | Model selected for a request                   |
+| `onKeySelected()`       | Key selected for a request                     |
+| `onUsageRecorded()`     | Token usage recorded                           |
+| `onLimitWarning()`      | Usage approaches a threshold                   |
+| `onLimitExceeded()`     | Key quota exceeded                             |
+| `onFallbackTriggered()` | Request falls back to next provider            |
+| `onProviderDepleted()`  | Provider permanently exhausted (402)           |
+| `onProviderStale()`     | Provider data not recently verified            |
+| `onProviderRecovered()` | Circuit breaker recovered (half-open → closed) |
+| `onBudgetAlert()`       | Spending approaches monthly limit              |
+| `onBudgetExceeded()`    | Monthly budget reached                         |
+| `onCreditLow()`         | Trial provider credits running low             |
+| `onCreditExhausted()`   | Trial provider credits depleted                |
+| `onCreditExpiring()`    | Trial credits approaching expiry date          |
+| `onError()`             | Provider returns an error                      |
+
+---
+
+## Debug Mode
+
+See every routing decision:
 
 ```bash
 DEBUG=pennyllm:* node app.js
 ```
 
-### Example output
+Or in config:
+
+```typescript
+defineConfig({ debug: true, ... })
+```
 
 ```
-[pennyllm:key-selected]     cerebras/gpt-oss-120b -> key#0 (priority)
+[pennyllm:key-selected]     cerebras/llama-4-maverick -> key#0 (priority)
 [pennyllm:usage-recorded]   cerebras key#0: +1247 tokens
-[pennyllm:chain-resolved]   cerebras/gpt-oss-120b (position 0, no fallback, 312ms)
-[pennyllm:budget-alert]     $3.47 / $5.00 monthly (69%)
+[pennyllm:chain-resolved]   cerebras/llama-4-maverick (position 0, no fallback, 312ms)
+[pennyllm:health]           cerebras: score 0.95, circuit closed
 ```
 
-## Storage Adapters
-
-### MemoryStorage (default)
-
-In-memory storage. Usage data resets when the process exits. Good for development and short-lived scripts.
-
-```typescript
-import { createRouter, defineConfig } from 'pennyllm';
-
-// MemoryStorage is the default -- no configuration needed
-const router = await createRouter(
-  defineConfig({
-    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
-  }),
-);
-```
-
-### SqliteStorage
-
-Persistent storage using SQLite. Usage data survives restarts.
-
-```bash
-npm install better-sqlite3
-```
-
-```typescript
-import { createRouter, defineConfig } from 'pennyllm';
-import { SqliteStorage } from 'pennyllm/sqlite';
-
-const router = await createRouter(
-  defineConfig({
-    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
-  }),
-  { storage: new SqliteStorage({ path: './usage.db' }) },
-);
-```
-
-### RedisStorage
-
-Shared storage for multi-process or distributed deployments.
-
-```bash
-npm install ioredis
-```
-
-```typescript
-import { createRouter, defineConfig } from 'pennyllm';
-import { RedisStorage } from 'pennyllm/redis';
-
-const router = await createRouter(
-  defineConfig({
-    providers: { google: { keys: [process.env.GOOGLE_GENERATIVE_AI_API_KEY!], priority: 1 } },
-  }),
-  { storage: new RedisStorage({ url: 'redis://localhost:6379' }) },
-);
-```
-
-## Events & Hooks
-
-The router emits typed events for every routing decision. Use convenience hooks for type-safe subscriptions:
-
-```typescript
-const router = await createRouter(config);
-
-// Subscribe to chain resolution events
-const unsubscribe = router.onChainResolved((event) => {
-  console.log(
-    `Resolved: ${event.resolvedModel} (position ${event.chainPosition}, ${event.latencyMs}ms)`,
-  );
-});
-
-// Subscribe to key selection events
-router.onKeySelected((event) => {
-  console.log(`${event.provider}/${event.model} -> key#${event.keyIndex} (${event.reason})`);
-});
-
-// Subscribe to budget alerts
-router.onBudgetAlert((event) => {
-  console.log(`Budget: $${event.currentSpend} / $${event.limit} (${event.percentage}%)`);
-});
-
-// Subscribe to provider depletion
-router.onProviderDepleted((event) => {
-  console.log(`Provider ${event.provider} depleted: ${event.reason}`);
-});
-
-// Unsubscribe when done
-unsubscribe();
-```
-
-### Available hooks
-
-| Hook                           | Fires when                                  |
-| ------------------------------ | ------------------------------------------- |
-| `router.onChainResolved()`     | Chain resolves a model for a request        |
-| `router.onKeySelected()`       | A key is selected for a request             |
-| `router.onUsageRecorded()`     | Token usage is recorded after a response    |
-| `router.onLimitWarning()`      | Usage approaches a configured threshold     |
-| `router.onLimitExceeded()`     | A key's quota limit is exceeded             |
-| `router.onFallbackTriggered()` | Request falls back to another provider      |
-| `router.onProviderDepleted()`  | A provider is permanently exhausted (402)   |
-| `router.onProviderStale()`     | Provider data hasn't been verified recently |
-| `router.onBudgetAlert()`       | Spending approaches the monthly limit       |
-| `router.onBudgetExceeded()`    | Monthly budget limit is reached             |
-| `router.onError()`             | A provider returns an error                 |
-
-You can also use the raw `router.on(event, handler)` / `router.off(event, handler)` API for untyped event access.
-
-## Comparison
-
-| Feature              | pennyllm                         | Manual Key Management | LiteLLM           |
-| -------------------- | -------------------------------- | --------------------- | ----------------- |
-| Language             | TypeScript                       | Any                   | Python            |
-| Setup                | `npm install`                    | DIY                   | Docker + Postgres |
-| Free tier tracking   | Built-in                         | Manual                | No                |
-| Key rotation         | Automatic                        | Manual                | Manual            |
-| Budget caps          | Yes                              | No                    | Yes               |
-| Model chain fallback | Automatic                        | Manual                | Manual            |
-| AI SDK integration   | Native                           | None                  | Proxy             |
-| Runtime dependencies | 3 (zod, debug, @ai-sdk/provider) | 0                     | 100+              |
-
-**pennyllm** is purpose-built for TypeScript developers using the Vercel AI SDK who want to maximize free tier usage across multiple providers. If you're building in Python or need a universal proxy, LiteLLM is the better choice.
+---
 
 ## API Reference
 
-### Core
+### Core exports
 
-| Export                           | Description                                              |
-| -------------------------------- | -------------------------------------------------------- |
-| `createRouter(config, options?)` | Create a router instance from config object or file path |
-| `defineConfig(config)`           | Type-safe config helper with IDE autocomplete            |
-| `configSchema`                   | Zod schema for config validation                         |
-| `loadConfigFile(path)`           | Load config from YAML or JSON file                       |
+| Export                           | Description                                     |
+| -------------------------------- | ----------------------------------------------- |
+| `createRouter(config, options?)` | Create a router from config object or file path |
+| `defineConfig(config)`           | Type-safe config helper with IDE autocomplete   |
+| `configSchema`                   | Zod schema for config validation                |
+| `loadConfigFile(path)`           | Load config from YAML or JSON file              |
 
-### Router Instance
+### Router methods
 
-| Method                                    | Description                                    |
-| ----------------------------------------- | ---------------------------------------------- |
-| `router.chat(filter?)`                    | Get a model that routes through the chain      |
-| `router.getStatus()`                      | Get chain status (available/depleted models)   |
-| `router.wrapModel(modelId, options?)`     | Wrap a specific model with routing and retry   |
-| `router.model(modelId, options?)`         | Select a key without wrapping (for manual use) |
-| `router.getUsage()`                       | Get usage snapshot across all providers        |
-| `router.getUsage(provider)`               | Get usage for a specific provider              |
-| `router.resetUsage(provider?, keyIndex?)` | Reset usage counters                           |
-| `router.close()`                          | Clean up resources (catalog, storage)          |
+| Method                                    | Description                                                     |
+| ----------------------------------------- | --------------------------------------------------------------- |
+| `router.chat(filter?)`                    | Get a model that routes through the chain                       |
+| `router.wrapModel(modelId)`               | Wrap a specific model with routing and retry                    |
+| `router.model(modelId)`                   | Select a key without wrapping                                   |
+| `router.getStatus()`                      | Chain status (available/cooling/depleted models, health scores) |
+| `router.getUsage(provider?)`              | Usage snapshot across all or specific provider                  |
+| `router.resetUsage(provider?, keyIndex?)` | Reset usage counters                                            |
+| `router.close()`                          | Clean up resources                                              |
 
-### Chain Filter Options
+### Chain filter options
 
-| Field          | Type       | Description                                                                                      |
-| -------------- | ---------- | ------------------------------------------------------------------------------------------------ |
-| `capabilities` | `string[]` | Filter to models with these capabilities (`reasoning`, `toolCall`, `vision`, `structuredOutput`) |
-| `provider`     | `string`   | Filter to a specific provider                                                                    |
-| `tier`         | `string`   | Filter by quality tier (`frontier`, `high`, `mid`)                                               |
+| Field          | Type       | Description                                                                 |
+| -------------- | ---------- | --------------------------------------------------------------------------- |
+| `capabilities` | `string[]` | Filter to models with `reasoning`, `toolCall`, `vision`, `structuredOutput` |
+| `provider`     | `string`   | Filter to a specific provider                                               |
+| `tier`         | `string`   | Filter by quality tier: `frontier`, `high`, `mid`                           |
 
-### Storage Adapters
+### Policy helpers
 
-| Export          | Import Path         |
-| --------------- | ------------------- |
-| `MemoryStorage` | `'pennyllm'`        |
-| `SqliteStorage` | `'pennyllm/sqlite'` |
-| `RedisStorage`  | `'pennyllm/redis'`  |
+| Export                          | Description                            |
+| ------------------------------- | -------------------------------------- |
+| `createTokenLimit(max, window)` | Token usage limit                      |
+| `createRateLimit(max, window)`  | Request rate limit                     |
+| `createCallLimit(max, window)`  | Call count limit                       |
+| `createCreditLimit(config)`     | Credit-based limit for trial providers |
 
-### Policy Helpers
+All types exported from `pennyllm` and `pennyllm/types`.
 
-| Export                          | Description                           |
-| ------------------------------- | ------------------------------------- |
-| `createTokenLimit(max, window)` | Create a token usage limit            |
-| `createRateLimit(max, window)`  | Create a rate limit (requests/window) |
-| `createCallLimit(max, window)`  | Create a call count limit             |
+---
 
-All types are exported from `pennyllm` and `pennyllm/types`.
+## Comparison
+
+| Feature            | pennyllm                         | Manual Key Management | LiteLLM           |
+| ------------------ | -------------------------------- | --------------------- | ----------------- |
+| Language           | TypeScript                       | Any                   | Python            |
+| Setup              | `npm install`                    | DIY                   | Docker + Postgres |
+| Free tier tracking | Built-in                         | Manual                | No                |
+| Key rotation       | Automatic                        | Manual                | Manual            |
+| Budget caps        | Yes                              | No                    | Yes               |
+| Health scoring     | Circuit breakers                 | No                    | Basic             |
+| Credit tracking    | Trial providers                  | No                    | No                |
+| CLI validator      | `npx pennyllm validate`          | No                    | No                |
+| AI SDK integration | Native middleware                | None                  | Proxy             |
+| Runtime deps       | 3 (zod, debug, @ai-sdk/provider) | 0                     | 100+              |
+
+---
 
 ## Contributing
 
