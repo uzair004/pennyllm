@@ -19,14 +19,6 @@ export const Provider = {
   SAMBANOVA: 'sambanova',
   NVIDIA: 'nvidia',
   MISTRAL: 'mistral',
-  // Legacy — unsupported, kept for backward compatibility
-  GITHUB: 'github',
-  OPENROUTER: 'openrouter',
-  HUGGINGFACE: 'huggingface',
-  DEEPSEEK: 'deepseek',
-  QWEN: 'qwen',
-  CLOUDFLARE: 'cloudflare',
-  COHERE: 'cohere',
 } as const;
 
 export type ProviderType = (typeof Provider)[keyof typeof Provider];

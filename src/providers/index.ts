@@ -6,5 +6,3 @@ export { groqProvider } from './groq.js';
 export { sambanovaProvider } from './sambanova.js';
 export { nvidiaNimProvider } from './nvidia-nim.js';
 export { mistralProvider } from './mistral.js';
-// GitHub Models available but not in active registry — import directly if needed
-export { githubModelsProvider } from './github-models.js';

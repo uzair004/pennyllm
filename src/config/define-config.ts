@@ -21,7 +21,7 @@ type TypedConfigInput = Omit<ConfigInput, 'providers'> & {
  * Type-safe config helper for IDE autocomplete.
  * Identity function with zero runtime cost.
  *
- * Provides autocomplete for the 12 known provider names while
+ * Provides autocomplete for the 6 known provider names while
  * accepting any custom provider string.
  *
  * @param config - Router configuration with typed provider names
