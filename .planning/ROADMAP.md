@@ -117,7 +117,7 @@ Plans:
 **Goal**: Public API surface exports every type and hook documented in README and provider guides
 **Depends on**: Phase 19 (provider types must be cleaned up before export alignment)
 **Requirements**: TYPE-01, TYPE-02, TYPE-03, TYPE-04, TYPE-05
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 
@@ -156,7 +156,7 @@ Plans:
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
 | 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
 | 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
-| 20. Export & Type Hygiene  | v2.1      | 0/2            | Planned     | -          |
+| 20. Export & Type Hygiene  | 1/2       | In Progress    |             | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
 
 ## Archives

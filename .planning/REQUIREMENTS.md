@@ -38,7 +38,7 @@ Requirements for production hardening. Each maps to roadmap phases.
 - [ ] **TYPE-02**: All event types (`ProviderRecoveredEvent`, credit events, error sub-events) exported from root
 - [ ] **TYPE-03**: Duplicate `StructuredUsage` definition consolidated to single source
 - [ ] **TYPE-04**: `SambaNovaProviderConfig` type alias added for consistency
-- [ ] **TYPE-05**: `onFallbackTriggered` hook either emits events or is removed from docs
+- [x] **TYPE-05**: `onFallbackTriggered` hook either emits events or is removed from docs
 
 ### Build & Docs
 
@@ -80,7 +80,7 @@ Requirements for production hardening. Each maps to roadmap phases.
 | TYPE-02     | 20    | Pending  |
 | TYPE-03     | 20    | Pending  |
 | TYPE-04     | 20    | Pending  |
-| TYPE-05     | 20    | Pending  |
+| TYPE-05     | 20    | Complete |
 | BUILD-01    | 21    | Pending  |
 | BUILD-02    | 21    | Pending  |
 | BUILD-03    | 21    | Pending  |
