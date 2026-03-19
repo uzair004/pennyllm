@@ -1,7 +1,7 @@
 import { wrapLanguageModel } from 'ai';
 import type { LanguageModelV3 } from '@ai-sdk/provider';
 import type { Router } from '../config/index.js';
-import { ProviderRegistry, createProviderInstance } from './provider-registry.js';
+import { ProviderRegistry, createProviderInstanceAsync } from './provider-registry.js';
 import { createRouterMiddleware } from './middleware.js';
 import { randomUUID } from 'node:crypto';
 
@@ -31,7 +31,7 @@ export async function routerModel(
   const registry = options?.registry ?? (await ProviderRegistry.createDefault());
 
   // Create base model with selected API key
-  const baseModel = createProviderInstance(registry, provider, modelName, selection.key);
+  const baseModel = await createProviderInstanceAsync(registry, provider, modelName, selection.key);
 
   // Generate requestId if not provided
   const requestId = options?.requestId ?? randomUUID();
