@@ -67,3 +67,16 @@ export type CerebrasProviderConfig = ProviderConfig;
  * @see docs/providers/nvidia.md for full setup guide
  */
 export type NvidiaProviderConfig = ProviderConfig;
+
+/**
+ * SambaNova provider configuration.
+ *
+ * Free tier: Recurring per-model limits. 20 RPM, 20 RPD, 200K TPD per model.
+ * Sign up: https://cloud.sambanova.ai
+ * API keys: SambaNova Cloud dashboard
+ * Env var: SAMBANOVA_API_KEY
+ * AI SDK package: community provider (sambanova)
+ *
+ * @see docs/providers/sambanova.md for full setup guide
+ */
+export type SambaNovaProviderConfig = ProviderConfig;

@@ -43,6 +43,7 @@ export type {
   LimitWarningEvent,
   PolicyStaleEvent,
   ProviderExhaustedEvent,
+  ProviderRecoveredEvent,
   RequestCompleteEvent,
   RouterEventMap,
   RouterEventPayload,
@@ -57,7 +58,12 @@ export type {
 } from './events.js';
 
 // Interface types
-export type { ModelCatalog, SelectionStrategy, StorageBackend } from './interfaces.js';
+export type {
+  ModelCatalog,
+  SelectionStrategy,
+  StorageBackend,
+  StructuredUsage,
+} from './interfaces.js';
 
 // Usage types
 export type {
@@ -85,4 +91,5 @@ export type {
   MistralProviderConfig,
   CerebrasProviderConfig,
   NvidiaProviderConfig,
+  SambaNovaProviderConfig,
 } from './providers.js';

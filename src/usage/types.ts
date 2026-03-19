@@ -1,5 +1,7 @@
 import type { TimeWindow } from '../types/domain.js';
 
+export type { StructuredUsage } from '../types/interfaces.js';
+
 /**
  * Configuration for token estimation
  */
@@ -82,14 +84,4 @@ export interface ProviderUsage {
 export interface UsageSnapshot {
   providers: ProviderUsage[];
   timestamp: string;
-}
-
-/**
- * Structured usage data returned by StorageBackend.getUsage()
- */
-export interface StructuredUsage {
-  promptTokens: number;
-  completionTokens: number;
-  totalTokens: number;
-  callCount: number;
 }
