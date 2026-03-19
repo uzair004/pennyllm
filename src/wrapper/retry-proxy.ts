@@ -4,7 +4,7 @@ import type { RouterConfig } from '../types/config.js';
 import type { CooldownManager } from '../usage/cooldown.js';
 import type { KeySelector } from '../selection/KeySelector.js';
 import type { ProviderRegistry } from './provider-registry.js';
-import { createProviderInstance } from './provider-registry.js';
+import { createProviderInstanceAsync } from './provider-registry.js';
 import {
   classifyError,
   shouldRetry,
@@ -429,7 +429,7 @@ async function getNextKey(
     }
 
     const apiKey = typeof keyConfig === 'string' ? keyConfig : keyConfig.key;
-    const model = createProviderInstance(registry, provider, modelName, apiKey);
+    const model = await createProviderInstanceAsync(registry, provider, modelName, apiKey);
 
     return { keyIndex: result.keyIndex, model };
   } catch (err) {
