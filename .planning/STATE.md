@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: Production Hardening
-status: complete
+status: completed
 stopped_at: Completed 21-02-PLAN.md
-last_updated: '2026-03-19T12:00:24.735Z'
+last_updated: '2026-03-19T12:04:24.609Z'
 last_activity: 2026-03-19 — Completed 21-02 (README dep fix + migration transaction safety)
 progress:
   total_phases: 5
