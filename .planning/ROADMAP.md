@@ -44,7 +44,7 @@
 
 **Milestone Goal:** Fix all bugs found in the 6-agent production readiness audit — correct broken core features, eliminate dead code, align public API with documentation.
 
-- [ ] **Phase 17: Core Routing Fixes** - Fix broken key rotation, infinite recursion, singleton pollution, and retry logic
+- [x] **Phase 17: Core Routing Fixes** - Fix broken key rotation, infinite recursion, singleton pollution, and retry logic (completed 2026-03-19)
 - [ ] **Phase 18: Usage & Tracking Fixes** - Fix data accuracy in usage reporting, credit tracking, cooldowns, and dedup
 - [ ] **Phase 19: Provider Cleanup** - Remove dead provider code and align active provider setup
 - [ ] **Phase 20: Export & Type Hygiene** - Align public API exports and types with documented surface
@@ -57,7 +57,7 @@
 **Goal**: Routing engine correctly rotates keys, handles exhaustion gracefully, and isolates router instances
 **Depends on**: Nothing (highest priority — these are crash and correctness bugs)
 **Requirements**: ROUTE-01, ROUTE-02, ROUTE-03, ROUTE-04, ROUTE-05
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -135,7 +135,7 @@ Plans:
 | 14. Health Scoring         | v2.0      | 2/2            | Complete    | 2026-03-18 |
 | 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
-| 17. Core Routing Fixes     | 1/2       | In Progress    |             | -          |
+| 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
 | 18. Usage & Tracking Fixes | v2.1      | 0/?            | Not started | -          |
 | 19. Provider Cleanup       | v2.1      | 0/?            | Not started | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |

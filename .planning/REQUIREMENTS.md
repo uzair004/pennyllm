@@ -9,11 +9,11 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 ### Core Routing
 
-- [ ] **ROUTE-01**: Key rotation uses distinct API keys per retry attempt (not silently reusing first key)
+- [x] **ROUTE-01**: Key rotation uses distinct API keys per retry attempt (not silently reusing first key)
 - [x] **ROUTE-02**: All-circuits-open produces `AllProvidersExhaustedError` (not stack overflow from infinite recursion)
-- [ ] **ROUTE-03**: Multiple router instances maintain independent state (no module-level singleton pollution)
+- [x] **ROUTE-03**: Multiple router instances maintain independent state (no module-level singleton pollution)
 - [x] **ROUTE-04**: 402 credit exhaustion errors are not retried (respects `retryable: false`)
-- [ ] **ROUTE-05**: `getNextKey` works for async-registered providers (uses async factory path)
+- [x] **ROUTE-05**: `getNextKey` works for async-registered providers (uses async factory path)
 
 ### Usage & Tracking
 
@@ -60,11 +60,11 @@ Requirements for production hardening. Each maps to roadmap phases.
 
 | Requirement | Phase | Status   |
 | ----------- | ----- | -------- |
-| ROUTE-01    | 17    | Pending  |
+| ROUTE-01    | 17    | Complete |
 | ROUTE-02    | 17    | Complete |
-| ROUTE-03    | 17    | Pending  |
+| ROUTE-03    | 17    | Complete |
 | ROUTE-04    | 17    | Complete |
-| ROUTE-05    | 17    | Pending  |
+| ROUTE-05    | 17    | Complete |
 | USAGE-01    | 18    | Pending  |
 | USAGE-02    | 18    | Pending  |
 | USAGE-03    | 18    | Pending  |
