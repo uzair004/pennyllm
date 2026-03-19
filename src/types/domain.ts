@@ -9,7 +9,7 @@ import type {
  * Time window definitions for quota tracking
  */
 export interface TimeWindow {
-  type: 'per-minute' | 'hourly' | 'daily' | 'monthly' | 'rolling-30d';
+  type: 'per-minute' | 'hourly' | 'daily' | 'monthly' | 'rolling-30d' | 'lifetime';
   durationMs: number;
 }
 

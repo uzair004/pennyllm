@@ -32,6 +32,10 @@ export function getPeriodKey(window: TimeWindow, timestamp: number): string {
       const iso = date.toISOString();
       return iso.slice(0, 10); // YYYY-MM-DD
     }
+    case 'lifetime': {
+      // Fixed period key -- credits never rotate
+      return 'lifetime';
+    }
     default: {
       // Exhaustiveness check
       const _exhaustive: never = window.type;
@@ -84,6 +88,10 @@ export function getResetAt(window: TimeWindow, timestamp: number): Date {
       const day = date.getUTCDate();
       const nextDay = Date.UTC(year, month, day + 1, 0, 0, 0, 0);
       return new Date(nextDay);
+    }
+    case 'lifetime': {
+      // Lifetime windows never reset
+      return new Date(8640000000000000);
     }
     default: {
       // Exhaustiveness check

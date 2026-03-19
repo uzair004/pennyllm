@@ -19,7 +19,7 @@ const debug = debugFactory('pennyllm:credit');
  * Uses a 100-year durationMs to prevent storage expiration.
  */
 const CREDIT_WINDOW: TimeWindow = {
-  type: 'monthly',
+  type: 'lifetime',
   durationMs: 100 * 365 * 24 * 60 * 60 * 1000,
 };
 

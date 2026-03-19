@@ -27,6 +27,7 @@ const WINDOW_DURATION_MS: Record<TimeWindow['type'], number> = {
   daily: 86_400_000,
   monthly: 2_592_000_000,
   'rolling-30d': 2_592_000_000,
+  lifetime: 100 * 365 * 24 * 60 * 60 * 1000,
 };
 
 /**
@@ -114,6 +115,8 @@ export class RedisStorage implements StorageBackend {
         return 5184000; // 60 days
       case 'rolling-30d':
         return 172800; // 2 days (per daily bucket)
+      case 'lifetime':
+        return 100 * 365 * 24 * 60 * 60; // ~100 years in seconds
       default: {
         const _exhaustive: never = window.type;
         throw new PennyLLMError(`Unknown window type: ${String(_exhaustive)}`, {

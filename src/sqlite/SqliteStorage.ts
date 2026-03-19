@@ -23,6 +23,7 @@ const DURATION_MAP: Record<string, number> = {
   daily: 86_400_000,
   monthly: 2_592_000_000,
   'rolling-30d': 2_592_000_000,
+  lifetime: 100 * 365 * 24 * 60 * 60 * 1000,
 };
 
 export interface SqliteStorageOptions {
