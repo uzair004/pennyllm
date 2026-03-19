@@ -57,6 +57,13 @@
 **Goal**: Routing engine correctly rotates keys, handles exhaustion gracefully, and isolates router instances
 **Depends on**: Nothing (highest priority — these are crash and correctness bugs)
 **Requirements**: ROUTE-01, ROUTE-02, ROUTE-03, ROUTE-04, ROUTE-05
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 17-01-PLAN.md — Fix 402 retry logic and infinite recursion guard
+- [ ] 17-02-PLAN.md — Instance-scoped factories, key rotation fix, async getNextKey
+
 **Success Criteria** (what must be TRUE):
 
 1. When a provider has multiple API keys, each retry attempt uses a different key (not the same key repeatedly)
@@ -64,7 +71,6 @@
 3. Two independently created router instances do not share cooldown state, usage state, or key state
 4. A 402 credit-exhaustion response is never retried — it immediately marks the key as exhausted and moves to the next
 5. `getNextKey` returns valid keys for providers registered via async factory functions
-   **Plans**: TBD
 
 ### Phase 18: Usage & Tracking Fixes
 
@@ -129,7 +135,7 @@
 | 14. Health Scoring         | v2.0      | 2/2            | Complete    | 2026-03-18 |
 | 15. CLI Validator          | v2.0      | 3/3            | Complete    | 2026-03-18 |
 | 16. Provider Data Registry | v2.0      | 3/3            | Complete    | 2026-03-18 |
-| 17. Core Routing Fixes     | v2.1      | 0/?            | Not started | -          |
+| 17. Core Routing Fixes     | v2.1      | 0/2            | In progress | -          |
 | 18. Usage & Tracking Fixes | v2.1      | 0/?            | Not started | -          |
 | 19. Provider Cleanup       | v2.1      | 0/?            | Not started | -          |
 | 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
