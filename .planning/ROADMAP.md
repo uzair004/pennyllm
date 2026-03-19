@@ -117,13 +117,19 @@ Plans:
 **Goal**: Public API surface exports every type and hook documented in README and provider guides
 **Depends on**: Phase 19 (provider types must be cleaned up before export alignment)
 **Requirements**: TYPE-01, TYPE-02, TYPE-03, TYPE-04, TYPE-05
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 20-01-PLAN.md — Consolidate StructuredUsage, add missing type exports, add SambaNovaProviderConfig
+- [ ] 20-02-PLAN.md — Wire up FALLBACK_TRIGGERED event emission in ChainExecutor
+
 **Success Criteria** (what must be TRUE):
 
 1. `import { StructuredUsage } from 'pennyllm'` and `import { StructuredUsage } from 'pennyllm/types'` both resolve to the same single type definition
 2. All event types documented in README (`ProviderRecoveredEvent`, credit events, error sub-events) are importable from `pennyllm`
 3. `SambaNovaProviderConfig` is a named export consistent with other provider config type aliases
 4. `onFallbackTriggered` either emits events on the router's EventEmitter or is removed from documentation (no dead hooks)
-   **Plans**: TBD
 
 ### Phase 21: Build & Docs
 
@@ -150,7 +156,7 @@ Plans:
 | 17. Core Routing Fixes     | 2/2       | Complete       | 2026-03-19  | -          |
 | 18. Usage & Tracking Fixes | 2/2       | Complete       | 2026-03-19  | -          |
 | 19. Provider Cleanup       | 2/2       | Complete       | 2026-03-19  | -          |
-| 20. Export & Type Hygiene  | v2.1      | 0/?            | Not started | -          |
+| 20. Export & Type Hygiene  | v2.1      | 0/2            | Planned     | -          |
 | 21. Build & Docs           | v2.1      | 0/?            | Not started | -          |
 
 ## Archives
