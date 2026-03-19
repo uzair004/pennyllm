@@ -147,6 +147,9 @@ export async function createRouter(
     // Create EventEmitter for router events
     const emitter = new EventEmitter();
 
+    // DebugLogger reference hoisted so close() can detach it
+    let debugLogger: DebugLogger | null = null;
+
     // Resolve policies with empty defaults (shipped defaults removed in Phase 8)
     const emptyDefaults = new Map<string, Policy>();
     const resolvedPolicies = resolvePolicies(config, emptyDefaults);
@@ -477,6 +480,10 @@ export async function createRouter(
 
       close: async () => {
         debug('Closing router');
+        if (debugLogger) {
+          debugLogger.detach();
+        }
+        emitter.removeAllListeners();
         await catalog.close();
         await storage.close();
       },
@@ -512,7 +519,7 @@ export async function createRouter(
     // Enable debug mode from config flag or DEBUG env var
     const shouldDebug = config.debug || /pennyllm/.test(process.env['DEBUG'] ?? '');
     if (shouldDebug) {
-      const debugLogger = new DebugLogger();
+      debugLogger = new DebugLogger();
       debugLogger.attach(routerImpl);
     }
 
