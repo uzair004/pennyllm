@@ -34,18 +34,12 @@ describe('Public API exports', () => {
 
   it('exports Provider constants', () => {
     expect(typeof PennyLLM.Provider).toBe('object');
+    expect(PennyLLM.Provider.CEREBRAS).toBe('cerebras');
     expect(PennyLLM.Provider.GOOGLE).toBe('google');
     expect(PennyLLM.Provider.GROQ).toBe('groq');
-    expect(PennyLLM.Provider.OPENROUTER).toBe('openrouter');
-    expect(PennyLLM.Provider.MISTRAL).toBe('mistral');
-    expect(PennyLLM.Provider.HUGGINGFACE).toBe('huggingface');
-    expect(PennyLLM.Provider.CEREBRAS).toBe('cerebras');
-    expect(PennyLLM.Provider.DEEPSEEK).toBe('deepseek');
-    expect(PennyLLM.Provider.QWEN).toBe('qwen');
-    expect(PennyLLM.Provider.CLOUDFLARE).toBe('cloudflare');
+    expect(PennyLLM.Provider.SAMBANOVA).toBe('sambanova');
     expect(PennyLLM.Provider.NVIDIA).toBe('nvidia');
-    expect(PennyLLM.Provider.COHERE).toBe('cohere');
-    expect(PennyLLM.Provider.GITHUB).toBe('github');
+    expect(PennyLLM.Provider.MISTRAL).toBe('mistral');
   });
 
   it('exports RouterEvent constants', () => {
